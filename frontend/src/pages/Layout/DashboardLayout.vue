@@ -35,6 +35,10 @@
         <md-icon>notifications</md-icon>
         <p>Notifications</p>
       </sidebar-link>
+      <sidebar-link to="/appointment">
+        <md-icon>person</md-icon>
+        <p>Đặt lịch khám theo ngày</p>
+      </sidebar-link>
       <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>

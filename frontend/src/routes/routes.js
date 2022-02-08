@@ -8,6 +8,8 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
 import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
+import Appointment from "@/pages/Appointment/MakeAppointment.vue";
+import SelectDate from "@/pages/Appointment/SelectDate.vue";
 
 const routes = [
   {
@@ -58,8 +60,21 @@ const routes = [
         name: "Upgrade to PRO",
         component: UpgradeToPRO,
       },
+      // appointment,
+      {
+        path: "appointment",
+        name: "Đặt lịch khám",
+        component: Appointment,
+
+      },
+      {
+        path: "selectdate",
+        name: "Chọn ngày",
+        component: SelectDate,
+      },
     ],
   },
+  // appointment,
 ];
 
 export default routes;
