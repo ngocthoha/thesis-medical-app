@@ -10,7 +10,13 @@ import Notifications from "@/pages/Notifications.vue";
 import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
 import Appointment from "@/pages/Appointment/MakeAppointment.vue";
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
+import Login from "@/pages/Login/Login.vue";
 
+let authPage = {
+  path: "/login",
+  name: "login",
+  component: Login,
+}
 const routes = [
   {
     path: "/",
@@ -60,7 +66,6 @@ const routes = [
         name: "Upgrade to PRO",
         component: UpgradeToPRO,
       },
-      // appointment,
       {
         path: "appointment",
         name: "Đặt lịch khám",
@@ -74,7 +79,7 @@ const routes = [
       },
     ],
   },
-  // appointment,
+  authPage,
 ];
 
 export default routes;
