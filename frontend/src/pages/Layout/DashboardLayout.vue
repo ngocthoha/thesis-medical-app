@@ -7,7 +7,7 @@
       :sidebar-background-image="sidebarBackgroundImage"
     >
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/dashboard">
+      <!--<sidebar-link to="/dashboard">
         <md-icon>dashboard</md-icon>
         <p>Dashboard</p>
       </sidebar-link>
@@ -34,11 +34,20 @@
       <sidebar-link to="/notifications">
         <md-icon>notifications</md-icon>
         <p>Notifications</p>
-      </sidebar-link>
-      <sidebar-link to="/appointment">
+      </sidebar-link>-->
+      <sidebar-link to="/appointment/appointment-by-date">
         <md-icon>person</md-icon>
         <p>Đặt lịch khám theo ngày</p>
       </sidebar-link>
+      <sidebar-link to="/appointment/appointment-by-doctor">
+        <md-icon>person</md-icon>
+        <p>Đặt lịch khám bác sĩ</p>
+      </sidebar-link>
+      <sidebar-link to="/doctor/doctor-schedule">
+        <md-icon>person</md-icon>
+        <p>Lịch trình của bác sĩ</p>
+      </sidebar-link>
+      
       <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>

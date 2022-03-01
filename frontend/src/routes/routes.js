@@ -8,20 +8,27 @@ import Icons from "@/pages/Icons.vue";
 import Maps from "@/pages/Maps.vue";
 import Notifications from "@/pages/Notifications.vue";
 import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
-import Appointment from "@/pages/Appointment/MakeAppointment.vue";
-import SelectDate from "@/pages/Appointment/SelectDate.vue";
+
 import Login from "@/pages/Login/Login.vue";
+
+//user page
+import AppointmentByDate from "@/pages/Appointment/MakeAppointmentByDate.vue";
+import AppointmentByDoctor from "@/pages/Appointment/MakeAppointmentByDoctor.vue";
+
+//doctor page
+import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
 
 let authPage = {
   path: "/login",
   name: "login",
   component: Login,
 }
+
 const routes = [
   {
     path: "/",
     component: DashboardLayout,
-    redirect: "/dashboard",
+    redirect: "/appointment/appointment-by-date",
     children: [
       {
         path: "dashboard",
@@ -67,18 +74,24 @@ const routes = [
         component: UpgradeToPRO,
       },
       {
-        path: "appointment",
-        name: "Đặt lịch khám",
-        component: Appointment,
+        path: "appointment/appointment-by-date",
+        name: "Đặt lịch khám theo ngày",
+        component: AppointmentByDate,
 
       },
       {
-        path: "selectdate",
-        name: "Chọn ngày",
-        component: SelectDate,
+        path: "appointment/appointment-by-doctor",
+        name: "Đặt lịch khám bác sĩ",
+        component: AppointmentByDoctor,
+      },
+      {
+        path: "doctor/doctor-schedule",
+        name: "Lịch trình",
+        component: ScheduleOfDoctor,
       },
     ],
   },
+  
   authPage,
 ];
 
