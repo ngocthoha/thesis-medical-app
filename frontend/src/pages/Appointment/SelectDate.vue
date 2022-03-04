@@ -1,10 +1,9 @@
 <template>
   <div class="content">
-    <div class="md-layout">
+    <div class="md-layout select-date">
             <!-- calendar -->
       <div class="calendar" v-if="calendar">
         <div class="calendar-row-month">
-          
         </div>
             <!-- head -->
         <div class="calendar-row head">
@@ -21,11 +20,15 @@
           <div
             v-for="(cell, cell_index) in row"
             :key="cell_index"
-            class="row-item"
+            class="row-item" @click="changeBackgroundRow(cell_index)"
           >
             <span v-text="cell ? cell : ''" />  
           </div>
         </div>
+      </div>
+      <div class="btns-selectdate">
+        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success continue-button">Tiếp tục</md-button>
       </div>
     </div>
   </div>
@@ -83,12 +86,28 @@
       }
       cursor: pointer;
     }
+    
+    
   }
   border: thin solid #78C6A3;
 }
+.select-date{
+  flex-direction: column;
+  align-items: center;
+  background: #FFFFFF;
+  padding: 100px;
+}
+.btns-selectdate{
+  width: 700px;
+}
+.continue-button{
+  float: right;
+}
+
 </style>
 
 <script>
+
 export default {
   data() {
     return {
@@ -97,8 +116,8 @@ export default {
     };
   },
   created() {
-    // sau khi khởi tạo component thì mình gọi hàm buildCalendar này để hiển thị lịch tháng 8 năm 2021
-    this.buildCalendar(1,2022)
+    // sau khi khởi tạo component thì mình gọi hàm buildCalendar này để hiển thị lịch tháng 1 năm 2021
+    this.buildCalendar(3,2022)
   },
   methods: {
     // lấy ngày đầu và ngày cuối trong tháng
@@ -138,7 +157,16 @@ export default {
         arr.push([]);
       }
       this.calendar = arr
+    },
+    changeBackgroundRow: function(cell_index){
+        var buttons = document.getElementsByClassName('row-item');
+        console.log(buttons);
+        var span = buttons[cell_index].getElementsByTagName('span');
+        console.log("amount of span" + span.length);
+        //span[0].style.backgroundColor = 'blue';
     }
+
   }
+    
 };
 </script>
