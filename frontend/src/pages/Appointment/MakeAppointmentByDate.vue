@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <div class="md-layout" v-show="visible">
+    <div class="md-layout" v-show="visible_selectprofile">
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-60"
       >
@@ -40,7 +40,7 @@
                 <p>Dân tộc: {{ item.ethnic }} </p>
               </md-table-row>
             </md-table>
-            <md-button class="md-round md-success select" @click="selectProfile">Chọn
+            <md-button class="md-round md-success select" @click="selectProfileComplete">Chọn
               <!-- <fixed-plugin
               v-for="item in sidebarColors"
               :key="item.color"
@@ -54,21 +54,33 @@
         </md-card>
       </div>
     </div>
-    <select-date v-show="visible_selectdate"></select-date>
+    <div class="md-layout select-day" v-show="visible_selectdate">
+       <SelectDate></SelectDate>
+        <div class="btns-selectdate">
+            <md-button class="md-round md-success back-button">Quay lại</md-button>
+            <md-button class="md-round md-success continue-button" @click="SelectDateComplete">Tiếp tục</md-button>
+        </div>
+    </div>
+    <div class="md-layout select-opd" v-show="visible_selectopd">
+        <SelectOPD></SelectOPD>
+    </div>
   </div>
 </template>
 
 <script>
 //import FixedPlugin from "@/pages/Layout/Extra/FixedPlugin.vue";
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
+import SelectOPD from "@/pages/Appointment/SelectOPD.vue";
 export default {
   components: {
-    SelectDate
+    SelectDate,
+    SelectOPD,
   },
   data() {
     return {
-      visible: true,
+      visible_selectprofile: true,
       visible_selectdate: false,
+      visible_selectopd: false,
       profile_patient: [
         {
           name: "Nguyễn Duy Thanh",
@@ -93,10 +105,14 @@ export default {
     };
   },
   methods: {
-    selectProfile(){
-      this.visible=false;
+    selectProfileComplete(){
+      this.visible_selectprofile=false;
       this.visible_selectdate=true;
     },
+    SelectDateComplete(){
+      this.visible_selectdate=false;
+      this.visible_selectopd = true;
+    }
   },
 };
 </script>
@@ -107,5 +123,20 @@ export default {
     .select{
         margin:auto;
         display: block;
+    }
+    .btns-selectdate{
+        width: 700px;
+    }
+    .select-day{
+      flex-direction: column;
+      align-items: center;
+      background-color: white;
+      padding-bottom: 50px;
+    }
+    .select-opd{
+      flex-direction: column;
+      align-items: center;
+      padding: 100px;
+      background-color: white;
     }
 </style>
