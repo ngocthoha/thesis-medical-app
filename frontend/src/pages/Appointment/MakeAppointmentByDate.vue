@@ -63,6 +63,10 @@
     </div>
     <div class="md-layout select-opd" v-show="visible_selectopd">
         <SelectOPD></SelectOPD>
+        <div class="btns-selectdate">
+            <md-button class="md-round md-success back-button">Quay lại</md-button>
+            <md-button class="md-round md-success continue-button" @click="SelectOPDComplete">Tiếp tục</md-button>
+        </div>
     </div>
   </div>
 </template>
@@ -110,6 +114,10 @@ export default {
       this.visible_selectdate=true;
     },
     SelectDateComplete(){
+      this.visible_selectdate=false;
+      this.visible_selectopd = true;
+    },
+     SelectOPDComplete(){
       this.visible_selectdate=false;
       this.visible_selectopd = true;
     }
