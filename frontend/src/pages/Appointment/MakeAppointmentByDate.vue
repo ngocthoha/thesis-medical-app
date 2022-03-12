@@ -42,7 +42,10 @@
                 <p>Dân tộc: {{ item.ethnic }}</p>
               </md-table-row>
             </md-table>
-            <md-button class="md-round md-success select" @click="selectProfileComplete">Chọn
+            <md-button
+              class="md-round md-success select"
+              @click="selectProfileComplete"
+              >Chọn
               <!-- <fixed-plugin
               v-for="item in sidebarColors"
               :key="item.color"
@@ -57,18 +60,29 @@
       </div>
     </div>
     <div class="md-layout select-day" v-show="visible_selectdate">
-       <SelectDate></SelectDate>
-        <div class="btns-selectdate">
-            <md-button class="md-round md-success back-button">Quay lại</md-button>
-            <md-button class="md-round md-success continue-button" @click="SelectDateComplete">Tiếp tục</md-button>
-        </div>
+      <SelectDate></SelectDate>
+      <div class="btns-selectdate">
+        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button
+          class="md-round md-success continue-button"
+          @click="SelectDateComplete"
+          >Tiếp tục</md-button
+        >
+      </div>
     </div>
     <div class="md-layout select-opd" v-show="visible_selectopd">
-        <SelectOPD></SelectOPD>
-        <div class="btns-selectdate">
-            <md-button class="md-round md-success back-button">Quay lại</md-button>
-            <md-button class="md-round md-success continue-button" @click="SelectOPDComplete">Tiếp tục</md-button>
-        </div>
+      <SelectOPD></SelectOPD>
+      <div class="btns-selectdate">
+        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button
+          class="md-round md-success continue-button"
+          @click="SelectOPDComplete"
+          >Tiếp tục</md-button
+        >
+      </div>
+    </div>
+    <div class="md-layout" v-show="visible_selectdoctor">
+      <SelectDoctor class="md-layout-item"></SelectDoctor>
     </div>
   </div>
 </template>
@@ -77,16 +91,19 @@
 //import FixedPlugin from "@/pages/Layout/Extra/FixedPlugin.vue";
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
 import SelectOPD from "@/pages/Appointment/SelectOPD.vue";
+import SelectDoctor from "@/pages/Appointment/SelectDoctor.vue";
 export default {
   components: {
     SelectDate,
     SelectOPD,
+    SelectDoctor,
   },
   data() {
     return {
       visible_selectprofile: true,
       visible_selectdate: false,
       visible_selectopd: false,
+      visible_selectdoctor: false,
       profile_patient: [
         {
           name: "Nguyễn Duy Thanh",
@@ -111,42 +128,47 @@ export default {
     };
   },
   methods: {
-    selectProfileComplete(){
-      this.visible_selectprofile=false;
-      this.visible_selectdate=true;
+    selectProfileComplete() {
+      this.visible_selectprofile = false;
+      this.visible_selectdate = true;
     },
-    SelectDateComplete(){
-      this.visible_selectdate=false;
+    SelectDateComplete() {
+      this.visible_selectdate = false;
       this.visible_selectopd = true;
     },
-     SelectOPDComplete(){
-      this.visible_selectdate=false;
-      this.visible_selectopd = true;
-    }
+    SelectOPDComplete() {
+      this.visible_selectopd = false;
+      this.visible_selectdoctor = true;
+    },
   },
 };
 </script>
 <style scoped>
-    .header-patient{
-        text-align: center;
-    }
-    .select{
-        margin:auto;
-        display: block;
-    }
-    .btns-selectdate{
-        width: 700px;
-    }
-    .select-day{
-      flex-direction: column;
-      align-items: center;
-      background-color: white;
-      padding-bottom: 50px;
-    }
-    .select-opd{
-      flex-direction: column;
-      align-items: center;
-      padding: 100px;
-      background-color: white;
-    }
+.header-patient {
+  text-align: center;
+}
+.select {
+  margin: auto;
+  display: block;
+}
+.btns-selectdate {
+  width: 700px;
+}
+.select-day {
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  padding-bottom: 50px;
+}
+.select-opd {
+  flex-direction: column;
+  align-items: center;
+  padding: 100px;
+  background-color: white;
+}
+.select-doctor {
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
 </style>
