@@ -14,7 +14,9 @@
               :table-header-color="tableHeaderColor"
             >
               <md-table-row slot="md-table-row" slot-scope="{ item }">
-                <md-table-cell md-label="Họ và tên">{{ item.name }}</md-table-cell>
+                <md-table-cell md-label="Họ và tên">{{
+                  item.name
+                }}</md-table-cell>
               </md-table-row>
             </md-table>
             <md-button class="md-round md-success">Thêm hồ sơ</md-button>
@@ -35,9 +37,9 @@
                 <p>Ngày sinh: {{ item.birthday }}</p>
                 <p>Số điện thoại: {{ item.phone }}</p>
                 <p>Giới tính: {{ item.sex }}</p>
-                <p>CMND: {{ item.sex }} </p>
-                <p>Nghề nghiệp: {{ item.job }} </p>
-                <p>Dân tộc: {{ item.ethnic }} </p>
+                <p>CMND: {{ item.sex }}</p>
+                <p>Nghề nghiệp: {{ item.job }}</p>
+                <p>Dân tộc: {{ item.ethnic }}</p>
               </md-table-row>
             </md-table>
             <md-button class="md-round md-success select" @click="selectProfileComplete">Chọn
@@ -96,16 +98,16 @@ export default {
           name: "Hà Ngọc Thọ",
         },
       ],
-       patient_info: [
-           {
-           birthday: "03/03/2000",
-           phone: "0962530448",
-           sex: "Nam",
-           id: "077200003808",
-           job: "Sinh viên",
-           ethnic: "Kinh",
-           }
-       ]
+      patient_info: [
+        {
+          birthday: "03/03/2000",
+          phone: "0962530448",
+          sex: "Nam",
+          id: "077200003808",
+          job: "Sinh viên",
+          ethnic: "Kinh",
+        },
+      ],
     };
   },
   methods: {

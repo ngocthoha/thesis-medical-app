@@ -17,12 +17,13 @@ import AppointmentByDoctor from "@/pages/Appointment/MakeAppointmentByDoctor.vue
 
 //doctor page
 import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
+import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
 
 let authPage = {
   path: "/login",
   name: "login",
   component: Login,
-}
+};
 
 const routes = [
   {
@@ -77,7 +78,6 @@ const routes = [
         path: "appointment/appointment-by-date",
         name: "Đặt lịch khám theo ngày",
         component: AppointmentByDate,
-
       },
       {
         path: "appointment/appointment-by-doctor",
@@ -89,9 +89,14 @@ const routes = [
         name: "Lịch trình",
         component: ScheduleOfDoctor,
       },
+      {
+        path: "doctor/doctor-record",
+        name: "Hồ sơ bệnh nhân",
+        component: HoSoBenhNhan,
+      },
     ],
   },
-  
+
   authPage,
 ];
 

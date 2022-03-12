@@ -1,28 +1,32 @@
 <template>
   <div class="content">
     <div class="md-layout select-date">
-            <!-- calendar -->
+      <!-- calendar -->
       <div class="calendar" v-if="calendar">
-        <div class="calendar-row-month">
-        </div>
-            <!-- head -->
+        <div class="calendar-row-month"></div>
+        <!-- head -->
         <div class="calendar-row head">
-          <div v-for="(item, index) in dateOfWeek" :key="index" class="row-item">
+          <div
+            v-for="(item, index) in dateOfWeek"
+            :key="index"
+            class="row-item"
+          >
             <strong v-text="item" />
           </div>
         </div>
-            <!-- body -->
+        <!-- body -->
         <div
-        v-for="(row, row_index) in calendar"
-        :key="row_index"
-        class="calendar-row"
+          v-for="(row, row_index) in calendar"
+          :key="row_index"
+          class="calendar-row"
         >
           <div
             v-for="(cell, cell_index) in row"
             :key="cell_index"
-            class="row-item" @click="changeBackgroundRow(cell_index)"
+            class="row-item"
+            @click="changeBackgroundRow(cell_index)"
           >
-            <span v-text="cell ? cell : ''" />  
+            <span v-text="cell ? cell : ''" />
           </div>
         </div>
       </div>
@@ -32,7 +36,7 @@
 
 <style lang="scss">
 .calendar {
-  margin:auto;
+  margin: auto;
   //padding: 0 1em;
   .calendar-row {
     display: flex;
@@ -44,7 +48,7 @@
         //background-color: #99E2B4;
         background-color: #4caf50;
         opacity: 0.87;
-        border: thin solid #78C6A3;
+        border: thin solid #78c6a3;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -53,17 +57,17 @@
 
     .row-item {
       flex-grow: 1;
-      
+
       position: relative;
       border-top: none;
-      border: thin solid #78C6A3;
-      
+      border: thin solid #78c6a3;
+
       min-width: 100px;
       width: calc(100% / 7);
-   	  height: 100px;
-      background: #FFFFFF;
-      display:inline-block;
-      
+      height: 100px;
+      background: #ffffff;
+      display: inline-block;
+
       & > span {
         position: absolute;
         color: #7184a3;
@@ -75,39 +79,43 @@
       }
     }
 
-    .row-item:hover{
-      &>span{
-        background-color: #F9C74F;
+    .row-item:hover {
+      & > span {
+        background-color: #f9c74f;
         border-radius: 50%;
       }
       cursor: pointer;
     }
-    
-    
   }
-  border: thin solid #78C6A3;
+  border: thin solid #78c6a3;
 }
 .select-date{
   padding: 50px;
 }
-.continue-button{
+.continue-button {
   float: right;
 }
-
 </style>
 
 <script>
-
 export default {
   data() {
     return {
-      dateOfWeek: ["Chủ nhật", "Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu", "Thứ bảy"],
+      dateOfWeek: [
+        "Chủ nhật",
+        "Thứ hai",
+        "Thứ ba",
+        "Thứ tư",
+        "Thứ năm",
+        "Thứ sáu",
+        "Thứ bảy",
+      ],
       calendar: null,
     };
   },
   created() {
     // sau khi khởi tạo component thì mình gọi hàm buildCalendar này để hiển thị lịch tháng 1 năm 2021
-    this.buildCalendar(3,2022)
+    this.buildCalendar(3, 2022);
   },
   methods: {
     // lấy ngày đầu và ngày cuối trong tháng
@@ -116,11 +124,17 @@ export default {
       numbYear = Number(numbYear) || new Date().getFullYear();
       return {
         firstDay: new Date(`${numbYear}-${numbMonth}-1`),
-        lastDay: new Date(`${numbYear}-${numbMonth}-${new Date(numbYear, numbMonth, 0).getDate()}`)
+        lastDay: new Date(
+          `${numbYear}-${numbMonth}-${new Date(
+            numbYear,
+            numbMonth,
+            0
+          ).getDate()}`
+        ),
       };
     },
     buildCalendar(month, year) {
-      let arr = [[]]
+      let arr = [[]];
       // lấy ngày đầu và ngày cuối trong tháng
       let { firstDay, lastDay } = this.getRangeMonth(month, year);
       // đếm ngày
@@ -146,17 +160,15 @@ export default {
         if (countDay > lastDay.getDate()) break;
         arr.push([]);
       }
-      this.calendar = arr
+      this.calendar = arr;
     },
-    changeBackgroundRow: function(cell_index){
-        var buttons = document.getElementsByClassName('row-item');
-        console.log(buttons);
-        var span = buttons[cell_index].getElementsByTagName('span');
-        console.log("amount of span" + span.length);
-        //span[0].style.backgroundColor = 'blue';
-    }
-
-  }
-    
+    changeBackgroundRow: function (cell_index) {
+      var buttons = document.getElementsByClassName("row-item");
+      console.log(buttons);
+      var span = buttons[cell_index].getElementsByTagName("span");
+      console.log("amount of span" + span.length);
+      //span[0].style.backgroundColor = 'blue';
+    },
+  },
 };
 </script>
