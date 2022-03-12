@@ -30,12 +30,6 @@
           </div>
         </div>
       </div>
-      <div class="btns-selectdate">
-        <md-button class="md-round md-success back-button">Quay lại</md-button>
-        <md-button class="md-round md-success continue-button"
-          >Tiếp tục</md-button
-        >
-      </div>
     </div>
   </div>
 </template>
@@ -95,14 +89,8 @@
   }
   border: thin solid #78c6a3;
 }
-.select-date {
-  flex-direction: column;
-  align-items: center;
-  background: #ffffff;
-  padding: 100px;
-}
-.btns-selectdate {
-  width: 700px;
+.select-date{
+  padding: 50px;
 }
 .continue-button {
   float: right;
