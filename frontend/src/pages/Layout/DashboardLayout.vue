@@ -47,7 +47,11 @@
         <md-icon>person</md-icon>
         <p>Lịch trình của bác sĩ</p>
       </sidebar-link>
-      
+      <sidebar-link to="/doctor/doctor-record">
+        <md-icon>person</md-icon>
+        <p>Hồ Sơ bệnh nhân</p>
+      </sidebar-link>
+
       <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>

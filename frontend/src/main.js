@@ -30,6 +30,7 @@ import Notifications from "./components/NotificationPlugin";
 import MaterialDashboard from "./material-dashboard";
 
 import Chartist from "chartist";
+import vuetify from "./plugins/vuetify";
 
 // configure router
 const router = new VueRouter({
@@ -50,6 +51,8 @@ new Vue({
   el: "#app",
   render: (h) => h(App),
   router,
+  vuetify,
+
   data: {
     Chartist: Chartist,
   },
