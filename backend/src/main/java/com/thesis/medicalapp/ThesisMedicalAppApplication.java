@@ -1,19 +1,22 @@
 package com.thesis.medicalapp;
 
-import com.thesis.medicalapp.model.Role;
-import com.thesis.medicalapp.model.User;
-import com.thesis.medicalapp.service.UserService;
+import com.thesis.medicalapp.models.Role;
+import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.Date;
 
 @SpringBootApplication
+@RestController
 public class ThesisMedicalAppApplication {
 
     public static void main(String[] args) {
@@ -34,5 +37,9 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("john", "ROLE_USER");
 
         };
+    }
+    @GetMapping
+    public String hello() {
+        return "It works!";
     }
 }

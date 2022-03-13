@@ -1,4 +1,4 @@
-package com.thesis.medicalapp.model;
+package com.thesis.medicalapp.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +15,8 @@ import static javax.persistence.GenerationType.AUTO;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "USERS")
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = AUTO)

@@ -1,10 +1,10 @@
-package com.thesis.medicalapp.service.impl;
+package com.thesis.medicalapp.services.impl;
 
-import com.thesis.medicalapp.model.Role;
-import com.thesis.medicalapp.model.User;
+import com.thesis.medicalapp.models.Role;
+import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.repository.RoleRepository;
 import com.thesis.medicalapp.repository.UserRepository;
-import com.thesis.medicalapp.service.UserService;
+import com.thesis.medicalapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -73,5 +73,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public List<User> getUsers() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 }

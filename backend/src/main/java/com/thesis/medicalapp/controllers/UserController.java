@@ -1,15 +1,15 @@
-package com.thesis.medicalapp.controller;
+package com.thesis.medicalapp.controllers;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thesis.medicalapp.model.Role;
-import com.thesis.medicalapp.model.User;
+import com.thesis.medicalapp.models.Role;
+import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.payload.SignupRequest;
 import com.thesis.medicalapp.payload.response.MessageResponse;
-import com.thesis.medicalapp.service.UserService;
+import com.thesis.medicalapp.services.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -39,6 +39,16 @@ public class UserController {
 
     @PostMapping("/auth/signup")
     public ResponseEntity<?>saveUser(@RequestBody SignupRequest signupRequest) {
+        if (userService.existsByUsername(signupRequest.getUsername())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Username is already taken!"));
+        }
+        if (userService.existsByEmail(signupRequest.getEmail())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Email is already in use!"));
+        }
         User user = new User(
                 null,
                 signupRequest.getName(),

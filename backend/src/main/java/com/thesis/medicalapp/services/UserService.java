@@ -1,7 +1,7 @@
-package com.thesis.medicalapp.service;
+package com.thesis.medicalapp.services;
 
-import com.thesis.medicalapp.model.Role;
-import com.thesis.medicalapp.model.User;
+import com.thesis.medicalapp.models.Role;
+import com.thesis.medicalapp.models.User;
 
 import java.util.List;
 
@@ -11,4 +11,6 @@ public interface UserService {
     void addRoleToUser(String username, String roleName);
     User getUser(String username);
     List<User>getUsers();
+    Boolean existsByUsername(String username);
+    Boolean existsByEmail(String email);
 }
