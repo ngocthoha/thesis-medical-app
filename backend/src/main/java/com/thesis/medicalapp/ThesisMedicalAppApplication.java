@@ -1,7 +1,9 @@
 package com.thesis.medicalapp;
 
+import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.Role;
 import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.services.ProfileService;
 import com.thesis.medicalapp.services.UserService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -27,7 +29,7 @@ public class ThesisMedicalAppApplication {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    CommandLineRunner run(UserService userService) {
+    CommandLineRunner run(UserService userService, ProfileService profileService) {
         return args -> {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
@@ -35,7 +37,7 @@ public class ThesisMedicalAppApplication {
             userService.saveUser(new User(null, "John", "john", "1234","john@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>()));
 
             userService.addRoleToUser("john", "ROLE_USER");
-
+            profileService.saveProfile(new Profile(null, null, "name", "address", "phone", new Date(), "job", "identity", "healthy", "folk", "gender", "protector"));
         };
     }
     @GetMapping
