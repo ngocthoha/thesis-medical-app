@@ -8,10 +8,17 @@
           <h3>Đăng nhập</h3>
           <div class="login-section-body">
             <label for="">Tên đăng nhập</label>
-            <input type="text" name="" id="username" />
+            <input v-model="user.username" type="text" name="" id="username" />
             <label for="">Mật khẩu</label>
-            <input type="password" name="" id="password" />
-            <md-button class="login-button">Đăng nhập</md-button>
+            <input
+              v-model="user.password"
+              type="password"
+              name=""
+              id="password"
+            />
+            <md-button class="login-button" @click="submit"
+              >Đăng nhập</md-button
+            >
           </div>
         </div>
         <div class="login-img col">
@@ -26,6 +33,44 @@
   </div>
 </template>
 
+<script>
+import axios from "axios";
+export default {
+  data() {
+    return {
+      user: {
+        username: "",
+        password: "",
+      },
+    };
+  },
+
+  methods: {
+    async submit() {
+      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      // let response = await axios.post(
+      //   "http://13.40.75.147:8080/api/login",
+      //   this.user,
+      //   {
+      //     headers: {
+      //       "Content-Type": "application/x-www-form-urlencoded",
+      //     },
+      //   }
+      // );
+
+      let response = await axios.post(
+        "http://13.40.75.147:8080/api/login",
+        new URLSearchParams({
+          username: this.user.username,
+          password: this.user.password,
+        })
+      );
+
+      console.log(response.data.access_token);
+    },
+  },
+};
+</script>
 <style lang="scss" scoped>
 .md-layout-item {
   background: white;
@@ -55,5 +100,11 @@
 }
 .login-section-body {
   margin-left: 30%;
+}
+
+input,
+select,
+textarea {
+  border-style: solid;
 }
 </style>
