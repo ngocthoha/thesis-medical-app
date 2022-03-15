@@ -46,14 +46,6 @@
               class="md-round md-success select"
               @click="selectProfileComplete"
               >Chọn
-              <!-- <fixed-plugin
-              v-for="item in sidebarColors"
-              :key="item.color"
-              class="badge filter"
-              :class="[`badge-${item.color}`, { active: item.active }]"
-              :data-color="item.color"
-              @click="changeSidebarBackground(item)"
-              ></fixed-plugin> -->
             </md-button>
           </md-card-content>
         </md-card>
@@ -81,14 +73,15 @@
         >
       </div>
     </div>
-    <div class="md-layout" v-show="visible_selectdoctor">
-      <SelectDoctor class="md-layout-item"></SelectDoctor>
+    <div class="md-layout select-doctor-layout" v-show="visible_selectdoctor">
+      <SelectDoctor
+        class="md-layout-item md-size-80 select-doctor-item"
+      ></SelectDoctor>
     </div>
   </div>
 </template>
 
 <script>
-//import FixedPlugin from "@/pages/Layout/Extra/FixedPlugin.vue";
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
 import SelectOPD from "@/pages/Appointment/SelectOPD.vue";
 import SelectDoctor from "@/pages/Appointment/SelectDoctor.vue";
@@ -166,9 +159,12 @@ export default {
   padding: 100px;
   background-color: white;
 }
-.select-doctor {
-  flex-direction: column;
+.select-doctor-layout {
   align-items: center;
   background-color: white;
+}
+
+.select-doctor-item {
+  margin: 50px;
 }
 </style>
