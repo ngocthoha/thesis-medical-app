@@ -77,6 +77,12 @@
       <SelectDoctor
         class="md-layout-item md-size-80 select-doctor-item"
       ></SelectDoctor>
+      <div class="btns-selectdate">
+        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success continue-button"
+          >Tiếp tục</md-button
+        >
+      </div>
     </div>
   </div>
 </template>
@@ -160,6 +166,7 @@ export default {
   background-color: white;
 }
 .select-doctor-layout {
+  flex-direction: column;
   align-items: center;
   background-color: white;
 }

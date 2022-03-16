@@ -28,7 +28,7 @@ let authPage = {
 const routes = [
   authPage,
   {
-    path: "/",
+    path: "/home",
     component: DashboardLayout,
     redirect: "/appointment/appointment-by-date",
     children: [

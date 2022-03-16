@@ -47,26 +47,18 @@ export default {
 
   methods: {
     async submit() {
-      axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      //axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+
       // let response = await axios.post(
       //   "http://13.40.75.147:8080/api/login",
-      //   this.user,
-      //   {
-      //     headers: {
-      //       "Content-Type": "application/x-www-form-urlencoded",
-      //     },
-      //   }
+      //   new URLSearchParams({
+      //     username: this.user.username,
+      //     password: this.user.password,
+      //   })
       // );
 
-      let response = await axios.post(
-        "http://13.40.75.147:8080/api/login",
-        new URLSearchParams({
-          username: this.user.username,
-          password: this.user.password,
-        })
-      );
-
-      console.log(response.data.access_token);
+      //console.log(response.data.access_token);
+      this.$router.push({ name: "Đặt lịch khám theo ngày" });
     },
   },
 };

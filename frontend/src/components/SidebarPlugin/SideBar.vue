@@ -17,7 +17,8 @@
         target="_blank"
         class="simple-text logo-normal"
       >
-        {{ title }}
+        <!-- {{ title }} -->
+        Hệ thống
       </a>
     </div>
     <div class="sidebar-wrapper">
@@ -55,7 +56,7 @@ export default {
     },
     imgLogo: {
       type: String,
-      default: require("@/assets/img/vue-logo.png"),
+      default: require("@/assets/img/app-logo.jpg"),
     },
     sidebarItemColor: {
       type: String,
