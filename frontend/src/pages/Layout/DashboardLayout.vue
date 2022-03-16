@@ -51,6 +51,10 @@
         <md-icon>person</md-icon>
         <p>Hồ Sơ bệnh nhân</p>
       </sidebar-link>
+          <sidebar-link to="/doctor/doctor-profile">
+        <md-icon>person</md-icon>
+        <p>Trang cá nhân</p>
+      </sidebar-link>
 
       <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
