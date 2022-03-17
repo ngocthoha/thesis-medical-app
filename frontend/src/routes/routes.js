@@ -19,6 +19,7 @@ import AppointmentByDoctor from "@/pages/Appointment/MakeAppointmentByDoctor.vue
 import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
 import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
 import Profile from "@/pages/Doctor/Profile.vue";
+import Notification from "@/pages/Doctor/Notification.vue";
 
 let authPage = {
   path: "/login",
@@ -99,6 +100,11 @@ const routes = [
         path: "doctor/doctor-profile",
         name: "Trang cá nhân",
         component: Profile,
+      },
+      {
+        path: "doctor/doctor-notification",
+        name: "Thông báo",
+        component: Notification,
       },
     ],
   },

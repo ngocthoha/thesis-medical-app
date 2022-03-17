@@ -22,7 +22,7 @@
                   v-on="on"
                   style="margin: 23px 0px"
                 >
-                  Tạo hồ sơ mới
+                  Tạo bệnh án mới
                 </v-btn>
               </template>
               <v-card>
@@ -610,7 +610,7 @@
           >
             <template v-slot:top>
               <v-toolbar flat>
-                <v-toolbar-title>Danh sách hồ sơ bệnh nhân</v-toolbar-title>
+                <v-toolbar-title>Danh sách bệnh án</v-toolbar-title>
                 <v-divider class="mx-4" inset vertical></v-divider>
                 <v-spacer></v-spacer>
                 <v-text-field
@@ -758,7 +758,7 @@ export default {
   }),
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? "Tạo hồ sơ mới" : "Chỉnh sửa hồ sơ";
+      return this.editedIndex === -1 ? "Tạo bệnh án mới" : "Chỉnh sửa bệnh án";
     },
     computedDateFormatted() {
       return this.formatDate(this.date);
