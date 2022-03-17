@@ -79,8 +79,54 @@
       ></SelectDoctor>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
-        <md-button class="md-round md-success continue-button"
+        <md-button class="md-round md-success continue-button" @click="SelectDoctorComplete"
           >Tiếp tục</md-button
+        >
+      </div>
+    </div>
+    <div class="md-layout glutter verify-layout" v-show="visible_verify">
+      <div class="md-layout-item">
+        Thông tin khám
+      </div>
+      <div class="md-layout-item md-size-60">
+        <div class="md-layout-item verify-column md-size-25">
+          <div>Chuyên khoa</div>
+          <div>Da Liễu</div>
+        </div>
+        <div class="md-layout-item verify-column md-size-25">
+          <div>Bác sĩ</div>
+          <div>BSCKII. Lâm Phương Nam</div>
+        </div>
+        <div class="md-layout-item verify-column md-size-25">
+          <div>Ngày khám</div>
+          <div>07/12/2021</div>
+          <div>8:00 - 9:00</div>
+        </div>
+        <div class="md-layout-item verify-column md-size-25">
+          <div>Phòng</div>
+          <div>48</div>
+        </div>
+      </div>
+      <div class="md-layout-item">
+        Thông tin bệnh nhân
+      </div>
+      <div class="md-layout-item md-size-60">
+        <div class="md-layout-item verify-column md-size-50">
+          <div>Họ và tên: {{this.patient_info[0].name}}</div>
+          <div>Ngày sinh: {{this.patient_info[0].birthday}}</div>
+          <div>Giới tính: {{this.patient_info[0].sex}}</div>
+          <div>Số điện thoại: {{this.patient_info[0].phone}}</div>
+        </div>
+        <div class="md-layout-item verify-column md-size-50">
+          <div>CMND: {{this.patient_info[0].id}}</div>
+          <div>Dân tộc: {{this.patient_info[0].ethnic}}</div>
+          <div>Nghề nghiệp: {{this.patient_info[0].job}}</div>
+        </div>
+      </div>
+      <div class="btns-selectdate">
+        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success continue-button"
+          >Xác nhận</md-button
         >
       </div>
     </div>
@@ -103,6 +149,7 @@ export default {
       visible_selectdate: false,
       visible_selectopd: false,
       visible_selectdoctor: false,
+      visible_verify: false,
       profile_patient: [
         {
           name: "Nguyễn Duy Thanh",
@@ -116,6 +163,7 @@ export default {
       ],
       patient_info: [
         {
+          name: "Nguyễn Duy Thanh",
           birthday: "03/03/2000",
           phone: "0962530448",
           sex: "Nam",
@@ -139,6 +187,10 @@ export default {
       this.visible_selectopd = false;
       this.visible_selectdoctor = true;
     },
+    SelectDoctorComplete(){
+      this.visible_selectdoctor = false;
+      this.visible_verify=true;
+    }
   },
 };
 </script>
@@ -173,5 +225,17 @@ export default {
 
 .select-doctor-item {
   margin: 50px;
+}
+.verify-layout{
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  width: 100%;
+  border-style: solid;
+  border-color: #37833B;
+}
+.verify-column{
+  float: left;
+  display: block;
 }
 </style>
