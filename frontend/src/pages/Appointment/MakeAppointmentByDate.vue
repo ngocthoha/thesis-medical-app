@@ -79,16 +79,16 @@
       ></SelectDoctor>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
-        <md-button class="md-round md-success continue-button" @click="SelectDoctorComplete"
+        <md-button
+          class="md-round md-success continue-button"
+          @click="SelectDoctorComplete"
           >Tiếp tục</md-button
         >
       </div>
     </div>
     <div class="md-layout glutter verify-layout" v-show="visible_verify">
-      <div class="md-layout-item">
-        Thông tin khám
-      </div>
-      <div class="md-layout-item md-size-60">
+      <div class="md-layout-item">Thông tin khám</div>
+      <div class="md-layout-item md-size-100">
         <div class="md-layout-item verify-column md-size-25">
           <div>Chuyên khoa</div>
           <div>Da Liễu</div>
@@ -107,23 +107,21 @@
           <div>48</div>
         </div>
       </div>
-      <div class="md-layout-item">
-        Thông tin bệnh nhân
-      </div>
+      <div class="md-layout-item">Thông tin bệnh nhân</div>
       <div class="md-layout-item md-size-60">
         <div class="md-layout-item verify-column md-size-50">
-          <div>Họ và tên: {{this.patient_info[0].name}}</div>
-          <div>Ngày sinh: {{this.patient_info[0].birthday}}</div>
-          <div>Giới tính: {{this.patient_info[0].sex}}</div>
-          <div>Số điện thoại: {{this.patient_info[0].phone}}</div>
+          <div>Họ và tên: {{ this.patient_info[0].name }}</div>
+          <div>Ngày sinh: {{ this.patient_info[0].birthday }}</div>
+          <div>Giới tính: {{ this.patient_info[0].sex }}</div>
+          <div>Số điện thoại: {{ this.patient_info[0].phone }}</div>
         </div>
         <div class="md-layout-item verify-column md-size-50">
-          <div>CMND: {{this.patient_info[0].id}}</div>
-          <div>Dân tộc: {{this.patient_info[0].ethnic}}</div>
-          <div>Nghề nghiệp: {{this.patient_info[0].job}}</div>
+          <div>CMND: {{ this.patient_info[0].id }}</div>
+          <div>Dân tộc: {{ this.patient_info[0].ethnic }}</div>
+          <div>Nghề nghiệp: {{ this.patient_info[0].job }}</div>
         </div>
       </div>
-      <div class="btns-selectdate">
+      <div class="btns-verify">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
         <md-button class="md-round md-success continue-button"
           >Xác nhận</md-button
@@ -187,10 +185,10 @@ export default {
       this.visible_selectopd = false;
       this.visible_selectdoctor = true;
     },
-    SelectDoctorComplete(){
+    SelectDoctorComplete() {
       this.visible_selectdoctor = false;
-      this.visible_verify=true;
-    }
+      this.visible_verify = true;
+    },
   },
 };
 </script>
@@ -226,16 +224,25 @@ export default {
 .select-doctor-item {
   margin: 50px;
 }
-.verify-layout{
+.verify-layout {
   flex-direction: column;
   align-items: center;
   background-color: white;
   width: 100%;
   border-style: solid;
-  border-color: #37833B;
+  border-color: #37833b;
 }
-.verify-column{
+.verify-column {
   float: left;
   display: block;
+}
+.md-layout.glutter.verify-layout {
+  width: 60%;
+  margin: auto;
+}
+
+.btns-verify {
+  width: 100%;
+  margin-top: 100px;
 }
 </style>
