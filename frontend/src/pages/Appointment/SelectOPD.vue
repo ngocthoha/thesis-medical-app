@@ -12,18 +12,6 @@
       </div>
 
       <div class="list-opd-section">
-        <!-- <md-table v-model="OPDList" md-card @md-selected="onSelect" class="md-scrollbar">
-
-               <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="single">
-                 <p class="opd-name">{{item.name}}</p>
-               </md-table-row>
-             </md-table> -->
-        <!-- <md-table v-for="OPD in filteredList" v-bind:key="OPD.name" md-card @md-selected="onSelect" class="md-scrollbar">
-
-               <md-table-row :key="OPD.name" md-selectable="single">
-                 <p class="opd-name">{{OPD.name}}</p>
-               </md-table-row>
-             </md-table> -->
         <md-table
           v-model="filteredList"
           md-card

@@ -1,6 +1,29 @@
 <template>
   <div class="content">
-    <div class="md-layout" v-show="visible_selectprofile">
+    <v-stepper v-model="visible_navigation">
+      <v-stepper-header>
+        <v-stepper-step :complete="step.step1" step="1" color="green lighten-1">
+          Chọn hồ sơ
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="step.step2" step="2" color="green lighten-1">
+          Chọn ngày khám
+        </v-stepper-step>
+
+        <v-divider></v-divider>
+
+        <v-stepper-step :complete="step.step3" step="3" color="green lighten-1">
+          Chọn chuyên khoa khám
+        </v-stepper-step>
+        <v-divider></v-divider>
+        <v-stepper-step :complete="step.step4" step="4" color="green lighten-1">
+          Chọn bác sĩ và khung giờ khám
+        </v-stepper-step>
+      </v-stepper-header>
+    </v-stepper>
+    <div class="md-layout" v-show="visible_navigation.visible_selectprofile">
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-60"
       >
@@ -137,7 +160,10 @@
         </md-card>
       </div>
     </div>
-    <div class="md-layout select-day" v-show="visible_selectdate">
+    <div
+      class="md-layout select-day"
+      v-show="visible_navigation.visible_selectdate"
+    >
       <SelectDate ref="dateSelect"></SelectDate>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
@@ -148,7 +174,10 @@
         >
       </div>
     </div>
-    <div class="md-layout select-opd" v-show="visible_selectopd">
+    <div
+      class="md-layout select-opd"
+      v-show="visible_navigation.visible_selectopd"
+    >
       <SelectOPD ref="OPDSelect"> </SelectOPD>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
@@ -159,9 +188,13 @@
         >
       </div>
     </div>
-    <div class="md-layout select-doctor-layout" v-show="visible_selectdoctor">
+    <div
+      class="md-layout select-doctor-layout"
+      v-show="visible_navigation.visible_selectdoctor"
+    >
       <SelectDoctor
         class="md-layout-item md-size-80 select-doctor-item"
+        ref="doctorSelect"
       ></SelectDoctor>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
@@ -172,7 +205,10 @@
         >
       </div>
     </div>
-    <div class="md-layout glutter verify-layout" v-show="visible_verify">
+    <div
+      class="md-layout glutter verify-layout"
+      v-show="visible_navigation.visible_verify"
+    >
       <div class="md-layout-item">Thông tin khám</div>
       <div class="md-layout-item md-size-100">
         <div class="md-layout-item verify-column md-size-25">
@@ -181,16 +217,16 @@
         </div>
         <div class="md-layout-item verify-column md-size-25">
           <div>Bác sĩ</div>
-          <div>BSCKII. Lâm Phương Nam</div>
+          <div>{{ this.doctorSelection.name }}</div>
         </div>
         <div class="md-layout-item verify-column md-size-25">
           <div>Ngày khám</div>
           <div>{{ this.dateSelection }}</div>
-          <div>8:00 - 9:00</div>
+          <div>{{ this.doctorSelection.time }}</div>
         </div>
         <div class="md-layout-item verify-column md-size-25">
           <div>Phòng</div>
-          <div>48</div>
+          <div>{{ this.doctorSelection.room }}</div>
         </div>
       </div>
       <div class="md-layout-item">Thông tin bệnh nhân</div>
@@ -232,11 +268,13 @@ export default {
       dialog: false,
       menu2: false,
 
-      visible_selectprofile: true,
-      visible_selectdate: false,
-      visible_selectopd: false,
-      visible_selectdoctor: false,
-      visible_verify: false,
+      visible_navigation: {
+        visible_selectprofile: true,
+        visible_selectdate: false,
+        visible_selectopd: false,
+        visible_selectdoctor: false,
+        visible_verify: false,
+      },
 
       profile_patient_list: [
         {
@@ -288,29 +326,42 @@ export default {
         ethnic: "",
       },
 
+      step: {
+        step1: false,
+        step2: false,
+        step3: false,
+        step4: false,
+        step5: false,
+      },
       dateSelection: "",
       opdSelection: "",
+      doctorSelection: "",
     };
   },
 
   methods: {
     selectProfileComplete() {
-      this.visible_selectprofile = false;
-      this.visible_selectdate = true;
+      this.visible_navigation.visible_selectprofile = false;
+      this.visible_navigation.visible_selectdate = true;
+      this.step.step1 = true;
     },
     SelectDateComplete() {
-      this.visible_selectdate = false;
-      this.visible_selectopd = true;
+      this.visible_navigation.visible_selectdate = false;
+      this.visible_navigation.visible_selectopd = true;
       this.dateSelection = this.$refs.dateSelect.date;
+      this.step.step2 = true;
     },
     SelectOPDComplete() {
-      this.visible_selectopd = false;
-      this.visible_selectdoctor = true;
+      this.visible_navigation.visible_selectopd = false;
+      this.visible_navigation.visible_selectdoctor = true;
       this.opdSelection = this.$refs.OPDSelect.selected;
+      this.step.step3 = true;
     },
     SelectDoctorComplete() {
-      this.visible_selectdoctor = false;
-      this.visible_verify = true;
+      this.visible_navigation.visible_selectdoctor = false;
+      this.visible_navigation.visible_verify = true;
+      this.doctorSelection = this.$refs.doctorSelect.doctorSelection;
+      this.step.step4 = true;
     },
 
     SetPatientInfo(patient_select) {
