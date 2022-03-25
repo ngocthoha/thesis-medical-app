@@ -79,7 +79,7 @@
               </a>
             </li> -->
 
-            <md-list-item href="#/">
+            <md-list-item href="/">
               <i class="material-icons">logout</i>
               <p class="hidden-lg hidden-md">Profile</p>
             </md-list-item>

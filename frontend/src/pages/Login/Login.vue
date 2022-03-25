@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   data() {
     return {
@@ -45,20 +44,32 @@ export default {
     };
   },
 
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+
   methods: {
     async submit() {
-      //axios.defaults.headers.common["Access-Control-Allow-Origin"] = "*";
+      const user = {
+        username: this.user.username,
+        password: this.user.password,
+      };
 
-      // let response = await axios.post(
-      //   "http://13.40.75.147:8080/api/login",
-      //   new URLSearchParams({
-      //     username: this.user.username,
-      //     password: this.user.password,
-      //   })
-      // );
+      const requestOptions = {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      };
+      await this.$store.dispatch("login", { user, requestOptions });
+      console.log(this.$store.getters.isAuthenticated);
 
-      //console.log(response.data.access_token);
-      this.$router.push({ name: "Đặt lịch khám theo ngày" });
+      if (this.$store.getters.isAuthenticated) {
+        this.$router.push({ name: "Đặt lịch khám theo ngày" });
+      }
+      //this.$router.push({ name: "Đặt lịch khám theo ngày" });
     },
   },
 };
