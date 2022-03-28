@@ -1,0 +1,34 @@
+
+import service from '@/store/services/profile';
+
+const state ={
+  profile_list: [],
+};
+
+const mutations = {
+  SET_PROFILE_LIST: (state,list)=>{
+    state.profile_list = list
+  }
+};
+
+const actions ={
+    profile_list({commit},params){
+    return service.profile_list(params).then(({data})=>{
+        commit('SET_PROFILE_LIST',data)
+    });
+  },
+}
+
+const getters ={
+    profile_list: profile_list => state.profile_list,
+};
+
+const profile ={
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
+};
+
+export default profile;

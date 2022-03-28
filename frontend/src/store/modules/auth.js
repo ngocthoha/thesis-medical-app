@@ -6,7 +6,7 @@ const state ={
 };
 
 const mutations = {
-  SET_TOKEN: (state , token)=>{
+  SET_TOKEN: (state,token)=>{
     state.access_token = token
   }
 };
@@ -14,7 +14,7 @@ const mutations = {
 const actions ={
   login({commit},params){
     return service.login(params).then(({data})=>{
-      if(data.code == 0){
+      if(data.access_token != null && data.access_token != ""){
         commit('SET_TOKEN',data.access_token);
         console.log("login success")
       }

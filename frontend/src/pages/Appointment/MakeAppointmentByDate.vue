@@ -257,11 +257,15 @@
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
 import SelectOPD from "@/pages/Appointment/SelectOPD.vue";
 import SelectDoctor from "@/pages/Appointment/SelectDoctor.vue";
+import axios from "axios";
 export default {
   components: {
     SelectDate,
     SelectOPD,
     SelectDoctor,
+  },
+  created(){
+    this.getProfileList()
   },
   data() {
     return {
@@ -336,6 +340,7 @@ export default {
       dateSelection: "",
       opdSelection: "",
       doctorSelection: "",
+      profile_list: []
     };
   },
 
@@ -379,6 +384,22 @@ export default {
       this.dialog = false;
       this.new_patient_info = {};
     },
+
+    async getProfileList(){
+      const params ={
+        token: this.$store.getters["auth/access_token"]
+      }
+
+      console.log('bearer ' + params.token)
+      await this.$store.dispatch("profile/profile_list",params);
+      this.profile_list = this.$store.getters['profile/profile_list'];
+//       axios.defaults.headers.common = {'Authorization': `Bearer ${params.token}`}
+//       axios.get('http://13.40.75.147:8080/api/profiles', {})
+// .then((res) => {
+//   console.log(res.data)
+// })
+      console.log(this.profile_list);
+    }
   },
 };
 </script>
