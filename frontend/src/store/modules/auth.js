@@ -1,61 +1,40 @@
-import Vue from "vue";
-import { VueAuthenticate } from "vue-authenticate";
 
-import axios from "axios";
-import VueAxios from "vue-axios";
-Vue.use(VueAxios, axios);
+import service from '@/store/services/auth';
 
-const vueAuth = new VueAuthenticate(Vue.prototype.$http, {
-  baseUrl: "http://127.0.0.1:9090/admin",
-  tokenName: "access_token",
-  loginUrl: "/user/login",
-  registerUrl: "/user/register"
-});
+const state ={
+  access_token: null,
+};
 
-export default {
-  state: {
-    // isAuthenticated: localStorage.getItem("vue-authenticate.vueauth_access_token") !== null
-    isAuthenticated: false
-  },
-
-  getters: {
-    isAuthenticated(state) {
-      return state.isAuthenticated;
-    }
-  },
-
-  mutations: {
-    isAuthenticated(state, payload) {
-      state.isAuthenticated = payload.isAuthenticated;
-    }
-  },
-
-  actions: {
-    login(context, payload) {
-      return vueAuth.login(payload.user, payload.requestOptions).then(response => {
-        if(response.data.code == 0){
-          context.commit("isAuthenticated", {
-            isAuthenticated: vueAuth.isAuthenticated()
-          });
-        }
-      });
-    },
-
-    // register(context, payload) {
-    //   return vueAuth.register(payload.user, payload.requestOptions).then(response => {
-    //     context.commit("isAuthenticated", {
-    //       isAuthenticated: vueAuth.isAuthenticated()
-    //     });
-    //     router.push({name: "Home"});
-    //   });
-    // },
-
-    logout(context, payload) {
-      return vueAuth.logout().then(response => {
-        context.commit("isAuthenticated", {
-          isAuthenticated: vueAuth.isAuthenticated()
-        });
-      });
-    }
+const mutations = {
+  SET_TOKEN: (state , token)=>{
+    state.access_token = token
   }
 };
+
+const actions ={
+  login({commit},params){
+    return service.login(params).then(({data})=>{
+      if(data.code == 0){
+        commit('SET_TOKEN',data.access_token);
+        console.log("login success")
+      }
+      else{
+        console.log("fail success")
+      }
+    });
+  }
+}
+
+const getters ={
+  access_token: access_token => state.access_token,
+};
+
+const auth ={
+  namespaced: true,
+  state,
+  getters,
+  actions,
+  mutations,
+};
+
+export default auth;

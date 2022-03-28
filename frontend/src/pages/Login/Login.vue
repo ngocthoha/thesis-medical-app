@@ -56,20 +56,12 @@ export default {
         username: this.user.username,
         password: this.user.password,
       };
+      await this.$store.dispatch("auth/login", user);
 
-      const requestOptions = {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      };
-      await this.$store.dispatch("login", { user, requestOptions });
-      console.log(this.$store.getters.isAuthenticated);
-
-      if (this.$store.getters.isAuthenticated) {
+      if (this.$store.getters["auth/access_token"] != null) {
+        console.log(this.$store.getters["auth/access_token"]);
         this.$router.push({ name: "Đặt lịch khám theo ngày" });
       }
-      //this.$router.push({ name: "Đặt lịch khám theo ngày" });
     },
   },
 };
