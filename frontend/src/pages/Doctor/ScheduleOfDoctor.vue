@@ -4,9 +4,13 @@
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-30"
       >
-        <h5><b>Chọn ngày làm việc</b></h5>
-        <div>
-          <md-datepicker v-model="selectedDate" md-immediately />
+
+        <div class="lich">
+          <v-app id="inspire" style="max-height:400px; ">
+            <v-row justify="center" style="margin:20px 0px; ">
+              <v-date-picker v-model="picker" elevation="10" flat></v-date-picker>
+            </v-row>
+          </v-app>
         </div>
         <br />
         <h5><b>Sự kiện sắp diễn ra</b></h5>
@@ -66,7 +70,7 @@
 
               <md-field md-clearable class="md-toolbar-section-end">
                 <md-input
-                  placeholder="Tìm kiếm theo tên..."
+                  placeholder="Tìm kiếm ..."
                   v-model="search"
                   @input="searchOnTable"
                 />
@@ -150,7 +154,7 @@ const toLower = (text) => {
 
 const searchByName = (items, term) => {
   if (term) {
-    return items.filter((item) => toLower(item.name).includes(toLower(term)));
+    return items.filter((item) => (toLower(item.name).includes(toLower(term)) + toLower(item.time).includes(toLower(term)) + toLower(item.kham).includes(toLower(term))));
   }
 
   return items;
@@ -160,7 +164,9 @@ export default {
   name: "LabeledDatepicker",
   data() {
     return {
-      selectedDate: new Date(),
+      picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
+        .toISOString()
+        .substr(0, 10),
 
       showDialog: false,
 
@@ -279,5 +285,9 @@ export default {
 }
 .hosobenhnhan {
   text-align: center;
+}
+
+.lich .theme--light.v-card {
+  max-height: 350px;
 }
 </style>
