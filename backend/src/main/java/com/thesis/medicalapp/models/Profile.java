@@ -3,6 +3,7 @@ package com.thesis.medicalapp.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -15,9 +16,10 @@ import java.util.Date;
 @Table(name = "profiles")
 public class Profile {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String profileId;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    private String profileNumber;
     private String name;
     private String address;
     private String phoneNumber;
@@ -28,4 +30,7 @@ public class Profile {
     private String folk;
     private String gender;
     private String protector;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

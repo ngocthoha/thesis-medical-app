@@ -1,10 +1,12 @@
 package com.thesis.medicalapp.services;
 
-import com.thesis.medicalapp.models.Profile;
+import com.thesis.medicalapp.pojo.ProfileDTO;
 
 import java.util.List;
 
 public interface ProfileService {
-    Profile saveProfile(Profile profile);
-    List<Profile> getProfiles();
+    ProfileDTO saveProfile(ProfileDTO profileDTO);
+    List<ProfileDTO> getProfiles();
+    int updateProfile(ProfileDTO profileDTO);
+    int removeProfile(String id);
 }

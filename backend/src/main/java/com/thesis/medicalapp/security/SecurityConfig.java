@@ -32,14 +32,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        System.out.println("configure");
         CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter(authenticationManagerBean());
         customAuthenticationFilter.setFilterProcessesUrl("/api/login");
-        http.csrf().disable();
+        http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll();
-        http.authorizeRequests().antMatchers(GET, "/api/users/**").hasAnyAuthority("ROLE_USER");
-        http.authorizeRequests().antMatchers(POST, "/api/auth/signup/**").permitAll();
-//        http.authorizeRequests().anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll()
+                .antMatchers(POST, "/api/auth/signup/**").permitAll()
+                .antMatchers(GET, "/api/users/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/profiles/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/schedules/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/specialties/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/upload/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/files/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/appointments/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/doctor/**").hasAnyAuthority("ROLE_USER")
+                .anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);
     }

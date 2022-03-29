@@ -1,5 +1,6 @@
 package com.thesis.medicalapp;
 
+import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.Role;
 import com.thesis.medicalapp.models.User;
@@ -20,7 +21,6 @@ import java.util.Date;
 @SpringBootApplication
 @RestController
 public class ThesisMedicalAppApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(ThesisMedicalAppApplication.class, args);
     }
@@ -33,11 +33,13 @@ public class ThesisMedicalAppApplication {
         return args -> {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
-
-            userService.saveUser(new User(null, "John", "john", "1234","john@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>()));
-
+            User user = new User(null, "John", "john", "1234","john@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>());
+            User doctor = new Doctor(null, "John", "doctor", "1234","john@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>(), "specialty", "level");
+            userService.saveUser(user);
+            userService.saveUser(doctor);
             userService.addRoleToUser("john", "ROLE_USER");
-            profileService.saveProfile(new Profile(null, null, "name", "address", "phone", new Date(), "job", "identity", "healthy", "folk", "gender", "protector"));
+            userService.addRoleToUser("doctor", "ROLE_USER");
+//            profileService.saveProfile(new Profile(null, null, "name", "address", "phone", new Date(), "job", "identity", "healthy", "folk", "gender", "protector", user));
         };
     }
     @GetMapping
