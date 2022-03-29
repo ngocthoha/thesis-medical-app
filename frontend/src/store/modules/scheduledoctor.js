@@ -23,7 +23,7 @@ const actions = {
     schedule_list({commit},params){
         return service.schedule_list(params).then(({data})=>{
             commit("saveData",data)
-        })
+        });
     }
 };
 
@@ -41,6 +41,4 @@ const scheduledoctor ={
     mutations,
 };
 
-export default {
-    scheduledoctor,
-}
+export default scheduledoctor
