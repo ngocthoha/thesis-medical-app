@@ -81,7 +81,7 @@
                       >
                         <template v-slot:activator="{ on, attrs }">
                           <v-text-field
-                            v-model="new_patient_info.birthday"
+                            v-model="new_patient_info.dob"
                             label="Ngày sinh"
                             prepend-icon="mdi-calendar"
                             readonly
@@ -90,25 +90,31 @@
                           ></v-text-field>
                         </template>
                         <v-date-picker
-                          v-model="new_patient_info.birthday"
+                          v-model="new_patient_info.dob"
                           @input="menu2 = false"
                           locale="vi-cn"
                         ></v-date-picker>
                       </v-menu>
 
                       <v-text-field
-                        v-model="new_patient_info.phone"
+                        v-model="new_patient_info.phoneNumber"
                         label="Số điện thoại"
                         required
                       ></v-text-field>
 
                       <v-text-field
-                        v-model="new_patient_info.sex"
+                        v-model="new_patient_info.address"
+                        label="Địa chỉ"
+                        required
+                      ></v-text-field>
+
+                      <v-text-field
+                        v-model="new_patient_info.gender"
                         label="Giới tính"
                         required
                       ></v-text-field>
                       <v-text-field
-                        v-model="new_patient_info.id"
+                        v-model="new_patient_info.identityCard"
                         label="CMND"
                         required
                       ></v-text-field>
@@ -119,8 +125,18 @@
                         required
                       ></v-text-field>
                       <v-text-field
-                        v-model="new_patient_info.ethnic"
+                        v-model="new_patient_info.folk"
                         label="Dân tộc"
+                        required
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="new_patient_info.healthInsurance"
+                        label="Mã số thẻ bảo hiểm y tế"
+                        required
+                      ></v-text-field>
+                      <v-text-field
+                        v-model="new_patient_info.protector"
+                        label="Tên người giám hộ"
                         required
                       ></v-text-field>
                     </v-form>
@@ -143,12 +159,15 @@
           <md-card-content>
             <md-table :table-header-color="tableHeaderColor">
               <md-table-row v-model="patient_info">
-                <p>Ngày sinh: {{ patient_info.birthday }}</p>
-                <p>Số điện thoại: {{ patient_info.phone }}</p>
-                <p>Giới tính: {{ patient_info.sex }}</p>
-                <p>CMND: {{ patient_info.id }}</p>
+                <p>Ngày sinh: {{ patient_info.dob }}</p>
+                <p>Số điện thoại: {{ patient_info.phoneNumber }}</p>
+                <p>Giới tính: {{ patient_info.gender }}</p>
+                <p>CMND: {{ patient_info.identityCard }}</p>
                 <p>Nghề nghiệp: {{ patient_info.job }}</p>
-                <p>Dân tộc: {{ patient_info.ethnic }}</p>
+                <p>Địa chỉ: {{ patient_info.address }}</p>
+                <p>Dân tộc: {{ patient_info.folk }}</p>
+                <p>Người giám hộ: {{ patient_info.protector }}</p>
+                <p>Thẻ bảo hiểm y tế: {{ patient_info.healthInsurance }}</p>
               </md-table-row>
             </md-table>
             <md-button
@@ -264,8 +283,8 @@ export default {
     SelectOPD,
     SelectDoctor,
   },
-  created(){
-    this.getProfileList()
+  created() {
+    this.getProfileList();
   },
   data() {
     return {
@@ -281,54 +300,51 @@ export default {
       },
 
       profile_patient_list: [
-        {
-          name: "Nguyễn Duy Thanh",
-          birthday: "03/03/2000",
-          phone: "0962530448",
-          sex: "Nam",
-          id: "077200003808",
-          job: "Sinh viên",
-          ethnic: "Kinh",
-        },
-        {
-          name: "Hà Ngọc Thọ",
-          birthday: "03/06/1999",
-          phone: "096253021312",
-          sex: "Nam",
-          id: "077200009999",
-          job: "Nhân viên văn phòng",
-          ethnic: "Kinh",
-        },
-        {
-          name: "Nguyễn Thúy Liễu",
-          birthday: "03/03/2000",
-          phone: "0962530448",
-          sex: "Nữ",
-          id: "077200005348",
-          job: "Kỹ sư",
-          ethnic: "Kinh",
-        },
+        // {
+        //   name: "Nguyễn Duy Thanh",
+        //   birthday: "03/03/2000",
+        //   phone: "0962530448",
+        //   sex: "Nam",
+        //   id: "077200003808",
+        //   job: "Sinh viên",
+        //   ethnic: "Kinh",
+        // },
+        // {
+        //   name: "Hà Ngọc Thọ",
+        //   birthday: "03/06/1999",
+        //   phone: "096253021312",
+        //   sex: "Nam",
+        //   id: "077200009999",
+        //   job: "Nhân viên văn phòng",
+        //   ethnic: "Kinh",
+        // },
+        // {
+        //   name: "Nguyễn Thúy Liễu",
+        //   birthday: "03/03/2000",
+        //   phone: "0962530448",
+        //   sex: "Nữ",
+        //   id: "077200005348",
+        //   job: "Kỹ sư",
+        //   ethnic: "Kinh",
+        // },
       ],
 
       patient_info: {
-        name: "",
-        birthday: "",
-        phone: "",
-        sex: "",
         id: "",
+        profileNumber: "",
+        name: "",
+        address: "",
+        phoneNumber: "",
+        dob: "",
         job: "",
-        ethnic: "",
+        identityCard: "",
+        healthInsurance: "",
+        folk: "",
+        gender: "",
+        protector: "",
       },
 
-      new_patient_info: {
-        name: "",
-        birthday: "",
-        phone: "",
-        sex: "",
-        id: "",
-        job: "",
-        ethnic: "",
-      },
+      new_patient_info: {},
 
       step: {
         step1: false,
@@ -340,7 +356,7 @@ export default {
       dateSelection: "",
       opdSelection: "",
       doctorSelection: "",
-      profile_list: []
+      profile_list: [],
     };
   },
 
@@ -370,36 +386,40 @@ export default {
     },
 
     SetPatientInfo(patient_select) {
-      this.patient_info.name = patient_select.name;
-      this.patient_info.birthday = patient_select.birthday;
-      this.patient_info.phone = patient_select.phone;
-      this.patient_info.sex = patient_select.sex;
       this.patient_info.id = patient_select.id;
+      this.patient_info.profileNumber = patient_select.profileNumber;
+      this.patient_info.address = patient_select.address;
+      this.patient_info.phoneNumber = patient_select.phoneNumber;
+      this.patient_info.dob = patient_select.dob;
       this.patient_info.job = patient_select.job;
-      this.patient_info.ethnic = patient_select.ethnic;
+      this.patient_info.identityCard = patient_select.identityCard;
+      this.patient_info.healthInsurance = patient_select.healthInsurance;
+      this.patient_info.folk = patient_select.folk;
+      this.patient_info.gender = patient_select.gender;
+      this.patient_info.protector = patient_select.protector;
     },
 
-    AddNewPatientProfile() {
+    async AddNewPatientProfile() {
       console.log(this.new_patient_info);
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: this.new_patient_info,
+      };
       this.dialog = false;
+      await this.$store.dispatch("profile/add_new_profile", params);
       this.new_patient_info = {};
+      this.getProfileList();
     },
 
-    async getProfileList(){
-      const params ={
-        token: this.$store.getters["auth/access_token"]
-      }
+    async getProfileList() {
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+      };
 
-      console.log('bearer ' + params.token)
-      await this.$store.dispatch("profile/profile_list",params);
-      this.profile_list = this.$store.getters['profile/profile_list'];
-//       axios.defaults.headers.common = {'Authorization': `Bearer ${params.token}`}
-//       axios.get('http://13.40.75.147:8080/api/profiles', {})
-// .then((res) => {
-//   console.log(res.data)
-// })
-      console.log(this.profile_list);
-    }
+      await this.$store.dispatch("profile/profile_list", params);
+      this.profile_patient_list = this.$store.getters["profile/profile_list"];
+      console.log(this.profile_patient_list);
+    },
   },
 };
 </script>

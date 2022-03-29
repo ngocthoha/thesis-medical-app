@@ -45,18 +45,18 @@ export default {
       search: "",
       selected: "",
       OPDList: [
-        new OPD("Da Liễu"),
-        new OPD("Tim Mạch"),
-        new OPD("Nội Thận"),
-        new OPD("Cấp cứu"),
-        new OPD("Hô Hấp"),
-        new OPD("Nội Thận"),
-        new OPD("Da Liễu"),
-        new OPD("Tim Mạch"),
-        new OPD("Nội Thận"),
-        new OPD("Da Liễu"),
-        new OPD("Tim Mạch"),
-        new OPD("Nội Thận"),
+        // new OPD("Da Liễu"),
+        // new OPD("Tim Mạch"),
+        // new OPD("Nội Thận"),
+        // new OPD("Cấp cứu"),
+        // new OPD("Hô Hấp"),
+        // new OPD("Nội Thận"),
+        // new OPD("Da Liễu"),
+        // new OPD("Tim Mạch"),
+        // new OPD("Nội Thận"),
+        // new OPD("Da Liễu"),
+        // new OPD("Tim Mạch"),
+        // new OPD("Nội Thận"),
       ],
     };
   },
@@ -67,11 +67,26 @@ export default {
       });
     },
   },
+
+  created() {
+    this.getOPDList();
+  },
   methods: {
     onSelect(item) {
       this.selected = item.name;
     },
 
+    async getOPDList() {
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+      };
+      await this.$store.dispatch("appointment/speciality_list", params);
+      let specialist = this.$store.getters["appointment/speciality_list"];
+      console.log(specialist);
+      specialist.forEach((element) => {
+        this.OPDList.push(new OPD(element));
+      });
+    },
     getSelected() {
       this.selected;
     },
