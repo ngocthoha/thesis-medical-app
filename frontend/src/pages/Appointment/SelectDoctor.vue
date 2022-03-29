@@ -17,7 +17,7 @@
             color="brown darken-1"
             group
           >
-            <v-btn
+            <!-- <v-btn
               v-if="time == 1"
               value="1"
               @click="
@@ -56,6 +56,13 @@
                 setSelectDoctor(doctor.doctor.name, doctor.room, '13:00-14:00')
               "
               >13:00-14:00</v-btn
+            > -->
+            <v-btn
+              :value="time"
+              @click="
+                setSelectDoctor(doctor.doctor.name, doctor.room, time)
+              "
+              >{{time}}</v-btn
             >
           </v-btn-toggle>
         </v-expansion-panel-content>
@@ -67,27 +74,32 @@
 
 <script>
 export default {
-  created() {
+  mounted() {
     this.getDoctorList();
   },
+
+  props:{
+    listDoctor:Array
+  },
+
   data() {
     return {
       time_select: null,
       doctorSelection: null,
-      listDoctor: [
-        // {
-        //   id: 3,
-        //   date: "16",
-        //   room: "H2 á",
-        //   times: ["10-11", "11-12"],
-        //   doctor: {
-        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
-        //     name: "John",
-        //     specialty: "NHI KHOA",
-        //     level: "level",
-        //   },
-        // },
-      ],
+      // listDoctor: [
+      //   // {
+      //   //   id: 3,
+      //   //   date: "16",
+      //   //   room: "H2 á",
+      //   //   times: ["10-11", "11-12"],
+      //   //   doctor: {
+      //   //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+      //   //     name: "John",
+      //   //     specialty: "NHI KHOA",
+      //   //     level: "level",
+      //   //   },
+      //   // },
+      // ],
     };
   },
 
@@ -100,21 +112,6 @@ export default {
       };
     },
 
-    async getDoctorList() {
-      const params = {
-        token: this.$store.getters["auth/access_token"],
-        data: {
-          date: "16",
-          specialty: "NHI KHOA",
-        },
-      };
-      await this.$store.dispatch(
-        "appointment/getDoctorList_byDateAndSpeciality",
-        params
-      );
-      this.listDoctor = this.$store.getters["appointment/doctors_list"];
-      console.log(this.listDoctor);
-    },
   },
 };
 </script>

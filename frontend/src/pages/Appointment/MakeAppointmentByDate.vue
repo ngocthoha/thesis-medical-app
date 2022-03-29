@@ -214,6 +214,7 @@
       <SelectDoctor
         class="md-layout-item md-size-80 select-doctor-item"
         ref="doctorSelect"
+        :listDoctor="listDoctor"
       ></SelectDoctor>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
@@ -276,7 +277,7 @@
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
 import SelectOPD from "@/pages/Appointment/SelectOPD.vue";
 import SelectDoctor from "@/pages/Appointment/SelectDoctor.vue";
-import axios from "axios";
+
 export default {
   components: {
     SelectDate,
@@ -357,6 +358,7 @@ export default {
       opdSelection: "",
       doctorSelection: "",
       profile_list: [],
+      listDoctor:[],
     };
   },
 
@@ -366,18 +368,23 @@ export default {
       this.visible_navigation.visible_selectdate = true;
       this.step.step1 = true;
     },
+
     SelectDateComplete() {
       this.visible_navigation.visible_selectdate = false;
       this.visible_navigation.visible_selectopd = true;
       this.dateSelection = this.$refs.dateSelect.date;
       this.step.step2 = true;
     },
+
     SelectOPDComplete() {
       this.visible_navigation.visible_selectopd = false;
       this.visible_navigation.visible_selectdoctor = true;
       this.opdSelection = this.$refs.OPDSelect.selected;
       this.step.step3 = true;
+
+      this.getDoctorList();
     },
+
     SelectDoctorComplete() {
       this.visible_navigation.visible_selectdoctor = false;
       this.visible_navigation.visible_verify = true;
@@ -419,6 +426,22 @@ export default {
       await this.$store.dispatch("profile/profile_list", params);
       this.profile_patient_list = this.$store.getters["profile/profile_list"];
       console.log(this.profile_patient_list);
+    },
+
+    async getDoctorList() {
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: {
+          date: this.dateSelection,
+          specialty: this.opdSelection,
+        },
+      };
+      await this.$store.dispatch(
+        "appointment/getDoctorList_byDateAndSpeciality",
+        params
+      );
+      this.listDoctor = this.$store.getters["appointment/doctors_list"];
+      console.log(this.listDoctor);
     },
   },
 };
