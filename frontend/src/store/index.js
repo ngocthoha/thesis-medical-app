@@ -3,12 +3,15 @@ import Vuex from 'vuex';
 import auth from "./modules/auth";
 import profile from "./modules/profile";
 import appointment from "./modules/appointment";
+import scheduledoctor from "./modules/scheduledoctor";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
       auth,
       profile,
-      appointment
+      appointment,
+      scheduledoctor,
     }
 });
