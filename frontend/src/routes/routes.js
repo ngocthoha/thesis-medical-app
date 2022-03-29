@@ -20,14 +20,15 @@ import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
 import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
 
 let authPage = {
-  path: "/login",
+  path: "/",
   name: "login",
   component: Login,
 };
 
 const routes = [
+  authPage,
   {
-    path: "/",
+    path: "/home",
     component: DashboardLayout,
     redirect: "/appointment/appointment-by-date",
     children: [
@@ -96,8 +97,6 @@ const routes = [
       },
     ],
   },
-
-  authPage,
 ];
 
 export default routes;

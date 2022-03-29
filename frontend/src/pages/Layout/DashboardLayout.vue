@@ -35,27 +35,27 @@
         <md-icon>notifications</md-icon>
         <p>Notifications</p>
       </sidebar-link>-->
-      <sidebar-link to="/appointment/appointment-by-date">
+      <sidebar-link to="/home/appointment/appointment-by-date">
         <md-icon>person</md-icon>
         <p>Đặt lịch khám theo ngày</p>
       </sidebar-link>
-      <sidebar-link to="/appointment/appointment-by-doctor">
+      <sidebar-link to="/home/appointment/appointment-by-doctor">
         <md-icon>person</md-icon>
         <p>Đặt lịch khám bác sĩ</p>
       </sidebar-link>
-      <sidebar-link to="/doctor/doctor-schedule">
+      <sidebar-link to="/home/doctor/doctor-schedule">
         <md-icon>person</md-icon>
         <p>Lịch trình của bác sĩ</p>
       </sidebar-link>
-      <sidebar-link to="/doctor/doctor-record">
+      <sidebar-link to="/home/doctor/doctor-record">
         <md-icon>person</md-icon>
         <p>Hồ Sơ bệnh nhân</p>
       </sidebar-link>
 
-      <sidebar-link to="/upgrade" class="active-pro">
+      <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
         <p>Upgrade to PRO</p>
-      </sidebar-link>
+      </sidebar-link> -->
     </side-bar>
 
     <div class="main-panel">

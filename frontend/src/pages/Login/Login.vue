@@ -8,10 +8,17 @@
           <h3>Đăng nhập</h3>
           <div class="login-section-body">
             <label for="">Tên đăng nhập</label>
-            <input type="text" name="" id="username" />
+            <input v-model="user.username" type="text" name="" id="username" />
             <label for="">Mật khẩu</label>
-            <input type="password" name="" id="password" />
-            <md-button class="login-button">Đăng nhập</md-button>
+            <input
+              v-model="user.password"
+              type="password"
+              name=""
+              id="password"
+            />
+            <md-button class="login-button" @click="submit"
+              >Đăng nhập</md-button
+            >
           </div>
         </div>
         <div class="login-img col">
@@ -26,6 +33,39 @@
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      user: {
+        username: "",
+        password: "",
+      },
+    };
+  },
+
+  computed: {
+    isAuthenticated: function () {
+      return this.$store.getters.isAuthenticated;
+    },
+  },
+
+  methods: {
+    async submit() {
+      const user = {
+        username: this.user.username,
+        password: this.user.password,
+      };
+      await this.$store.dispatch("auth/login", user);
+
+      if (this.$store.getters["auth/access_token"] != null) {
+        console.log(this.$store.getters["auth/access_token"]);
+        this.$router.push({ name: "Đặt lịch khám theo ngày" });
+      }
+    },
+  },
+};
+</script>
 <style lang="scss" scoped>
 .md-layout-item {
   background: white;
@@ -55,5 +95,11 @@
 }
 .login-section-body {
   margin-left: 30%;
+}
+
+input,
+select,
+textarea {
+  border-style: solid;
 }
 </style>

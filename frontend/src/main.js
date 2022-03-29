@@ -20,6 +20,7 @@ import App from "./App";
 
 // router setup
 import routes from "./routes/routes";
+import store from "./store";
 
 // Plugins
 import GlobalComponents from "./globalComponents";
@@ -32,8 +33,11 @@ import MaterialDashboard from "./material-dashboard";
 import Chartist from "chartist";
 import vuetify from "./plugins/vuetify";
 
+import axios from "axios";
+import VueAxios from "vue-axios";
 // configure router
 const router = new VueRouter({
+  mode: "history",
   routes, // short for routes: routes
   linkExactActiveClass: "nav-item active",
 });
@@ -45,14 +49,14 @@ Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);
 Vue.use(GlobalDirectives);
 Vue.use(Notifications);
-
+Vue.use(VueAxios, axios);
 /* eslint-disable no-new */
 new Vue({
   el: "#app",
   render: (h) => h(App),
   router,
   vuetify,
-
+  store,
   data: {
     Chartist: Chartist,
   },
