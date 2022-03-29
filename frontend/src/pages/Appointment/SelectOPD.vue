@@ -3,15 +3,22 @@
     <div class="md-layout select-opd-page">
       <div class="search-opd-section">
         <label class="search-ope-label">Tìm nhanh chuyên khoa</label>
-        <input
-          class="input-search-OPD"
-          type="text"
-          v-model="search"
-          placeholder="Nhập chuyên khoa.."
-        />
+        <input type="text" v-model="search" placeholder="Nhập chuyên khoa.." />
       </div>
 
       <div class="list-opd-section">
+        <!-- <md-table v-model="OPDList" md-card @md-selected="onSelect" class="md-scrollbar">
+
+               <md-table-row slot="md-table-row" slot-scope="{ item }"  md-selectable="single">
+                 <p class="opd-name">{{item.name}}</p>
+               </md-table-row>
+             </md-table> -->
+        <!-- <md-table v-for="OPD in filteredList" v-bind:key="OPD.name" md-card @md-selected="onSelect" class="md-scrollbar">
+
+               <md-table-row :key="OPD.name" md-selectable="single">
+                 <p class="opd-name">{{OPD.name}}</p>
+               </md-table-row>
+             </md-table> -->
         <md-table
           v-model="filteredList"
           md-card
@@ -39,6 +46,9 @@ class OPD {
   }
 }
 export default {
+  created() {
+    this.getODPList();
+  },
   data() {
     return {
       hasSelect: false,
@@ -67,16 +77,16 @@ export default {
       });
     },
   },
-
-  created() {
-    this.getOPDList();
-  },
   methods: {
     onSelect(item) {
       this.selected = item.name;
     },
 
-    async getOPDList() {
+    getSelected() {
+      this.selected;
+    },
+
+    async getODPList() {
       const params = {
         token: this.$store.getters["auth/access_token"],
       };
@@ -86,9 +96,6 @@ export default {
       specialist.forEach((element) => {
         this.OPDList.push(new OPD(element));
       });
-    },
-    getSelected() {
-      this.selected;
     },
   },
 };
@@ -137,8 +144,5 @@ export default {
   max-width: 100%;
   max-height: 205px;
   overflow: auto;
-}
-.input-search-OPD {
-  border-style: solid;
 }
 </style>
