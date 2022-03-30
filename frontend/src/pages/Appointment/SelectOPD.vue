@@ -2,8 +2,23 @@
   <div class="content">
     <div class="md-layout select-opd-page">
       <div class="search-opd-section">
-        <label class="search-ope-label">Tìm nhanh chuyên khoa</label>
-        <input type="text" v-model="search" placeholder="Nhập chuyên khoa.." />
+        <v-toolbar flat color="green lighten-1" dark>
+          <v-toolbar-title>
+            <label class="search-ope-label">Tìm nhanh chuyên khoa</label>
+          </v-toolbar-title>
+          <v-card color="white"
+            ><input
+              type="text"
+              v-model="search"
+              placeholder="Nhập chuyên khoa.."
+            />
+            <v-icon large color="green darken-2" small>
+              fas fa-search
+            </v-icon></v-card
+          >
+        </v-toolbar>
+        <!-- <label class="search-ope-label">Tìm nhanh chuyên khoa</label>
+        <input type="text" v-model="search" placeholder="Nhập chuyên khoa.." /> -->
       </div>
 
       <div class="list-opd-section">
