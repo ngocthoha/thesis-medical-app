@@ -58,95 +58,618 @@
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-65"
       >
-        <v-app id="inspire">
-          <v-card>
-            <v-card-title>
-              Lịch làm việc của bác sĩ
-              <v-spacer></v-spacer>
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Tìm kiếm..."
-                single-line
-                hide-details
-              ></v-text-field>
-            </v-card-title>
-            <v-data-table
-              :headers="headers"
-              :items="desserts"
-              :search="search"
-              show-expand
-              class="elevation-1"
-              :expanded.sync="expanded"
+        <div>
+          <h5>
+            <b>Danh sách khám online trong ngày {{ schedule.date }}</b>
+          </h5>
+        </div>
+
+        <v-expansion-panels focusable>
+          <v-expansion-panel v-for="(item, i) in schedule.times" :key="i">
+            <v-expansion-panel-header>{{ item }} </v-expansion-panel-header>
+            <v-expansion-panel-content
+              v-for="(infoApment, j) in appointment"
+              :key="j"
             >
-              <!-- <template v-slot:expanded-item="{ headers, item }">
-                <td :colspan="headers.length" style="text-align: center">
-                  <p style="margin-top: 20px">
-                    Thông tin thêm: {{ item.chitiet }}
-                  </p>
+              <div class="rowinfo">
+                <div class="infoID">
+                  <p>{{ j + 1 }}</p>
+                </div>
+                <div class="infoName">
+                  <p>{{ infoApment.name }}</p>
+                </div>
+                <div class="infoRoom">
+                  <p>{{ schedule.room }}</p>
+                </div>
+                <div class="infoChitiet">
+                  <button @click="dialog = true"><b>Chi tiết</b></button>
 
                   <v-dialog v-model="dialog" scrollable max-width="800px">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-btn
-                        color="#333"
-                        dark
-                        v-bind="attrs"
-                        v-on="on"
-                        style="margin: 0px 20px 10px 20px"
-                      >
-                        Chi tiết
-                      </v-btn>
-                    </template>
                     <v-card>
                       <v-card-title>Thông tin bệnh nhân</v-card-title>
                       <v-divider></v-divider>
-                      <v-card-text style="height: auto">
+                      <v-card-text
+                        style="
+                          height: auto;
+                          margin-left: auto;
+                          margin-right: auto;
+                          width: auto;
+                        "
+                      >
                         <h5>
-                          <b>Ngày {{ item.date }}  ,   {{ item.time }} , Phòng số {{ item.room }} </b>
+                          <b
+                            >Ngày {{ infoApment.date }}, Thời gian
+                            {{ infoApment.time }}, Phòng số
+                            {{ schedule.room }}</b
+                          >
                         </h5>
-                   
+
+                        <h5><b>Họ và tên: </b>{{ infoApment.name }}</h5>
+                        <h5><b>Triệu chứng: </b>{{ infoApment.symtorm }}</h5>
                         <h5>
-                          <b>ID: {{ item.id }}</b>
+                          <b>Mô tả chi tiết: </b>{{ infoApment.description }}
                         </h5>
-                       
-                        <h5><b>Họ và tên: </b> {{ item.name }}</h5>
-                        <h5><b>Triệu chứng: </b> {{ item.trieuchung }}</h5>
-                        <h5><b>Mô tả chi tiết: </b> {{ item.chitiet }}</h5>
                         <h5>
-                          <b>Thời gian diễn ra tình trạng trên: </b> {{item.timebenh}}
+                          <b
+                            >Thời gian diễn ra tình trạng trên:
+                            {{ infoApment.timeSituation }}</b
+                          >
                         </h5>
-                        <h5><b>Đã tự điều trị bệnh: </b> {{item.tudieutri}}</h5>
+                        <h5>
+                          <b>Đã tự điều trị bệnh: </b
+                          >{{ infoApment.selfTreatment }}
+                        </h5>
                       </v-card-text>
                       <v-divider></v-divider>
-                      <v-card-actions>
+                      <v-card-actions style="flex-direction: row-reverse">
                         <v-btn
                           color="red"
-                          text 
-                          :right= true
+                          text
+                          :right="true"
                           @click="dialog = false"
-                          style="flex-direction: row;"
-                         
+                          style="flex-direction: row"
                         >
                           Đóng
                         </v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
+                </div>
+                <div class="taoBenhAn">
+                  <button @click="dialogBenhAn = true">
+                    <b>Tạo bệnh án</b>
+                  </button>
 
-                  <v-btn
-                    color="primary"
-                    dark
-                    v-bind="attrs"
-                    v-on="on"
-                    style="margin: 0px 20px 10px 20px"
+                  <v-dialog
+                    v-model="dialogBenhAn"
+                    max-width="1200px"
+                    max-height="auto"
                   >
-                    Tạo hồ sơ bệnh án
-                  </v-btn>
-                </td>
-              </template> -->
-            </v-data-table>
-          </v-card>
-        </v-app>
+                    <v-card>
+                      <v-card-title style="justify-content: space-between">
+                        <span class="text-h5">TẠO BỆNH ÁN</span>
+                        <v-btn
+                          color="#ff5252"
+                          @click="dialogBenhAn = false"
+                          style="width: 40px; color: white"
+                        >
+                          Đóng
+                        </v-btn>
+                      </v-card-title>
+
+                      <v-card-text>
+                        <p><b>MÃ HỒ SƠ: </b></p>
+                        <p><b>BÁC SĨ: Nguyen Van A</b></p>
+                        <p><b>NGÀY KHÁM: </b></p>
+                        <p><b> THỜI GIAN: </b></p>
+                      </v-card-text>
+
+                      <v-stepper non-linear v-model="e1">
+                        <v-stepper-header>
+                          <v-stepper-step editable step="1"
+                            >Thông tin bệnh nhân
+                          </v-stepper-step>
+
+                          <v-divider></v-divider>
+
+                          <v-stepper-step editable step="2">
+                            Chuẩn đoán bệnh
+                          </v-stepper-step>
+
+                          <v-divider></v-divider>
+
+                          <v-stepper-step step="3" editable>
+                            Kê đơn
+                          </v-stepper-step>
+                        </v-stepper-header>
+
+                        <v-stepper-items>
+                          <v-stepper-content :key="`${1}-content`" :step="1">
+                            <v-card class="mb-12" color="white" height="auto">
+                              <div class="gop">
+                                <div class="gop0">
+                                  <div class="gop1">
+                                    <div class="textform">
+                                      <p>1. Họ và tên:</p>
+                                      <input
+                                        v-model="infoApment.name"
+                                        type="text"
+                                        placeholder="Nhập họ và tên..."
+                                      />
+                                    </div>
+                                    <div class="textform">
+                                      <p>2. Năm sinh:</p>
+                                      <div class="namsinh">
+                                        <v-menu
+                                          v-model="menu11"
+                                          :close-on-content-click="false"
+                                          :nudge-right="40"
+                                          transition="scale-transition"
+                                          offset-y
+                                          min-width="auto"
+                                        >
+                                          <template
+                                            v-slot:activator="{ on, attrs }"
+                                          >
+                                            <v-text-field
+                                              v-model="infoApment.dob"
+                                              prepend-icon="mdi-calendar"
+                                              readonly
+                                              v-bind="attrs"
+                                              v-on="on"
+                                            ></v-text-field>
+                                          </template>
+                                          <v-date-picker
+                                            v-model="infoApment.dob"
+                                            @input="menu11 = false"
+                                          ></v-date-picker>
+                                        </v-menu>
+                                      </div>
+                                    </div>
+                                    <div class="textform">
+                                      <p>3. Giới tính:</p>
+                                      <div class="gioitinh">
+                                        <v-radio-group
+                                          v-model="infoApment.gender"
+                                          row
+                                        >
+                                          <v-radio
+                                            label="Nam"
+                                            value="Nam"
+                                          ></v-radio>
+                                          <v-radio
+                                            label="Nữ"
+                                            value="Nữ"
+                                          ></v-radio>
+                                        </v-radio-group>
+                                      </div>
+                                    </div>
+                                    <div class="textform">
+                                      <p>4. Dân tộc:</p>
+                                      <div class="autocom">
+                                        <v-toolbar color="white">
+                                          <v-autocomplete
+                                            v-model="infoApment.folk"
+                                            :loading="loading"
+                                            :items="states"
+                                            :search-input.sync="search1"
+                                            cache-items
+                                            class="mx-4"
+                                            flat
+                                            hide-no-data
+                                            hide-details
+                                            label="Dân tộc..."
+                                            solo-inverted
+                                          ></v-autocomplete>
+                                        </v-toolbar>
+                                      </div>
+                                    </div>
+                                    <div class="textform">
+                                      <p>5. Mã số BHYT(Nếu có):</p>
+                                      <input
+                                        v-model="infoApment.healthInsurance"
+                                        type="text"
+                                        placeholder="Nhập MSBHYT..."
+                                      />
+                                    </div>
+                                    <div class="textform">
+                                      <p>6. Nghề nghiệp</p>
+                                      <input
+                                        v-model="infoApment.job"
+                                        type="text"
+                                        placeholder="Nhập tên nghề nghiệp..."
+                                      />
+                                    </div>
+
+                                    <div class="textform">
+                                      <p>7. Địa chỉ:</p>
+                                      <input
+                                        v-model="infoApment.address"
+                                        type="text"
+                                        placeholder="Nhập địa chỉ..."
+                                      />
+                                    </div>
+
+                                    <div class="textform">
+                                      <p>8. Tên người giám hộ(Nếu có)</p>
+                                      <input
+                                        v-model="infoApment.protector"
+                                        type="text"
+                                        placeholder="Nhập tên người giám hộ..."
+                                      />
+                                    </div>
+                                    <div class="textform">
+                                      <p>9. SĐT Liên lạc:</p>
+                                      <input
+                                        v-model="infoApment.phoneNumber"
+                                        type="text"
+                                        placeholder="Nhập SĐT..."
+                                      />
+                                    </div>
+
+                                    <div class="textform">
+                                      <p>10. CMND:</p>
+                                      <input
+                                        v-model="infoApment.identityCard"
+                                        type="text"
+                                        placeholder="Nhập CMND"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </v-card>
+                            <v-btn color="primary" @click="nextStep(1)">
+                              Tiếp tục
+                            </v-btn>
+                          </v-stepper-content>
+
+                          <v-stepper-content :key="`${2}-content`" :step="2">
+                            <v-card class="mb-12" color="white" height="auto">
+                              <div class="page2_0">
+                                <div class="page2_1">
+                                  <div class="page2_2">
+                                    <div class="textpage2">
+                                      <p>1. Quá trình bệnh lí:</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          v-model="infoApment.description"
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          label="Biểu hiện của bệnh"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          rows="1"
+                                          auto-grow
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>2. Tiền sử bệnh bản thân:</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          label="Các bệnh đã mắc"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          auto-grow
+                                          rows="1"
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+                                    <div class="textpage2">
+                                      <p>3. Tiền sử bệnh gia đình:</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          label="Tiền sử bệnh gia đình"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          auto-grow
+                                          rows="1"
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+                                    <div class="textpage2">
+                                      <p>4. Khám xét toàn thân:</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          label="Kết quả khám toàn thân"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          auto-grow
+                                          rows="1"
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+                                    <div class="textpage2">
+                                      <div class="ketquatongquat">
+                                        <p>Mạch:</p>
+                                        <input type="text" />
+                                        <p>lần/phút</p>
+                                        <p style="color: white">______</p>
+                                        <p>Nhiệt độ:</p>
+                                        <input type="text" />
+                                        <p>độ C</p>
+                                        <p style="color: white">______</p>
+                                        <p>Huyết áp:</p>
+                                        <input type="text" />
+                                        <p>mmHg</p>
+                                        <p style="color: white">______</p>
+                                        <p>Nhịp tim:</p>
+                                        <input type="text" />
+                                        <p>lần/phút</p>
+                                        <br />
+                                        <p
+                                          style="
+                                            color: white;
+                                            margin-bottom: 20px;
+                                          "
+                                        >
+                                          .
+                                        </p>
+                                      </div>
+                                    </div>
+                                    <div class="textpage2">
+                                      <p>5. Khám xét các bộ phận</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          label="Kết quả khám bộ phận"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          auto-grow
+                                          rows="1"
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>6. Tóm tắt kết quả lâm sàng:</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          label="Chuẩn đoán lâm sàng"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          auto-grow
+                                          rows="1"
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>7. Hình ảnh bổ sung:</p>
+                                      <v-file-input
+                                        label="File input"
+                                        filled
+                                        multiple
+                                        prepend-icon="mdi-camera"
+                                      ></v-file-input>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </v-card>
+
+                            <v-btn text @click="beforeStep(2)">
+                              Quay lại
+                            </v-btn>
+                            <v-btn color="primary" @click="nextStep(2)">
+                              Tiếp tục
+                            </v-btn>
+                          </v-stepper-content>
+
+                          <v-stepper-content :key="`${3}-content`" :step="3">
+                            <v-card class="mb-12" color="white" height="auto">
+                              <div class="page2_0">
+                                <div class="page2_1">
+                                  <div class="page2_2">
+                                    <div class="textpage2">
+                                      <p>CHUẨN ĐOÁN NHẬP VIỆN:</p>
+                                      <v-radio-group row>
+                                        <v-radio
+                                          label="Yêu cầu nhập viện"
+                                          value="Yes"
+                                        ></v-radio>
+                                        <v-radio
+                                          label="Không nhập viện"
+                                          value="No"
+                                        ></v-radio>
+                                      </v-radio-group>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>KHOA ĐIỀU TRỊ:</p>
+                                      <v-autocomplete
+                                        v-model="khoa"
+                                        :items="dskhoa"
+                                        dense
+                                        filled
+                                      ></v-autocomplete>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>KÊ ĐƠN THUỐC:</p>
+                                      <div class="textpage3">
+                                        <div class="textpage4">
+                                          <div
+                                            class="ketquatongquat"
+                                            v-for="(thuoc_1, k) in donthuoc"
+                                            :key="k"
+                                          >
+                                            <p
+                                              style="width:100%; text-align: left;:"
+                                            >
+                                              <i> {{ k + 1 }}</i>
+                                            </p>
+                                            <v-autocomplete
+                                              v-model="thuoc_1.tenthuoc"
+                                              :items="dsthuoc"
+                                              dense
+                                              filled
+                                              label="Tên thuốc"
+                                            ></v-autocomplete>
+                                            <div class="combosoluongloai">
+                                              <div class="soluong">
+                                                <p>Số lượng:</p>
+                                                <input
+                                                  v-model="thuoc_1.soluongthuoc"
+                                                  type="text"
+                                                  style="margin: 0px 10px"
+                                                />
+                                              </div>
+
+                                              <div class="loai">
+                                                <v-autocomplete
+                                                  v-model="thuoc_1.loaisudung"
+                                                  :items="dsloai"
+                                                  dense
+                                                  filled
+                                                  label="loại"
+                                                ></v-autocomplete>
+                                              </div>
+                                            </div>
+                                            <div class="cachdung">
+                                              <v-autocomplete
+                                                v-model="thuoc_1.cachdungthuoc"
+                                                :items="dscachdung"
+                                                dense
+                                                chips
+                                                small-chips
+                                                label="Cách dùng"
+                                                multiple
+                                                solo
+                                              ></v-autocomplete>
+                                            </div>
+                                            <v-btn
+                                              block
+                                              @click="
+                                                removedonthuoc(donthuoc, k)
+                                              "
+                                            >
+                                              Xóa
+                                            </v-btn>
+
+                                            <v-divider
+                                              style="margin-bottom: 20px"
+                                            ></v-divider>
+                                          </div>
+                                        </div>
+                                      </div>
+
+                                      <div class="controls">
+                                        <v-btn
+                                          block
+                                          style="width: 100%"
+                                          @click="addnewdonthuoc(donthuoc)"
+                                        >
+                                          Thêm mới
+                                        </v-btn>
+                                      </div>
+                                      <v-divider
+                                        style="margin-bottom: 20px"
+                                      ></v-divider>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>LƯU Ý:</p>
+                                      <v-container fluid>
+                                        <v-textarea
+                                          clearable
+                                          clear-icon="mdi-close-circle"
+                                          background-color="grey lighten-2"
+                                          color="cyan"
+                                          auto-grow
+                                          rows="3"
+                                          style="
+                                            border-radius: 5px;
+                                            padding: 0px 0px;
+                                          "
+                                        ></v-textarea>
+                                      </v-container>
+                                    </div>
+
+                                    <div class="textpage2">
+                                      <p>NGÀY TÁI KHÁM:</p>
+
+                                      <v-menu
+                                        v-model="menu10"
+                                        :close-on-content-click="false"
+                                        :nudge-right="40"
+                                        transition="scale-transition"
+                                        offset-y
+                                        min-width="auto"
+                                      >
+                                        <template
+                                          v-slot:activator="{ on, attrs }"
+                                        >
+                                          <v-text-field
+                                            v-model="datetaikham"
+                                            prepend-icon="mdi-calendar"
+                                            readonly
+                                            v-bind="attrs"
+                                            v-on="on"
+                                          ></v-text-field>
+                                        </template>
+                                        <v-date-picker
+                                          v-model="datetaikham"
+                                          @input="menu10 = false"
+                                        ></v-date-picker>
+                                      </v-menu>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </v-card>
+
+                            <v-btn text @click="beforeStep(3)">
+                              Quay Lại
+                            </v-btn>
+                          </v-stepper-content>
+                        </v-stepper-items>
+                      </v-stepper>
+                    </v-card>
+                  </v-dialog>
+                </div>
+              </div>
+              <v-divider></v-divider>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
+        </v-expansion-panels>
+
+      <md-button class="md-primary" style="background-color:#333 !important;">Chuyển lịch</md-button>
       </div>
     </div>
   </div>
@@ -154,67 +677,20 @@
 
 <script>
 export default {
-  created(){
-    this.getScheduleList();
-  },
   data() {
     return {
-      schedule_list: [],
-      dialogm1: "",
+      menu11: false,
+      menu10: false,
+      datetaikham: null,
+      items: [],
+      search1: null,
+      e1: 1,
       dialog: false,
-      expanded: [],
-      singleExpand: false,
+      dialogBenhAn: false,
       picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
         .toISOString()
         .substr(0, 10),
-      search: "",
-      headers: [
-        // {
-        //   text: "ID",
-        //   align: "start",
-        //   value: "id",
-        // },
-        { text: "Ngày", value: "date" },
-        { text: "Thời gian", value: "time" },
-        // { text: "Họ và tên", value: "name" },
-        { text: "Phòng", value: "room" },
-        // { text: "", value: "data-table-expand" },
-      ],
-      desserts: [
-        // {
-        //   id: 1,
-        //   date: "2022-03-29",
-        //   time: "9:00-10:00",
-        //   room: "H2-201",
-        //   name: "A",
-        //   trieuchung: "Đau bụng",
-        //   chitiet: "Đau từng cơn sau khi ăn,thường xuyên buồn nôn và sốt",
-        //   timebenh: "1 tuần",
-        //   tudieutri: "Có",
-        // },
-        // {
-        //   id: 2,
-        //   date: "2022-03-29",
-        //   time: "9:00-10:00",
-        //   room: "H2-201",
-        //   name: "B",
-        //   trieuchung: "Đau bụng",
-        //   chitiet: "Đau nhiều lần vào ban đêm, khó chịu trong người",
-        //   timebenh: "1 tuần",
-        //   tudieutri: "Có",
-        // },
-        // {
-        //   id: 3,
-        //   date: "2022-03-30",
-        //   time: "9:00-10:00",
-        //   room: "H2-201",
-        //   name: "C",
-        //   trieuchung: "Đau bụng",
-        //   chitiet: "Đau nhiều lần vào ban đêm, khó chịu trong người",
-        //   timebenh: "1 tuần",
-        //   tudieutri: "Có",
-        // },
-      ],
+      states: ["Kinh", "Thái", "Mường", "Dao", "GiaRai"],
       note1: [
         {
           num: 5,
@@ -227,18 +703,92 @@ export default {
           time: "10-03-2022",
         },
       ],
+      schedule: {
+        date: "2022-03-30",
+        times: ["10:00-11:00", "11:00-12:00"],
+        room: "201-h2",
+      },
+      appointment: [
+        {
+          name: "Nguyen Ngoc Tan",
+          address: "address",
+          phoneNumber: "01234",
+          dob: "2012-04-23",
+          job: "job",
+          identityCard: "identityCard",
+          healthInsurance: "healthInsurance",
+          folk: "Kinh",
+          gender: "Nam",
+          protector: "protector",
+          date: "2022-03-30",
+          time: "10-11",
+          symtorm: "dau tim",
+          description: "dautim",
+          timeSituation: "20",
+          selfTreatment: "Co",
+        },
+      ],
+      donthuoc: [
+        {
+          tenthuoc: null,
+          soluongthuoc: null,
+          loaisudung: null,
+          cachdungthuoc: [],
+        },
+      ],
+
+      dsthuoc: ["Thuốc A", "Thuốc B"],
+      khoa: null,
+      dskhoa: [
+        "Khoa Nội",
+        "Khoa Ngoại",
+        "Khoa Phụ Sản",
+        "Khoa Nhi",
+        "Khoa Truyền Nhiễm",
+        "Khoa Cấp Cứu",
+        "Khoa Hồi Sức và Chống Độc",
+        "Khoa Ung Bướu",
+      ],
+      dscachdung: [
+        "Sáng-1v",
+        "Sáng-2v",
+        "Trưa-1v",
+        "Trưa-2v",
+        "Tối-1v",
+        "Tối-2v",
+      ],
+      cachdung: null,
+      loai: null,
+      dsloai: ["Viên", "Vỉ", "Hộp"],
     };
   },
-  methods:{
-    async getScheduleList(){
-        const params = {
-        token: this.$store.getters["auth/access_token"],
-      };
-
-      await this.$store.dispatch("scheduledoctor/schedule_list",params);
-      this.desserts = this.$store.getters["scheduledoctor/schedule_list"];
-    }
-  }
+  watch: {
+    search1(val) {
+      val && val !== this.select && this.querySelections(val);
+    },
+  },
+  methods: {
+    nextStep(n) {
+      if (n === this.steps) {
+        this.e1 = 3;
+      } else {
+        this.e1 = n + 1;
+      }
+    },
+    beforeStep(n) {
+      if (n === this.steps) {
+        this.e1 = n - 1;
+      } else {
+        this.e1 = 1;
+      }
+    },
+    addnewdonthuoc(donthuoc) {
+      this.donthuoc.push({});
+    },
+    removedonthuoc(donthuoc, k) {
+      donthuoc.splice(k, 1);
+    },
+  },
 };
 </script>
 
@@ -284,5 +834,180 @@ export default {
 
 .lich .theme--light.v-card {
   max-height: 350px;
+}
+
+.rowinfo {
+  width: 100%;
+  display: flex;
+  margin: 10px 0px;
+  text-align: center;
+}
+
+.rowinfo p {
+  margin: 0px;
+}
+
+.infoID {
+  width: 10%;
+}
+
+.infoName {
+  width: 30%;
+}
+
+.infoRoom {
+  width: 30%;
+}
+
+.infoChitiet {
+  width: 15%;
+}
+
+.taoBenhAn {
+  width: 15%;
+}
+
+.infoChitiet button {
+  background-color: white;
+
+  color: #4caf50;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.infoChitiet button:hover {
+  background-color: #4caf50;
+  color: white;
+
+  border-color: white;
+}
+
+.taoBenhAn button {
+  background-color: white;
+
+  color: #448aff;
+  padding: 2px 6px;
+  border-radius: 5px;
+}
+
+.taoBenhAn button:hover {
+  background-color: #448aff;
+  color: white;
+  border-color: white;
+}
+
+.gop {
+  width: 100%;
+  background-color: rgba(201, 198, 195, 0.671);
+}
+.gop0 {
+  width: 90%;
+
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+}
+.gop1 {
+  width: 100%;
+}
+
+.textform {
+  width: 70%;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  align-content: center;
+}
+.textform p {
+  width: 15%;
+  height: 34px;
+  font-size: 16px;
+  margin: 20px 0px 10px 0px;
+  min-width: 250px;
+  align-items: center;
+}
+.textform .inputtext {
+  min-width: 300px;
+  height: 40px;
+}
+
+.textform input {
+  background-color: #ffffff;
+  color: #000000;
+  height: 38px;
+  margin: 20px 0px 10px 0px;
+  border-radius: 15px;
+  width: 100%;
+  font-size: 16px;
+  padding: 10px 20px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.textform input:focus {
+  box-shadow: rgb(255, 255, 255) 0px 3px 8px;
+  border-style: ridge;
+  border-color: rgb(104, 101, 101);
+}
+
+.page2_0 {
+  width: 100%;
+  background-color: rgba(201, 198, 195, 0.671);
+}
+.page2_1 {
+  width: 90%;
+
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+}
+
+.textpage2 {
+  margin: 0px 20px;
+  width: auto;
+}
+
+.textpage2 p {
+  width: 15%;
+  height: 34px;
+  font-size: 16px;
+  margin: 0px 0px;
+  min-width: 250px;
+  align-items: center;
+}
+.ketquatongquat {
+  text-align: center;
+}
+.ketquatongquat p {
+  display: inline;
+}
+.ketquatongquat input {
+  width: 40px;
+  background-color: #e0e0e0;
+  margin: 0px 5px;
+  padding: 2px 8px;
+}
+
+.soluong {
+  width: 150px;
+  height: 52px;
+  float: left;
+}
+.soluong input {
+  height: 50px;
+  font-size: 16px;
+  color: #333;
+  padding: 0px 10px;
+}
+.loai {
+  width: 30%;
+  float: left;
+  margin-right: 30px;
+}
+
+.cachdung {
+  width: 90%;
+  margin: 10px 20px;
 }
 </style>
