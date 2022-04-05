@@ -59,6 +59,22 @@
         <md-icon>person</md-icon>
         <p>Thông báo</p>
       </sidebar-link>
+       <sidebar-link to="/home/admin/doctor-admin">
+        <md-icon>person</md-icon>
+        <p>Bác sĩ</p>
+      </sidebar-link>
+        <sidebar-link to="/home/admin/appointment-admin">
+        <md-icon>person</md-icon>
+        <p>Lịch hẹn</p>
+      </sidebar-link>
+        <sidebar-link to="/home/admin/patient-admin">
+        <md-icon>person</md-icon>
+        <p>Bệnh nhân</p>
+      </sidebar-link>
+        <sidebar-link to="/home/admin/record-admin">
+        <md-icon>person</md-icon>
+        <p>Bệnh án</p>
+      </sidebar-link>
 
       <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>

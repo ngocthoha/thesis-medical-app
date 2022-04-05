@@ -21,6 +21,12 @@ import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
 import Profile from "@/pages/Doctor/Profile.vue";
 import Notification from "@/pages/Doctor/Notification.vue";
 
+//admin page
+import DoctorAdmin from "@/pages/Admin/DoctorAdmin.vue";
+import AppointmentAdmin from "@/pages/Admin/AppointmentAdmin.vue";
+import PatientAdmin from "@/pages/Admin/PatientAdmin.vue";
+import RecordAdmin from "@/pages/Admin/RecordAdmin.vue";
+
 let authPage = {
   path: "/",
   name: "login",
@@ -94,7 +100,7 @@ const routes = [
       },
       {
         path: "doctor/doctor-record",
-        name: "Hồ sơ bệnh nhân",
+        name: "Danh sách bệnh án",
         component: HoSoBenhNhan,
       },
       {
@@ -106,6 +112,26 @@ const routes = [
         path: "doctor/doctor-notification",
         name: "Thông báo",
         component: Notification,
+      },
+      {
+        path: "admin/doctor-admin",
+        name: "Bác sĩ",
+        component: DoctorAdmin,
+      },
+      {
+        path: "admin/appointment-admin",
+        name: "Lịch hẹn",
+        component: AppointmentAdmin,
+      },
+      {
+        path: "admin/patient-admin",
+        name: "Bệnh nhân",
+        component: PatientAdmin,
+      },
+      {
+        path: "admin/record-admin",
+        name: "Bệnh án",
+        component: RecordAdmin,
       },
     ],
   },
