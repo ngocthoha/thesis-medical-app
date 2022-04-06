@@ -301,23 +301,23 @@
         <div class="md-layout-item verify-column md-size-50">
           <label class="font-weight-bold" for="">Triệu chứng</label>
           <v-card>
-            <input type="text" style="width: 100%" />
+            <input v-model="symptom" type="text" style="width: 100%" />
           </v-card>
           <label class="font-weight-bold" for="">Mô tả chi tiết</label>
           <v-card>
-            <input type="text" style="width: 100%" />
+            <input v-model="description" type="text" style="width: 100%" />
           </v-card>
           <label class="font-weight-bold" for=""
             >Thời gian diễn ra tình trạng trên</label
           >
           <v-card>
-            <input type="text" style="width: 100%" />
+            <input v-model="timeSituation" type="text" style="width: 100%" />
           </v-card>
           <v-checkbox
-            v-model="ex4"
+            v-model="selfTreatment"
             label="Đã tự điều trị bệnh"
             color="success"
-            value="success"
+            value="1"
             hide-details
           ></v-checkbox>
         </div>
@@ -354,7 +354,9 @@
       </div>
       <div class="btns-verify">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
-        <md-button class="md-round md-success continue-button"
+        <md-button
+          class="md-round md-success continue-button"
+          @click="create_appointment"
           >Xác nhận</md-button
         >
       </div>
@@ -419,44 +421,51 @@ export default {
       opdSelection: "",
       doctorSelection: "",
       profile_list: [],
+
       listDoctor: [
-        {
-          id: 3,
-          date: "16",
-          room: "H2 á",
-          times: ["10-11", "11-12"],
-          doctor: {
-            id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
-            name: "John",
-            specialty: "NHI KHOA",
-            level: "level",
-          },
-        },
-        {
-          id: 3,
-          date: "16",
-          room: "H2 á",
-          times: ["10-11", "11-12"],
-          doctor: {
-            id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
-            name: "John",
-            specialty: "NHI KHOA",
-            level: "level",
-          },
-        },
-        {
-          id: 3,
-          date: "16",
-          room: "H2 á",
-          times: ["10-11", "11-12"],
-          doctor: {
-            id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
-            name: "John",
-            specialty: "NHI KHOA",
-            level: "level",
-          },
-        },
+        // {
+        //   id: 3,
+        //   date: "16",
+        //   room: "H2 á",
+        //   times: ["10-11", "11-12"],
+        //   doctor: {
+        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+        //     name: "John",
+        //     specialty: "NHI KHOA",
+        //     level: "level",
+        //   },
+        // },
+        // {
+        //   id: 3,
+        //   date: "16",
+        //   room: "H2 á",
+        //   times: ["10-11", "11-12"],
+        //   doctor: {
+        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+        //     name: "John",
+        //     specialty: "NHI KHOA",
+        //     level: "level",
+        //   },
+        // },
+        // {
+        //   id: 3,
+        //   date: "16",
+        //   room: "H2 á",
+        //   times: ["10-11", "11-12"],
+        //   doctor: {
+        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+        //     name: "John",
+        //     specialty: "NHI KHOA",
+        //     level: "level",
+        //   },
+        // },
       ],
+
+      files: [],
+      symptom: "",
+      description: "",
+      selfTreatment: "",
+      timeSituation: "",
     };
   },
 
@@ -539,8 +548,32 @@ export default {
         "appointment/getDoctorList_byDateAndSpeciality",
         params
       );
-      //this.listDoctor = this.$store.getters["appointment/doctors_list"];
-      console.log(this.listDoctor);
+      this.listDoctor = this.$store.getters["appointment/doctors_list"];
+      //console.log(this.listDoctor);
+    },
+
+    async create_appointment() {
+      const appointment_form_data = new FormData();
+
+      appointment_form_data.append("profileId", this.patient_info.id);
+      appointment_form_data.append("doctorId", this.doctorSelection.id);
+      appointment_form_data.append("date", this.dateSelection);
+      appointment_form_data.append("time", this.doctorSelection.time);
+      appointment_form_data.append("symptom", this.symptom);
+      appointment_form_data.append("description", this.description);
+      appointment_form_data.append("timeSituation", this.timeSituation);
+      appointment_form_data.append("selfTreatment", this.selfTreatment);
+
+      this.files.forEach(file =>{
+        appointment_form_data.append("files",file);
+      })
+      //appointment_form_data.append("files", this.files);
+
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: appointment_form_data,
+      };
+      await this.$store.dispatch("appointment/createAppointment", params);
     },
   },
 };

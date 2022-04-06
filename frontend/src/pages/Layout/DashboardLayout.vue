@@ -59,6 +59,10 @@
         <md-icon>person</md-icon>
         <p>Thông báo</p>
       </sidebar-link>
+      <sidebar-link to="/home/appointment/view-appointment">
+        <md-icon>person</md-icon>
+        <p>Lịch sử đặt lịch</p>
+      </sidebar-link>
 
       <!-- <sidebar-link to="/upgrade" class="active-pro">
         <md-icon>unarchive</md-icon>
