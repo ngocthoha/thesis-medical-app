@@ -26,9 +26,14 @@ const actions ={
   getDoctorList_byDateAndSpeciality({commit},params){
     return service.getDoctorList_byDateAndSpeciality(params).then(({data})=>{
       commit('SET_DOCTOR_LIST',data)
-  });
-},
-    
+    });
+  },
+
+  createAppointment({commit},params){
+    return service.createAppointment(params).then(({data})=>{
+      console.log('add new appointment success')
+    });
+  },
 
     
 }

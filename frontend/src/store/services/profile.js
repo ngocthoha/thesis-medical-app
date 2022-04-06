@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const url = "http://13.40.194.0:8080";
+// const url = "http://13.40.75.147:8080";
+const url = process.env.VUE_APP_ROOT_API;
 
 function profile_list(params) {
   axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
