@@ -1,35 +1,65 @@
 <template>
-  <div class="content">
-    <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-60"
-      >
-        <div class="login-section col">
-          <h3>Đăng nhập</h3>
-          <div class="login-section-body">
-            <label for="">Tên đăng nhập</label>
-            <input v-model="user.username" type="text" name="" id="username" />
-            <label for="">Mật khẩu</label>
-            <input
-              v-model="user.password"
-              type="password"
-              name=""
-              id="password"
-            />
-            <md-button class="login-button" @click="submit"
-              >Đăng nhập</md-button
-            >
-          </div>
-        </div>
-        <div class="login-img col">
-          <img
-            src="@/assets/img/login-image.png"
-            alt="doctor"
-            class="login-img"
-          />
-        </div>
-      </div>
-    </div>
+  <div>
+    <v-container fluid full-height>
+      <v-row align-center justify="center">
+        <v-col cols="12" sm="8" md="4">
+          <v-card outlined class="ma-auto">
+            <v-card-title></v-card-title>
+            <v-form>
+              <v-card-title>Wellcome Back!</v-card-title>
+              <v-card-text>
+                <span>Enter your credentials below to get started.</span>
+              </v-card-text>
+              <v-card-text>
+                <v-text-field
+                  name="username"
+                  label="username"
+                  id="username"
+                  v-model="user.username"
+                  dense
+                ></v-text-field>
+                <v-text-field
+                  v-model="user.password"
+                  name="password"
+                  label="password"
+                  id="password"
+                  :append-icon="isHidePassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  :type="isHidePassword ? 'password' : 'text'"
+                  @click:append="() => (isHidePassword = !isHidePassword)"
+                ></v-text-field>
+
+                <v-row>
+                  <v-col cols="6">
+                    <v-checkbox
+                      label="Remember Me"
+                      v-model="value"
+                      value="value"
+                      class="mt-0 pt-0"
+                    ></v-checkbox>
+                  </v-col>
+                  <v-col cols="6">
+                    <a class="float-right text-decoration-underline"
+                      >Forgot Password</a
+                    >
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="primary" dark depressed block @click="submit"
+                  >Login</v-btn
+                >
+              </v-card-actions>
+            </v-form>
+            <v-card-text>
+              <div class="text-center">
+                Don't have an account yet?
+                <a href="">Sign up</a>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -41,6 +71,7 @@ export default {
         username: "",
         password: "",
       },
+      isHidePassword: true,
     };
   },
 
@@ -67,39 +98,7 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-.md-layout-item {
-  background: white;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0;
-}
-.content .login-img {
-  width: 50%px;
-  height: 417px;
-  float: right;
-}
-.col {
-  width: 50%;
-  float: left;
-}
-.login-section label {
-  display: block;
-}
-.login-button {
-  display: block;
-}
-.login-section h3 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.login-section-body {
-  margin-left: 30%;
-}
-
-input,
-select,
-textarea {
-  border-style: solid;
+.container {
+  background-color: #f5f5f5;
 }
 </style>

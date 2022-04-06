@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.models;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "schedules")
 public class Schedule {
     @Id

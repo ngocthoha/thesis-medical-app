@@ -25,6 +25,7 @@ public class AppointmentDTO {
     private String symptom;
     private String description;
     private String timeSituation;
+    private Boolean selfTreatment;
     private Collection<File> files;
 
     public static AppointmentDTO from(Appointment appointment) {
@@ -39,6 +40,7 @@ public class AppointmentDTO {
                 .symptom(appointment.getSymptom())
                 .description(appointment.getDescription())
                 .timeSituation(appointment.getTimeSituation())
+                .selfTreatment(appointment.getSelfTreatment())
                 .files(appointment.getFiles())
                 .build();
     }

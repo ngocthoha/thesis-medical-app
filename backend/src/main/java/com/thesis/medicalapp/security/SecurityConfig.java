@@ -47,6 +47,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/api/files/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers(POST, "/api/appointments/**").hasAnyAuthority("ROLE_USER")
                 .antMatchers(POST, "/api/doctor/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(POST, "/api/records/**").hasAnyAuthority("ROLE_USER")
                 .anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

@@ -91,7 +91,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     public List<ScheduleDTO> getSchedulesByDoctor() {
         Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
-        System.out.println(doctor.getName());
         List<Schedule> schedules = scheduleRepository.findAllByDoctor(doctor)
                 .stream()
                 .collect(Collectors.toList());

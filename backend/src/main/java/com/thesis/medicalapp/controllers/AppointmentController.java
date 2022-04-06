@@ -4,6 +4,7 @@ import com.thesis.medicalapp.models.Appointment;
 import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.File;
 import com.thesis.medicalapp.models.Profile;
+import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.payload.response.MessageResponse;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -35,14 +37,15 @@ public class AppointmentController {
     private final FileService fileService;
 
     @PostMapping("/appointments")
-    public ResponseEntity<Object> saveAppointment(
+    public ResponseEntity<ApiResponse> saveAppointment(
             @RequestParam("profileId") String profileId,
             @RequestParam("doctorId") String doctorId,
-            @RequestParam("date") Date date,
+            @RequestParam("date") String date,
             @RequestParam("time") String time,
             @RequestParam(name = "symptom", required = false) String symptom,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "timeSituation", required = false) String timeSituation,
+            @RequestParam(name = "selfTreatment", required = false) Boolean selfTreatment,
             @RequestParam(name = "files", required = false) MultipartFile[] files
     ) {
             try {
@@ -53,11 +56,18 @@ public class AppointmentController {
                 appointment.setDoctor(doctor);
                 appointment.setStt(1);
                 appointment.setRoom("H2");
-                appointment.setDate(date);
+                Date dateFormat = new Date();
+                try {
+                    dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                appointment.setDate(dateFormat);
                 appointment.setTime(time);
                 appointment.setSymptom(symptom);
                 appointment.setDescription(description);
                 appointment.setTimeSituation(timeSituation);
+                appointment.setSelfTreatment(selfTreatment);
                 appointment.setFiles(new ArrayList<>());
                 if (null != files) {
                     Arrays.asList(files).stream().forEach(file -> {
@@ -70,11 +80,15 @@ public class AppointmentController {
                     });
                 }
                 AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
-                return ResponseEntity.status(HttpStatus.OK).body(appointmentDTO);
+                return ResponseEntity.status(HttpStatus.OK).body(
+                        new ApiResponse(1, "Success", appointmentDTO)
+                );
             } catch (Exception e) {
                 System.out.println("Error create appointment " + e.getMessage());
                 MessageResponse message = new MessageResponse(e.getMessage());
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        new ApiResponse(0, e.getMessage(), null)
+                );
             }
     }
     @GetMapping("/appointments")
@@ -82,7 +96,7 @@ public class AppointmentController {
         return ResponseEntity.ok().body(appointmentService.getAppointmentByProfileId(profileId));
     }
     @PatchMapping("/appointments")
-    public ResponseEntity<Object> updateAppointment(
+    public ResponseEntity<ApiResponse> updateAppointment(
             @RequestParam("id") String id,
             @RequestParam("stt") Integer stt,
             @RequestParam("room") String room,
@@ -93,6 +107,7 @@ public class AppointmentController {
             @RequestParam(name = "symptom", required = false) String symptom,
             @RequestParam(name = "description", required = false) String description,
             @RequestParam(name = "timeSituation", required = false) String timeSituation,
+            @RequestParam(name = "selfTreatment", required = false) Boolean selfTreatment,
             @RequestParam(name = "files", required = false) MultipartFile[] files,
             @RequestParam(name = "deleteFile", required = false) String fileId
     ) {
@@ -109,6 +124,7 @@ public class AppointmentController {
                 appointment.setSymptom(symptom);
                 appointment.setDescription(description);
                 appointment.setTimeSituation(timeSituation);
+                appointment.setSelfTreatment(selfTreatment);
                 if (null != files) {
                     Arrays.asList(files).stream().forEach(file -> {
                         try {
@@ -123,16 +139,28 @@ public class AppointmentController {
                     fileService.removeFile(fileId);
                 }
                 int result = appointmentService.updateAppointment(appointment);
-                return ResponseEntity.ok(result);
+                return ResponseEntity.ok(
+                        new ApiResponse(1, "Success", null)
+                );
             } catch (Exception e) {
                 System.out.println("Error in update appointment " + e.getMessage());
                 MessageResponse message = new MessageResponse(e.getMessage());
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        new ApiResponse(0, e.getMessage(), null)
+                );
             }
     }
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity<Integer> removeAppointment(@PathVariable String id) {
+    public ResponseEntity<ApiResponse> removeAppointment(@PathVariable String id) {
         int result = appointmentService.removeAppointment(id);
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(
+                new ApiResponse(result, "", null)
+        );
+    }
+
+    @GetMapping("/appointments/doctor")
+    public ResponseEntity<List<Object>> getAppointmentsByDateAndDoctor(@RequestParam String date) {
+        System.out.println("get appointments by date and doctor");
+        return ResponseEntity.ok().body(appointmentService.getAppointmentsByDateAndDoctor(date));
     }
 }

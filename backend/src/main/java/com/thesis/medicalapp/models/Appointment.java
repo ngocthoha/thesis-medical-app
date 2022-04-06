@@ -27,6 +27,7 @@ public class Appointment {
     private String symptom;
     private String description;
     private String timeSituation;
+    private Boolean selfTreatment;
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
