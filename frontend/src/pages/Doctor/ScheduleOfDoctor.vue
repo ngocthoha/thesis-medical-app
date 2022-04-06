@@ -144,21 +144,21 @@
             >
               <h5>
                 <b
-                  >Ngày {{ getforHS.date }}, Thời gian {{ getforHS.time }},
-                  Phòng số {{ getforHS.room }}</b
+                  >Ngày {{ record.appointment.date }}, Thời gian {{ record.appointment.time }},
+                  Phòng số {{ record.appointment.room }}</b
                 >
               </h5>
 
-              <h5><b>Họ và tên: </b>{{ getforHS.profile.name }}</h5>
-              <h5><b>Triệu chứng: </b>{{ getforHS.symptom }}</h5>
-              <h5><b>Mô tả chi tiết: </b>{{ getforHS.description }}</h5>
+              <h5><b>Họ và tên: </b>{{ record.appointment.profile.name }}</h5>
+              <h5><b>Triệu chứng: </b>{{ record.appointment.symptom }}</h5>
+              <h5><b>Mô tả chi tiết: </b>{{ record.appointment.description }}</h5>
               <h5>
                 <b
                   >Thời gian diễn ra tình trạng trên:
-                  {{ getforHS.timeSituation }}</b
+                  {{ record.appointment.timeSituation }}</b
                 >
               </h5>
-              <h5><b>Đã tự điều trị bệnh: </b>{{ getforHS.selfTreatment }}</h5>
+              <h5><b>Đã tự điều trị bệnh: </b>{{ record.appointment.selfTreatment }}</h5>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions style="flex-direction: row-reverse">
@@ -194,54 +194,493 @@
                 </v-btn>
               </v-card-title>
 
-              <v-card-text>
-                <p>
-                  <b>BÁC SĨ: {{ getforHS.doctor.name }}</b>
-                </p>
-                <p>
-                  <b>NGÀY KHÁM: {{ getforHS.date }}</b>
-                </p>
-                <p>
-                  <b> THỜI GIAN:{{ getforHS.time }} </b>
-                </p>
-              </v-card-text>
+             <v-card-text>
+                  <div>
+                    <p
+                      style="
+                        display: flex;
+                        width: 30%;
+                        margin: 0px;
+                        float: left;
+                      "
+                    >
+                      <b style="margin-top: 20px; margin-right: 20px"
+                        >BÁC SĨ: </b
+                      ><v-text-field
+                        style="width: 50%; margin: 0px"
+                        v-model="record.appointment.doctor.name"
+                      ></v-text-field>
+                     
+                    </p>
+                    <p
+                      style="
+                        display: flex;
+                        width: 35%;
+                        margin: 0px;
+                        float: left;
+                      "
+                    >
+                      <b style="margin-top: 20px; margin-right: 20px"
+                        >NGÀY KHÁM:
+                      </b>
+                      <v-menu
+                        v-model="menu12"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="record.appointment.date"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="record.appointment.date"
+                          @input="menu12 = false"
+                        ></v-date-picker>
+                      </v-menu>
+                    </p>
+                    <p style="display: flex; width: 35%; margin: 0px">
+                      <b style="margin-top: 20px; margin-right: 20px"
+                        >THỜI GIAN:
+                      </b>
+                      <v-autocomplete
+                        style="margin-top: 10px"
+                        v-model="record.appointment.time"
+                        :items="timeselect"
+                        dense
+                        filled
+                      ></v-autocomplete>
+                    </p>
+                  </div>
+                </v-card-text>
 
-              <v-stepper non-linear v-model="e1">
-                <v-stepper-header>
-                  <v-stepper-step editable step="1"
-                    >Thông tin bệnh nhân
-                  </v-stepper-step>
+                <v-stepper non-linear v-model="e1">
+                  <v-stepper-header>
+                    <v-stepper-step editable step="1"
+                      >Thông tin bệnh nhân
+                    </v-stepper-step>
 
-                  <v-divider></v-divider>
+                    <v-divider></v-divider>
 
-                  <v-stepper-step editable step="2">
-                    Chuẩn đoán bệnh
-                  </v-stepper-step>
+                    <v-stepper-step editable step="2">
+                      Chuẩn đoán bệnh
+                    </v-stepper-step>
 
-                  <v-divider></v-divider>
+                    <v-divider></v-divider>
 
-                  <v-stepper-step step="3" editable> Kê đơn </v-stepper-step>
-                </v-stepper-header>
+                    <v-stepper-step step="3" editable> Kê đơn </v-stepper-step>
+                  </v-stepper-header>
 
-                <v-stepper-items>
-                  <v-stepper-content :key="`${1}-content`" :step="1">
-                    <v-card class="mb-12" color="white" height="auto">
-                      <div class="gop">
-                        <div class="gop0">
-                          <div class="gop1">
-                            <div class="textform">
-                              <p>1. Họ và tên:</p>
-                              <input
-                                v-model="getforHS.profile.name"
-                                type="text"
-                                placeholder="Nhập họ và tên..."
-                              />
+                  <v-stepper-items>
+                    <v-stepper-content :key="`${1}-content`" :step="1">
+                      <v-card class="mb-12" color="white" height="auto">
+                        <div class="gop">
+                          <div class="gop0">
+                            <div class="gop1">
+                              <div class="textform">
+                                <p>1. Họ và tên:</p>
+                               
+                                 <v-text-field
+                       v-model="record.appointment.profile.name"
+                   
+                      ></v-text-field>
+                              </div>
+                              <div class="textform">
+                                <p>2. Năm sinh:</p>
+                                <div class="namsinh">
+                                  <v-menu
+                                    v-model="menu11"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    transition="scale-transition"
+                                    offset-y
+                                    min-width="auto"
+                                  >
+                                    <template v-slot:activator="{ on, attrs }">
+                                      <v-text-field
+                                        v-model="record.appointment.profile.dob"
+                                        prepend-icon="mdi-calendar"
+                                        readonly
+                                        v-bind="attrs"
+                                        v-on="on"
+                                      ></v-text-field>
+                                    </template>
+                                    <v-date-picker
+                                      @input="menu11 = false"
+                                      v-model="record.appointment.profile.dob"
+                                    ></v-date-picker>
+                                  </v-menu>
+                                </div>
+                              </div>
+                              <div class="textform">
+                                <p>3. Giới tính:</p>
+                                <div class="gioitinh">
+                                  <v-radio-group
+                                    row
+                                    v-model="record.appointment.profile.gender"
+                                  >
+                                    <v-radio label="Nam" value="Nam"></v-radio>
+                                    <v-radio label="Nữ" value="Nữ"></v-radio>
+                                  </v-radio-group>
+                                </div>
+                              </div>
+                              <div class="textform">
+                                <p>4. Dân tộc:</p>
+                                <div class="autocom">
+                                  <v-toolbar color="white">
+                                    <v-autocomplete
+                                      v-model="record.appointment.profile.folk"
+                                      :items="states"
+                                      :search-input.sync="search1"
+                                      cache-items
+                                      class="mx-4"
+                                      flat
+                                      hide-no-data
+                                      hide-details
+                                      label="Dân tộc..."
+                                      solo-inverted
+                                    ></v-autocomplete>
+                                  </v-toolbar>
+                                </div>
+                              </div>
+                              <div class="textform">
+                                <p>5. Mã số BHYT(Nếu có):</p>
+                               
+                                    <v-text-field
+                        v-model="
+                                    record.appointment.profile.healthInsurance
+                                  "
+                   
+                      ></v-text-field>
+                              </div>
+                              <div class="textform">
+                                <p>6. Nghề nghiệp</p>
+                              
+                                <v-text-field v-model="record.appointment.profile.job"></v-text-field>
+                              </div>
+
+                              <div class="textform">
+                                <p>7. Địa chỉ:</p>
+                             
+                                <v-text-field v-model="record.appointment.profile.address"></v-text-field>
+                              </div>
+
+                              <div class="textform">
+                                <p>8. Tên người giám hộ(Nếu có)</p>
+                              
+                                <v-text-field v-model="record.appointment.profile.protector"></v-text-field>
+                              </div>
+                              <div class="textform">
+                                <p>9. SĐT Liên lạc:</p>
+                           
+                                <v-text-field v-model="
+                                    record.appointment.profile.phoneNumber
+                                  "></v-text-field>
+                              </div>
+
+                              <div class="textform">
+                                <p>10. CMND:</p>
+                              
+                                <v-text-field v-model="
+                                    record.appointment.profile.identityCard
+                                  "></v-text-field>
+                              </div>
                             </div>
-                            <div class="textform">
-                              <p>2. Năm sinh:</p>
-                              <div class="namsinh">
+                          </div>
+                        </div>
+                      </v-card>
+                      <v-btn color="primary" @click="nextStep(1)">
+                        Tiếp tục
+                      </v-btn>
+                    </v-stepper-content>
+
+                    <v-stepper-content :key="`${2}-content`" :step="2">
+                      <v-card class="mb-12" color="white" height="auto">
+                        <div class="page2_0">
+                          <div class="page2_1">
+                            <div class="page2_2">
+                              <div class="textpage2">
+                                <p>1. Quá trình bệnh lí:</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.pathological"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    label="Biểu hiện của bệnh"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    rows="1"
+                                    auto-grow
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>2. Tiền sử bệnh bản thân:</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.personalMedicalHistory"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    label="Các bệnh đã mắc"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    auto-grow
+                                    rows="1"
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+                              <div class="textpage2">
+                                <p>3. Tiền sử bệnh gia đình:</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.familyMedicalHistory"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    label="Tiền sử bệnh gia đình"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    auto-grow
+                                    rows="1"
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+                              <div class="textpage2">
+                                <p>4. Khám xét toàn thân:</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.bodyInspection"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    label="Kết quả khám toàn thân"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    auto-grow
+                                    rows="1"
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+                          
+                                <div class="ketquatongquat" style="display: flex;">
+                                  <div class="inline" style="display:flex; width:25%;">
+                                  <p style="width:50px !important; margin-top:10px;">Mạch:</p> 
+                                  <v-text-field v-model="record.bloodVessel" style="width:20%;padding:0px;"></v-text-field>
+                                  <p style="width:60px !important; margin-top:10px;">lần/phút</p>
+                                   </div>
+                                  
+                                  
+                                
+                             
+
+                                   <div class="inline" style="display:flex; width:25%;">
+                                  <p style="width:50px !important; margin-top:10px;">Nhiệt độ:</p> 
+                                  <v-text-field v-model="record.temperature" style="width:20%;padding:0px;"></v-text-field>
+                                  <p style="width:60px !important; margin-top:10px;">độ C</p>
+                                   </div>
+
+                                    <div class="inline" style="display:flex; width:25%;">
+                                  <p style="width:50px !important; margin-top:10px;">Huyết áp:</p> 
+                                  <v-text-field  v-model="record.bloodPressure" style="width:20%;padding:0px;"></v-text-field>
+                                  <p style="width:60px !important; margin-top:10px;">mmHg</p>
+                                   </div>
+
+                                       <div class="inline" style="display:flex; width:25%;">
+                                  <p style="width:50px !important; margin-top:10px;">Nhịp tim:</p> 
+                                  <v-text-field v-model="record.heartbeat" style="width:20%;padding:0px;"></v-text-field>
+                                  <p style="width:60px !important; margin-top:10px;">lần/phút</p>
+                                   </div>
+                            
+                                 
+                                
+                                 
+                                </div>
+                       
+                              <div class="textpage2">
+                                <p>5. Khám xét các bộ phận</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.partsInspection"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    label="Kết quả khám bộ phận"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    auto-grow
+                                    rows="1"
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>6. Tóm tắt kết quả lâm sàng:</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.summary"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    label="Chuẩn đoán lâm sàng"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    auto-grow
+                                    rows="1"
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>7. Hình ảnh bổ sung:</p>
+                                <v-file-input
+                                  v-model="record.files"
+                                  label="File input"
+                                  filled
+                                  multiple
+                                  prepend-icon="mdi-camera"
+                                ></v-file-input>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </v-card>
+
+                      <v-btn text @click="beforeStep(2)"> Quay lại </v-btn>
+                      <v-btn color="primary" @click="nextStep(2)">
+                        Tiếp tục
+                      </v-btn>
+                    </v-stepper-content>
+
+                    <v-stepper-content :key="`${3}-content`" :step="3">
+                      <v-card class="mb-12" color="white" height="auto">
+                        <div class="page2_0">
+                          <div class="page2_1">
+                            <div class="page2_2">
+                              <div class="textpage2">
+                                <p>CHUẨN ĐOÁN NHẬP VIỆN:</p>
+                                <v-checkbox
+                                  v-model="record.hospitalize"
+                                  label="Yều cầu nhập viện"
+                                ></v-checkbox>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>KHOA ĐIỀU TRỊ:</p>
+                                <v-autocomplete
+                                  v-model="record.facultyTreatment"
+                                  :items="dskhoa"
+                                  dense
+                                  filled
+                                ></v-autocomplete>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>KÊ ĐƠN THUỐC:</p>
+                                <div class="textpage3">
+                                  <div class="textpage4">
+                                    <div
+                                      class="ketquatongquat"
+                                      v-for="(thuoc_1, k) in record.medicines"
+                                      :key="k"
+                                    >
+                                      <p style="width:100%; text-align: left;:">
+                                        <i> {{ k + 1 }}</i>
+                                      </p>
+                                      <v-autocomplete
+                                        v-model="thuoc_1.nameMedicine"
+                                        :items="dsthuoc"
+                                        dense
+                                        filled
+                                        label="Tên thuốc"
+                                      ></v-autocomplete>
+                                      <div class="combosoluongloai">
+                                        <div class="soluong">
+                                          <p style="float:left; margin-top:15px; margin-right:10px;">Số lượng:</p>
+                                       
+                                          <v-text-field  v-model="thuoc_1.numberMedicine" style="width:30%;"></v-text-field>
+                                        </div>
+
+                                        <div class="loai">
+                                          <v-autocomplete
+                                            v-model="thuoc_1.typeMedicine"
+                                            :items="dsloai"
+                                            dense
+                                            filled
+                                            label="loại"
+                                          ></v-autocomplete>
+                                        </div>
+                                      </div>
+                                      <div class="cachdung">
+                                        <v-autocomplete
+                                          v-model="thuoc_1.useMedicine"
+                                          :items="dscachdung"
+                                          dense
+                                          chips
+                                          small-chips
+                                          label="Cách dùng"
+                                          multiple
+                                          solo
+                                        ></v-autocomplete>
+                                      </div>
+                                      <v-btn
+                                        block
+                                        @click="removedonthuoc(medicines, k)"
+                                      >
+                                        Xóa
+                                      </v-btn>
+
+                                      <v-divider
+                                        style="margin-bottom: 20px"
+                                      ></v-divider>
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class="controls">
+                                  <v-btn
+                                    block
+                                    style="width: 100%"
+                                    @click="addnewdonthuoc(medicines)"
+                                  >
+                                    Thêm mới
+                                  </v-btn>
+                                </div>
+                                <v-divider
+                                  style="margin-bottom: 20px"
+                                ></v-divider>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>LƯU Ý:</p>
+                                <v-container fluid>
+                                  <v-textarea
+                                    v-model="record.notes"
+                                    clearable
+                                    clear-icon="mdi-close-circle"
+                                    background-color="grey lighten-2"
+                                    color="cyan"
+                                    auto-grow
+                                    rows="3"
+                                    style="border-radius: 5px; padding: 0px 0px"
+                                  ></v-textarea>
+                                </v-container>
+                              </div>
+
+                              <div class="textpage2">
+                                <p>NGÀY TÁI KHÁM:</p>
+
                                 <v-menu
-                                  v-model="menu11"
+                                  v-model="menu10"
                                   :close-on-content-click="false"
                                   :nudge-right="40"
                                   transition="scale-transition"
@@ -250,7 +689,7 @@
                                 >
                                   <template v-slot:activator="{ on, attrs }">
                                     <v-text-field
-                                      v-model="getforHS.profile.dob"
+                                      v-model="record.reExaminationDate"
                                       prepend-icon="mdi-calendar"
                                       readonly
                                       v-bind="attrs"
@@ -258,403 +697,21 @@
                                     ></v-text-field>
                                   </template>
                                   <v-date-picker
-                                    v-model="getforHS.profile.dob"
-                                    @input="menu11 = false"
+                                    v-model="record.reExaminationDate"
+                                    @input="menu10 = false"
                                   ></v-date-picker>
                                 </v-menu>
                               </div>
                             </div>
-                            <div class="textform">
-                              <p>3. Giới tính:</p>
-                              <div class="gioitinh">
-                                <v-radio-group
-                                  v-model="getforHS.profile.gender"
-                                  row
-                                >
-                                  <v-radio label="Nam" value="Nam"></v-radio>
-                                  <v-radio label="Nữ" value="Nữ"></v-radio>
-                                </v-radio-group>
-                              </div>
-                            </div>
-                            <div class="textform">
-                              <p>4. Dân tộc:</p>
-                              <div class="autocom">
-                                <v-toolbar color="white">
-                                  <v-autocomplete
-                                    v-model="getforHS.profile.folk"
-                                    :items="states"
-                                    :search-input.sync="search1"
-                                    cache-items
-                                    class="mx-4"
-                                    flat
-                                    hide-no-data
-                                    hide-details
-                                    label="Dân tộc..."
-                                    solo-inverted
-                                  ></v-autocomplete>
-                                </v-toolbar>
-                              </div>
-                            </div>
-                            <div class="textform">
-                              <p>5. Mã số BHYT(Nếu có):</p>
-                              <input
-                                v-model="getforHS.profile.healthInsurance"
-                                type="text"
-                                placeholder="Nhập MSBHYT..."
-                              />
-                            </div>
-                            <div class="textform">
-                              <p>6. Nghề nghiệp</p>
-                              <input
-                                v-model="getforHS.profile.job"
-                                type="text"
-                                placeholder="Nhập tên nghề nghiệp..."
-                              />
-                            </div>
-
-                            <div class="textform">
-                              <p>7. Địa chỉ:</p>
-                              <input
-                                v-model="getforHS.profile.address"
-                                type="text"
-                                placeholder="Nhập địa chỉ..."
-                              />
-                            </div>
-
-                            <div class="textform">
-                              <p>8. Tên người giám hộ(Nếu có)</p>
-                              <input
-                                v-model="getforHS.profile.protector"
-                                type="text"
-                                placeholder="Nhập tên người giám hộ..."
-                              />
-                            </div>
-                            <div class="textform">
-                              <p>9. SĐT Liên lạc:</p>
-                              <input
-                                v-model="getforHS.profile.phoneNumber"
-                                type="text"
-                                placeholder="Nhập SĐT..."
-                              />
-                            </div>
-
-                            <div class="textform">
-                              <p>10. CMND:</p>
-                              <input
-                                v-model="getforHS.profile.identityCard"
-                                type="text"
-                                placeholder="Nhập CMND"
-                              />
-                            </div>
                           </div>
                         </div>
-                      </div>
-                    </v-card>
-                    <v-btn color="primary" @click="nextStep(1)">
-                      Tiếp tục
-                    </v-btn>
-                  </v-stepper-content>
+                      </v-card>
 
-                  <v-stepper-content :key="`${2}-content`" :step="2">
-                    <v-card class="mb-12" color="white" height="auto">
-                      <div class="page2_0">
-                        <div class="page2_1">
-                          <div class="page2_2">
-                            <div class="textpage2">
-                              <p>1. Quá trình bệnh lí:</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  label="Biểu hiện của bệnh"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  rows="1"
-                                  auto-grow
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>2. Tiền sử bệnh bản thân:</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  label="Các bệnh đã mắc"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  auto-grow
-                                  rows="1"
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-                            <div class="textpage2">
-                              <p>3. Tiền sử bệnh gia đình:</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  label="Tiền sử bệnh gia đình"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  auto-grow
-                                  rows="1"
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-                            <div class="textpage2">
-                              <p>4. Khám xét toàn thân:</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  label="Kết quả khám toàn thân"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  auto-grow
-                                  rows="1"
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-                            <div class="textpage2">
-                              <div class="ketquatongquat">
-                                <p>Mạch:</p>
-                                <input type="text" />
-                                <p>lần/phút</p>
-                                <p style="color: white">______</p>
-                                <p>Nhiệt độ:</p>
-                                <input type="text" />
-                                <p>độ C</p>
-                                <p style="color: white">______</p>
-                                <p>Huyết áp:</p>
-                                <input type="text" />
-                                <p>mmHg</p>
-                                <p style="color: white">______</p>
-                                <p>Nhịp tim:</p>
-                                <input type="text" />
-                                <p>lần/phút</p>
-                                <br />
-                                <p style="color: white; margin-bottom: 20px">
-                                  .
-                                </p>
-                              </div>
-                            </div>
-                            <div class="textpage2">
-                              <p>5. Khám xét các bộ phận</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  label="Kết quả khám bộ phận"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  auto-grow
-                                  rows="1"
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>6. Tóm tắt kết quả lâm sàng:</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  label="Chuẩn đoán lâm sàng"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  auto-grow
-                                  rows="1"
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>7. Hình ảnh bổ sung:</p>
-                              <v-file-input
-                                label="File input"
-                                filled
-                                multiple
-                                prepend-icon="mdi-camera"
-                              ></v-file-input>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </v-card>
-
-                    <v-btn text @click="beforeStep(2)"> Quay lại </v-btn>
-                    <v-btn color="primary" @click="nextStep(2)">
-                      Tiếp tục
-                    </v-btn>
-                  </v-stepper-content>
-
-                  <v-stepper-content :key="`${3}-content`" :step="3">
-                    <v-card class="mb-12" color="white" height="auto">
-                      <div class="page2_0">
-                        <div class="page2_1">
-                          <div class="page2_2">
-                            <div class="textpage2">
-                              <p>CHUẨN ĐOÁN NHẬP VIỆN:</p>
-                              <v-radio-group row>
-                                <v-radio
-                                  label="Yêu cầu nhập viện"
-                                  value="Yes"
-                                ></v-radio>
-                                <v-radio
-                                  label="Không nhập viện"
-                                  value="No"
-                                ></v-radio>
-                              </v-radio-group>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>KHOA ĐIỀU TRỊ:</p>
-                              <v-autocomplete
-                                v-model="khoa"
-                                :items="dskhoa"
-                                dense
-                                filled
-                              ></v-autocomplete>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>KÊ ĐƠN THUỐC:</p>
-                              <div class="textpage3">
-                                <div class="textpage4">
-                                  <div
-                                    class="ketquatongquat"
-                                    v-for="(thuoc_1, k) in donthuoc"
-                                    :key="k"
-                                  >
-                                    <p style="width:100%; text-align: left;:">
-                                      <i> {{ k + 1 }}</i>
-                                    </p>
-                                    <v-autocomplete
-                                      v-model="thuoc_1.tenthuoc"
-                                      :items="dsthuoc"
-                                      dense
-                                      filled
-                                      label="Tên thuốc"
-                                    ></v-autocomplete>
-                                    <div class="combosoluongloai">
-                                      <div class="soluong">
-                                        <p>Số lượng:</p>
-                                        <input
-                                          v-model="thuoc_1.soluongthuoc"
-                                          type="text"
-                                          style="margin: 0px 10px"
-                                        />
-                                      </div>
-
-                                      <div class="loai">
-                                        <v-autocomplete
-                                          v-model="thuoc_1.loaisudung"
-                                          :items="dsloai"
-                                          dense
-                                          filled
-                                          label="loại"
-                                        ></v-autocomplete>
-                                      </div>
-                                    </div>
-                                    <div class="cachdung">
-                                      <v-autocomplete
-                                        v-model="thuoc_1.cachdungthuoc"
-                                        :items="dscachdung"
-                                        dense
-                                        chips
-                                        small-chips
-                                        label="Cách dùng"
-                                        multiple
-                                        solo
-                                      ></v-autocomplete>
-                                    </div>
-                                    <v-btn
-                                      block
-                                      @click="removedonthuoc(donthuoc, k)"
-                                    >
-                                      Xóa
-                                    </v-btn>
-
-                                    <v-divider
-                                      style="margin-bottom: 20px"
-                                    ></v-divider>
-                                  </div>
-                                </div>
-                              </div>
-
-                              <div class="controls">
-                                <v-btn
-                                  block
-                                  style="width: 100%"
-                                  @click="addnewdonthuoc(donthuoc)"
-                                >
-                                  Thêm mới
-                                </v-btn>
-                              </div>
-                              <v-divider
-                                style="margin-bottom: 20px"
-                              ></v-divider>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>LƯU Ý:</p>
-                              <v-container fluid>
-                                <v-textarea
-                                  clearable
-                                  clear-icon="mdi-close-circle"
-                                  background-color="grey lighten-2"
-                                  color="cyan"
-                                  auto-grow
-                                  rows="3"
-                                  style="border-radius: 5px; padding: 0px 0px"
-                                ></v-textarea>
-                              </v-container>
-                            </div>
-
-                            <div class="textpage2">
-                              <p>NGÀY TÁI KHÁM:</p>
-
-                              <v-menu
-                                v-model="menu10"
-                                :close-on-content-click="false"
-                                :nudge-right="40"
-                                transition="scale-transition"
-                                offset-y
-                                min-width="auto"
-                              >
-                                <template v-slot:activator="{ on, attrs }">
-                                  <v-text-field
-                                    v-model="datetaikham"
-                                    prepend-icon="mdi-calendar"
-                                    readonly
-                                    v-bind="attrs"
-                                    v-on="on"
-                                  ></v-text-field>
-                                </template>
-                                <v-date-picker
-                                  v-model="datetaikham"
-                                  @input="menu10 = false"
-                                ></v-date-picker>
-                              </v-menu>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </v-card>
-
-                    <v-btn text @click="beforeStep(3)"> Quay Lại </v-btn>
-                    <v-btn color="primary"> Lưu bệnh án </v-btn>
-                  </v-stepper-content>
-                </v-stepper-items>
-              </v-stepper>
+                      <v-btn text @click="beforeStep(3)"> Quay Lại </v-btn>
+                      <v-btn color="primary"> Lưu bệnh án </v-btn>
+                    </v-stepper-content>
+                  </v-stepper-items>
+                </v-stepper>
             </v-card>
           </v-form>
         </v-dialog>
@@ -667,6 +724,17 @@
 export default {
   data() {
     return {
+      nulltime: null,
+    timeselect: [
+      "7:00-8:00",
+      "8:00-9:00",
+      "9:00-10:00",
+      "10:00-11:00",
+      "11:00-12:00",
+      "12:00-13:00",
+      "14:00-15:00",
+      "15:00-16:00",
+    ],
       panel: [],
       menu11: false,
       menu10: false,
@@ -692,8 +760,10 @@ export default {
           time: "10-03-2022",
         },
       ],
-      getforHS: {
-        times: null,
+      record:  {
+      id: null,
+      idrecord: null,
+      appointment: {
         id: null,
         stt: null,
         room: null,
@@ -712,19 +782,43 @@ export default {
           protector: null,
         },
         doctor: {
-          id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
-          name: "John",
-          specialty: "specialty",
-          level: "level",
+          id: null,
+          name: null,
+          specialty: null,
+          level: null,
         },
-        date: "2022-03-29",
-        time: "10-11",
-        symptom: "dau tim",
-        description: "dau tim",
-        timeSituation: "20",
-        selfTreatment: true,
+        date: null,
+        time: null,
+        symptom: null,
+        description: null,
+        timeSituation: null,
+        selfTreatment: null,
         files: [],
       },
+      pathological: null,
+      personalMedicalHistory: null,
+      familyMedicalHistory: null,
+      bodyInspection: null,
+      bloodVessel: null,
+      temperature: null,
+      bloodPressure: null,
+      heartbeat: null,
+      summary: null,
+      partsInspection: null,
+      hospitalize: null,
+      facultyTreatment: null,
+      medicines: [
+        {
+          nameMedicine: null,
+          numberMedicine: null,
+          typeMedicine: null,
+          useMedicine: null,
+        },
+      ],
+      notes: null,
+      reExaminationDate: null,
+      files: [],
+    },
       schedule: [
         {
           times: "10:00-11:00",
@@ -754,7 +848,7 @@ export default {
                 level: "level",
               },
               date: "2022-03-29",
-              time: "10-11",
+              time: "10:00-11:00",
               symptom: "dau tim",
               description: "dau tim",
               timeSituation: "20",
@@ -855,7 +949,7 @@ export default {
                 level: "level",
               },
               date: "2022-03-29",
-              time: "10-11",
+              time: "10:00-11:00",
               symptom: "dau tim",
               description: "dau tim",
               timeSituation: "20",
@@ -1007,92 +1101,92 @@ export default {
       this.hami = i;
       this.hamj = j;
 
-      this.getforHS.times = this.schedule[i].times;
-      this.getforHS.id = this.schedule[i].appointment[j].id;
-      this.getforHS.stt = this.schedule[i].appointment[j].stt;
-      this.getforHS.room = this.schedule[i].appointment[j].room;
+      this.record.appointment.times = this.schedule[i].times;
+      this.record.appointment.id = this.schedule[i].appointment[j].id;
+      this.record.appointment.stt = this.schedule[i].appointment[j].stt;
+      this.record.appointment.room = this.schedule[i].appointment[j].room;
 
-      this.getforHS.profile.id = this.schedule[i].appointment[j].profile.id;
-      this.getforHS.profile.profileNumber =
+      this.record.appointment.profile.id = this.schedule[i].appointment[j].profile.id;
+      this.record.appointment.profile.profileNumber =
         this.schedule[i].appointment[j].profile.profileNumber;
-      this.getforHS.profile.name = this.schedule[i].appointment[j].profile.name;
-      this.getforHS.profile.address =
+      this.record.appointment.profile.name = this.schedule[i].appointment[j].profile.name;
+      this.record.appointment.profile.address =
         this.schedule[i].appointment[j].profile.address;
-      this.getforHS.profile.phoneNumber =
+      this.record.appointment.profile.phoneNumber =
         this.schedule[i].appointment[j].profile.phoneNumber;
-      this.getforHS.profile.dob = this.schedule[i].appointment[j].profile.dob;
-      this.getforHS.profile.job = this.schedule[i].appointment[j].profile.job;
-      this.getforHS.profile.identityCard =
+      this.record.appointment.profile.dob = this.schedule[i].appointment[j].profile.dob;
+      this.record.appointment.profile.job = this.schedule[i].appointment[j].profile.job;
+      this.record.appointment.profile.identityCard =
         this.schedule[i].appointment[j].profile.identityCard;
-      this.getforHS.profile.healthInsurance =
+      this.record.appointment.profile.healthInsurance =
         this.schedule[i].appointment[j].profile.healthInsurance;
-      this.getforHS.profile.folk = this.schedule[i].appointment[j].profile.folk;
-      this.getforHS.profile.gender =
+      this.record.appointment.profile.folk = this.schedule[i].appointment[j].profile.folk;
+      this.record.appointment.profile.gender =
         this.schedule[i].appointment[j].profile.gender;
-      this.getforHS.profile.protector =
+      this.record.appointment.profile.protector =
         this.schedule[i].appointment[j].profile.protector;
 
-      this.getforHS.doctor.id = this.schedule[i].appointment[j].doctor.id;
-      this.getforHS.doctor.name = this.schedule[i].appointment[j].doctor.name;
-      this.getforHS.doctor.specialty =
+      this.record.appointment.doctor.id = this.schedule[i].appointment[j].doctor.id;
+      this.record.appointment.doctor.name = this.schedule[i].appointment[j].doctor.name;
+      this.record.appointment.doctor.specialty =
         this.schedule[i].appointment[j].doctor.specialty;
-      this.getforHS.doctor.level = this.schedule[i].appointment[j].doctor.level;
+      this.record.appointment.doctor.level = this.schedule[i].appointment[j].doctor.level;
 
-      this.getforHS.date = this.schedule[i].appointment[j].date;
-      this.getforHS.time = this.schedule[i].appointment[j].time;
-      this.getforHS.symptom = this.schedule[i].appointment[j].symptom;
-      this.getforHS.description = this.schedule[i].appointment[j].description;
-      this.getforHS.timeSituation =
+      this.record.appointment.date = this.schedule[i].appointment[j].date;
+      this.record.appointment.time = this.schedule[i].appointment[j].time;
+      this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
+      this.record.appointment.description = this.schedule[i].appointment[j].description;
+      this.record.appointment.timeSituation =
         this.schedule[i].appointment[j].timeSituation;
-      this.getforHS.selfTreatment =
+      this.record.appointment.selfTreatment =
         this.schedule[i].appointment[j].selfTreatment;
-      this.getforHS.files = this.schedule[i].appointment[j].files;
+      this.record.appointment.files = this.schedule[i].appointment[j].files;
     },
     getbenhan(i, j) {
       this.dialogBenhAn = true;
       this.hami = i;
       this.hamj = j;
 
-      this.getforHS.times = this.schedule[i].times;
-      this.getforHS.id = this.schedule[i].appointment[j].id;
-      this.getforHS.stt = this.schedule[i].appointment[j].stt;
-      this.getforHS.room = this.schedule[i].appointment[j].room;
+      this.record.appointment.times = this.schedule[i].times;
+      this.record.appointment.id = this.schedule[i].appointment[j].id;
+      this.record.appointment.stt = this.schedule[i].appointment[j].stt;
+      this.record.appointment.room = this.schedule[i].appointment[j].room;
 
-      this.getforHS.profile.id = this.schedule[i].appointment[j].profile.id;
-      this.getforHS.profile.profileNumber =
+      this.record.appointment.profile.id = this.schedule[i].appointment[j].profile.id;
+      this.record.appointment.profile.profileNumber =
         this.schedule[i].appointment[j].profile.profileNumber;
-      this.getforHS.profile.name = this.schedule[i].appointment[j].profile.name;
-      this.getforHS.profile.address =
+      this.record.appointment.profile.name = this.schedule[i].appointment[j].profile.name;
+      this.record.appointment.profile.address =
         this.schedule[i].appointment[j].profile.address;
-      this.getforHS.profile.phoneNumber =
+      this.record.appointment.profile.phoneNumber =
         this.schedule[i].appointment[j].profile.phoneNumber;
-      this.getforHS.profile.dob = this.schedule[i].appointment[j].profile.dob;
-      this.getforHS.profile.job = this.schedule[i].appointment[j].profile.job;
-      this.getforHS.profile.identityCard =
+      this.record.appointment.profile.dob = this.schedule[i].appointment[j].profile.dob;
+      this.record.appointment.profile.job = this.schedule[i].appointment[j].profile.job;
+      this.record.appointment.profile.identityCard =
         this.schedule[i].appointment[j].profile.identityCard;
-      this.getforHS.profile.healthInsurance =
+      this.record.appointment.profile.healthInsurance =
         this.schedule[i].appointment[j].profile.healthInsurance;
-      this.getforHS.profile.folk = this.schedule[i].appointment[j].profile.folk;
-      this.getforHS.profile.gender =
+      this.record.appointment.profile.folk = this.schedule[i].appointment[j].profile.folk;
+      this.record.appointment.profile.gender =
         this.schedule[i].appointment[j].profile.gender;
-      this.getforHS.profile.protector =
+      this.record.appointment.profile.protector =
         this.schedule[i].appointment[j].profile.protector;
 
-      this.getforHS.doctor.id = this.schedule[i].appointment[j].doctor.id;
-      this.getforHS.doctor.name = this.schedule[i].appointment[j].doctor.name;
-      this.getforHS.doctor.specialty =
+      this.record.appointment.doctor.id = this.schedule[i].appointment[j].doctor.id;
+      this.record.appointment.doctor.name = this.schedule[i].appointment[j].doctor.name;
+      this.record.appointment.doctor.specialty =
         this.schedule[i].appointment[j].doctor.specialty;
-      this.getforHS.doctor.level = this.schedule[i].appointment[j].doctor.level;
+      this.record.appointment.doctor.level = this.schedule[i].appointment[j].doctor.level;
 
-      this.getforHS.date = this.schedule[i].appointment[j].date;
-      this.getforHS.time = this.schedule[i].appointment[j].time;
-      this.getforHS.symptom = this.schedule[i].appointment[j].symptom;
-      this.getforHS.description = this.schedule[i].appointment[j].description;
-      this.getforHS.timeSituation =
+      this.record.appointment.date = this.schedule[i].appointment[j].date;
+      this.record.appointment.time = this.schedule[i].appointment[j].time;
+      this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
+      this.record.appointment.description = this.schedule[i].appointment[j].description;
+      this.record.appointment.timeSituation =
         this.schedule[i].appointment[j].timeSituation;
-      this.getforHS.selfTreatment =
+      this.record.appointment.selfTreatment =
         this.schedule[i].appointment[j].selfTreatment;
-      this.getforHS.files = this.schedule[i].appointment[j].files;
+      this.record.appointment.files = this.schedule[i].appointment[j].files;
     },
   },
 };

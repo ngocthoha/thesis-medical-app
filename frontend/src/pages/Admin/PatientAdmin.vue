@@ -14,7 +14,7 @@
         <template v-slot:top>
           <v-toolbar flat>
             <v-btn color="primary" dark class="mb-2" @click="opennewPantient">
-              Thêm lịch hẹn
+              Thêm bệnh nhân
             </v-btn>
             <v-spacer></v-spacer>
             <v-text-field

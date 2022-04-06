@@ -26,6 +26,8 @@ import DoctorAdmin from "@/pages/Admin/DoctorAdmin.vue";
 import AppointmentAdmin from "@/pages/Admin/AppointmentAdmin.vue";
 import PatientAdmin from "@/pages/Admin/PatientAdmin.vue";
 import RecordAdmin from "@/pages/Admin/RecordAdmin.vue";
+import ScheduleAdmin from "@/pages/Admin/ScheduleAdmin.vue";
+import AccountAdmin from "@/pages/Admin/AccountAdmin.vue";
 
 let authPage = {
   path: "/",
@@ -132,6 +134,16 @@ const routes = [
         path: "admin/record-admin",
         name: "Bệnh án",
         component: RecordAdmin,
+      },
+      {
+        path: "admin/account-admin",
+        name: "Tài khoản",
+        component: AccountAdmin,
+      },
+      {
+        path: "admin/schedule-admin",
+        name: "Lịch trình",
+        component: ScheduleAdmin,
       },
     ],
   },

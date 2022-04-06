@@ -49,7 +49,7 @@
       </sidebar-link>
       <sidebar-link to="/home/doctor/doctor-record">
         <md-icon>person</md-icon>
-        <p>Hồ Sơ bệnh nhân</p>
+        <p>Hồ Sơ bệnh án</p>
       </sidebar-link>
       <sidebar-link to="/home/doctor/doctor-profile">
         <md-icon>person</md-icon>
@@ -74,6 +74,14 @@
         <sidebar-link to="/home/admin/record-admin">
         <md-icon>person</md-icon>
         <p>Bệnh án</p>
+      </sidebar-link>
+      <sidebar-link to="/home/admin/schedule-admin">
+        <md-icon>person</md-icon>
+        <p>Lịch trình</p>
+      </sidebar-link>
+      <sidebar-link to="/home/admin/account-admin">
+        <md-icon>person</md-icon>
+        <p>Tài khoản</p>
       </sidebar-link>
 
       <!-- <sidebar-link to="/upgrade" class="active-pro">
