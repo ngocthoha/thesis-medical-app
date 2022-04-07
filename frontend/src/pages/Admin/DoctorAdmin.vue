@@ -30,10 +30,35 @@
               hide-details
             ></v-text-field>
             <v-spacer></v-spacer>
-            <v-btn tile color="success">
-              <v-icon left> mdi-pencil </v-icon>
-              Tools
-            </v-btn>
+            <div v-if="selected.length == 1">
+              <v-btn
+                tile
+                color="success"
+                style="margin-right: 20px"
+                @click="editItem"
+              >
+                <v-icon left> mdi-pencil </v-icon>
+                Chỉnh sửa
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn tile color="success" style="margin-right: 20px" disabled>
+                <v-icon left> mdi-pencil </v-icon>
+                Chỉnh sửa
+              </v-btn>
+            </div>
+            <div v-if="selected.length > 0">
+              <v-btn tile color="error" @click="dialogDelete = true">
+                <v-icon left> mdi-delete</v-icon>
+                Xóa
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn tile color="error" disabled>
+                <v-icon left> mdi-delete</v-icon>
+                Xóa
+              </v-btn>
+            </div>
             <v-dialog v-model="dialoggetnew" max-width="600px" persistent>
               <v-card>
                 <v-card-title>
@@ -42,75 +67,73 @@
 
                 <v-card-text>
                   <v-container>
-                    <v-form ref="form"> 
-
-                          <v-row>
-                      <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                          label="Họ và tên"
-                          v-model="getnew.name"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                          label="Chuyên khoa"
-                          v-model="getnew.chuyenkhoa"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                          label="Số điện thoại"
-                          v-model="getnew.phonenumber"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                          label="Email"
-                          v-model="getnew.email"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col cols="12" sm="6" md="6">
-                        <v-menu
-                          ref="menu"
-                          v-model="menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="getdate"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-text-field
-                              v-model="getnew.startdate"
-                              label="Ngày bắt đầu"
-                              prepend-icon="mdi-calendar"
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                            ></v-text-field>
-                          </template>
-                          <v-date-picker
-                            v-model="getnew.startdate"
-                            no-title
-                            scrollable
+                    <v-form ref="form">
+                      <v-row>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-text-field
+                            label="Họ và tên"
+                            v-model="getnew.name"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-text-field
+                            label="Chuyên khoa"
+                            v-model="getnew.chuyenkhoa"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-text-field
+                            label="Số điện thoại"
+                            v-model="getnew.phonenumber"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-text-field
+                            label="Email"
+                            v-model="getnew.email"
+                          ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-menu
+                            ref="menu"
+                            v-model="menu"
+                            :close-on-content-click="false"
+                            :return-value.sync="getdate"
+                            transition="scale-transition"
+                            offset-y
+                            min-width="auto"
                           >
-                            <v-spacer></v-spacer>
-                            <v-btn text color="primary" @click="menu = false">
-                              Đóng
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.menu.save(getnew.startdate)"
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-text-field
+                                v-model="getnew.startdate"
+                                label="Ngày bắt đầu"
+                                prepend-icon="mdi-calendar"
+                                readonly
+                                v-bind="attrs"
+                                v-on="on"
+                              ></v-text-field>
+                            </template>
+                            <v-date-picker
+                              v-model="getnew.startdate"
+                              no-title
+                              scrollable
                             >
-                              Chọn
-                            </v-btn>
-                          </v-date-picker>
-                        </v-menu>
-                      </v-col>
-                    </v-row>
+                              <v-spacer></v-spacer>
+                              <v-btn text color="primary" @click="menu = false">
+                                Đóng
+                              </v-btn>
+                              <v-btn
+                                text
+                                color="primary"
+                                @click="$refs.menu.save(getnew.startdate)"
+                              >
+                                Chọn
+                              </v-btn>
+                            </v-date-picker>
+                          </v-menu>
+                        </v-col>
+                      </v-row>
                     </v-form>
-                
                   </v-container>
                 </v-card-text>
 
@@ -125,12 +148,12 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <!-- <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
+        </template> -->
       </v-data-table>
 
       <v-dialog v-model="dialogDelete" max-width="400px" persistent>
@@ -140,7 +163,28 @@
           </v-card-title>
 
           <v-card-text>
-            <v-text-field
+            <v-simple-table>
+              <template v-slot:default>
+                <thead>
+                  <tr>
+                    <th class="text-left">STT</th>
+                    <th class="text-left">Họ và tên</th>
+                    <th class="text-left">Chuyên khoa</th>
+                    <th class="text-left">Số điện thoại</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(doctorItem, k) in selected" :key="k">
+                    <td>{{ k + 1 }}</td>
+                    <td>{{ doctorItem.name }}</td>
+                    <td>{{ doctorItem.chuyenkhoa }}</td>
+                    <td>{{ doctorItem.phonenumber }}</td>
+                  </tr>
+                </tbody>
+              </template>
+            </v-simple-table>
+
+            <!-- <v-text-field
               v-model="dlItem.name"
               label="Họ và tên"
               readonly
@@ -156,7 +200,7 @@
               label="Số điện thoại"
               v-model="dlItem.phonenumber"
               readonly
-            ></v-text-field>
+            ></v-text-field> -->
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
@@ -275,7 +319,6 @@ export default {
       { text: "Số điện thoại", value: "phonenumber", sortable: false },
       { text: "Email", value: "email", sortable: false },
       { text: "Ngày bắt đầu", value: "startdate", sortable: false },
-      { text: "Công cụ", value: "actions", sortable: false },
     ],
     desserts: [
       {
@@ -320,7 +363,6 @@ export default {
       email: null,
       startdate: null,
     },
-
   }),
 
   watch: {},
@@ -328,32 +370,31 @@ export default {
   methods: {
     editItem(item) {
       this.dialogedit = true;
-      this.indexedit = this.desserts.indexOf(item);
 
-      this.editedItem.id = this.desserts[this.indexedit].id;
-      this.editedItem.chuyenkhoa = this.desserts[this.indexedit].chuyenkhoa;
-      this.editedItem.phonenumber = this.desserts[this.indexedit].phonenumber;
-      this.editedItem.email = this.desserts[this.indexedit].email;
-      this.editedItem.startdate = this.desserts[this.indexedit].startdate;
-      this.editedItem.name = this.desserts[this.indexedit].name;
+      this.editedItem.id = this.selected[0].id;
+      this.editedItem.chuyenkhoa = this.selected[0].chuyenkhoa;
+      this.editedItem.phonenumber = this.selected[0].phonenumber;
+      this.editedItem.email = this.selected[0].email;
+      this.editedItem.startdate = this.selected[0].startdate;
+      this.editedItem.name = this.selected[0].name;
     },
-    deleteItem(item) {
-      this.dialogDelete = true;
-      this.indexdelete = this.desserts.indexOf(item);
+    // deleteItem(item) {
+    //   this.dialogDelete = true;
+    //   this.indexdelete = this.desserts.indexOf(item);
 
-      this.dlItem.id = this.desserts[this.indexdelete].id;
-      this.dlItem.chuyenkhoa = this.desserts[this.indexdelete].chuyenkhoa;
-      this.dlItem.phonenumber = this.desserts[this.indexdelete].phonenumber;
-      this.dlItem.email = this.desserts[this.indexdelete].email;
-      this.dlItem.startdate = this.desserts[this.indexdelete].startdate;
-      this.dlItem.name = this.desserts[this.indexdelete].name;
-    },
+    //   this.dlItem.id = this.desserts[this.indexdelete].id;
+    //   this.dlItem.chuyenkhoa = this.desserts[this.indexdelete].chuyenkhoa;
+    //   this.dlItem.phonenumber = this.desserts[this.indexdelete].phonenumber;
+    //   this.dlItem.email = this.desserts[this.indexdelete].email;
+    //   this.dlItem.startdate = this.desserts[this.indexdelete].startdate;
+    //   this.dlItem.name = this.desserts[this.indexdelete].name;
+    // },
     deleteItemConfirm() {},
     close() {
       this.dialogedit = false;
     },
     closegetnew() {
-      this.$refs.form.reset()
+      this.$refs.form.reset();
       this.dialoggetnew = false;
     },
     closeDelete() {

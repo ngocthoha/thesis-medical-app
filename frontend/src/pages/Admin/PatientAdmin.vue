@@ -25,10 +25,35 @@
               hide-details
             ></v-text-field>
             <v-spacer></v-spacer>
-            <v-btn tile color="success">
-              <v-icon left> mdi-pencil </v-icon>
-              Tools
-            </v-btn>
+            <div v-if="selected.length == 1">
+              <v-btn
+                tile
+                color="success"
+                style="margin-right: 20px"
+                @click="editItem"
+              >
+                <v-icon left> mdi-pencil </v-icon>
+                Chỉnh sửa
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn tile color="success" style="margin-right: 20px" disabled>
+                <v-icon left> mdi-pencil </v-icon>
+                Chỉnh sửa
+              </v-btn>
+            </div>
+            <div v-if="selected.length > 0">
+              <v-btn tile color="error" @click="dialogDelete = true">
+                <v-icon left> mdi-delete</v-icon>
+                Xóa
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn tile color="error" disabled>
+                <v-icon left> mdi-delete</v-icon>
+                Xóa
+              </v-btn>
+            </div>
 
             <v-dialog v-model="dialogNewpatient" max-width="700px" persistent>
               <v-card>
@@ -147,22 +172,45 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <!-- <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
+        </template> -->
       </v-data-table>
 
-      <v-dialog v-model="dialogDelete" max-width="500px" persistent>
+      <v-dialog v-model="dialogDelete" max-width="700px" persistent>
         <v-form>
           <v-card>
             <v-card-title class="text-h5">
               Bạn chắc chắn muốn xóa bệnh nhân? <br />
             </v-card-title>
             <v-card-text>
-              <v-text-field
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">STT</th>
+                      <th class="text-left">Họ tên</th>
+                      <th class="text-left">Ngày sinh</th>
+                      <th class="text-left">Số điện thoại</th>
+                      <th class="text-left">Người giám hộ</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(patientItem, k) in selected" :key="k">
+                      <td>{{ k + 1 }}</td>
+                      <td>{{ patientItem.name }}</td>
+                      <td>{{ patientItem.dob }}</td>
+                      <td>{{ patientItem.phoneNumber }}</td>
+                      <td>{{ patientItem.protector }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+
+              <!-- <v-text-field
                 v-model="dlItem.name"
                 label="Họ và tên"
                 readonly
@@ -176,7 +224,7 @@
                 v-model="dlItem.phoneNumber"
                 label="Số điện thoại"
                 readonly
-              ></v-text-field>
+              ></v-text-field> -->
             </v-card-text>
 
             <v-card-actions>
@@ -221,7 +269,7 @@ export default {
       { text: "Ngày sinh", value: "dob", sortable: false },
       { text: "Số điện thoại", value: "phoneNumber", sortable: false },
       { text: "Ngày bắt đầu", value: "", sortable: false },
-      { text: "Công cụ", value: "actions", sortable: false },
+
     ],
     desserts: [
       {
@@ -287,42 +335,40 @@ export default {
   watch: {},
   created() {},
   methods: {
-    editItem(item) {
+    editItem() {
       this.nameTitle = "Chỉnh sửa thông tin";
       this.dialogNewpatient = true;
-      this.indexedit = this.desserts.indexOf(item);
 
-      this.patient.id = this.desserts[this.indexedit].id;
-      this.patient.profileNumber = this.desserts[this.indexedit].profileNumber;
-      this.patient.name = this.desserts[this.indexedit].name;
-      this.patient.address = this.desserts[this.indexedit].address;
-      this.patient.phoneNumber = this.desserts[this.indexedit].phoneNumber;
-      this.patient.dob = this.desserts[this.indexedit].dob;
-      this.patient.job = this.desserts[this.indexedit].job;
-      this.patient.identityCard = this.desserts[this.indexedit].identityCard;
-      this.patient.healthInsurance =
-        this.desserts[this.indexedit].healthInsurance;
-      this.patient.folk = this.desserts[this.indexedit].folk;
-      this.patient.gender = this.desserts[this.indexedit].gender;
-      this.patient.protector = this.desserts[this.indexedit].protector;
+      this.patient.id = this.selected[0].id;
+      this.patient.profileNumber = this.selected[0].profileNumber;
+      this.patient.name = this.selected[0].name;
+      this.patient.address = this.selected[0].address;
+      this.patient.phoneNumber = this.selected[0].phoneNumber;
+      this.patient.dob = this.selected[0].dob;
+      this.patient.job = this.selected[0].job;
+      this.patient.identityCard = this.selected[0].identityCard;
+      this.patient.healthInsurance = this.selected[0].healthInsurance;
+      this.patient.folk = this.selected[0].folk;
+      this.patient.gender = this.selected[0].gender;
+      this.patient.protector = this.selected[0].protector;
     },
-    deleteItem(item) {
-      this.dialogDelete = true;
-      this.indexdl = this.desserts.indexOf(item);
+    // deleteItem(item) {
+    //   this.dialogDelete = true;
+    //   this.indexdl = this.desserts.indexOf(item);
 
-      this.dlItem.id = this.desserts[this.indexdl].id;
-      this.dlItem.profileNumber = this.desserts[this.indexdl].profileNumber;
-      this.dlItem.name = this.desserts[this.indexdl].name;
-      this.dlItem.address = this.desserts[this.indexdl].address;
-      this.dlItem.phoneNumber = this.desserts[this.indexdl].phoneNumber;
-      this.dlItem.dob = this.desserts[this.indexdl].dob;
-      this.dlItem.job = this.desserts[this.indexdl].job;
-      this.dlItem.identityCard = this.desserts[this.indexdl].identityCard;
-      this.dlItem.healthInsurance = this.desserts[this.indexdl].healthInsurance;
-      this.dlItem.folk = this.desserts[this.indexdl].folk;
-      this.dlItem.gender = this.desserts[this.indexdl].gender;
-      this.dlItem.protector = this.desserts[this.indexdl].protector;
-    },
+    //   this.dlItem.id = this.desserts[this.indexdl].id;
+    //   this.dlItem.profileNumber = this.desserts[this.indexdl].profileNumber;
+    //   this.dlItem.name = this.desserts[this.indexdl].name;
+    //   this.dlItem.address = this.desserts[this.indexdl].address;
+    //   this.dlItem.phoneNumber = this.desserts[this.indexdl].phoneNumber;
+    //   this.dlItem.dob = this.desserts[this.indexdl].dob;
+    //   this.dlItem.job = this.desserts[this.indexdl].job;
+    //   this.dlItem.identityCard = this.desserts[this.indexdl].identityCard;
+    //   this.dlItem.healthInsurance = this.desserts[this.indexdl].healthInsurance;
+    //   this.dlItem.folk = this.desserts[this.indexdl].folk;
+    //   this.dlItem.gender = this.desserts[this.indexdl].gender;
+    //   this.dlItem.protector = this.desserts[this.indexdl].protector;
+    // },
     deleteItemConfirm() {},
 
     closegetnew() {

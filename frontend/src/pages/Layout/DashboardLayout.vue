@@ -51,6 +51,10 @@
         <md-icon>person</md-icon>
         <p>Hồ Sơ bệnh án</p>
       </sidebar-link>
+       <sidebar-link to="/home/doctor/doctor-healingprocess">
+        <md-icon>person</md-icon>
+        <p>Quá trình chữa bệnh</p>
+      </sidebar-link>
       <sidebar-link to="/home/doctor/doctor-profile">
         <md-icon>person</md-icon>
         <p>Trang cá nhân</p>

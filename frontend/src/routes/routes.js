@@ -21,6 +21,7 @@ import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
 import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
 import Profile from "@/pages/Doctor/Profile.vue";
 import Notification from "@/pages/Doctor/Notification.vue";
+import Healingprocess from "@/pages/Doctor/Healingprocess.vue";
 
 //admin page
 import DoctorAdmin from "@/pages/Admin/DoctorAdmin.vue";
@@ -105,6 +106,11 @@ const routes = [
         path: "doctor/doctor-record",
         name: "Danh sách bệnh án",
         component: HoSoBenhNhan,
+      },
+      {
+        path: "doctor/doctor-healingprocess",
+        name: "Quá trình chữa bệnh",
+        component: Healingprocess,
       },
       {
         path: "doctor/doctor-profile",

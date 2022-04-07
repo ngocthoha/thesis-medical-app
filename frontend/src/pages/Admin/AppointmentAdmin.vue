@@ -5,8 +5,8 @@
         v-model="selected"
         show-select
         :headers="headers"
-         :items="desserts"
-          item-key="id"
+        :items="desserts"
+        item-key="id"
         sort-by="profile.name"
         class="elevation-1"
         :search="search"
@@ -25,10 +25,35 @@
               hide-details
             ></v-text-field>
             <v-spacer></v-spacer>
-            <v-btn tile color="success">
-              <v-icon left> mdi-pencil </v-icon>
-              Tools
-            </v-btn>
+            <div v-if="selected.length == 1">
+              <v-btn
+                tile
+                color="success"
+                style="margin-right: 20px"
+                @click="editItem"
+              >
+                <v-icon left> mdi-pencil </v-icon>
+                Chỉnh sửa
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn tile color="success" style="margin-right: 20px" disabled>
+                <v-icon left> mdi-pencil </v-icon>
+                Chỉnh sửa
+              </v-btn>
+            </div>
+            <div v-if="selected.length > 0">
+              <v-btn tile color="error" @click="dialogDelete = true">
+                <v-icon left> mdi-delete</v-icon>
+                Xóa
+              </v-btn>
+            </div>
+            <div v-else>
+              <v-btn tile color="error" disabled>
+                <v-icon left> mdi-delete</v-icon>
+                Xóa
+              </v-btn>
+            </div>
 
             <v-dialog
               v-model="dialogNewAppointment"
@@ -73,7 +98,6 @@
                               font-size: 17px;
                               color: rgba(0, 0, 0, 0.87);
                               width: auto;
-                            
                             "
                           >
                             Giới tính
@@ -82,7 +106,11 @@
                             v-model="appointment.profile.gender"
                             row
                           >
-                            <v-radio label="Nam" value="Nam" style="margin-left: 20px;"></v-radio>
+                            <v-radio
+                              label="Nam"
+                              value="Nam"
+                              style="margin-left: 20px"
+                            ></v-radio>
                             <v-radio label="Nữ" value="Nữ"></v-radio>
                           </v-radio-group>
 
@@ -300,69 +328,52 @@
             </v-dialog>
           </v-toolbar>
         </template>
-        <template v-slot:[`item.actions`]="{ item }">
+        <!-- <template v-slot:[`item.actions`]="{ item }">
           <v-icon small class="mr-2" @click="editItem(item)">
             mdi-pencil
           </v-icon>
           <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
+        </template> -->
       </v-data-table>
 
-      <v-dialog v-model="dialogDelete" max-width="500px" persistent>
+      <v-dialog v-model="dialogDelete" max-width="900px" persistent>
         <v-form>
           <v-card>
             <v-card-title class="text-h5">
               Bạn chắc chắn muốn xóa lịch hẹn? <br />
             </v-card-title>
-            <v-row class="mb-6" no-gutters>
-              <v-col sm="6" md="5" lg="6">
-                <v-card-text>
-                  <v-text-field
-                    v-model="dlItem.profile.name"
-                    label="Họ và tên"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.profile.phoneNumber"
-                    label="Số điện thoại"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.profile.dob"
-                    label="Ngày sinh"
-                    readonly
-                  ></v-text-field>
+
+
+         <v-card-text>
+                  <v-simple-table>
+                    <template v-slot:default>
+                      <thead>
+                        <tr>
+                          <th class="text-left">STT</th>
+                          <th class="text-left">Tên bệnh nhân</th>
+                          <th class="text-left">Số điện thoại</th>
+              
+                          <th class="text-left">Bác sĩ</th>
+                          <th class="text-left">Chuyên khoa</th>
+                          <th class="text-left">Ngày khám</th>
+                          <th class="text-left">Phòng</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(appItem, k) in selected" :key="k">
+                          <td>{{ k + 1 }}</td>
+                          <td>{{ appItem.profile.name }}</td>
+                          <td>{{ appItem.profile.phoneNumber }}</td>
+                    
+                          <td>{{ appItem.doctor.name }}</td>
+                          <td>{{ appItem.doctor.specialty }}</td>
+                          <td>{{ appItem.date }}</td>
+                          <td>{{ appItem.room }}</td>
+                        </tr>
+                      </tbody>
+                    </template>
+                  </v-simple-table>
                 </v-card-text>
-              </v-col>
-              <v-col sm="6" md="5" offset-md="2" lg="6" offset-lg="0">
-                <v-card-text>
-                  <v-text-field
-                    v-model="dlItem.doctor.name"
-                    label="Bác sĩ"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.doctor.specialty"
-                    label="Chuyên khoa"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.date"
-                    label="Ngày khám"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.time"
-                    label="Thời gian"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.room"
-                    label="Phòng"
-                    readonly
-                  ></v-text-field>
-                </v-card-text> </v-col
-            ></v-row>
 
             <v-card-actions>
               <v-spacer></v-spacer>
@@ -378,12 +389,6 @@
 
       <v-dialog v-model="dialogedit" max-width="600px" persistent> </v-dialog>
     </v-card>
-
-
-
-
-
-
   </div>
 </template>
 
@@ -414,7 +419,7 @@ export default {
       { text: "Ngày khám", value: "date", sortable: false },
       { text: "Thời gian", value: "time", sortable: false },
       { text: "Phòng", value: "room", sortable: false },
-      { text: "Công cụ", value: "actions", sortable: false },
+      // { text: "Công cụ", value: "actions", sortable: false },
     ],
     desserts: [
       {
@@ -560,93 +565,84 @@ export default {
   watch: {},
   created() {},
   methods: {
-    editItem(item) {
+    editItem() {
       this.nameTitle = "Chỉnh sửa lịch hẹn";
       this.dialogNewAppointment = true;
-      this.indexedit = this.desserts.indexOf(item);
-      this.appointment.id = this.desserts[this.indexedit].id;
-      this.appointment.stt = this.desserts[this.indexedit].stt;
-      this.appointment.room = this.desserts[this.indexedit].room;
 
-      this.appointment.profile.id = this.desserts[this.indexedit].profile.id;
+      this.appointment.id = this.selected[0].id;
+      this.appointment.stt = this.selected[0].stt;
+      this.appointment.room = this.selected[0].room;
+
+      this.appointment.profile.id = this.selected[0].profile.id;
       this.appointment.profile.profileNumber =
-        this.desserts[this.indexedit].profile.profileNumber;
-      this.appointment.profile.name =
-        this.desserts[this.indexedit].profile.name;
-      this.appointment.profile.address =
-        this.desserts[this.indexedit].profile.address;
+        this.selected[0].profile.profileNumber;
+      this.appointment.profile.name = this.selected[0].profile.name;
+      this.appointment.profile.address = this.selected[0].profile.address;
       this.appointment.profile.phoneNumber =
-        this.desserts[this.indexedit].profile.phoneNumber;
-      this.appointment.profile.dob = this.desserts[this.indexedit].profile.dob;
-      this.appointment.profile.job = this.desserts[this.indexedit].profile.job;
+        this.selected[0].profile.phoneNumber;
+      this.appointment.profile.dob = this.selected[0].profile.dob;
+      this.appointment.profile.job = this.selected[0].profile.job;
       this.appointment.profile.identityCard =
-        this.desserts[this.indexedit].profile.identityCard;
+        this.selected[0].profile.identityCard;
       this.appointment.profile.healthInsurance =
-        this.desserts[this.indexedit].profile.healthInsurance;
-      this.appointment.profile.folk =
-        this.desserts[this.indexedit].profile.folk;
-      this.appointment.profile.gender =
-        this.desserts[this.indexedit].profile.gender;
-      this.appointment.profile.protector =
-        this.desserts[this.indexedit].profile.protector;
+        this.selected[0].profile.healthInsurance;
+      this.appointment.profile.folk = this.selected[0].profile.folk;
+      this.appointment.profile.gender = this.selected[0].profile.gender;
+      this.appointment.profile.protector = this.selected[0].profile.protector;
 
-      this.appointment.doctor.id = this.desserts[this.indexedit].doctor.id;
-      this.appointment.doctor.name = this.desserts[this.indexedit].doctor.name;
-      this.appointment.doctor.specialty =
-        this.desserts[this.indexedit].doctor.specialty;
-      this.appointment.doctor.level =
-        this.desserts[this.indexedit].doctor.level;
+      this.appointment.doctor.id = this.selected[0].doctor.id;
+      this.appointment.doctor.name = this.selected[0].doctor.name;
+      this.appointment.doctor.specialty = this.selected[0].doctor.specialty;
+      this.appointment.doctor.level = this.selected[0].doctor.level;
 
-      this.appointment.date = this.desserts[this.indexedit].date;
-      this.appointment.time = this.desserts[this.indexedit].time;
-      this.appointment.symptom = this.desserts[this.indexedit].symptom;
-      this.appointment.description = this.desserts[this.indexedit].description;
-      this.appointment.timeSituation =
-        this.desserts[this.indexedit].timeSituation;
-      this.appointment.selfTreatment =
-        this.desserts[this.indexedit].selfTreatment;
-      this.appointment.files = this.desserts[this.indexedit].files;
+      this.appointment.date = this.selected[0].date;
+      this.appointment.time = this.selected[0].time;
+      this.appointment.symptom = this.selected[0].symptom;
+      this.appointment.description = this.selected[0].description;
+      this.appointment.timeSituation = this.selected[0].timeSituation;
+      this.appointment.selfTreatment = this.selected[0].selfTreatment;
+      this.appointment.files = this.selected[0].files;
     },
-    deleteItem(item) {
-      this.dialogDelete = true;
-      this.indexdl = this.desserts.indexOf(item);
+    // deleteItem(item) {
+    //   this.dialogDelete = true;
+    //   this.indexdl = this.desserts.indexOf(item);
 
-      this.dlItem.id = this.desserts[this.indexdl].id;
-      this.dlItem.stt = this.desserts[this.indexdl].stt;
-      this.dlItem.room = this.desserts[this.indexdl].room;
+    //   this.dlItem.id = this.desserts[this.indexdl].id;
+    //   this.dlItem.stt = this.desserts[this.indexdl].stt;
+    //   this.dlItem.room = this.desserts[this.indexdl].room;
 
-      this.dlItem.profile.id = this.desserts[this.indexdl].profile.id;
-      this.dlItem.profile.profileNumber =
-        this.desserts[this.indexdl].profile.profileNumber;
-      this.dlItem.profile.name = this.desserts[this.indexdl].profile.name;
-      this.dlItem.profile.address = this.desserts[this.indexdl].profile.address;
-      this.dlItem.profile.phoneNumber =
-        this.desserts[this.indexdl].profile.phoneNumber;
-      this.dlItem.profile.dob = this.desserts[this.indexdl].profile.dob;
-      this.dlItem.profile.job = this.desserts[this.indexdl].profile.job;
-      this.dlItem.profile.identityCard =
-        this.desserts[this.indexdl].profile.identityCard;
-      this.dlItem.profile.healthInsurance =
-        this.desserts[this.indexdl].profile.healthInsurance;
-      this.dlItem.profile.folk = this.desserts[this.indexdl].profile.folk;
-      this.dlItem.profile.gender = this.desserts[this.indexdl].profile.gender;
-      this.dlItem.profile.protector =
-        this.desserts[this.indexdl].profile.protector;
+    //   this.dlItem.profile.id = this.desserts[this.indexdl].profile.id;
+    //   this.dlItem.profile.profileNumber =
+    //     this.desserts[this.indexdl].profile.profileNumber;
+    //   this.dlItem.profile.name = this.desserts[this.indexdl].profile.name;
+    //   this.dlItem.profile.address = this.desserts[this.indexdl].profile.address;
+    //   this.dlItem.profile.phoneNumber =
+    //     this.desserts[this.indexdl].profile.phoneNumber;
+    //   this.dlItem.profile.dob = this.desserts[this.indexdl].profile.dob;
+    //   this.dlItem.profile.job = this.desserts[this.indexdl].profile.job;
+    //   this.dlItem.profile.identityCard =
+    //     this.desserts[this.indexdl].profile.identityCard;
+    //   this.dlItem.profile.healthInsurance =
+    //     this.desserts[this.indexdl].profile.healthInsurance;
+    //   this.dlItem.profile.folk = this.desserts[this.indexdl].profile.folk;
+    //   this.dlItem.profile.gender = this.desserts[this.indexdl].profile.gender;
+    //   this.dlItem.profile.protector =
+    //     this.desserts[this.indexdl].profile.protector;
 
-      this.dlItem.doctor.id = this.desserts[this.indexdl].doctor.id;
-      this.dlItem.doctor.name = this.desserts[this.indexdl].doctor.name;
-      this.dlItem.doctor.specialty =
-        this.desserts[this.indexdl].doctor.specialty;
-      this.dlItem.doctor.level = this.desserts[this.indexdl].doctor.level;
+    //   this.dlItem.doctor.id = this.desserts[this.indexdl].doctor.id;
+    //   this.dlItem.doctor.name = this.desserts[this.indexdl].doctor.name;
+    //   this.dlItem.doctor.specialty =
+    //     this.desserts[this.indexdl].doctor.specialty;
+    //   this.dlItem.doctor.level = this.desserts[this.indexdl].doctor.level;
 
-      this.dlItem.date = this.desserts[this.indexdl].date;
-      this.dlItem.time = this.desserts[this.indexdl].time;
-      this.dlItem.symptom = this.desserts[this.indexdl].symptom;
-      this.dlItem.description = this.desserts[this.indexdl].description;
-      this.dlItem.timeSituation = this.desserts[this.indexdl].timeSituation;
-      this.dlItem.selfTreatment = this.desserts[this.indexdl].selfTreatment;
-      this.dlItem.files = this.desserts[this.indexdl].files;
-    },
+    //   this.dlItem.date = this.desserts[this.indexdl].date;
+    //   this.dlItem.time = this.desserts[this.indexdl].time;
+    //   this.dlItem.symptom = this.desserts[this.indexdl].symptom;
+    //   this.dlItem.description = this.desserts[this.indexdl].description;
+    //   this.dlItem.timeSituation = this.desserts[this.indexdl].timeSituation;
+    //   this.dlItem.selfTreatment = this.desserts[this.indexdl].selfTreatment;
+    //   this.dlItem.files = this.desserts[this.indexdl].files;
+    // },
     deleteItemConfirm() {},
 
     closegetnew() {
