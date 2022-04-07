@@ -4,7 +4,7 @@ import auth from "./modules/auth";
 import profile from "./modules/profile";
 import appointment from "./modules/appointment";
 import scheduledoctor from "./modules/scheduledoctor";
-
+import record from "./modules/record";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -13,5 +13,6 @@ export default new Vuex.Store({
       profile,
       appointment,
       scheduledoctor,
+      record
     }
 });

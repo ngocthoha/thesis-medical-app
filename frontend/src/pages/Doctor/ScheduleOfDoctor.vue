@@ -11,6 +11,7 @@
                 v-model="picker"
                 elevation="10"
                 flat
+                @click:date="getAppointmentList"
               ></v-date-picker>
             </v-row>
           </v-app>
@@ -1188,6 +1189,18 @@ export default {
         this.schedule[i].appointment[j].selfTreatment;
       this.record.appointment.files = this.schedule[i].appointment[j].files;
     },
+
+    async getAppointmentList(){
+      console.log(this.picker);
+      // const params = {
+      //   token: this.$store.getters["auth/access_token"],
+      //   data: {
+      //     date:this.picker,
+      //   }
+      // };
+      // await this.$store.dispatch("appointment/getAppointment_byDate_Doctor", params);
+      // this.schedule = this.$store.getters["appointment/doctor_appointment_list"];
+    }
   },
 };
 </script>

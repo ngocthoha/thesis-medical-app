@@ -3,7 +3,8 @@ import service from '@/store/services/appointment';
 
 const state ={
     speciality_list: [],
-    doctors_list: []
+    doctors_list: [],
+    doctor_appointment_list: []
 };
 
 const mutations = {
@@ -13,6 +14,10 @@ const mutations = {
 
   SET_DOCTOR_LIST:(state,list)=>{
     state.doctors_list = list
+  },
+
+  SET_DOCTOR_APPOINTMENT_LIST:(state,list)=>{
+    state.doctor_appointment_list = list
   }
 };
 
@@ -34,13 +39,19 @@ const actions ={
       console.log('add new appointment success')
     });
   },
-
+  
+  getAppointment_byDate_Doctor({commit},params){
+    return service.getAppointment_byDate_Doctor(params).then(({data})=>{
+      commit('SET_DOCTOR_APPOINTMENT_LIST',data)
+    });
+  }
     
 }
 
 const getters ={
     speciality_list: speciality_list => state.speciality_list,
-    doctors_list: doctors_list => state.doctors_list
+    doctors_list: doctors_list => state.doctors_list,
+    doctor_appointment_list: doctor_appointment_list=>state.doctor_appointment_list
 };
 
 const appointment ={
