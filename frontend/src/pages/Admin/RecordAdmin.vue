@@ -1,200 +1,52 @@
 <template>
   <div class="content">
-    <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-30"
+    <v-card>
+      <v-data-table
+        v-model="selected"
+        show-select
+        :headers="headers"
+        :items="desserts"
+        item-key="name"
+        sort-by="name"
+        class="elevation-1"
+        :search="search"
       >
-        <div class="lich">
-          <v-app id="inspire" style="max-height: 400px">
-            <v-row justify="center" style="margin: 20px 0px">
-              <v-date-picker
-                v-model="picker"
-                elevation="10"
-                flat
-              ></v-date-picker>
-            </v-row>
-          </v-app>
-        </div>
-        <br />
-        <h5><b>Sự kiện sắp diễn ra</b></h5>
-        <br />
-        <div class="thongbao">
-          <md>
-            <md-card v-for="(note, index) in note1" :key="index">
-              <md-card-header>
-                <div class="md-title">{{ note.num }} Bệnh nhân đặt lịch</div>
-              </md-card-header>
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-btn color="primary" dark class="mb-2" @click="opennewRecord">
+              Thêm bệnh án
+            </v-btn>
+            <v-spacer></v-spacer>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Tìm kiếm"
+              single-line
+              hide-details
+            ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-btn tile color="success">
+              <v-icon left> mdi-pencil </v-icon>
+              Tools
+            </v-btn>
 
-              <md-card-content> Thời gian: {{ note.time }} </md-card-content>
-
-              <md-card-actions>
-                <md-button>Xem thêm</md-button>
-              </md-card-actions>
-            </md-card>
-          </md>
-        </div>
-        <br />
-        <br />
-        <div class="thongbao">
-          <md>
-            <md-card v-for="(note, index) in note2" :key="index">
-              <md-card-header>
-                <div class="md-title">Tổng số bệnh nhân khám</div>
-              </md-card-header>
-
-              <md-card-content>
-                <p>Ngày: {{ note.time }}</p>
-                Số lượng: {{ note.num }}
-              </md-card-content>
-
-              <md-card-actions>
-                <md-button>Xem thêm</md-button>
-              </md-card-actions>
-            </md-card>
-          </md>
-        </div>
-      </div>
-
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-65"
-      >
-        <div>
-          <h5>
-            <b>Danh sách khám online trong ngày {{ picker }}</b>
-          </h5>
-        </div>
-        <md-button
-          class="md-primary"
-          style="
-            background-color: rgb(68 138 255) !important;
-            margin-right: 20px;
-            color: #ffffff !important;
-          "
-          @click="all"
-          >Mở tất cả</md-button
-        >
-        <md-button
-          class="md-primary"
-          style="
-            background-color: rgb(68 138 255) !important;
-            margin-right: 20px;
-            color: #ffffff !important;
-          "
-          @click="none"
-          >Đóng tất cả</md-button
-        >
-
-        <md-button
-          class="md-primary"
-          style="
-            background-color: rgb(68 138 255) !important;
-            margin-right: 20px;
-            color: #ffffff !important;
-          "
-          >Chuyển lịch</md-button
-        >
-
-        <br />
-        <br />
-        <v-expansion-panels focusable v-model="panel" multiple>
-          <v-expansion-panel v-for="(item, i) in schedule" :key="i">
-            <v-expansion-panel-header
-              >{{ item.times }}
-            </v-expansion-panel-header>
-            <v-expansion-panel-content
-              v-for="(infoApment, j) in item.appointment"
-              :key="j"
-            >
-              <div class="rowinfo">
-                <div class="infoID">
-                  <p>{{ infoApment.stt }}</p>
-                </div>
-                <div class="infoName">
-                  <p>{{ infoApment.profile.name }}</p>
-                </div>
-                <div class="infoRoom">
-                  <p>{{ infoApment.room }}</p>
-                </div>
-
-                <div class="infoChitiet">
-                  <button @click="get(i, j)"><b>Chi tiết</b></button>
-                </div>
-                <div class="taoBenhAn">
-                  <button @click="getbenhan(i, j)">
-                    <b>Tạo bệnh án</b>
-                  </button>
-                </div>
-              </div>
-              <v-divider></v-divider>
-            </v-expansion-panel-content>
-          </v-expansion-panel>
-        </v-expansion-panels>
-
-        <v-dialog v-model="dialog" scrollable max-width="800px" persistent>
-          <v-card>
-            <v-card-title>Thông tin bệnh nhân</v-card-title>
-            <v-divider></v-divider>
-            <v-card-text
-              style="
-                height: auto;
-                margin-left: auto;
-                margin-right: auto;
-                width: auto;
-              "
-            >
-              <h5>
-                <b
-                  >Ngày {{ record.appointment.date }}, Thời gian {{ record.appointment.time }},
-                  Phòng số {{ record.appointment.room }}</b
-                >
-              </h5>
-
-              <h5><b>Họ và tên: </b>{{ record.appointment.profile.name }}</h5>
-              <h5><b>Triệu chứng: </b>{{ record.appointment.symptom }}</h5>
-              <h5><b>Mô tả chi tiết: </b>{{ record.appointment.description }}</h5>
-              <h5>
-                <b
-                  >Thời gian diễn ra tình trạng trên:
-                  {{ record.appointment.timeSituation }}</b
-                >
-              </h5>
-              <h5><b>Đã tự điều trị bệnh: </b>{{ record.appointment.selfTreatment }}</h5>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions style="flex-direction: row-reverse">
-              <v-btn
-                color="red"
-                text
-                :right="true"
-                @click="dialog = false"
-                style="flex-direction: row"
-              >
-                Đóng
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <v-dialog
-          v-model="dialogBenhAn"
-          max-width="1200px"
-          max-height="auto"
-          persistent
-        >
-          <v-form ref="form">
-            <v-card>
-              <v-card-title style="justify-content: space-between">
-                <span class="text-h5">TẠO BỆNH ÁN</span>
-                <v-btn
-                  color="#ff5252"
-                  @click="closeForm"
-                  style="width: 40px; color: white"
-                >
-                  Đóng
-                </v-btn>
-              </v-card-title>
-
-             <v-card-text>
+            <v-dialog v-model="dialogNewrecord" max-width="1200px" persistent>
+              <v-card>
+                <v-card-title style="justify-content: space-between">
+                  <span class="text-h5">{{ nameTitle }}</span>
+                  <v-btn
+                    color="#333"
+                    small
+                    style="color: #ffffff; padding: 0px"
+                    @click="closegetnew"
+                  >
+                    Đóng
+                  </v-btn>
+                </v-card-title>
+                <!-- form bệnh án ở đây ----------------------------------------------------------- -->
+                <!-- form bệnh án ở đây ----------------------------------------------------------- -->
+                <v-form ref="form"> 
+                <v-card-text>
                   <div>
                     <p
                       style="
@@ -712,19 +564,85 @@
                     </v-stepper-content>
                   </v-stepper-items>
                 </v-stepper>
-            </v-card>
-          </v-form>
-        </v-dialog>
-      </div>
-    </div>
+
+                <!-- form bệnh án ở đây ----------------------------------------------------------- -->
+                <!-- form bệnh án ở đây ----------------------------------------------------------- -->
+
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="blue darken-1" text @click="closegetnew">
+                    Hủy
+                  </v-btn>
+                  <v-btn color="blue darken-1" text @click="save"> Lưu </v-btn>
+                </v-card-actions>
+                </v-form>
+              </v-card>
+            </v-dialog>
+          </v-toolbar>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon small class="mr-2" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
+        </template>
+      </v-data-table>
+
+      <v-dialog v-model="dialogDelete" max-width="500px" persistent>
+        <v-form>
+          <v-card>
+            <v-card-title class="text-h5">
+              Bạn chắc chắn muốn xóa bệnh án? <br />
+            </v-card-title>
+            <v-card-text>
+              <v-text-field
+                v-model="dlItem.appointment.profile.name"
+                label="Họ và tên"
+                readonly
+              ></v-text-field>
+              <v-text-field
+                v-model="dlItem.appointment.profile.dob"
+                label="Ngày sinh"
+                readonly
+              ></v-text-field>
+              <v-text-field
+                v-model="dlItem.appointment.profile.phoneNumber"
+                label="Số điện thoại"
+                readonly
+              ></v-text-field>
+                <v-text-field
+                v-model="dlItem.appointment.doctor.name"
+                label="Tên bác sĩ khám"
+                readonly
+              ></v-text-field>
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDelete">Hủy</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
+                >Xóa</v-btn
+              >
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-form>
+      </v-dialog>
+
+      <v-dialog v-model="dialogedit" max-width="600px" persistent> </v-dialog>;
+    </v-card>
   </div>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      nulltime: null,
+  data: () => ({
+  
+    e1: 1,
+    menu11: false,
+    menu12: false,
+
+    nulltime: null,
     timeselect: [
       "7:00-8:00",
       "8:00-9:00",
@@ -735,32 +653,190 @@ export default {
       "14:00-15:00",
       "15:00-16:00",
     ],
-      panel: [],
-      menu11: false,
-      menu10: false,
-      datetaikham: null,
-      items: [],
-      search1: null,
-      e1: 1,
-      dialog: false,
-      dialogBenhAn: false,
-      picker: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-        .toISOString()
-        .substr(0, 10),
-      states: ["Kinh", "Thái", "Mường", "Dao", "GiaRai"],
-      note1: [
-        {
-          num: 5,
-          time: "10:00-11:00",
+    dskhoa: [
+      "Khoa Nội",
+      "Khoa Ngoại",
+      "Khoa Phụ Sản",
+      "Khoa Nhi",
+      "Khoa Truyền Nhiễm",
+      "Khoa Cấp Cứu",
+      "Khoa Hồi Sức và Chống Độc",
+      "Khoa Ung Bướu",
+    ],
+    states: ["Kinh", "Thái", "Mường", "Dao", "GiaRai"],
+    search1: null,
+    dsthuoc: ["Thuốc A", "Thuốc B"],
+    dsloai: ["Viên", "Vỉ", "Hộp"],
+    dscachdung: [
+      "Sáng-1v",
+      "Sáng-2v",
+      "Trưa-1v",
+      "Trưa-2v",
+      "Tối-1v",
+      "Tối-2v",
+    ],
+
+    menu10: false,
+
+    menu2: false,
+    nameTitle: "",
+
+    search: "",
+    selected: [],
+
+    dialogNewrecord: false,
+    dialogDelete: false,
+    dialogedit: false,
+    indexdl: null,
+    indexedit: null,
+    headers: [
+      {
+        text: "Tên bệnh nhân",
+        align: "start",
+        sortable: false,
+        value: "appointment.profile.name",
+      },
+      { text: "ID bệnh án", value: "idrecord", sortable: false },
+      {
+        text: "Số điện thoại",
+        value: "appointment.profile.phoneNumber",
+        sortable: false,
+      },
+      { text: "Tên bác sĩ", value: "appointment.doctor.name", sortable: false },
+      { text: "Khoa điều trị", value: "facultyTreatment", sortable: false },
+      { text: "Ngày khám", value: "appointment.date", sortable: false },
+      { text: "Ngày tái khám", value: "reExaminationDate", sortable: false },
+      { text: "Công cụ", value: "actions", sortable: false },
+    ],
+    desserts: [
+      {
+        id: 1,
+        idrecord: 1,
+        appointment: {
+          id: 1,
+          stt: 1,
+          room: "h2-93",
+          profile: {
+            id: 1,
+            profileNumber: 1,
+            name: "Nguyễn Ngọc Tân",
+            address: "20 lương thạnh",
+            phoneNumber: "123456789",
+            dob: "2000-06-18",
+            job: "sv",
+            identityCard: "123456789",
+            healthInsurance: "123456",
+            folk: "Kinh",
+            gender: "Nam",
+            protector: "bố mỹ",
+          },
+          doctor: {
+            id: 1,
+            name: "Dr.Tan",
+            specialty: "Khoa Nhi",
+            level: "Đại học",
+          },
+          date: "2022-04-06",
+          time: "9:00-10:00",
+          symptom: "dau",
+          description: "dauqua",
+          timeSituation: "1 ngày",
+          selfTreatment: true,
+          files: [],
         },
-      ],
-      note2: [
-        {
-          num: 8,
-          time: "10-03-2022",
+        pathological: "đau 1",
+        personalMedicalHistory: "đau 2",
+        familyMedicalHistory: "đau 3",
+        bodyInspection: "đau 4",
+        bloodVessel: "120",
+        temperature: "37.5",
+        bloodPressure: "100",
+        heartbeat: "110",
+        summary: "bình thường",
+        partsInspection: "phù nề",
+        hospitalize: true,
+        facultyTreatment: "Khoa Nhi",
+        medicines: [
+          {
+            nameMedicine: "Thuốc A",
+            numberMedicine: "2",
+            typeMedicine: "Hộp",
+            useMedicine: ["Sáng-1v", "Trưa-1v", "Tối-1v"],
+          },
+           {
+            nameMedicine: "Thuốc B",
+            numberMedicine: "2",
+            typeMedicine: "Hộp",
+            useMedicine: ["Sáng-1v", "Trưa-2v", "Tối-1v"],
+          },
+        ],
+        notes: "cẩn thận",
+        reExaminationDate: "2022-05-06",
+        files: [],
+      },
+
+      {
+        id: 2,
+        idrecord: 2,
+        appointment: {
+          id: 1,
+          stt: 1,
+          room: "h10-3",
+          profile: {
+            id: 1,
+            profileNumber: 1,
+            name: "Nguyễn thị nụ",
+            address: "quảng bình",
+            phoneNumber: "987654321",
+            dob: "2000-06-18",
+            job: "sv",
+            identityCard: "123456789",
+            healthInsurance: "123456",
+            folk: "Kinh",
+            gender: "Nữ",
+            protector: "bố mỹ",
+          },
+          doctor: {
+            id: 1,
+            name: "Dr.Tan",
+            specialty: "Khoa Nhi",
+            level: "Đại học",
+          },
+          date: "2022-04-06",
+          time: "9:00-10:00",
+          symptom: "dau",
+          description: "dauqua",
+          timeSituation: "1 ngày",
+          selfTreatment: true,
+          files: [],
         },
-      ],
-      record:  {
+        pathological: "đau 1",
+        personalMedicalHistory: "đau 2",
+        familyMedicalHistory: "đau 3",
+        bodyInspection: "đau 4",
+        bloodVessel: "120",
+        temperature: "37.5",
+        bloodPressure: "100",
+        heartbeat: "110",
+        summary: "bình thường",
+        partsInspection: "phù nề",
+        hospitalize: true,
+        facultyTreatment: "Khoa Nhi",
+        medicines: [
+          {
+            nameMedicine: "Thuốc A",
+            numberMedicine: "2",
+            typeMedicine: "Hộp",
+            useMedicine: ["Sáng-1v", "Trưa-1v", "Tối-1v"],
+          },
+        ],
+        notes: "cẩn thận",
+        reExaminationDate: "2022-05-06",
+        files: [],
+      },
+    ],
+
+    dlItem: {
       id: null,
       idrecord: null,
       appointment: {
@@ -819,253 +895,262 @@ export default {
       reExaminationDate: null,
       files: [],
     },
-      schedule: [
-        {
-          times: "10:00-11:00",
-          appointment: [
-            {
-              id: "f4f98f18-4baa-4104-850f-d0930d55a80d",
-              stt: 1,
-              room: "H2",
-              profile: {
-                id: "849dc832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "1",
-                name: "Văn Ba",
-                address: "address",
-                phoneNumber: "phone",
-                dob: "2022-03-30",
-                job: "job",
-                identityCard: "identity",
-                healthInsurance: "healthy",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protector",
-              },
-              doctor: {
-                id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "John",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "Ân Xá",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "Johnaaaa",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "ÂĐà phật",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "J",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-          ],
+    record: {
+      id: null,
+      idrecord: null,
+      appointment: {
+        id: null,
+        stt: null,
+        room: null,
+        profile: {
+          id: null,
+          profileNumber: null,
+          name: null,
+          address: null,
+          phoneNumber: null,
+          dob: null,
+          job: null,
+          identityCard: null,
+          healthInsurance: null,
+          folk: null,
+          gender: null,
+          protector: null,
         },
+        doctor: {
+          id: null,
+          name: null,
+          specialty: null,
+          level: null,
+        },
+        date: null,
+        time: null,
+        symptom: null,
+        description: null,
+        timeSituation: null,
+        selfTreatment: null,
+        files: [],
+      },
+      pathological: null,
+      personalMedicalHistory: null,
+      familyMedicalHistory: null,
+      bodyInspection: null,
+      bloodVessel: null,
+      temperature: null,
+      bloodPressure: null,
+      heartbeat: null,
+      summary: null,
+      partsInspection: null,
+      hospitalize: null,
+      facultyTreatment: null,
+      medicines: [
         {
-          times: "11:00-12:00",
-          appointment: [
-            {
-              id: "f4f98f18-4baa-4104-850f-d0930d55a80d",
-              stt: 1,
-              room: "H2",
-              profile: {
-                id: "849dc832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "1",
-                name: "Văn Ba",
-                address: "address",
-                phoneNumber: "phone",
-                dob: "2022-03-30",
-                job: "job",
-                identityCard: "identity",
-                healthInsurance: "healthy",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protector",
-              },
-              doctor: {
-                id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "John",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "Ân Xá",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "Johnaaaa",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "11:00-12:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "cc",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "J",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "11:00-12:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-          ],
+          nameMedicine: null,
+          numberMedicine: null,
+          typeMedicine: null,
+          useMedicine: null,
         },
       ],
-
-      donthuoc: [
-        {
-          tenthuoc: null,
-          soluongthuoc: null,
-          loaisudung: null,
-          cachdungthuoc: [],
-        },
-      ],
-
-      dsthuoc: ["Thuốc A", "Thuốc B"],
-      khoa: null,
-      dskhoa: [
-        "Khoa Nội",
-        "Khoa Ngoại",
-        "Khoa Phụ Sản",
-        "Khoa Nhi",
-        "Khoa Truyền Nhiễm",
-        "Khoa Cấp Cứu",
-        "Khoa Hồi Sức và Chống Độc",
-        "Khoa Ung Bướu",
-      ],
-      dscachdung: [
-        "Sáng-1v",
-        "Sáng-2v",
-        "Trưa-1v",
-        "Trưa-2v",
-        "Tối-1v",
-        "Tối-2v",
-      ],
-      cachdung: null,
-      loai: null,
-      dsloai: ["Viên", "Vỉ", "Hộp"],
-      hami: 0,
-      hamj: 0,
-    };
-  },
-  watch: {
-    search1(val) {
-      val && val !== this.select;
+      notes: null,
+      reExaminationDate: null,
+      files: [],
     },
-  },
+  }),
+
+  watch: {},
+  created() {},
   methods: {
+    editItem(item) {
+      this.nameTitle = "Chỉnh sửa thông tin";
+      this.dialogNewrecord = true;
+      this.indexedit = this.desserts.indexOf(item);
+
+     
+
+      this.record.id = this.desserts[this.indexedit].id;
+      this.record.idrecord = this.desserts[this.indexedit].idrecord;
+
+      this.record.appointment.id = this.desserts[this.indexedit].appointment.id;
+      this.record.appointment.stt =
+        this.desserts[this.indexedit].appointment.stt;
+      this.record.appointment.room =
+        this.desserts[this.indexedit].appointment.room;
+
+      this.record.appointment.profile.id =
+        this.desserts[this.indexedit].appointment.profile.id;
+      this.record.appointment.profile.profileNumber =
+        this.desserts[this.indexedit].appointment.profile.profileNumber;
+      this.record.appointment.profile.name =
+        this.desserts[this.indexedit].appointment.profile.name;
+      this.record.appointment.profile.address =
+        this.desserts[this.indexedit].appointment.profile.address;
+      this.record.appointment.profile.phoneNumber =
+        this.desserts[this.indexedit].appointment.profile.phoneNumber;
+      this.record.appointment.profile.dob =
+        this.desserts[this.indexedit].appointment.profile.dob;
+      this.record.appointment.profile.job =
+        this.desserts[this.indexedit].appointment.profile.job;
+      this.record.appointment.profile.identityCard =
+        this.desserts[this.indexedit].appointment.profile.identityCard;
+      this.record.appointment.profile.healthInsurance =
+        this.desserts[this.indexedit].appointment.profile.healthInsurance;
+      this.record.appointment.profile.folk =
+        this.desserts[this.indexedit].appointment.profile.folk;
+      this.record.appointment.profile.gender =
+        this.desserts[this.indexedit].appointment.profile.gender;
+      this.record.appointment.profile.protector =
+        this.desserts[this.indexedit].appointment.profile.protector;
+
+      this.record.appointment.doctor.id =
+        this.desserts[this.indexedit].appointment.doctor.id;
+      this.record.appointment.doctor.name =
+        this.desserts[this.indexedit].appointment.doctor.name;
+      this.record.appointment.doctor.specialty =
+        this.desserts[this.indexedit].appointment.doctor.specialty;
+      this.record.appointment.doctor.level =
+        this.desserts[this.indexedit].appointment.doctor.level;
+
+      this.record.appointment.date =
+        this.desserts[this.indexedit].appointment.date;
+      this.record.appointment.time =
+        this.desserts[this.indexedit].appointment.time;
+      this.record.appointment.symptom =
+        this.desserts[this.indexedit].appointment.symptom;
+      this.record.appointment.description =
+        this.desserts[this.indexedit].appointment.description;
+      this.record.appointment.timeSituation =
+        this.desserts[this.indexedit].appointment.timeSituation;
+      this.record.appointment.selfTreatment =
+        this.desserts[this.indexedit].appointment.selfTreatment;
+      this.record.appointment.files =
+        this.desserts[this.indexedit].appointment.files;
+
+      this.record.pathological = this.desserts[this.indexedit].pathological;
+      this.record.personalMedicalHistory =
+        this.desserts[this.indexedit].personalMedicalHistory;
+      this.record.familyMedicalHistory =
+        this.desserts[this.indexedit].familyMedicalHistory;
+      this.record.bodyInspection = this.desserts[this.indexedit].bodyInspection;
+      this.record.bloodVessel = this.desserts[this.indexedit].bloodVessel;
+      this.record.temperature = this.desserts[this.indexedit].temperature;
+      this.record.bloodPressure = this.desserts[this.indexedit].bloodPressure;
+      this.record.heartbeat = this.desserts[this.indexedit].heartbeat;
+      this.record.summary = this.desserts[this.indexedit].summary;
+      this.record.partsInspection =
+        this.desserts[this.indexedit].partsInspection;
+      this.record.hospitalize = this.desserts[this.indexedit].hospitalize;
+      this.record.facultyTreatment =
+        this.desserts[this.indexedit].facultyTreatment;
+      this.record.medicines = this.desserts[this.indexedit].medicines;
+      this.record.notes = this.desserts[this.indexedit].notes;
+      this.record.reExaminationDate =
+        this.desserts[this.indexedit].reExaminationDate;
+      this.record.files = this.desserts[this.indexedit].files;
+    },
+    deleteItem(item) {
+      this.dialogDelete = true;
+      this.indexdl = this.desserts.indexOf(item);
+
+       this.dlItem.id = this.desserts[this.indexdl].id;
+      this.dlItem.idrecord = this.desserts[this.indexdl].idrecord;
+
+      this.dlItem.appointment.id = this.desserts[this.indexdl].appointment.id;
+      this.dlItem.appointment.stt =
+        this.desserts[this.indexdl].appointment.stt;
+      this.dlItem.appointment.room =
+        this.desserts[this.indexdl].appointment.room;
+
+      this.dlItem.appointment.profile.id =
+        this.desserts[this.indexdl].appointment.profile.id;
+      this.dlItem.appointment.profile.profileNumber =
+        this.desserts[this.indexdl].appointment.profile.profileNumber;
+      this.dlItem.appointment.profile.name =
+        this.desserts[this.indexdl].appointment.profile.name;
+      this.dlItem.appointment.profile.address =
+        this.desserts[this.indexdl].appointment.profile.address;
+      this.dlItem.appointment.profile.phoneNumber =
+        this.desserts[this.indexdl].appointment.profile.phoneNumber;
+      this.dlItem.appointment.profile.dob =
+        this.desserts[this.indexdl].appointment.profile.dob;
+      this.dlItem.appointment.profile.job =
+        this.desserts[this.indexdl].appointment.profile.job;
+      this.dlItem.appointment.profile.identityCard =
+        this.desserts[this.indexdl].appointment.profile.identityCard;
+      this.dlItem.appointment.profile.healthInsurance =
+        this.desserts[this.indexdl].appointment.profile.healthInsurance;
+      this.dlItem.appointment.profile.folk =
+        this.desserts[this.indexdl].appointment.profile.folk;
+      this.dlItem.appointment.profile.gender =
+        this.desserts[this.indexdl].appointment.profile.gender;
+      this.dlItem.appointment.profile.protector =
+        this.desserts[this.indexdl].appointment.profile.protector;
+
+      this.dlItem.appointment.doctor.id =
+        this.desserts[this.indexdl].appointment.doctor.id;
+      this.dlItem.appointment.doctor.name =
+        this.desserts[this.indexdl].appointment.doctor.name;
+      this.dlItem.appointment.doctor.specialty =
+        this.desserts[this.indexdl].appointment.doctor.specialty;
+      this.dlItem.appointment.doctor.level =
+        this.desserts[this.indexdl].appointment.doctor.level;
+
+      this.dlItem.appointment.date =
+        this.desserts[this.indexdl].appointment.date;
+      this.dlItem.appointment.time =
+        this.desserts[this.indexdl].appointment.time;
+      this.dlItem.appointment.symptom =
+        this.desserts[this.indexdl].appointment.symptom;
+      this.dlItem.appointment.description =
+        this.desserts[this.indexdl].appointment.description;
+      this.dlItem.appointment.timeSituation =
+        this.desserts[this.indexdl].appointment.timeSituation;
+      this.dlItem.appointment.selfTreatment =
+        this.desserts[this.indexdl].appointment.selfTreatment;
+      this.dlItem.appointment.files =
+        this.desserts[this.indexdl].appointment.files;
+
+      this.dlItem.pathological = this.desserts[this.indexdl].pathological;
+      this.dlItem.personalMedicalHistory =
+        this.desserts[this.indexdl].personalMedicalHistory;
+      this.dlItem.familyMedicalHistory =
+        this.desserts[this.indexdl].familyMedicalHistory;
+      this.dlItem.bodyInspection = this.desserts[this.indexdl].bodyInspection;
+      this.dlItem.bloodVessel = this.desserts[this.indexdl].bloodVessel;
+      this.dlItem.temperature = this.desserts[this.indexdl].temperature;
+      this.dlItem.bloodPressure = this.desserts[this.indexdl].bloodPressure;
+      this.dlItem.heartbeat = this.desserts[this.indexdl].heartbeat;
+      this.dlItem.summary = this.desserts[this.indexdl].summary;
+      this.dlItem.partsInspection =
+        this.desserts[this.indexdl].partsInspection;
+      this.dlItem.hospitalize = this.desserts[this.indexdl].hospitalize;
+      this.dlItem.facultyTreatment =
+        this.desserts[this.indexdl].facultyTreatment;
+      this.dlItem.medicines = this.desserts[this.indexdl].medicines;
+      this.dlItem.notes = this.desserts[this.indexdl].notes;
+      this.dlItem.reExaminationDate =
+        this.desserts[this.indexdl].reExaminationDate;
+      this.dlItem.files = this.desserts[this.indexdl].files;
+    },
+    deleteItemConfirm() {},
+
+    closegetnew() {
+   
+       
+      
+      this.dialogNewrecord = false;
+    
+      
+    },
+    closeDelete() {
+      this.dialogDelete = false;
+    },
+    save() {},
+
+
+    opennewRecord() {
+      this.nameTitle = "Tạo bệnh án mới";
+       this.$refs.form.reset();
+      this.dialogNewrecord = true;
+    },
     nextStep(n) {
       if (n === this.steps) {
         this.e1 = 3;
@@ -1080,222 +1165,17 @@ export default {
         this.e1 = 1;
       }
     },
-    addnewdonthuoc(donthuoc) {
-      this.donthuoc.push({});
+    addnewdonthuoc(medicines) {
+      this.record.medicines.push({});
     },
-    removedonthuoc(donthuoc, k) {
-      donthuoc.splice(k, 1);
-    },
-    all() {
-      this.panel = [...Array(this.schedule.length).keys()].map((k, i) => i);
-    },
-    none() {
-      this.panel = [];
-    },
-    closeForm() {
-      this.$refs.form.reset();
-      this.dialogBenhAn = false;
-    },
-    get(i, j) {
-      this.dialog = true;
-      this.hami = i;
-      this.hamj = j;
-
-      this.record.appointment.times = this.schedule[i].times;
-      this.record.appointment.id = this.schedule[i].appointment[j].id;
-      this.record.appointment.stt = this.schedule[i].appointment[j].stt;
-      this.record.appointment.room = this.schedule[i].appointment[j].room;
-
-      this.record.appointment.profile.id = this.schedule[i].appointment[j].profile.id;
-      this.record.appointment.profile.profileNumber =
-        this.schedule[i].appointment[j].profile.profileNumber;
-      this.record.appointment.profile.name = this.schedule[i].appointment[j].profile.name;
-      this.record.appointment.profile.address =
-        this.schedule[i].appointment[j].profile.address;
-      this.record.appointment.profile.phoneNumber =
-        this.schedule[i].appointment[j].profile.phoneNumber;
-      this.record.appointment.profile.dob = this.schedule[i].appointment[j].profile.dob;
-      this.record.appointment.profile.job = this.schedule[i].appointment[j].profile.job;
-      this.record.appointment.profile.identityCard =
-        this.schedule[i].appointment[j].profile.identityCard;
-      this.record.appointment.profile.healthInsurance =
-        this.schedule[i].appointment[j].profile.healthInsurance;
-      this.record.appointment.profile.folk = this.schedule[i].appointment[j].profile.folk;
-      this.record.appointment.profile.gender =
-        this.schedule[i].appointment[j].profile.gender;
-      this.record.appointment.profile.protector =
-        this.schedule[i].appointment[j].profile.protector;
-
-      this.record.appointment.doctor.id = this.schedule[i].appointment[j].doctor.id;
-      this.record.appointment.doctor.name = this.schedule[i].appointment[j].doctor.name;
-      this.record.appointment.doctor.specialty =
-        this.schedule[i].appointment[j].doctor.specialty;
-      this.record.appointment.doctor.level = this.schedule[i].appointment[j].doctor.level;
-
-      this.record.appointment.date = this.schedule[i].appointment[j].date;
-      this.record.appointment.time = this.schedule[i].appointment[j].time;
-      this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
-      this.record.appointment.description = this.schedule[i].appointment[j].description;
-      this.record.appointment.timeSituation =
-        this.schedule[i].appointment[j].timeSituation;
-      this.record.appointment.selfTreatment =
-        this.schedule[i].appointment[j].selfTreatment;
-      this.record.appointment.files = this.schedule[i].appointment[j].files;
-    },
-    getbenhan(i, j) {
-      this.dialogBenhAn = true;
-      this.hami = i;
-      this.hamj = j;
-
-      this.record.appointment.times = this.schedule[i].times;
-      this.record.appointment.id = this.schedule[i].appointment[j].id;
-      this.record.appointment.stt = this.schedule[i].appointment[j].stt;
-      this.record.appointment.room = this.schedule[i].appointment[j].room;
-
-      this.record.appointment.profile.id = this.schedule[i].appointment[j].profile.id;
-      this.record.appointment.profile.profileNumber =
-        this.schedule[i].appointment[j].profile.profileNumber;
-      this.record.appointment.profile.name = this.schedule[i].appointment[j].profile.name;
-      this.record.appointment.profile.address =
-        this.schedule[i].appointment[j].profile.address;
-      this.record.appointment.profile.phoneNumber =
-        this.schedule[i].appointment[j].profile.phoneNumber;
-      this.record.appointment.profile.dob = this.schedule[i].appointment[j].profile.dob;
-      this.record.appointment.profile.job = this.schedule[i].appointment[j].profile.job;
-      this.record.appointment.profile.identityCard =
-        this.schedule[i].appointment[j].profile.identityCard;
-      this.record.appointment.profile.healthInsurance =
-        this.schedule[i].appointment[j].profile.healthInsurance;
-      this.record.appointment.profile.folk = this.schedule[i].appointment[j].profile.folk;
-      this.record.appointment.profile.gender =
-        this.schedule[i].appointment[j].profile.gender;
-      this.record.appointment.profile.protector =
-        this.schedule[i].appointment[j].profile.protector;
-
-      this.record.appointment.doctor.id = this.schedule[i].appointment[j].doctor.id;
-      this.record.appointment.doctor.name = this.schedule[i].appointment[j].doctor.name;
-      this.record.appointment.doctor.specialty =
-        this.schedule[i].appointment[j].doctor.specialty;
-      this.record.appointment.doctor.level = this.schedule[i].appointment[j].doctor.level;
-
-      this.record.appointment.date = this.schedule[i].appointment[j].date;
-      this.record.appointment.time = this.schedule[i].appointment[j].time;
-      this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
-      this.record.appointment.description = this.schedule[i].appointment[j].description;
-      this.record.appointment.timeSituation =
-        this.schedule[i].appointment[j].timeSituation;
-      this.record.appointment.selfTreatment =
-        this.schedule[i].appointment[j].selfTreatment;
-      this.record.appointment.files = this.schedule[i].appointment[j].files;
+    removedonthuoc(medicines, k) {
+      this.record.medicines.splice(k, 1);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.thongbao .md-card .md-title {
-  font-size: 16px;
-  text-align: center;
-  color: #ffffff;
-}
-
-.thongbao .md-card .md-card-header {
-  box-shadow: 0 0 0 0;
-  background-color: #448aff;
-}
-
-.thongbao .md-button:hover {
-  background-color: #e0e0e0 !important;
-  color: #333 !important;
-}
-
-.danhsachkham .md-icon-image svg {
-  flex: 0;
-}
-
-.danhsachkham .md-table-cell {
-  padding: 15px 13px;
-}
-
-.md-dialog .md-dialog-container {
-  max-width: 768px;
-}
-
-.md-tabs {
-  margin-bottom: 24px;
-}
-
-.thongtinkham {
-  padding: 10px 40px;
-}
-.hosobenhnhan {
-  text-align: center;
-}
-
-.lich .theme--light.v-card {
-  max-height: 350px;
-}
-
-.rowinfo {
-  width: 100%;
-  display: flex;
-  margin: 10px 0px;
-  text-align: center;
-}
-
-.rowinfo p {
-  margin: 0px;
-}
-
-.infoID {
-  width: 10%;
-}
-
-.infoName {
-  width: 30%;
-}
-
-.infoRoom {
-  width: 30%;
-}
-
-.infoChitiet {
-  width: 15%;
-}
-
-.taoBenhAn {
-  width: 15%;
-}
-
-.infoChitiet button {
-  background-color: white;
-
-  color: #4caf50;
-  padding: 2px 6px;
-  border-radius: 5px;
-}
-
-.infoChitiet button:hover {
-  background-color: #4caf50;
-  color: white;
-
-  border-color: white;
-}
-
-.taoBenhAn button {
-  background-color: white;
-
-  color: #448aff;
-  padding: 2px 6px;
-  border-radius: 5px;
-}
-
-.taoBenhAn button:hover {
-  background-color: #448aff;
-  color: white;
-  border-color: white;
-}
-
 .gop {
   width: 100%;
   background-color: rgba(201, 198, 195, 0.671);
@@ -1369,37 +1249,17 @@ export default {
 }
 
 .textpage2 p {
-  width: 15%;
+  width: auto;
   height: 34px;
   font-size: 16px;
   margin: 0px 0px;
-  min-width: 250px;
+  
   align-items: center;
 }
-.ketquatongquat {
-  text-align: center;
-}
-.ketquatongquat p {
-  display: inline;
-}
-.ketquatongquat input {
-  width: 60px;
-  background-color: #e0e0e0;
-  margin: 0px 5px;
-  padding: 2px 8px;
-}
 
-.soluong {
-  width: 150px;
-  height: 52px;
-  float: left;
-}
-.soluong input {
-  height: 50px;
-  font-size: 16px;
-  color: #333;
-  padding: 0px 10px;
-}
+
+
+
 .loai {
   width: 30%;
   float: left;
