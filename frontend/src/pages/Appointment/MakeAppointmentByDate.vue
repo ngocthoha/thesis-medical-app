@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <v-stepper v-model="visible_navigation">
+    <v-stepper class="stepper" v-model="visible_navigation">
       <v-stepper-header>
         <v-stepper-step :complete="step.step1" step="1" color="green lighten-1">
           Chọn hồ sơ
@@ -214,6 +214,7 @@
       <SelectDoctor
         class="md-layout-item md-size-80 select-doctor-item"
         ref="doctorSelect"
+        :listDoctor="listDoctor"
       ></SelectDoctor>
       <div class="btns-selectdate">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
@@ -224,51 +225,142 @@
         >
       </div>
     </div>
-    <div
+    <v-card
       class="md-layout glutter verify-layout"
+      width="800"
       v-show="visible_navigation.visible_verify"
     >
-      <div class="md-layout-item">Thông tin khám</div>
+      <div class="md-layout-item md-size-100">
+        <v-toolbar flat color="green lighten-1" dark>
+          <v-toolbar-title>Thông tin khám</v-toolbar-title>
+        </v-toolbar>
+      </div>
       <div class="md-layout-item md-size-100">
         <div class="md-layout-item verify-column md-size-25">
-          <div>Chuyên khoa</div>
+          <div><p class="font-weight-bold">Chuyên khoa</p></div>
           <div>{{ this.opdSelection }}</div>
         </div>
         <div class="md-layout-item verify-column md-size-25">
-          <div>Bác sĩ</div>
+          <div><p class="font-weight-bold">Bác sĩ</p></div>
           <div>{{ this.doctorSelection.name }}</div>
         </div>
         <div class="md-layout-item verify-column md-size-25">
-          <div>Ngày khám</div>
+          <div><p class="font-weight-bold">Ngày khám</p></div>
           <div>{{ this.dateSelection }}</div>
           <div>{{ this.doctorSelection.time }}</div>
         </div>
         <div class="md-layout-item verify-column md-size-25">
-          <div>Phòng</div>
+          <div><p class="font-weight-bold">Phòng</p></div>
           <div>{{ this.doctorSelection.room }}</div>
         </div>
       </div>
-      <div class="md-layout-item">Thông tin bệnh nhân</div>
-      <div class="md-layout-item md-size-60">
+      <div class="md-layout-item md-size-100">
+        <v-toolbar flat color="green lighten-1" dark>
+          <v-toolbar-title>Thông tin bệnh nhân</v-toolbar-title>
+        </v-toolbar>
+      </div>
+      <div class="md-layout-item md-size-100">
         <div class="md-layout-item verify-column md-size-50">
-          <div>Họ và tên: {{ this.patient_info.name }}</div>
-          <div>Ngày sinh: {{ this.patient_info.birthday }}</div>
-          <div>Giới tính: {{ this.patient_info.sex }}</div>
-          <div>Số điện thoại: {{ this.patient_info.phone }}</div>
+          <div>
+            <strong class="font-weight-bold">Họ và tên: </strong>
+            {{ this.patient_info.name }}
+          </div>
+          <div>
+            <strong class="font-weight-bold">Ngày sinh: </strong
+            >{{ this.patient_info.dob }}
+          </div>
+          <div>
+            <strong class="font-weight-bold">Giới tính: </strong
+            >{{ this.patient_info.gender }}
+          </div>
+          <div>
+            <strong class="font-weight-bold">Số điện thoại: </strong>
+            {{ this.patient_info.phoneNumber }}
+          </div>
         </div>
         <div class="md-layout-item verify-column md-size-50">
-          <div>CMND: {{ this.patient_info.id }}</div>
-          <div>Dân tộc: {{ this.patient_info.ethnic }}</div>
-          <div>Nghề nghiệp: {{ this.patient_info.job }}</div>
+          <div>
+            <strong class="font-weight-bold">CMND: </strong
+            >{{ this.patient_info.identityCard }}
+          </div>
+          <div>
+            <strong class="font-weight-bold">Dân tộc: </strong
+            >{{ this.patient_info.folk }}
+          </div>
+          <div>
+            <strong class="font-weight-bold">Nghề nghiệp: </strong>
+            {{ this.patient_info.job }}
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="md-layout-item md-size-100">
+        <v-toolbar flat color="green lighten-1" dark>
+          <v-toolbar-title>Thông tin bổ sung</v-toolbar-title>
+        </v-toolbar>
+        <div class="md-layout-item verify-column md-size-50">
+          <label class="font-weight-bold" for="">Triệu chứng</label>
+          <v-card>
+            <input v-model="symptom" type="text" style="width: 100%" />
+          </v-card>
+          <label class="font-weight-bold" for="">Mô tả chi tiết</label>
+          <v-card>
+            <input v-model="description" type="text" style="width: 100%" />
+          </v-card>
+          <label class="font-weight-bold" for=""
+            >Thời gian diễn ra tình trạng trên</label
+          >
+          <v-card>
+            <input v-model="timeSituation" type="text" style="width: 100%" />
+          </v-card>
+          <v-checkbox
+            v-model="selfTreatment"
+            label="Đã tự điều trị bệnh"
+            color="success"
+            value="1"
+            hide-details
+          ></v-checkbox>
+        </div>
+        <div class="md-layout-item verify-column md-size-100">
+          <label class="font-weight-bold" for=""
+            >Hình ảnh, kết quả các xét nghiệm trước đó (nếu có)</label
+          >
+          <v-file-input
+            v-model="files"
+            color="green lighten-1"
+            counter
+            label=""
+            multiple
+            placeholder="Chọn file"
+            prepend-icon="mdi-paperclip"
+            height="40"
+            outlined
+            :show-size="1000"
+          >
+            <template v-slot:selection="{ index, text }">
+              <v-chip v-if="index < 2" color="green lighten-1" dark label small>
+                {{ text }}
+              </v-chip>
+
+              <span
+                v-else-if="index === 2"
+                class="text-overline grey--text text--darken-3 mx-2"
+              >
+                +{{ files.length - 2 }} File(s)
+              </span>
+            </template>
+          </v-file-input>
         </div>
       </div>
       <div class="btns-verify">
         <md-button class="md-round md-success back-button">Quay lại</md-button>
-        <md-button class="md-round md-success continue-button"
+        <md-button
+          class="md-round md-success continue-button"
+          @click="create_appointment"
           >Xác nhận</md-button
         >
       </div>
-    </div>
+    </v-card>
   </div>
 </template>
 
@@ -276,7 +368,7 @@
 import SelectDate from "@/pages/Appointment/SelectDate.vue";
 import SelectOPD from "@/pages/Appointment/SelectOPD.vue";
 import SelectDoctor from "@/pages/Appointment/SelectDoctor.vue";
-import axios from "axios";
+
 export default {
   components: {
     SelectDate,
@@ -299,35 +391,7 @@ export default {
         visible_verify: false,
       },
 
-      profile_patient_list: [
-        // {
-        //   name: "Nguyễn Duy Thanh",
-        //   birthday: "03/03/2000",
-        //   phone: "0962530448",
-        //   sex: "Nam",
-        //   id: "077200003808",
-        //   job: "Sinh viên",
-        //   ethnic: "Kinh",
-        // },
-        // {
-        //   name: "Hà Ngọc Thọ",
-        //   birthday: "03/06/1999",
-        //   phone: "096253021312",
-        //   sex: "Nam",
-        //   id: "077200009999",
-        //   job: "Nhân viên văn phòng",
-        //   ethnic: "Kinh",
-        // },
-        // {
-        //   name: "Nguyễn Thúy Liễu",
-        //   birthday: "03/03/2000",
-        //   phone: "0962530448",
-        //   sex: "Nữ",
-        //   id: "077200005348",
-        //   job: "Kỹ sư",
-        //   ethnic: "Kinh",
-        // },
-      ],
+      profile_patient_list: [],
 
       patient_info: {
         id: "",
@@ -357,6 +421,51 @@ export default {
       opdSelection: "",
       doctorSelection: "",
       profile_list: [],
+
+      listDoctor: [
+        // {
+        //   id: 3,
+        //   date: "16",
+        //   room: "H2 á",
+        //   times: ["10-11", "11-12"],
+        //   doctor: {
+        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+        //     name: "John",
+        //     specialty: "NHI KHOA",
+        //     level: "level",
+        //   },
+        // },
+        // {
+        //   id: 3,
+        //   date: "16",
+        //   room: "H2 á",
+        //   times: ["10-11", "11-12"],
+        //   doctor: {
+        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+        //     name: "John",
+        //     specialty: "NHI KHOA",
+        //     level: "level",
+        //   },
+        // },
+        // {
+        //   id: 3,
+        //   date: "16",
+        //   room: "H2 á",
+        //   times: ["10-11", "11-12"],
+        //   doctor: {
+        //     id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+        //     name: "John",
+        //     specialty: "NHI KHOA",
+        //     level: "level",
+        //   },
+        // },
+      ],
+
+      files: [],
+      symptom: "",
+      description: "",
+      selfTreatment: "",
+      timeSituation: "",
     };
   },
 
@@ -366,18 +475,23 @@ export default {
       this.visible_navigation.visible_selectdate = true;
       this.step.step1 = true;
     },
+
     SelectDateComplete() {
       this.visible_navigation.visible_selectdate = false;
       this.visible_navigation.visible_selectopd = true;
       this.dateSelection = this.$refs.dateSelect.date;
       this.step.step2 = true;
     },
+
     SelectOPDComplete() {
       this.visible_navigation.visible_selectopd = false;
       this.visible_navigation.visible_selectdoctor = true;
       this.opdSelection = this.$refs.OPDSelect.selected;
       this.step.step3 = true;
+
+      this.getDoctorList();
     },
+
     SelectDoctorComplete() {
       this.visible_navigation.visible_selectdoctor = false;
       this.visible_navigation.visible_verify = true;
@@ -397,6 +511,7 @@ export default {
       this.patient_info.folk = patient_select.folk;
       this.patient_info.gender = patient_select.gender;
       this.patient_info.protector = patient_select.protector;
+      this.patient_info.name = patient_select.name;
     },
 
     async AddNewPatientProfile() {
@@ -419,6 +534,46 @@ export default {
       await this.$store.dispatch("profile/profile_list", params);
       this.profile_patient_list = this.$store.getters["profile/profile_list"];
       console.log(this.profile_patient_list);
+    },
+
+    async getDoctorList() {
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: {
+          date: this.dateSelection,
+          specialty: this.opdSelection,
+        },
+      };
+      await this.$store.dispatch(
+        "appointment/getDoctorList_byDateAndSpeciality",
+        params
+      );
+      this.listDoctor = this.$store.getters["appointment/doctors_list"];
+      //console.log(this.listDoctor);
+    },
+
+    async create_appointment() {
+      const appointment_form_data = new FormData();
+
+      appointment_form_data.append("profileId", this.patient_info.id);
+      appointment_form_data.append("doctorId", this.doctorSelection.id);
+      appointment_form_data.append("date", this.dateSelection);
+      appointment_form_data.append("time", this.doctorSelection.time);
+      appointment_form_data.append("symptom", this.symptom);
+      appointment_form_data.append("description", this.description);
+      appointment_form_data.append("timeSituation", this.timeSituation);
+      appointment_form_data.append("selfTreatment", this.selfTreatment);
+
+      this.files.forEach(file =>{
+        appointment_form_data.append("files",file);
+      })
+      //appointment_form_data.append("files", this.files);
+
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: appointment_form_data,
+      };
+      await this.$store.dispatch("appointment/createAppointment", params);
     },
   },
 };
@@ -459,16 +614,15 @@ export default {
   flex-direction: column;
   align-items: center;
   background-color: white;
-  width: 100%;
-  border-style: solid;
-  border-color: #37833b;
+  /* border-style: solid;
+  border-color: #37833b; */
 }
 .verify-column {
   float: left;
   display: block;
 }
 .md-layout.glutter.verify-layout {
-  width: 60%;
+  width: 100%;
   margin: auto;
 }
 
@@ -478,5 +632,8 @@ export default {
 }
 .continue-button {
   float: right;
+}
+.stepper {
+  margin: 10px;
 }
 </style>

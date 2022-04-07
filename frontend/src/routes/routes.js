@@ -14,6 +14,7 @@ import Login from "@/pages/Login/Login.vue";
 //user page
 import AppointmentByDate from "@/pages/Appointment/MakeAppointmentByDate.vue";
 import AppointmentByDoctor from "@/pages/Appointment/MakeAppointmentByDoctor.vue";
+import ViewAppointment from "@/pages/Appointment/ViewAppointment.vue";
 
 //doctor page
 import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
@@ -144,6 +145,11 @@ const routes = [
         path: "admin/schedule-admin",
         name: "Lịch trình",
         component: ScheduleAdmin,
+      },
+      {
+        path: "appointment/view-appointment",
+        name: "Lịch sử đặt khám",
+        component: ViewAppointment,
       },
     ],
   },
