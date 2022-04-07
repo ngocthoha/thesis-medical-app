@@ -6,7 +6,7 @@
         show-select
         :headers="headers"
         :items="desserts"
-        item-key="name"
+        item-key="id"
         sort-by="name"
         class="elevation-1"
         :search="search"
@@ -279,6 +279,7 @@ export default {
     ],
     desserts: [
       {
+        id: 1,
         name: "A",
         chuyenkhoa: "Nhi",
         phonenumber: "0123456789",
@@ -286,6 +287,7 @@ export default {
         startdate: "2020-03-31",
       },
       {
+        id: 2,
         name: "B",
         chuyenkhoa: "Nội",
         phonenumber: "0123456789",
@@ -295,6 +297,7 @@ export default {
     ],
 
     editedItem: {
+      id: null,
       name: "",
       chuyenkhoa: "",
       phonenumber: "",
@@ -302,6 +305,7 @@ export default {
       email: "",
     },
     dlItem: {
+      id: null,
       name: "",
       chuyenkhoa: "",
       phonenumber: "",
@@ -309,6 +313,7 @@ export default {
       email: "",
     },
     getnew: {
+      id: null,
       name: null,
       chuyenkhoa: null,
       phonenumber: null,
@@ -325,6 +330,7 @@ export default {
       this.dialogedit = true;
       this.indexedit = this.desserts.indexOf(item);
 
+      this.editedItem.id = this.desserts[this.indexedit].id;
       this.editedItem.chuyenkhoa = this.desserts[this.indexedit].chuyenkhoa;
       this.editedItem.phonenumber = this.desserts[this.indexedit].phonenumber;
       this.editedItem.email = this.desserts[this.indexedit].email;
@@ -335,6 +341,7 @@ export default {
       this.dialogDelete = true;
       this.indexdelete = this.desserts.indexOf(item);
 
+      this.dlItem.id = this.desserts[this.indexdelete].id;
       this.dlItem.chuyenkhoa = this.desserts[this.indexdelete].chuyenkhoa;
       this.dlItem.phonenumber = this.desserts[this.indexdelete].phonenumber;
       this.dlItem.email = this.desserts[this.indexdelete].email;

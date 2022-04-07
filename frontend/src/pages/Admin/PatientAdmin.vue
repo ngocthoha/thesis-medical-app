@@ -6,7 +6,7 @@
         show-select
         :headers="headers"
         :items="desserts"
-        item-key="name"
+        item-key="id"
         sort-by="name"
         class="elevation-1"
         :search="search"

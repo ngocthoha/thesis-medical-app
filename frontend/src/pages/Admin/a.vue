@@ -5,12 +5,12 @@
         v-model="selected"
         show-select
         :headers="headers"
-         :items="desserts"
-          item-key="id"
-        sort-by="profile.name"
+        :items="desserts"
+        item-key="name"
+        sort-by="name"
         class="elevation-1"
         :search="search"
-      >
+      > 
         <template v-slot:top>
           <v-toolbar flat>
             <v-btn color="primary" dark class="mb-2" @click="opennewApp">
@@ -379,11 +379,7 @@
       <v-dialog v-model="dialogedit" max-width="600px" persistent> </v-dialog>
     </v-card>
 
-
-
-
-
-
+    {{selected}}
   </div>
 </template>
 

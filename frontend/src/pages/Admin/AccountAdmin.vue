@@ -6,11 +6,11 @@
         show-select
         :headers="headers"
         :items="desserts"
-        item-key="name"
+        item-key="idaccount"
         sort-by="name"
         class="elevation-1"
         :search="search"
-        @input="inra"
+   
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -262,14 +262,7 @@ export default {
     items: ["Bác sĩ", "Bệnh nhân", "Nhân viên", "Admin"],
     search: "",
     selected: [],
-    getdate: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
-    menu: false,
-    getdate1: new Date(Date.now() - new Date().getTimezoneOffset() * 60000)
-      .toISOString()
-      .substr(0, 10),
-    menu1: false,
+
     dialoggetnew: false,
     dialogDelete: false,
     dialogedit: false,
@@ -288,6 +281,7 @@ export default {
     ],
     desserts: [
       {
+        idaccount: 1,
         name: "nguyễn thị ngọc tân",
         position: "Bệnh nhân",
         username: "tankk",
@@ -297,6 +291,7 @@ export default {
         phoneNumber: "0123456798",
       },
       {
+        idaccount: 2,
         name: "abc",
         position: "Bác sĩ",
         username: "abc",
@@ -308,6 +303,7 @@ export default {
     ],
 
     editedItem: {
+      idaccount: null,
       name: null,
       position: null,
       username: null,
@@ -318,6 +314,7 @@ export default {
     },
 
     getnew: {
+      idaccount: null,
       name: null,
       position: null,
       username: null,
@@ -334,6 +331,7 @@ export default {
     editItem() {
       this.dialogedit = true;
 
+       this.editedItem.idaccount = this.selected[0].idaccount;
       this.editedItem.name = this.selected[0].name;
       this.editedItem.position = this.selected[0].position;
       this.editedItem.username = this.selected[0].username;
@@ -356,9 +354,7 @@ export default {
     },
     save() {},
     saveedit() {},
-    inra() {
-      console;
-    },
+   
   },
 };
 </script>
