@@ -4,11 +4,14 @@
       <div
         class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-30"
       >
-
         <div class="lich">
-          <v-app id="inspire" style="max-height:400px; ">
-            <v-row justify="center" style="margin:20px 0px; ">
-              <v-date-picker v-model="picker" elevation="10" flat></v-date-picker>
+          <v-app id="inspire" style="max-height: 400px">
+            <v-row justify="center" style="margin: 20px 0px">
+              <v-date-picker
+                v-model="picker"
+                elevation="10"
+                flat
+              ></v-date-picker>
             </v-row>
           </v-app>
         </div>
@@ -154,7 +157,12 @@ const toLower = (text) => {
 
 const searchByName = (items, term) => {
   if (term) {
-    return items.filter((item) => (toLower(item.name).includes(toLower(term)) + toLower(item.time).includes(toLower(term)) + toLower(item.kham).includes(toLower(term))));
+    return items.filter(
+      (item) =>
+        toLower(item.name).includes(toLower(term)) +
+        toLower(item.time).includes(toLower(term)) +
+        toLower(item.kham).includes(toLower(term))
+    );
   }
 
   return items;

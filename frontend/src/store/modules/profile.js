@@ -1,34 +1,33 @@
+import service from "@/store/services/profile";
 
-import service from '@/store/services/profile';
-
-const state ={
+const state = {
   profile_list: [],
 };
 
 const mutations = {
-  SET_PROFILE_LIST: (state,list)=>{
-    state.profile_list = list
-  }
+  SET_PROFILE_LIST: (state, list) => {
+    state.profile_list = list;
+  },
 };
 
-const actions ={
-    profile_list({commit},params){
-      return service.profile_list(params).then(({data})=>{
-        commit('SET_PROFILE_LIST',data)
+const actions = {
+  profile_list({ commit }, params) {
+    return service.profile_list(params).then(({ data }) => {
+      commit("SET_PROFILE_LIST", data);
     });
   },
-    add_new_profile({commit},params){
-      return service.add_new_profile(params).then(({data})=>{
-        console.log('add new profile success')
-      });
-    },
-}
-
-const getters ={
-    profile_list: profile_list => state.profile_list,
+  add_new_profile({ commit }, params) {
+    return service.add_new_profile(params).then(({ data }) => {
+      console.log("add new profile success");
+    });
+  },
 };
 
-const profile ={
+const getters = {
+  profile_list: (profile_list) => state.profile_list,
+};
+
+const profile = {
   namespaced: true,
   state,
   getters,

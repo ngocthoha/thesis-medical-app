@@ -114,8 +114,6 @@ public class RecordController {
                     new ApiResponse<>(1, "Success", recordDTOS)
             );
         } catch (Exception e) {
-            System.out.println("Error get record " + e.getMessage());
-            MessageResponse message = new MessageResponse(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResponse<>(0, e.getMessage(), null)
             );

@@ -38,7 +38,6 @@
                   <div class="mhs">
                     <p><b>HỒ SƠ BỆNH ÁN: </b></p>
                     <input v-model="editedItem.id" />
-
                   </div>
 
                   <p><b>BÁC SĨ: NGUYỄN VĂN A</b></p>
@@ -47,7 +46,6 @@
                     <input v-model="editedItem.start" />
                     <p><b> THỜI GIAN: </b></p>
                   </div>
-                  
 
                   <!-- <v-app id="inspire">  -->
 
