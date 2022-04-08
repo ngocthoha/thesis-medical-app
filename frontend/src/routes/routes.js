@@ -31,13 +31,24 @@ import RecordAdmin from "@/pages/Admin/RecordAdmin.vue";
 import ScheduleAdmin from "@/pages/Admin/ScheduleAdmin.vue";
 import AccountAdmin from "@/pages/Admin/AccountAdmin.vue";
 
+//home page
+import Home from "@/pages/Home/home.vue"
+
 let authPage = {
-  path: "/",
-  name: "login",
+  path: "/login",
+  name: "Đăng nhập",
   component: Login,
 };
 
+
+let homePage = {
+  path: "/",
+  name: "home",
+  component: Home,
+};
+
 const routes = [
+  homePage,
   authPage,
   {
     path: "/home",
