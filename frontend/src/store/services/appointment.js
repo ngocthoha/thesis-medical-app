@@ -36,8 +36,20 @@ function createAppointment(params) {
       };
     });
 }
+
+function getAppointment_byDate_Doctor(params) {
+  axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
+  return axios
+    .get(`${url}/api/appointments/doctor`, { params: params.data })
+    .then((response) => {
+      return {
+        data: response.data,
+      };
+    });
+}
 export default {
   speciality_list,
   getDoctorList_byDateAndSpeciality,
   createAppointment,
+  getAppointment_byDate_Doctor,
 };

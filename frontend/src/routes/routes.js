@@ -21,14 +21,34 @@ import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
 import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
 import Profile from "@/pages/Doctor/Profile.vue";
 import Notification from "@/pages/Doctor/Notification.vue";
+import Healingprocess from "@/pages/Doctor/Healingprocess.vue";
+
+//admin page
+import DoctorAdmin from "@/pages/Admin/DoctorAdmin.vue";
+import AppointmentAdmin from "@/pages/Admin/AppointmentAdmin.vue";
+import PatientAdmin from "@/pages/Admin/PatientAdmin.vue";
+import RecordAdmin from "@/pages/Admin/RecordAdmin.vue";
+import ScheduleAdmin from "@/pages/Admin/ScheduleAdmin.vue";
+import AccountAdmin from "@/pages/Admin/AccountAdmin.vue";
+
+//home page
+import Home from "@/pages/Home/home.vue"
 
 let authPage = {
-  path: "/",
-  name: "login",
+  path: "/login",
+  name: "Đăng nhập",
   component: Login,
 };
 
+
+let homePage = {
+  path: "/",
+  name: "home",
+  component: Home,
+};
+
 const routes = [
+  homePage,
   authPage,
   {
     path: "/home",
@@ -95,8 +115,13 @@ const routes = [
       },
       {
         path: "doctor/doctor-record",
-        name: "Hồ sơ bệnh nhân",
+        name: "Danh sách bệnh án",
         component: HoSoBenhNhan,
+      },
+      {
+        path: "doctor/doctor-healingprocess",
+        name: "Quá trình chữa bệnh",
+        component: Healingprocess,
       },
       {
         path: "doctor/doctor-profile",
@@ -107,6 +132,36 @@ const routes = [
         path: "doctor/doctor-notification",
         name: "Thông báo",
         component: Notification,
+      },
+      {
+        path: "admin/doctor-admin",
+        name: "Bác sĩ",
+        component: DoctorAdmin,
+      },
+      {
+        path: "admin/appointment-admin",
+        name: "Lịch hẹn",
+        component: AppointmentAdmin,
+      },
+      {
+        path: "admin/patient-admin",
+        name: "Bệnh nhân",
+        component: PatientAdmin,
+      },
+      {
+        path: "admin/record-admin",
+        name: "Bệnh án",
+        component: RecordAdmin,
+      },
+      {
+        path: "admin/account-admin",
+        name: "Tài khoản",
+        component: AccountAdmin,
+      },
+      {
+        path: "admin/schedule-admin",
+        name: "Lịch trình",
+        component: ScheduleAdmin,
       },
       {
         path: "appointment/view-appointment",
