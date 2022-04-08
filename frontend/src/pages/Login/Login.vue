@@ -1,9 +1,9 @@
 <template>
-  <div>
-    <v-container fluid full-height>
-      <v-row align-center justify="center">
-        <v-col cols="12" sm="8" md="4">
-          <v-card outlined class="ma-auto">
+  <div style="height: 100%">
+    <v-container fluid full-height style="height: 100%">
+      <v-row justify="center">
+        <v-col class="d-flex justify-end" cols="12" sm="8" md="4">
+          <v-card outlined class="ma-auto" style="width: 600px">
             <v-card-title></v-card-title>
             <v-form>
               <v-card-title>Wellcome Back!</v-card-title>
@@ -58,6 +58,11 @@
             </v-card-text>
           </v-card>
         </v-col>
+        <!-- <v-col class="d-flex align-center justify-start pl-0" cols="6">
+          <div class="d-flex login-img">
+            <img src="@/assets/img/login-image.png" alt="" />
+          </div>
+        </v-col> -->
       </v-row>
     </v-container>
   </div>
@@ -98,7 +103,16 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+html,
+body {
+  height: 100% !important;
+  margin: 0;
+}
 .container {
   background-color: #f5f5f5;
+}
+.login-img {
+  width: 500px;
+  height: 455px;
 }
 </style>

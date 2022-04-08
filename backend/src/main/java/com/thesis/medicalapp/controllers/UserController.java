@@ -5,6 +5,7 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Role;
 import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.payload.SignupRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -49,19 +51,42 @@ public class UserController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
-        User user = new User(
-                null,
-                signupRequest.getName(),
-                signupRequest.getUsername(),
-                signupRequest.getPassword(),
-                signupRequest.getEmail(),
-                signupRequest.getAddress(),
-                signupRequest.getPhoneNumber(),
-                new Date(),
-                new ArrayList<>()
-        );
+        Date dateFormat = new Date();
+        try {
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(signupRequest.getDob());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        User user;
+        if (signupRequest.getRole().equals("ROLE_USER") || signupRequest.getRole().equals("ROLE_ADMIN")) {
+            user = new User(
+                    null,
+                    signupRequest.getName(),
+                    signupRequest.getUsername(),
+                    signupRequest.getPassword(),
+                    signupRequest.getEmail(),
+                    signupRequest.getAddress(),
+                    signupRequest.getPhoneNumber(),
+                    dateFormat,
+                    new ArrayList<>()
+            );
+        } else {
+            user = new Doctor(
+                    null,
+                    signupRequest.getName(),
+                    signupRequest.getUsername(),
+                    signupRequest.getPassword(),
+                    signupRequest.getEmail(),
+                    signupRequest.getAddress(),
+                    signupRequest.getPhoneNumber(),
+                    dateFormat,
+                    new ArrayList<>(),
+                    signupRequest.getSpecialty(),
+                    signupRequest.getLevel()
+            );
+        }
         userService.saveUser(user);
-        userService.addRoleToUser(user.getUsername(), "ROLE_USER");
+        userService.addRoleToUser(user.getUsername(), signupRequest.getRole());
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
