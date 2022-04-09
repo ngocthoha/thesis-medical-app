@@ -24,14 +24,10 @@
             class="my-2 white--text"
             @click="login"
           >
-           Đăng nhập
+            Đăng nhập
           </v-btn>
-          <v-btn
-            color="#046792"
-            rounded
-            class="my-2 white--text"
-          >
-           Đăng ký
+          <v-btn color="#046792" rounded class="my-2 white--text">
+            Đăng ký
           </v-btn>
         </v-row></v-col
       >
@@ -116,6 +112,65 @@
         >
       </v-col>
     </v-footer>
+    <v-footer color="white" height="494px" :padless="padless">
+      <v-col cols="12">
+        <v-row justify="center"
+          ><strong
+            class="font-weight-medium"
+            style="color: #046792; font-size: 36px"
+            >Consult Top doctor online for any health concern</strong
+          ></v-row
+        ></v-col
+      >
+      <v-col cols="12">
+        <v-row justify="center"
+          ><strong
+            class="font-weight-regular"
+            style="color: #a3a3a3; font-size: 16px"
+            >Private online consultations with verified doctors in all
+            specialists</strong
+          ></v-row
+        ></v-col
+      >
+      <v-col cols="12">
+        <v-row justify="center"
+          ><v-card
+            class="mx-2"
+            v-for="(item, index) in card_link"
+            :key="index"
+            width="200px"
+            height="134px"
+            hover="true"
+            style="background-color: #e6f0f5"
+          >
+          <v-row justify="center" class="mt-2">
+         
+            <v-avatar height="48px" width="48px" color="white"> <img src="@/assets/img/home/home_icon1.png" /> </v-avatar
+            >
+          </v-row>
+           <br /><strong
+              class="font-weight-regular ml-2"
+              style="color: #046792; font-size: 16px"
+              >{{ item.body }}</strong
+            >
+          </v-card></v-row
+        >
+      </v-col>
+      <v-col cols="12">
+        <v-row justify="center"
+          ><v-btn
+            color="#3685A8"
+            rounded
+            class="my-2 white--text"
+            height="40px"
+            width="160px"
+            style="font-size: 12px"
+          >
+            See All Specialities
+          </v-btn></v-row
+        >
+      </v-col>
+    </v-footer>
   </div>
 </template>
 
@@ -143,10 +198,10 @@ export default {
     ],
   }),
 
-  methods:{
-      login(){
-          this.$router.push({ name: "Đăng nhập" });
-      },
-  }
+  methods: {
+    login() {
+      this.$router.push({ name: "Đăng nhập" });
+    },
+  },
 };
 </script>
