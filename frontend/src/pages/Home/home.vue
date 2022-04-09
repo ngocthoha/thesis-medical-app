@@ -136,7 +136,7 @@
         <v-row justify="center"
           ><v-card
             class="mx-2"
-            v-for="(item, index) in card_link"
+            v-for="(image_card, index) in card_list_2"
             :key="index"
             width="200px"
             height="134px"
@@ -145,14 +145,18 @@
           >
           <v-row justify="center" class="mt-2">
          
-            <v-avatar height="48px" width="48px" color="white"> <img src="@/assets/img/home/home_icon1.png" /> </v-avatar
+            <v-avatar height="48px" width="48px" color="white"> <img :src="image_card.image" alt=""/> </v-avatar
             >
           </v-row>
-           <br /><strong
+           <br />
+           <v-row justify="center" class="mt-2">
+         
+           <strong
               class="font-weight-regular ml-2"
               style="color: #046792; font-size: 16px"
-              >{{ item.body }}</strong
+              >{{ image_card.label }}</strong
             >
+          </v-row>
           </v-card></v-row
         >
       </v-col>
@@ -196,6 +200,32 @@ export default {
         body: "Đặt lịch hẹn",
       },
     ],
+    card_list_2:[
+      {
+        image: require("@/assets/img/home/home_icon1.png"),
+        label: "Infectous Disease"
+      },
+       {
+        image: require("@/assets/img/home/home_icon2.png"),
+        label: "Dermatology"
+      },
+       {
+        image: require("@/assets/img/home/home_icon3.png"),
+        label: "Urology"
+      },
+       {
+        image: require("@/assets/img/home/home_icon4.png"),
+        label: "Psychiatry"
+      },
+       {
+        image: require("@/assets/img/home/home_icon5.png"),
+        label: "Stomach"
+      },
+       {
+        image: require("@/assets/img/home/home_icon6.png"),
+        label: "Baby Health"
+      },
+    ]
   }),
 
   methods: {
