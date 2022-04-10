@@ -24,14 +24,10 @@
             class="my-2 white--text"
             @click="login"
           >
-           Đăng nhập
+            Đăng nhập
           </v-btn>
-          <v-btn
-            color="#046792"
-            rounded
-            class="my-2 white--text"
-          >
-           Đăng ký
+          <v-btn color="#046792" rounded class="my-2 white--text">
+            Đăng ký
           </v-btn>
         </v-row></v-col
       >
@@ -116,6 +112,69 @@
         >
       </v-col>
     </v-footer>
+    <v-footer color="white" height="494px" :padless="padless">
+      <v-col cols="12">
+        <v-row justify="center"
+          ><strong
+            class="font-weight-medium"
+            style="color: #046792; font-size: 36px"
+            >Consult Top doctor online for any health concern</strong
+          ></v-row
+        ></v-col
+      >
+      <v-col cols="12">
+        <v-row justify="center"
+          ><strong
+            class="font-weight-regular"
+            style="color: #a3a3a3; font-size: 16px"
+            >Private online consultations with verified doctors in all
+            specialists</strong
+          ></v-row
+        ></v-col
+      >
+      <v-col cols="12">
+        <v-row justify="center"
+          ><v-card
+            class="mx-2"
+            v-for="(image_card, index) in card_list_2"
+            :key="index"
+            width="200px"
+            height="134px"
+            hover="true"
+            style="background-color: #e6f0f5"
+          >
+          <v-row justify="center" class="mt-2">
+         
+            <v-avatar height="48px" width="48px" color="white"> <img :src="image_card.image" alt=""/> </v-avatar
+            >
+          </v-row>
+           <br />
+           <v-row justify="center" class="mt-2">
+         
+           <strong
+              class="font-weight-regular ml-2"
+              style="color: #046792; font-size: 16px"
+              >{{ image_card.label }}</strong
+            >
+          </v-row>
+          </v-card></v-row
+        >
+      </v-col>
+      <v-col cols="12">
+        <v-row justify="center"
+          ><v-btn
+            color="#3685A8"
+            rounded
+            class="my-2 white--text"
+            height="40px"
+            width="160px"
+            style="font-size: 12px"
+          >
+            See All Specialities
+          </v-btn></v-row
+        >
+      </v-col>
+    </v-footer>
   </div>
 </template>
 
@@ -141,12 +200,38 @@ export default {
         body: "Đặt lịch hẹn",
       },
     ],
+    card_list_2:[
+      {
+        image: require("@/assets/img/home/home_icon1.png"),
+        label: "Infectous Disease"
+      },
+       {
+        image: require("@/assets/img/home/home_icon2.png"),
+        label: "Dermatology"
+      },
+       {
+        image: require("@/assets/img/home/home_icon3.png"),
+        label: "Urology"
+      },
+       {
+        image: require("@/assets/img/home/home_icon4.png"),
+        label: "Psychiatry"
+      },
+       {
+        image: require("@/assets/img/home/home_icon5.png"),
+        label: "Stomach"
+      },
+       {
+        image: require("@/assets/img/home/home_icon6.png"),
+        label: "Baby Health"
+      },
+    ]
   }),
 
-  methods:{
-      login(){
-          this.$router.push({ name: "Đăng nhập" });
-      },
-  }
+  methods: {
+    login() {
+      this.$router.push({ name: "Đăng nhập" });
+    },
+  },
 };
 </script>
