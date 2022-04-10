@@ -19,7 +19,8 @@ public class Schedule {
     private Integer id;
     @Temporal(TemporalType.DATE)
     private Date date;
-    private String room;
+    @OneToOne
+    private Room room;
     @ElementCollection
     private List<String> times;
     @ManyToOne

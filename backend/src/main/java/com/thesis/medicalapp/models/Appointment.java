@@ -20,7 +20,8 @@ public class Appointment {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private Integer stt;
-    private String room;
+    @OneToOne
+    private Room room;
     @Temporal(TemporalType.DATE)
     private Date date;
     private String time;
@@ -36,4 +37,6 @@ public class Appointment {
     private Doctor doctor;
     @OneToMany
     private Collection<File> files;
+    private String status;
+    private Date createdDate;
 }

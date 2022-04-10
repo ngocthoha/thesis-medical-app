@@ -2,6 +2,7 @@ package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.DoctorDTO;
+import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.services.DoctorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +18,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DoctorController {
     private final DoctorService doctorService;
-    @GetMapping("/doctors")
+    @GetMapping("/doctors/all")
     public ResponseEntity<ApiResponse> getDoctors() {
         try {
-            List<DoctorDTO> doctors = doctorService.getDoctors();
+            List<UserDoctorDTO> doctors = doctorService.getDoctors();
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ApiResponse<>(1, "Success", doctors)
             );

@@ -3,6 +3,7 @@ package com.thesis.medicalapp.services.impl;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.pojo.ScheduleDTO;
 import com.thesis.medicalapp.repository.DoctorRepository;
+import com.thesis.medicalapp.repository.RoomRepository;
 import com.thesis.medicalapp.repository.ScheduleRepository;
 import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.ScheduleService;
@@ -26,13 +27,15 @@ import java.util.stream.Collectors;
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final DoctorRepository doctorRepository;
+    private final RoomRepository roomRepository;
 
     @Override
     public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
         schedule.setDate(scheduleDTO.getDate());
         schedule.setTimes(scheduleDTO.getTimes());
-        schedule.setRoom(scheduleDTO.getRoom());
+        Room room = roomRepository.save(scheduleDTO.getRoom());
+        schedule.setRoom(room);
         Doctor doctor = doctorRepository.findDoctorById(scheduleDTO.getDoctor().getId());
         schedule.setDoctor(doctor);
         log.info("Saving new schedule of {} to the database", doctor.getName());
@@ -99,5 +102,11 @@ public class ScheduleServiceImpl implements ScheduleService {
             return scheduleDTO;
         }).collect(Collectors.toList());
         return scheduleDTOS;
+    }
+    @Override
+    public ScheduleDTO getScheduleByDateAndDoctor(Date date, Doctor doctor) {
+        Schedule schedule = scheduleRepository.findByDateAndDoctor(date, doctor);
+        ScheduleDTO scheduleDTO = ScheduleDTO.from(schedule);
+        return scheduleDTO;
     }
 }

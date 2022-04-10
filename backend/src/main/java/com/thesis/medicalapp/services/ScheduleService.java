@@ -15,4 +15,5 @@ public interface ScheduleService {
     int updateSchedule(ScheduleDTO scheduleDTO);
     int removeSchedule(Integer id);
     List<ScheduleDTO> getSchedulesByDoctor();
+    ScheduleDTO getScheduleByDateAndDoctor(Date data, Doctor doctor);
 }

@@ -19,7 +19,7 @@ public class Profile {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private String profileNumber;
+    private Long profileNumber;
     private String name;
     private String address;
     private String phoneNumber;

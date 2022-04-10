@@ -53,7 +53,7 @@
             <v-card-text>
               <div class="text-center">
                 Don't have an account yet?
-                <a href="">Sign up</a>
+                <a>Sign up</a>
               </div>
             </v-card-text>
           </v-card>
@@ -109,10 +109,13 @@ body {
   margin: 0;
 }
 .container {
-  background-color: #f5f5f5;
+  background-color: #dcf5ff;
 }
 .login-img {
   width: 500px;
   height: 455px;
+}
+a {
+  color: #017acd !important;
 }
 </style>

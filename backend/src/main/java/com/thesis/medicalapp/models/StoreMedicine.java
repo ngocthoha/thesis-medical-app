@@ -3,7 +3,6 @@ package com.thesis.medicalapp.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,14 +13,10 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "medicines")
-@ToString
-public class Medicine {
+@Table(name = "store_medicines")
+public class StoreMedicine {
     @Id
     @GeneratedValue
     private Integer id;
     private String name;
-    private Integer number;
-    private String type;
-    private String use;
 }

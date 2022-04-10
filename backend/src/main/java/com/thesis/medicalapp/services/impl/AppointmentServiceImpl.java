@@ -89,6 +89,14 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return obs;
     }
+    @Override
+    public Integer max(Date date) {
+        return appointmentRepository.max(date);
+    }
+    @Override
+    public Appointment findAppointmentById(String id) {
+        return appointmentRepository.findAppointmentById(id);
+    }
 }
 @Data
 @AllArgsConstructor

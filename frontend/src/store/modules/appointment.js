@@ -1,7 +1,5 @@
 import service from "@/store/services/appointment";
 
-import service from "@/store/services/appointment";
-
 const state = {
   speciality_list: [],
   doctors_list: [],

@@ -4,5 +4,5 @@ import com.thesis.medicalapp.models.Medicine;
 import com.thesis.medicalapp.pojo.MedicineDTO;
 
 public interface MedicineService {
-    MedicineDTO saveMedicine(MedicineDTO medicine);
+    Medicine saveMedicine(Medicine medicine);
 }

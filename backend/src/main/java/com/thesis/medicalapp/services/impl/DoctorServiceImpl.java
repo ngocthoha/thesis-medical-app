@@ -2,6 +2,7 @@ package com.thesis.medicalapp.services.impl;
 
 import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.pojo.DoctorDTO;
+import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.repository.DoctorRepository;
 import com.thesis.medicalapp.services.DoctorService;
 import lombok.RequiredArgsConstructor;
@@ -19,13 +20,18 @@ import java.util.stream.Collectors;
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     @Override
-    public List<DoctorDTO> getDoctors() {
+    public List<UserDoctorDTO> getDoctors() {
         List<Doctor> doctors = doctorRepository.findAll()
                 .stream().collect(Collectors.toList());
-        List<DoctorDTO> doctorDTOS = doctors.stream().map(d -> {
-            DoctorDTO doctorDTO = DoctorDTO.from(d);
+        List<UserDoctorDTO> doctorDTOS = doctors.stream().map(d -> {
+            UserDoctorDTO doctorDTO = UserDoctorDTO.from(d);
             return doctorDTO;
         }).collect(Collectors.toList());
+
         return doctorDTOS;
+    }
+    @Override
+    public Doctor findDoctorById(String id) {
+        return doctorRepository.findDoctorById(id);
     }
 }

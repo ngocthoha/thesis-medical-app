@@ -18,14 +18,8 @@ public class MedicineServiceImpl implements MedicineService {
     private final MedicineRepository medicineRepository;
 
     @Override
-    public MedicineDTO saveMedicine(MedicineDTO medicineDTO){
-        Medicine medicine = new Medicine();
-        medicine.setName(medicineDTO.getName());
-        medicine.setType(medicine.getType());
-        medicine.setNumber(medicine.getNumber()); 
-        medicine.setUse(medicine.getUse());
+    public Medicine saveMedicine(Medicine medicine){
         Medicine medicineEntity = medicineRepository.save(medicine);
-        MedicineDTO medicineResponse = MedicineDTO.from(medicineEntity);
-        return medicineResponse;
+        return medicineEntity;
     }
 }

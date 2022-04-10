@@ -9,10 +9,12 @@ import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Role;
 import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.payload.SignupRequest;
-import com.thesis.medicalapp.payload.response.MessageResponse;
+import com.thesis.medicalapp.payload.response.ApiResponse;
+import com.thesis.medicalapp.pojo.UserDTO;
 import com.thesis.medicalapp.services.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MimeTypeUtils;
@@ -34,28 +36,52 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    @GetMapping("/users")
-    public ResponseEntity<List<User>>getUsers() {
-        return ResponseEntity.ok().body(userService.getUsers());
+    @GetMapping("/users/all")
+    public ResponseEntity<ApiResponse>getAllUser() {
+        try {
+            List<UserDTO> userDTOS = userService.getUsers();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", userDTOS)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<ApiResponse> getUsers() {
+        try {
+            List<UserDTO> userDTOS = userService.findAllByRoles_Name("ROLE_USER");
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", userDTOS)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
+    }
     @PostMapping("/auth/signup")
-    public ResponseEntity<?>saveUser(@RequestBody SignupRequest signupRequest) {
+    public ResponseEntity<ApiResponse>saveUser(@RequestBody SignupRequest signupRequest) {
         if (userService.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(0, "Username is already taken!", null)
+            );
         }
         if (userService.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(0, "Email is already in use!", null)
+            );
         }
-        Date dateFormat = new Date();
+        Date dateFormat;
         try {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(signupRequest.getDob());
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(0, "Date is invalid!", null)
+            );
         }
         User user;
         if (signupRequest.getRole().equals("ROLE_USER") || signupRequest.getRole().equals("ROLE_ADMIN")) {
@@ -87,7 +113,9 @@ public class UserController {
         }
         userService.saveUser(user);
         userService.addRoleToUser(user.getUsername(), signupRequest.getRole());
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(1, "User registered successfully!", null)
+        );
     }
 
     @PostMapping("/role/save")

@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.controllers;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thesis.medicalapp.models.Appointment;
 import com.thesis.medicalapp.models.File;
 import com.thesis.medicalapp.models.Medicine;
@@ -9,10 +10,12 @@ import com.thesis.medicalapp.payload.response.MessageResponse;
 import com.thesis.medicalapp.pojo.RecordDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.services.FileService;
+import com.thesis.medicalapp.services.MedicineService;
 import com.thesis.medicalapp.services.RecordService;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,10 +32,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecordController {
     private final RecordService recordService;
+    private final MedicineService medicineService;
     private final AppointmentRepository appointmentRepository;
     private final FileService fileService;
-    @PostMapping("/records")
-    public ResponseEntity<Object> saveRecord(
+    @PostMapping(value = "/records", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public ResponseEntity<ApiResponse> saveRecord(
             @RequestParam("appointmentId") String appointmentId,
             @RequestParam(name = "pathological", required = false) String pathological,
             @RequestParam(name = "personalMedicalHistory", required = false) String personalMedicalHistory,
@@ -46,7 +50,7 @@ public class RecordController {
             @RequestParam(name = "partsInspection", required = false) String partsInspection,
             @RequestParam(name = "hospitalize", required = false) Boolean hospitalize,
             @RequestParam(name = "facultyTreatment", required = false) String facultyTreatment,
-            @RequestParam(name = "medicines", required = false) Medicine[] medicines,
+            @RequestPart(name = "medicines") Medicine[] medicines,
             @RequestParam(name = "notes", required = false) String notes,
             @RequestParam(name = "reExaminationDate", required = false) String reExaminationDate,
             @RequestParam(name = "files", required = false) MultipartFile[] files
@@ -72,7 +76,8 @@ public class RecordController {
             record.setFacultyTreatment(facultyTreatment);
             record.setMedicines(new ArrayList<>());
             if (null != medicines) {
-                Arrays.asList(medicines).stream().forEach(medicine -> {
+                Arrays.asList(medicines).stream().forEach(m -> {
+                    Medicine medicine = medicineService.saveMedicine(m);
                     record.getMedicines().add(medicine);
                 });
             }
@@ -98,11 +103,13 @@ public class RecordController {
             Date createdDate = new Date();
             record.setCreatedDate(createdDate);
             RecordDTO recordDTO = recordService.saveRecord(record);
-            return ResponseEntity.status(HttpStatus.OK).body(recordDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", recordDTO)
+            );
         } catch (Exception e) {
-            System.out.println("Error create record " + e.getMessage());
-            MessageResponse message = new MessageResponse(e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
         }
     }
 

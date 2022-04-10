@@ -12,4 +12,5 @@ import java.util.List;
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
     List<Schedule> findAllByDate(Date date);
     List<Schedule> findAllByDoctor(Doctor doctor);
+    Schedule findByDateAndDoctor(Date data, Doctor doctor);
 }
