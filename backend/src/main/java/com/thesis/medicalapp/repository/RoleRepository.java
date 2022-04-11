@@ -1,7 +1,6 @@
 package com.thesis.medicalapp.repository;
 
-import com.thesis.medicalapp.model.Role;
-import com.thesis.medicalapp.model.User;
+import com.thesis.medicalapp.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

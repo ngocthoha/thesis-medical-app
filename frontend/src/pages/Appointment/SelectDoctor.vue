@@ -20,7 +20,14 @@
                 outlined
                 color="green lighten-1"
                 :value="time"
-                @click="setSelectDoctor(doctor.doctor.id,doctor.doctor.name, doctor.room, time)"
+                @click="
+                  setSelectDoctor(
+                    doctor.doctor.id,
+                    doctor.doctor.name,
+                    doctor.room,
+                    time
+                  )
+                "
                 >{{ time }}</v-btn
               >
             </v-btn-toggle>
@@ -69,9 +76,9 @@ export default {
   },
 
   methods: {
-    setSelectDoctor(doctor_id,doctor_name, doctor_room, doctor_time) {
+    setSelectDoctor(doctor_id, doctor_name, doctor_room, doctor_time) {
       this.doctorSelection = {
-        id:doctor_id,
+        id: doctor_id,
         name: doctor_name,
         room: doctor_room,
         time: doctor_time,

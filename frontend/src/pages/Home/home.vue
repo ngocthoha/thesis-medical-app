@@ -26,7 +26,12 @@
           >
             Đăng nhập
           </v-btn>
-          <v-btn color="#046792" rounded class="my-2 white--text">
+          <v-btn
+            color="#046792"
+            rounded
+            class="my-2 white--text"
+            @click="signup"
+          >
             Đăng ký
           </v-btn>
         </v-row></v-col
@@ -143,20 +148,19 @@
             hover="true"
             style="background-color: #e6f0f5"
           >
-          <v-row justify="center" class="mt-2">
-         
-            <v-avatar height="48px" width="48px" color="white"> <img :src="image_card.image" alt=""/> </v-avatar
-            >
-          </v-row>
-           <br />
-           <v-row justify="center" class="mt-2">
-         
-           <strong
-              class="font-weight-regular ml-2"
-              style="color: #046792; font-size: 16px"
-              >{{ image_card.label }}</strong
-            >
-          </v-row>
+            <v-row justify="center" class="mt-2">
+              <v-avatar height="48px" width="48px" color="white">
+                <img :src="image_card.image" alt="" />
+              </v-avatar>
+            </v-row>
+            <br />
+            <v-row justify="center" class="mt-2">
+              <strong
+                class="font-weight-regular ml-2"
+                style="color: #046792; font-size: 16px"
+                >{{ image_card.label }}</strong
+              >
+            </v-row>
           </v-card></v-row
         >
       </v-col>
@@ -200,37 +204,40 @@ export default {
         body: "Đặt lịch hẹn",
       },
     ],
-    card_list_2:[
+    card_list_2: [
       {
         image: require("@/assets/img/home/home_icon1.png"),
-        label: "Infectous Disease"
+        label: "Infectous Disease",
       },
-       {
+      {
         image: require("@/assets/img/home/home_icon2.png"),
-        label: "Dermatology"
+        label: "Dermatology",
       },
-       {
+      {
         image: require("@/assets/img/home/home_icon3.png"),
-        label: "Urology"
+        label: "Urology",
       },
-       {
+      {
         image: require("@/assets/img/home/home_icon4.png"),
-        label: "Psychiatry"
+        label: "Psychiatry",
       },
-       {
+      {
         image: require("@/assets/img/home/home_icon5.png"),
-        label: "Stomach"
+        label: "Stomach",
       },
-       {
+      {
         image: require("@/assets/img/home/home_icon6.png"),
-        label: "Baby Health"
+        label: "Baby Health",
       },
-    ]
+    ],
   }),
 
   methods: {
     login() {
       this.$router.push({ name: "Đăng nhập" });
+    },
+    signup() {
+      this.$router.push({ name: "Đăng ký" });
     },
   },
 };

@@ -10,6 +10,7 @@ import Notifications from "@/pages/Notifications.vue";
 import UpgradeToPRO from "@/pages/UpgradeToPRO.vue";
 
 import Login from "@/pages/Login/Login.vue";
+import Signup from "@/pages/Login/Signup.vue";
 
 //user page
 import AppointmentByDate from "@/pages/Appointment/MakeAppointmentByDate.vue";
@@ -32,14 +33,13 @@ import ScheduleAdmin from "@/pages/Admin/ScheduleAdmin.vue";
 import AccountAdmin from "@/pages/Admin/AccountAdmin.vue";
 
 //home page
-import Home from "@/pages/Home/home.vue"
+import Home from "@/pages/Home/home.vue";
 
 let authPage = {
   path: "/login",
   name: "Đăng nhập",
   component: Login,
 };
-
 
 let homePage = {
   path: "/",
@@ -50,6 +50,11 @@ let homePage = {
 const routes = [
   homePage,
   authPage,
+  {
+    path: "/signup",
+    name: "Đăng ký",
+    component: Signup,
+  },
   {
     path: "/home",
     component: DashboardLayout,

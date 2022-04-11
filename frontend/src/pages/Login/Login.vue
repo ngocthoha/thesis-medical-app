@@ -1,35 +1,69 @@
 <template>
-  <div class="content">
-    <div class="md-layout">
-      <div
-        class="md-layout-item md-medium-size-100 md-xsmall-size-100 md-size-60"
-      >
-        <div class="login-section col">
-          <h3>Đăng nhập</h3>
-          <div class="login-section-body">
-            <label for="">Tên đăng nhập</label>
-            <input v-model="user.username" type="text" name="" id="username" />
-            <label for="">Mật khẩu</label>
-            <input
-              v-model="user.password"
-              type="password"
-              name=""
-              id="password"
-            />
-            <md-button class="login-button" @click="submit"
-              >Đăng nhập</md-button
-            >
-          </div>
-        </div>
-        <div class="login-img col">
-          <img
-            src="@/assets/img/login-image.png"
-            alt="doctor"
-            class="login-img"
-          />
-        </div>
-      </div>
-    </div>
+  <div style="height: 100%">
+    <v-container fluid full-height style="height: 100%">
+      <v-row justify="center">
+        <v-col class="d-flex justify-end" cols="12" sm="8" md="4">
+          <v-card outlined class="ma-auto" style="width: 600px">
+            <v-card-title></v-card-title>
+            <v-form v-model="valid" ref="form" lazy-validation>
+              <v-card-title>Đăng Nhập!</v-card-title>
+              <v-card-text>
+                <span>Nhập thông tin của bạn để đăng nhập.</span>
+              </v-card-text>
+              <v-card-text>
+                <v-text-field
+                  name="username"
+                  label="Tên đăng nhập"
+                  placeholder="Tên đăng nhập"
+                  :rules="[(v) => !!v || 'Tên đăng nhập là bắt buộc!']"
+                  id="username"
+                  v-model="user.username"
+                  dense
+                ></v-text-field>
+                <v-text-field
+                  v-model="user.password"
+                  name="password"
+                  label="Mật khẩu"
+                  placeholder="Mật khẩu"
+                  :rules="[(v) => !!v || 'Mật khẩu là bắt buộc!']"
+                  id="password"
+                  :append-icon="isHidePassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  :type="isHidePassword ? 'password' : 'text'"
+                  @click:append="() => (isHidePassword = !isHidePassword)"
+                ></v-text-field>
+
+                <v-row>
+                  <v-col cols="6">
+                    <v-checkbox
+                      label="Nhớ tài khoản"
+                      v-model="value"
+                      value="value"
+                      class="mt-0 pt-0"
+                    ></v-checkbox>
+                  </v-col>
+                  <v-col cols="6">
+                    <a class="float-right text-decoration-underline"
+                      >Quên mật khẩu</a
+                    >
+                  </v-col>
+                </v-row>
+              </v-card-text>
+              <v-card-actions>
+                <v-btn color="primary" depressed block @click="submit"
+                  >Đăng nhập</v-btn
+                >
+              </v-card-actions>
+            </v-form>
+            <v-card-text>
+              <div class="text-center">
+                Bạn chưa có tài khoản?
+                <a @click="signup">Đăng ký</a>
+              </div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
@@ -41,6 +75,8 @@ export default {
         username: "",
         password: "",
       },
+      isHidePassword: true,
+      valid: true,
     };
   },
 
@@ -52,6 +88,9 @@ export default {
 
   methods: {
     async submit() {
+      if (!this.$refs.form.validate()) {
+        return;
+      }
       const user = {
         username: this.user.username,
         password: this.user.password,
@@ -63,43 +102,26 @@ export default {
         this.$router.push({ name: "Đặt lịch khám theo ngày" });
       }
     },
+    signup() {
+      this.$router.push({ name: "Đăng ký" });
+    },
   },
 };
 </script>
 <style lang="scss" scoped>
-.md-layout-item {
-  background: white;
-  margin-top: 100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding: 0;
+html,
+body {
+  height: 100% !important;
+  margin: 0;
 }
-.content .login-img {
-  width: 50%px;
-  height: 417px;
-  float: right;
+.container {
+  background-color: #dcf5ff;
 }
-.col {
-  width: 50%;
-  float: left;
+.login-img {
+  width: 500px;
+  height: 455px;
 }
-.login-section label {
-  display: block;
-}
-.login-button {
-  display: block;
-}
-.login-section h3 {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.login-section-body {
-  margin-left: 30%;
-}
-
-input,
-select,
-textarea {
-  border-style: solid;
+a {
+  color: #017acd !important;
 }
 </style>

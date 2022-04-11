@@ -1,26 +1,20 @@
+import service from "@/store/services/record";
 
-import service from '@/store/services/record';
+const state = {};
 
-const state ={
-};
+const mutations = {};
 
-const mutations = {
-};
-
-const actions ={
- 
-  create_record({commit},params){
-    return service.create_record(params).then(({data})=>{
-      console.log('add new appointment success')
+const actions = {
+  create_record({ commit }, params) {
+    return service.create_record(params).then(({ data }) => {
+      console.log("add new appointment success");
     });
   },
-    
-}
-
-const getters ={
 };
 
-const record ={
+const getters = {};
+
+const record = {
   namespaced: true,
   state,
   getters,

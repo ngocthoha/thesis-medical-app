@@ -269,7 +269,6 @@ export default {
       { text: "Ngày sinh", value: "dob", sortable: false },
       { text: "Số điện thoại", value: "phoneNumber", sortable: false },
       { text: "Ngày bắt đầu", value: "", sortable: false },
-
     ],
     desserts: [
       {

@@ -890,7 +890,6 @@ export default {
       { text: "Khoa điều trị", value: "facultyTreatment", sortable: false },
       { text: "Ngày khám", value: "appointment.date", sortable: false },
       { text: "Ngày tái khám", value: "reExaminationDate", sortable: false },
-  
     ],
     desserts: [
       {

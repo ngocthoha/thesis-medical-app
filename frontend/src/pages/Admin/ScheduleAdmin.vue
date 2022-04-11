@@ -6,9 +6,8 @@
         show-select
         :headers="headers"
         :items="desserts"
-         item-key="id"
+        item-key="id"
         sort-by="date"
-   
         class="elevation-1"
         :search="search"
       >
@@ -182,54 +181,54 @@
 
           <v-card-text>
             <v-container>
-                  <v-form ref="form">
-                      <v-menu
-                        v-model="menuedit"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="editedItem.date"
-                            label="Chọn ngày"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="editedItem.date"
-                          @input="menuedit = false"
-                        ></v-date-picker>
-                      </v-menu>
-                      <v-autocomplete
-                        label="Chọn bác sĩ"
-                        v-model="editedItem.doctor"
-                        :items="doctorselect"
-                        item-text="name"
-                        item-value="id"
-                        dense
-                        filled
-                      ></v-autocomplete>
-                      <v-autocomplete
-                        label="Chọn thời gian"
-                        v-model="editedItem.times"
-                        :items="timeselect"
-                        dense
-                        filled
-                      ></v-autocomplete>
-                      <v-autocomplete
-                        label="Chọn phòng"
-                        v-model="editedItem.room"
-                        :items="roomselect"
-                        dense
-                        filled
-                      ></v-autocomplete>
-                    </v-form>
+              <v-form ref="form">
+                <v-menu
+                  v-model="menuedit"
+                  :close-on-content-click="false"
+                  :nudge-right="40"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-text-field
+                      v-model="editedItem.date"
+                      label="Chọn ngày"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker
+                    v-model="editedItem.date"
+                    @input="menuedit = false"
+                  ></v-date-picker>
+                </v-menu>
+                <v-autocomplete
+                  label="Chọn bác sĩ"
+                  v-model="editedItem.doctor"
+                  :items="doctorselect"
+                  item-text="name"
+                  item-value="id"
+                  dense
+                  filled
+                ></v-autocomplete>
+                <v-autocomplete
+                  label="Chọn thời gian"
+                  v-model="editedItem.times"
+                  :items="timeselect"
+                  dense
+                  filled
+                ></v-autocomplete>
+                <v-autocomplete
+                  label="Chọn phòng"
+                  v-model="editedItem.room"
+                  :items="roomselect"
+                  dense
+                  filled
+                ></v-autocomplete>
+              </v-form>
             </v-container>
           </v-card-text>
 
@@ -241,8 +240,6 @@
         </v-card>
       </v-dialog>
     </v-card>
-
-
   </div>
 </template>
 
@@ -263,22 +260,21 @@ export default {
     ],
     roomselect: ["H1", "H2", "H3", "H4", "H5"],
     // doctorselect: ["Dr.A", "Dr.B", "Dr.C", "Dr.D", "Dr.E"],
-     doctorselect: [{
-         name: "Dr.A",
-          id: "1",
-     },
-     {
-         name: "Dr.B",
-          id: "2",
-     },
-     {
-         name: "Dr.C",
-          id: "3",
-     }],
+    doctorselect: [
+      {
+        name: "Dr.A",
+        id: "1",
+      },
+      {
+        name: "Dr.B",
+        id: "2",
+      },
+      {
+        name: "Dr.C",
+        id: "3",
+      },
+    ],
 
-       
-    
- 
     search: "",
     selected: [],
     dialoggetnew: false,
@@ -317,7 +313,6 @@ export default {
           name: "Dr.B",
           id: "2",
         },
-        
       },
       {
         id: 3,
@@ -328,7 +323,7 @@ export default {
           name: "Dr.B",
           id: "2",
         },
-      }
+      },
     ],
 
     editedItem: {

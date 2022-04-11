@@ -45,7 +45,13 @@
             </v-col>
           </v-footer>
           <label>Chọn hồ sơ bệnh nhân</label>
-          <v-select :items="profile_patient_list" item-text="name" item-value="id" label="Solo field" solo></v-select>
+          <v-select
+            :items="profile_patient_list"
+            item-text="name"
+            item-value="id"
+            label="Solo field"
+            solo
+          ></v-select>
           <v-menu
             v-model="menu2"
             :close-on-content-click="false"
@@ -94,9 +100,10 @@
               locale="vi-cn"
             ></v-date-picker>
           </v-menu>
-          <v-row class="mt-5" justify="center"><v-btn color="primary"> Tìm kiếm </v-btn></v-row>
-          </v-card
-        >
+          <v-row class="mt-5" justify="center"
+            ><v-btn color="primary"> Tìm kiếm </v-btn></v-row
+          >
+        </v-card>
       </v-col>
     </div>
   </div>
@@ -105,15 +112,15 @@
 <script>
 export default {
   data: () => ({
-    profile_patient_list:[],
-    start_date:"",
-    end_date: ""
+    profile_patient_list: [],
+    start_date: "",
+    end_date: "",
   }),
 
-  created(){
+  created() {
     this.getProfileList();
   },
-  methods:{
+  methods: {
     async getProfileList() {
       const params = {
         token: this.$store.getters["auth/access_token"],

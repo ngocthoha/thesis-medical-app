@@ -564,9 +564,9 @@ export default {
       appointment_form_data.append("timeSituation", this.timeSituation);
       appointment_form_data.append("selfTreatment", this.selfTreatment);
 
-      this.files.forEach(file =>{
-        appointment_form_data.append("files",file);
-      })
+      this.files.forEach((file) => {
+        appointment_form_data.append("files", file);
+      });
       //appointment_form_data.append("files", this.files);
 
       const params = {

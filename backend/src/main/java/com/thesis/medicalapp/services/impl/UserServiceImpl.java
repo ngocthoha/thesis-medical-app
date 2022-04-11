@@ -1,10 +1,11 @@
-package com.thesis.medicalapp.service.impl;
+package com.thesis.medicalapp.services.impl;
 
-import com.thesis.medicalapp.model.Role;
-import com.thesis.medicalapp.model.User;
+import com.thesis.medicalapp.models.Role;
+import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.pojo.UserDTO;
 import com.thesis.medicalapp.repository.RoleRepository;
 import com.thesis.medicalapp.repository.UserRepository;
-import com.thesis.medicalapp.service.UserService;
+import com.thesis.medicalapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -18,6 +19,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -71,7 +73,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public List<User> getUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getUsers() {
+        List<User> users = userRepository.findAll()
+                .stream()
+                .collect(Collectors.toList());
+        List<UserDTO> userDTOS = users.stream().map(u -> {
+            UserDTO userDTO = UserDTO.from(u);
+            return userDTO;
+        }).collect(Collectors.toList());
+        return userDTOS;
+    }
+
+    @Override
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public Boolean existsByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
+    @Override
+    public List<UserDTO> findAllByRoles_Name(String role) {
+        List<User> users = userRepository.findAllByRoles_Name(role)
+                .stream()
+                .collect(Collectors.toList());
+        List<UserDTO> userDTOS = users.stream().map(u -> {
+            UserDTO userDTO = UserDTO.from(u);
+            return userDTO;
+        }).collect(Collectors.toList());
+        return userDTOS;
     }
 }

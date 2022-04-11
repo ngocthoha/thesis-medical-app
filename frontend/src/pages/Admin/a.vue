@@ -10,7 +10,7 @@
         sort-by="name"
         class="elevation-1"
         :search="search"
-      > 
+      >
         <template v-slot:top>
           <v-toolbar flat>
             <v-btn color="primary" dark class="mb-2" @click="opennewApp">
@@ -73,7 +73,6 @@
                               font-size: 17px;
                               color: rgba(0, 0, 0, 0.87);
                               width: auto;
-                            
                             "
                           >
                             Giới tính
@@ -82,7 +81,11 @@
                             v-model="appointment.profile.gender"
                             row
                           >
-                            <v-radio label="Nam" value="Nam" style="margin-left: 20px;"></v-radio>
+                            <v-radio
+                              label="Nam"
+                              value="Nam"
+                              style="margin-left: 20px"
+                            ></v-radio>
                             <v-radio label="Nữ" value="Nữ"></v-radio>
                           </v-radio-group>
 
@@ -379,7 +382,7 @@
       <v-dialog v-model="dialogedit" max-width="600px" persistent> </v-dialog>
     </v-card>
 
-    {{selected}}
+    {{ selected }}
   </div>
 </template>
 

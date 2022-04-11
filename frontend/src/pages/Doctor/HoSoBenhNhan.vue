@@ -1,5 +1,3 @@
 <template>
-  <div class="content">
-    abc
-  </div>
+  <div class="content">abc</div>
 </template>

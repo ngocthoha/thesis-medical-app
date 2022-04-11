@@ -1,4 +1,4 @@
-package com.thesis.medicalapp.model;
+package com.thesis.medicalapp.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

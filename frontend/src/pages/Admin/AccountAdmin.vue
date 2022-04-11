@@ -10,7 +10,6 @@
         sort-by="name"
         class="elevation-1"
         :search="search"
-   
       >
         <template v-slot:top>
           <v-toolbar flat>
@@ -98,8 +97,6 @@
                             :type="show1 ? 'text' : 'password'"
                             name="input-10-1"
                             label="Mật khẩu"
-                         
-                            
                             @click:append="show1 = !show1"
                           ></v-text-field>
                         </v-col>
@@ -251,7 +248,6 @@
         </v-card>
       </v-dialog>
     </v-card>
-
   </div>
 </template>
 
@@ -331,7 +327,7 @@ export default {
     editItem() {
       this.dialogedit = true;
 
-       this.editedItem.idaccount = this.selected[0].idaccount;
+      this.editedItem.idaccount = this.selected[0].idaccount;
       this.editedItem.name = this.selected[0].name;
       this.editedItem.position = this.selected[0].position;
       this.editedItem.username = this.selected[0].username;
@@ -354,7 +350,6 @@ export default {
     },
     save() {},
     saveedit() {},
-   
   },
 };
 </script>
