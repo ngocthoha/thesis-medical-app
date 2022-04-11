@@ -66,22 +66,24 @@ public class UserController {
     @PostMapping("/auth/signup")
     public ResponseEntity<ApiResponse>saveUser(@RequestBody SignupRequest signupRequest) {
         if (userService.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity.status(HttpStatus.OK).body(
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResponse<>(0, "Username is already taken!", null)
             );
         }
         if (userService.existsByEmail(signupRequest.getEmail())) {
-            return ResponseEntity.status(HttpStatus.OK).body(
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResponse<>(0, "Email is already in use!", null)
             );
         }
-        Date dateFormat;
-        try {
-            dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(signupRequest.getDob());
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(0, "Date is invalid!", null)
-            );
+        Date dateFormat = null;
+        if (signupRequest.getDob() != null) {
+            try {
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(signupRequest.getDob());
+            } catch (Exception e) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                        new ApiResponse<>(0, "Date is invalid!", null)
+                );
+            }
         }
         User user;
         if (signupRequest.getRole().equals("ROLE_USER") || signupRequest.getRole().equals("ROLE_ADMIN")) {

@@ -8,7 +8,7 @@
     >
       <mobile-menu slot="content"></mobile-menu>
 
- <div class="user" v-show="user_type">
+      <div class="user" v-show="user_type">
         <sidebar-link to="/home/appointment/appointment-by-date">
           <md-icon>person</md-icon>
           <p>Đặt lịch khám theo ngày</p>
@@ -40,10 +40,10 @@
           <md-icon>person</md-icon>
           <p>Thông báo</p>
         </sidebar-link>
-         <sidebar-link to="/home/doctor/doctor-healingprocess">
-        <md-icon>person</md-icon>
-        <p>Quá trình chữa bệnh</p>
-      </sidebar-link>
+        <sidebar-link to="/home/doctor/doctor-healingprocess">
+          <md-icon>person</md-icon>
+          <p>Quá trình chữa bệnh</p>
+        </sidebar-link>
       </div>
 
       <div class="admin" v-show="admin_type">
@@ -52,15 +52,15 @@
           <p>Bác sĩ</p>
         </sidebar-link>
         <sidebar-link to="/home/admin/appointment-admin">
-	  <md-icon>person</md-icon>
+          <md-icon>person</md-icon>
           <p>Lịch hẹn</p>
         </sidebar-link>
         <sidebar-link to="/home/admin/patient-admin">
-     <md-icon>person</md-icon>
+          <md-icon>person</md-icon>
           <p>Bệnh nhân</p>
         </sidebar-link>
         <sidebar-link to="/home/admin/record-admin">
-	          <md-icon>person</md-icon>
+          <md-icon>person</md-icon>
           <p>Bệnh án</p>
         </sidebar-link>
         <sidebar-link to="/home/admin/schedule-admin">
@@ -72,7 +72,6 @@
           <p>Tài khoản</p>
         </sidebar-link>
       </div>
-
     </side-bar>
 
     <div class="main-panel">

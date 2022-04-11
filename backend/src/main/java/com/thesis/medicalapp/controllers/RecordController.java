@@ -107,7 +107,7 @@ public class RecordController {
                     new ApiResponse<>(1, "Success", recordDTO)
             );
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.OK).body(
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResponse<>(0, e.getMessage(), null)
             );
         }

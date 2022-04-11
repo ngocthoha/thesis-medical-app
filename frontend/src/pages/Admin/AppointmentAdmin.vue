@@ -343,37 +343,36 @@
               Bạn chắc chắn muốn xóa lịch hẹn? <br />
             </v-card-title>
 
+            <v-card-text>
+              <v-simple-table>
+                <template v-slot:default>
+                  <thead>
+                    <tr>
+                      <th class="text-left">STT</th>
+                      <th class="text-left">Tên bệnh nhân</th>
+                      <th class="text-left">Số điện thoại</th>
 
-         <v-card-text>
-                  <v-simple-table>
-                    <template v-slot:default>
-                      <thead>
-                        <tr>
-                          <th class="text-left">STT</th>
-                          <th class="text-left">Tên bệnh nhân</th>
-                          <th class="text-left">Số điện thoại</th>
-              
-                          <th class="text-left">Bác sĩ</th>
-                          <th class="text-left">Chuyên khoa</th>
-                          <th class="text-left">Ngày khám</th>
-                          <th class="text-left">Phòng</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="(appItem, k) in selected" :key="k">
-                          <td>{{ k + 1 }}</td>
-                          <td>{{ appItem.profile.name }}</td>
-                          <td>{{ appItem.profile.phoneNumber }}</td>
-                    
-                          <td>{{ appItem.doctor.name }}</td>
-                          <td>{{ appItem.doctor.specialty }}</td>
-                          <td>{{ appItem.date }}</td>
-                          <td>{{ appItem.room }}</td>
-                        </tr>
-                      </tbody>
-                    </template>
-                  </v-simple-table>
-                </v-card-text>
+                      <th class="text-left">Bác sĩ</th>
+                      <th class="text-left">Chuyên khoa</th>
+                      <th class="text-left">Ngày khám</th>
+                      <th class="text-left">Phòng</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="(appItem, k) in selected" :key="k">
+                      <td>{{ k + 1 }}</td>
+                      <td>{{ appItem.profile.name }}</td>
+                      <td>{{ appItem.profile.phoneNumber }}</td>
+
+                      <td>{{ appItem.doctor.name }}</td>
+                      <td>{{ appItem.doctor.specialty }}</td>
+                      <td>{{ appItem.date }}</td>
+                      <td>{{ appItem.room }}</td>
+                    </tr>
+                  </tbody>
+                </template>
+              </v-simple-table>
+            </v-card-text>
 
             <v-card-actions>
               <v-spacer></v-spacer>
