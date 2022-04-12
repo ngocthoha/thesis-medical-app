@@ -105,14 +105,35 @@ export default {
     MobileMenu,
     FixedPlugin,
   },
+
+  created(){
+    this.setType();
+  },
   data() {
     return {
       sidebarBackground: "green",
       sidebarBackgroundImage: require("@/assets/img/sidebar-2.jpg"),
       doctor_type: false,
       user_type: false,
-      admin_type: true,
+      admin_type: false,
     };
   },
+
+  methods:{
+    setType(){
+      var type = this.$store.getters["auth/types"]
+      type.forEach(element => {
+        if(element.authority === "ROLE_USER"){
+          this.user_type = true;
+        }
+         if(element.authority === "ROLE_DOCTOR"){
+          this.doctor_type = true;
+        }
+         if(element.authority === "ROLE_ADMIN"){
+          this.admin_type = true;
+        }
+      });
+    }
+  }
 };
 </script>

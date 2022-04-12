@@ -23,15 +23,23 @@ const mutations = {
 const actions = {
   speciality_list({ commit }, params) {
     return service.speciality_list(params).then(({ data }) => {
-      commit("SET_SPECIALITY_LIST", data);
+      if(data.code == 1){
+        commit("SET_SPECIALITY_LIST", data.results);
+      }
+      else{
+        console.log("error");
+      }
     });
   },
 
   getDoctorList_byDateAndSpeciality({ commit }, params) {
-    return service
-      .getDoctorList_byDateAndSpeciality(params)
-      .then(({ data }) => {
-        commit("SET_DOCTOR_LIST", data);
+    return service.getDoctorList_byDateAndSpeciality(params).then(({ data }) => {
+        if(data.code == 1){
+          commit("SET_DOCTOR_LIST", data.results);
+        }
+        else{
+          console.log("error");
+        }
       });
   },
 

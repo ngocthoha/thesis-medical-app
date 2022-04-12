@@ -8,7 +8,7 @@
               {{ doctor.doctor.level }}. {{ doctor.doctor.name }}
             </div>
           </v-expansion-panel-header>
-          <div class="md-layout doctor-room">Phòng {{ doctor.room }}</div>
+          <div class="md-layout doctor-room">Phòng {{ doctor.room.name }}</div>
           <v-expansion-panel-content>
             <v-btn-toggle
               v-model="time_select"
@@ -24,7 +24,7 @@
                   setSelectDoctor(
                     doctor.doctor.id,
                     doctor.doctor.name,
-                    doctor.room,
+                    doctor.room.name,
                     time
                   )
                 "
