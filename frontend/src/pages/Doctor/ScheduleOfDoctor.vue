@@ -1172,7 +1172,10 @@ export default {
       }
     },
     addnewdonthuoc(donthuoc) {
-      this.donthuoc.push({});
+      this.donthuoc.push({ tenthuoc: null,
+          soluongthuoc: null,
+          loaisudung: null,
+          cachdungthuoc: [],});
     },
     removedonthuoc(donthuoc, k) {
       donthuoc.splice(k, 1);
@@ -1184,7 +1187,7 @@ export default {
       this.panel = [];
     },
     closeForm() {
-      this.$refs.form.reset();
+      //this.$refs.form.reset();
       this.dialogBenhAn = false;
     },
     // get(i, j) {
@@ -1297,16 +1300,19 @@ export default {
     //     this.schedule[i].appointment[j].selfTreatment;
     //   this.record.appointment.files = this.schedule[i].appointment[j].files;
     // },
+
     getDetail(info_detail) {
       this.dialog = true;
       // console.log("hello");
       // console.log(info_detail);
-      this.record.appointment = info_detail;
+      //this.record.appointment = info_detail;
+      this.record.appointment = JSON.parse(JSON.stringify(info_detail))
     },
 
     getPatient(patient) {
       this.dialogBenhAn = true;
-      this.record.appointment = patient;
+      //this.record.appointment = {...patient};
+      this.record.appointment = JSON.parse(JSON.stringify(patient))
     },
 
     async getAppointmentList() {
