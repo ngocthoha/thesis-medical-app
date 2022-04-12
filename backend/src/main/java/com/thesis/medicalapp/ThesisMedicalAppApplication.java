@@ -38,7 +38,7 @@ public class ThesisMedicalAppApplication {
             userService.saveRole(new Role(null, "ROLE_DOCTOR"));
             User user = new User(null, "John", "john", "1234","john@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>());
             User admin = new User(null, "Admin", "admin", "1234","admin@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>());
-            User doctor = new Doctor(null, "Doctor", "doctor", "1234","doctor@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>(), "NHI KHOA", "CKI");
+            User doctor = new Doctor(null, "Doctor", "doctor", "1234","doctor@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>(), "Nhi Khoa", "CKI");
             User userEntity = userService.saveUser(user);
             userService.saveUser(admin);
 

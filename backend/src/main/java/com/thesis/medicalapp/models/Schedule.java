@@ -3,6 +3,7 @@ package com.thesis.medicalapp.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,8 +16,9 @@ import java.util.List;
 @Table(name = "schedules")
 public class Schedule {
     @Id
-    @GeneratedValue
-    private Integer id;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     @Temporal(TemporalType.DATE)
     private Date date;
     @OneToOne

@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleDTO {
-    private Integer id;
+    private String id;
     private Date date;
     private Room room;
     private List<String> times;

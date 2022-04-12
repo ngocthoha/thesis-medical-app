@@ -27,15 +27,13 @@ import java.util.stream.Collectors;
 public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final DoctorRepository doctorRepository;
-    private final RoomRepository roomRepository;
 
     @Override
     public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
         schedule.setDate(scheduleDTO.getDate());
         schedule.setTimes(scheduleDTO.getTimes());
-        Room room = roomRepository.save(scheduleDTO.getRoom());
-        schedule.setRoom(room);
+        schedule.setRoom(scheduleDTO.getRoom());
         Doctor doctor = doctorRepository.findDoctorById(scheduleDTO.getDoctor().getId());
         schedule.setDoctor(doctor);
         log.info("Saving new schedule of {} to the database", doctor.getName());
@@ -74,7 +72,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     @Override
     public int updateSchedule(ScheduleDTO scheduleDTO) {
-        Optional<Schedule> schedule = scheduleRepository.findById(scheduleDTO.getId());
+        Optional<Schedule> schedule = scheduleRepository.findScheduleById(scheduleDTO.getId());
         Doctor doctor = doctorRepository.findDoctorById(scheduleDTO.getDoctor().getId());
         return schedule.map(s -> {
             s.setDate(scheduleDTO.getDate());
@@ -85,8 +83,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         }).orElseGet(() -> 0);
     }
     @Override
-    public int removeSchedule(Integer id) {
-        Optional<Schedule> schedule = scheduleRepository.findById(id);
+    public int removeSchedule(String id) {
+        Optional<Schedule> schedule = scheduleRepository.findScheduleById(id);
         return schedule.map(s -> {
             scheduleRepository.delete(s);
             return 1;
