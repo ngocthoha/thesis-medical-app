@@ -51,7 +51,12 @@ const actions = {
 
   getAppointment_byDate_Doctor({ commit }, params) {
     return service.getAppointment_byDate_Doctor(params).then(({ data }) => {
-      commit("SET_DOCTOR_APPOINTMENT_LIST", data);
+      if(data.code == 1){
+        commit("SET_DOCTOR_APPOINTMENT_LIST", data.results);
+      }
+      else{
+        console.log("error");
+      }
     });
   },
 };

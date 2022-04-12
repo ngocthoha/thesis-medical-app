@@ -100,10 +100,10 @@
         <v-expansion-panels focusable v-model="panel" multiple>
           <v-expansion-panel v-for="(item, i) in schedule" :key="i">
             <v-expansion-panel-header
-              >{{ item.times }}
+              >{{ item.time }}
             </v-expansion-panel-header>
             <v-expansion-panel-content
-              v-for="(infoApment, j) in item.appointment"
+              v-for="(infoApment, j) in item.appointments"
               :key="j"
             >
               <div class="rowinfo">
@@ -114,14 +114,16 @@
                   <p>{{ infoApment.profile.name }}</p>
                 </div>
                 <div class="infoRoom">
-                  <p>{{ infoApment.room }}</p>
+                  <p>{{ infoApment.room.name }}</p>
                 </div>
 
                 <div class="infoChitiet">
-                  <button @click="get(i, j)"><b>Chi tiết</b></button>
+                  <button @click="getDetail(infoApment)">
+                    <b>Chi tiết</b>
+                  </button>
                 </div>
                 <div class="taoBenhAn">
-                  <button @click="getbenhan(i, j)">
+                  <button @click="getPatient(infoApment)">
                     <b>Tạo bệnh án</b>
                   </button>
                 </div>
@@ -147,7 +149,7 @@
                 <b
                   >Ngày {{ record.appointment.date }}, Thời gian
                   {{ record.appointment.time }}, Phòng số
-                  {{ record.appointment.room }}</b
+                  {{ record.appointment.room.name }}</b
                 >
               </h5>
 
@@ -316,13 +318,16 @@
                             <div class="textform">
                               <p>3. Giới tính:</p>
                               <div class="gioitinh">
-                                <v-radio-group
+                                <!-- <v-radio-group
                                   row
                                   v-model="record.appointment.profile.gender"
                                 >
                                   <v-radio label="Nam" value="Nam"></v-radio>
                                   <v-radio label="Nữ" value="Nữ"></v-radio>
-                                </v-radio-group>
+                                </v-radio-group> -->
+                                <v-text-field
+                                  v-model="record.appointment.profile.gender"
+                                ></v-text-field>
                               </div>
                             </div>
                             <div class="textform">
@@ -850,7 +855,9 @@ export default {
         appointment: {
           id: null,
           stt: null,
-          room: null,
+          room: {
+            name: null,
+          },
           profile: {
             id: null,
             profileNumber: null,
@@ -904,208 +911,208 @@ export default {
         files: [],
       },
       schedule: [
-        {
-          times: "10:00-11:00",
-          appointment: [
-            {
-              id: "f4f98f18-4baa-4104-850f-d0930d55a80d",
-              stt: 1,
-              room: "H2",
-              profile: {
-                id: "849dc832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "1",
-                name: "Văn Ba",
-                address: "address",
-                phoneNumber: "phone",
-                dob: "2022-03-30",
-                job: "job",
-                identityCard: "identity",
-                healthInsurance: "healthy",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protector",
-              },
-              doctor: {
-                id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "John",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "Ân Xá",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "Johnaaaa",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "ÂĐà phật",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "J",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-          ],
-        },
-        {
-          times: "11:00-12:00",
-          appointment: [
-            {
-              id: "f4f98f18-4baa-4104-850f-d0930d55a80d",
-              stt: 1,
-              room: "H2",
-              profile: {
-                id: "849dc832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "1",
-                name: "Văn Ba",
-                address: "address",
-                phoneNumber: "phone",
-                dob: "2022-03-30",
-                job: "job",
-                identityCard: "identity",
-                healthInsurance: "healthy",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protector",
-              },
-              doctor: {
-                id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "John",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "10:00-11:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "Ân Xá",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "Johnaaaa",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "11:00-12:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-            {
-              id: "12348f18-4baa-4104-850f-d0930d55a80d",
-              stt: 2,
-              room: "H6",
-              profile: {
-                id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
-                profileNumber: "2",
-                name: "cc",
-                address: "addressaaaaaaaaa",
-                phoneNumber: "phoneaaaaa",
-                dob: "2022-03-30",
-                job: "jobaaaaa",
-                identityCard: "identityaaaa",
-                healthInsurance: "healthyaaaa",
-                folk: "Kinh",
-                gender: "Nam",
-                protector: "protectoraaaaaa",
-              },
-              doctor: {
-                id: "123404a9-9acd-4814-9d50-3a9b63ede068",
-                name: "J",
-                specialty: "specialty",
-                level: "level",
-              },
-              date: "2022-03-29",
-              time: "11:00-12:00",
-              symptom: "dau tim",
-              description: "dau tim",
-              timeSituation: "20",
-              selfTreatment: true,
-              files: [],
-            },
-          ],
-        },
+        // {
+        //   times: "10:00-11:00",
+        //   appointment: [
+        //     {
+        //       id: "f4f98f18-4baa-4104-850f-d0930d55a80d",
+        //       stt: 1,
+        //       room: "H2",
+        //       profile: {
+        //         id: "849dc832-7b53-4a5b-9b04-a930e11f8649",
+        //         profileNumber: "1",
+        //         name: "Văn Ba",
+        //         address: "address",
+        //         phoneNumber: "phone",
+        //         dob: "2022-03-30",
+        //         job: "job",
+        //         identityCard: "identity",
+        //         healthInsurance: "healthy",
+        //         folk: "Kinh",
+        //         gender: "Nam",
+        //         protector: "protector",
+        //       },
+        //       doctor: {
+        //         id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
+        //         name: "John",
+        //         specialty: "specialty",
+        //         level: "level",
+        //       },
+        //       date: "2022-03-29",
+        //       time: "10:00-11:00",
+        //       symptom: "dau tim",
+        //       description: "dau tim",
+        //       timeSituation: "20",
+        //       selfTreatment: true,
+        //       files: [],
+        //     },
+        //     {
+        //       id: "12348f18-4baa-4104-850f-d0930d55a80d",
+        //       stt: 2,
+        //       room: "H6",
+        //       profile: {
+        //         id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
+        //         profileNumber: "2",
+        //         name: "Ân Xá",
+        //         address: "addressaaaaaaaaa",
+        //         phoneNumber: "phoneaaaaa",
+        //         dob: "2022-03-30",
+        //         job: "jobaaaaa",
+        //         identityCard: "identityaaaa",
+        //         healthInsurance: "healthyaaaa",
+        //         folk: "Kinh",
+        //         gender: "Nam",
+        //         protector: "protectoraaaaaa",
+        //       },
+        //       doctor: {
+        //         id: "123404a9-9acd-4814-9d50-3a9b63ede068",
+        //         name: "Johnaaaa",
+        //         specialty: "specialty",
+        //         level: "level",
+        //       },
+        //       date: "2022-03-29",
+        //       time: "10:00-11:00",
+        //       symptom: "dau tim",
+        //       description: "dau tim",
+        //       timeSituation: "20",
+        //       selfTreatment: true,
+        //       files: [],
+        //     },
+        //     {
+        //       id: "12348f18-4baa-4104-850f-d0930d55a80d",
+        //       stt: 2,
+        //       room: "H6",
+        //       profile: {
+        //         id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
+        //         profileNumber: "2",
+        //         name: "ÂĐà phật",
+        //         address: "addressaaaaaaaaa",
+        //         phoneNumber: "phoneaaaaa",
+        //         dob: "2022-03-30",
+        //         job: "jobaaaaa",
+        //         identityCard: "identityaaaa",
+        //         healthInsurance: "healthyaaaa",
+        //         folk: "Kinh",
+        //         gender: "Nam",
+        //         protector: "protectoraaaaaa",
+        //       },
+        //       doctor: {
+        //         id: "123404a9-9acd-4814-9d50-3a9b63ede068",
+        //         name: "J",
+        //         specialty: "specialty",
+        //         level: "level",
+        //       },
+        //       date: "2022-03-29",
+        //       time: "10:00-11:00",
+        //       symptom: "dau tim",
+        //       description: "dau tim",
+        //       timeSituation: "20",
+        //       selfTreatment: true,
+        //       files: [],
+        //     },
+        //   ],
+        // },
+        // {
+        //   times: "11:00-12:00",
+        //   appointment: [
+        //     {
+        //       id: "f4f98f18-4baa-4104-850f-d0930d55a80d",
+        //       stt: 1,
+        //       room: "H2",
+        //       profile: {
+        //         id: "849dc832-7b53-4a5b-9b04-a930e11f8649",
+        //         profileNumber: "1",
+        //         name: "Văn Ba",
+        //         address: "address",
+        //         phoneNumber: "phone",
+        //         dob: "2022-03-30",
+        //         job: "job",
+        //         identityCard: "identity",
+        //         healthInsurance: "healthy",
+        //         folk: "Kinh",
+        //         gender: "Nam",
+        //         protector: "protector",
+        //       },
+        //       doctor: {
+        //         id: "71d404a9-9acd-4814-9d50-3a9b63ede068",
+        //         name: "John",
+        //         specialty: "specialty",
+        //         level: "level",
+        //       },
+        //       date: "2022-03-29",
+        //       time: "10:00-11:00",
+        //       symptom: "dau tim",
+        //       description: "dau tim",
+        //       timeSituation: "20",
+        //       selfTreatment: true,
+        //       files: [],
+        //     },
+        //     {
+        //       id: "12348f18-4baa-4104-850f-d0930d55a80d",
+        //       stt: 2,
+        //       room: "H6",
+        //       profile: {
+        //         id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
+        //         profileNumber: "2",
+        //         name: "Ân Xá",
+        //         address: "addressaaaaaaaaa",
+        //         phoneNumber: "phoneaaaaa",
+        //         dob: "2022-03-30",
+        //         job: "jobaaaaa",
+        //         identityCard: "identityaaaa",
+        //         healthInsurance: "healthyaaaa",
+        //         folk: "Kinh",
+        //         gender: "Nam",
+        //         protector: "protectoraaaaaa",
+        //       },
+        //       doctor: {
+        //         id: "123404a9-9acd-4814-9d50-3a9b63ede068",
+        //         name: "Johnaaaa",
+        //         specialty: "specialty",
+        //         level: "level",
+        //       },
+        //       date: "2022-03-29",
+        //       time: "11:00-12:00",
+        //       symptom: "dau tim",
+        //       description: "dau tim",
+        //       timeSituation: "20",
+        //       selfTreatment: true,
+        //       files: [],
+        //     },
+        //     {
+        //       id: "12348f18-4baa-4104-850f-d0930d55a80d",
+        //       stt: 2,
+        //       room: "H6",
+        //       profile: {
+        //         id: "1234c832-7b53-4a5b-9b04-a930e11f8649",
+        //         profileNumber: "2",
+        //         name: "cc",
+        //         address: "addressaaaaaaaaa",
+        //         phoneNumber: "phoneaaaaa",
+        //         dob: "2022-03-30",
+        //         job: "jobaaaaa",
+        //         identityCard: "identityaaaa",
+        //         healthInsurance: "healthyaaaa",
+        //         folk: "Kinh",
+        //         gender: "Nam",
+        //         protector: "protectoraaaaaa",
+        //       },
+        //       doctor: {
+        //         id: "123404a9-9acd-4814-9d50-3a9b63ede068",
+        //         name: "J",
+        //         specialty: "specialty",
+        //         level: "level",
+        //       },
+        //       date: "2022-03-29",
+        //       time: "11:00-12:00",
+        //       symptom: "dau tim",
+        //       description: "dau tim",
+        //       timeSituation: "20",
+        //       selfTreatment: true,
+        //       files: [],
+        //     },
+        //   ],
+        // },
       ],
 
       donthuoc: [
@@ -1180,127 +1187,144 @@ export default {
       this.$refs.form.reset();
       this.dialogBenhAn = false;
     },
-    get(i, j) {
+    // get(i, j) {
+    //   this.dialog = true;
+    //   this.hami = i;
+    //   this.hamj = j;
+
+    //   this.record.appointments.time = this.schedule[i].time;
+    //   this.record.appointments.id = this.schedule[i].appointments[j].id;
+    //   this.record.appointments.stt = this.schedule[i].appointments[j].stt;
+    //   this.record.appointments.room = this.schedule[i].appointments[j].room;
+
+    //   this.record.appointments.profile.id =
+    //     this.schedule[i].appointments[j].profile.id;
+    //   this.record.appointments.profile.profileNumber =
+    //     this.schedule[i].appointments[j].profile.profileNumber;
+    //   this.record.appointments.profile.name =
+    //     this.schedule[i].appointments[j].profile.name;
+    //   this.record.appointments.profile.address =
+    //     this.schedule[i].appointments[j].profile.address;
+    //   this.record.appointments.profile.phoneNumber =
+    //     this.schedule[i].appointments[j].profile.phoneNumber;
+    //   this.record.appointments.profile.dob =
+    //     this.schedule[i].appointments[j].profile.dob;
+    //   this.record.appointments.profile.job =
+    //     this.schedule[i].appointments[j].profile.job;
+    //   this.record.appointment.profile.identityCard =
+    //     this.schedule[i].appointment[j].profile.identityCard;
+    //   this.record.appointment.profile.healthInsurance =
+    //     this.schedule[i].appointment[j].profile.healthInsurance;
+    //   this.record.appointment.profile.folk =
+    //     this.schedule[i].appointment[j].profile.folk;
+    //   this.record.appointment.profile.gender =
+    //     this.schedule[i].appointment[j].profile.gender;
+    //   this.record.appointment.profile.protector =
+    //     this.schedule[i].appointment[j].profile.protector;
+
+    //   this.record.appointment.doctor.id =
+    //     this.schedule[i].appointment[j].doctor.id;
+    //   this.record.appointment.doctor.name =
+    //     this.schedule[i].appointment[j].doctor.name;
+    //   this.record.appointment.doctor.specialty =
+    //     this.schedule[i].appointment[j].doctor.specialty;
+    //   this.record.appointment.doctor.level =
+    //     this.schedule[i].appointment[j].doctor.level;
+
+    //   this.record.appointment.date = this.schedule[i].appointment[j].date;
+    //   this.record.appointment.time = this.schedule[i].appointment[j].time;
+    //   this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
+    //   this.record.appointment.description =
+    //     this.schedule[i].appointment[j].description;
+    //   this.record.appointment.timeSituation =
+    //     this.schedule[i].appointment[j].timeSituation;
+    //   this.record.appointment.selfTreatment =
+    //     this.schedule[i].appointment[j].selfTreatment;
+    //   this.record.appointment.files = this.schedule[i].appointment[j].files;
+    // },
+    // getbenhan(i, j) {
+    //   this.dialogBenhAn = true;
+    //   this.hami = i;
+    //   this.hamj = j;
+
+    //   this.record.appointment.times = this.schedule[i].times;
+    //   this.record.appointment.id = this.schedule[i].appointment[j].id;
+    //   this.record.appointment.stt = this.schedule[i].appointment[j].stt;
+    //   this.record.appointment.room = this.schedule[i].appointment[j].room;
+
+    //   this.record.appointment.profile.id =
+    //     this.schedule[i].appointment[j].profile.id;
+    //   this.record.appointment.profile.profileNumber =
+    //     this.schedule[i].appointment[j].profile.profileNumber;
+    //   this.record.appointment.profile.name =
+    //     this.schedule[i].appointment[j].profile.name;
+    //   this.record.appointment.profile.address =
+    //     this.schedule[i].appointment[j].profile.address;
+    //   this.record.appointment.profile.phoneNumber =
+    //     this.schedule[i].appointment[j].profile.phoneNumber;
+    //   this.record.appointment.profile.dob =
+    //     this.schedule[i].appointment[j].profile.dob;
+    //   this.record.appointment.profile.job =
+    //     this.schedule[i].appointment[j].profile.job;
+    //   this.record.appointment.profile.identityCard =
+    //     this.schedule[i].appointment[j].profile.identityCard;
+    //   this.record.appointment.profile.healthInsurance =
+    //     this.schedule[i].appointment[j].profile.healthInsurance;
+    //   this.record.appointment.profile.folk =
+    //     this.schedule[i].appointment[j].profile.folk;
+    //   this.record.appointment.profile.gender =
+    //     this.schedule[i].appointment[j].profile.gender;
+    //   this.record.appointment.profile.protector =
+    //     this.schedule[i].appointment[j].profile.protector;
+
+    //   this.record.appointment.doctor.id =
+    //     this.schedule[i].appointment[j].doctor.id;
+    //   this.record.appointment.doctor.name =
+    //     this.schedule[i].appointment[j].doctor.name;
+    //   this.record.appointment.doctor.specialty =
+    //     this.schedule[i].appointment[j].doctor.specialty;
+    //   this.record.appointment.doctor.level =
+    //     this.schedule[i].appointment[j].doctor.level;
+
+    //   this.record.appointment.date = this.schedule[i].appointment[j].date;
+    //   this.record.appointment.time = this.schedule[i].appointment[j].time;
+    //   this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
+    //   this.record.appointment.description =
+    //     this.schedule[i].appointment[j].description;
+    //   this.record.appointment.timeSituation =
+    //     this.schedule[i].appointment[j].timeSituation;
+    //   this.record.appointment.selfTreatment =
+    //     this.schedule[i].appointment[j].selfTreatment;
+    //   this.record.appointment.files = this.schedule[i].appointment[j].files;
+    // },
+    getDetail(info_detail) {
       this.dialog = true;
-      this.hami = i;
-      this.hamj = j;
-
-      this.record.appointment.times = this.schedule[i].times;
-      this.record.appointment.id = this.schedule[i].appointment[j].id;
-      this.record.appointment.stt = this.schedule[i].appointment[j].stt;
-      this.record.appointment.room = this.schedule[i].appointment[j].room;
-
-      this.record.appointment.profile.id =
-        this.schedule[i].appointment[j].profile.id;
-      this.record.appointment.profile.profileNumber =
-        this.schedule[i].appointment[j].profile.profileNumber;
-      this.record.appointment.profile.name =
-        this.schedule[i].appointment[j].profile.name;
-      this.record.appointment.profile.address =
-        this.schedule[i].appointment[j].profile.address;
-      this.record.appointment.profile.phoneNumber =
-        this.schedule[i].appointment[j].profile.phoneNumber;
-      this.record.appointment.profile.dob =
-        this.schedule[i].appointment[j].profile.dob;
-      this.record.appointment.profile.job =
-        this.schedule[i].appointment[j].profile.job;
-      this.record.appointment.profile.identityCard =
-        this.schedule[i].appointment[j].profile.identityCard;
-      this.record.appointment.profile.healthInsurance =
-        this.schedule[i].appointment[j].profile.healthInsurance;
-      this.record.appointment.profile.folk =
-        this.schedule[i].appointment[j].profile.folk;
-      this.record.appointment.profile.gender =
-        this.schedule[i].appointment[j].profile.gender;
-      this.record.appointment.profile.protector =
-        this.schedule[i].appointment[j].profile.protector;
-
-      this.record.appointment.doctor.id =
-        this.schedule[i].appointment[j].doctor.id;
-      this.record.appointment.doctor.name =
-        this.schedule[i].appointment[j].doctor.name;
-      this.record.appointment.doctor.specialty =
-        this.schedule[i].appointment[j].doctor.specialty;
-      this.record.appointment.doctor.level =
-        this.schedule[i].appointment[j].doctor.level;
-
-      this.record.appointment.date = this.schedule[i].appointment[j].date;
-      this.record.appointment.time = this.schedule[i].appointment[j].time;
-      this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
-      this.record.appointment.description =
-        this.schedule[i].appointment[j].description;
-      this.record.appointment.timeSituation =
-        this.schedule[i].appointment[j].timeSituation;
-      this.record.appointment.selfTreatment =
-        this.schedule[i].appointment[j].selfTreatment;
-      this.record.appointment.files = this.schedule[i].appointment[j].files;
+      // console.log("hello");
+      // console.log(info_detail);
+      this.record.appointment = info_detail;
     },
-    getbenhan(i, j) {
+
+    getPatient(patient) {
       this.dialogBenhAn = true;
-      this.hami = i;
-      this.hamj = j;
-
-      this.record.appointment.times = this.schedule[i].times;
-      this.record.appointment.id = this.schedule[i].appointment[j].id;
-      this.record.appointment.stt = this.schedule[i].appointment[j].stt;
-      this.record.appointment.room = this.schedule[i].appointment[j].room;
-
-      this.record.appointment.profile.id =
-        this.schedule[i].appointment[j].profile.id;
-      this.record.appointment.profile.profileNumber =
-        this.schedule[i].appointment[j].profile.profileNumber;
-      this.record.appointment.profile.name =
-        this.schedule[i].appointment[j].profile.name;
-      this.record.appointment.profile.address =
-        this.schedule[i].appointment[j].profile.address;
-      this.record.appointment.profile.phoneNumber =
-        this.schedule[i].appointment[j].profile.phoneNumber;
-      this.record.appointment.profile.dob =
-        this.schedule[i].appointment[j].profile.dob;
-      this.record.appointment.profile.job =
-        this.schedule[i].appointment[j].profile.job;
-      this.record.appointment.profile.identityCard =
-        this.schedule[i].appointment[j].profile.identityCard;
-      this.record.appointment.profile.healthInsurance =
-        this.schedule[i].appointment[j].profile.healthInsurance;
-      this.record.appointment.profile.folk =
-        this.schedule[i].appointment[j].profile.folk;
-      this.record.appointment.profile.gender =
-        this.schedule[i].appointment[j].profile.gender;
-      this.record.appointment.profile.protector =
-        this.schedule[i].appointment[j].profile.protector;
-
-      this.record.appointment.doctor.id =
-        this.schedule[i].appointment[j].doctor.id;
-      this.record.appointment.doctor.name =
-        this.schedule[i].appointment[j].doctor.name;
-      this.record.appointment.doctor.specialty =
-        this.schedule[i].appointment[j].doctor.specialty;
-      this.record.appointment.doctor.level =
-        this.schedule[i].appointment[j].doctor.level;
-
-      this.record.appointment.date = this.schedule[i].appointment[j].date;
-      this.record.appointment.time = this.schedule[i].appointment[j].time;
-      this.record.appointment.symptom = this.schedule[i].appointment[j].symptom;
-      this.record.appointment.description =
-        this.schedule[i].appointment[j].description;
-      this.record.appointment.timeSituation =
-        this.schedule[i].appointment[j].timeSituation;
-      this.record.appointment.selfTreatment =
-        this.schedule[i].appointment[j].selfTreatment;
-      this.record.appointment.files = this.schedule[i].appointment[j].files;
+      this.record.appointment = patient;
     },
 
     async getAppointmentList() {
       console.log(this.picker);
-      // const params = {
-      //   token: this.$store.getters["auth/access_token"],
-      //   data: {
-      //     date:this.picker,
-      //   }
-      // };
-      // await this.$store.dispatch("appointment/getAppointment_byDate_Doctor", params);
-      // this.schedule = this.$store.getters["appointment/doctor_appointment_list"];
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: {
+          date: this.picker,
+        },
+      };
+      await this.$store.dispatch(
+        "appointment/getAppointment_byDate_Doctor",
+        params
+      );
+      this.schedule =
+        this.$store.getters["appointment/doctor_appointment_list"];
+
+      console.log(this.schedule);
     },
   },
 };
