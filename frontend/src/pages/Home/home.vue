@@ -1,21 +1,21 @@
 <template>
   <div class="content">
-    <v-footer color="#DCF5FF" height="104px" :padless="padless">
+    <v-footer color="#DCF5FF" height="auto" :padless="padless">
       <v-col cols="3">icon</v-col>
       <v-col cols="5">
         <v-row justify="center" no-gutters>
           <v-btn
             v-for="link in links"
-            :key="link"
+            :key="link.label"
             color="#046792"
             text
             rounded
             class="my-2"
+            @click="getpage(link.name)"
           >
-            {{ link }}
+            {{ link.label }}
           </v-btn>
-        </v-row></v-col
-      >
+        </v-row></v-col>
       <v-col cols="4">
         <v-row justify="end" no-gutters>
           <v-btn
@@ -37,13 +37,15 @@
         </v-row></v-col
       >
     </v-footer>
+
+    
     <v-footer color="#DCF5FF" height="500px" :padless="padless">
       <v-col cols="12">
         <v-row justify="center">
           <strong
             class="font-weight-medium"
             style="color: #046792; font-size: 20px"
-            >Remove Doubts</strong
+            >Điều trị chuyên nghiệp</strong
           >
         </v-row></v-col
       >
@@ -52,7 +54,7 @@
           ><strong
             class="font-weight-medium"
             style="color: #046792; font-size: 64px"
-            >Free Doctor Consultation</strong
+            >Hỗ Trợ Khám Bệnh Online</strong
           ></v-row
         ></v-col
       >
@@ -61,8 +63,8 @@
           ><strong
             class="font-weight-medium"
             style="color: #68a4be; font-size: 16px"
-            >24/7 Video consultations. Private consultation + Audio call Starts
-            at just $10. Exclusively on mobile ap</strong
+            >Đặt lịch 24/7 - Tư vấn và khám bệnh nhanh chóng - Hoàn toàn miễn
+            phí - Theo dõi lịch hẹn</strong
           ></v-row
         ></v-col
       >
@@ -87,7 +89,7 @@
           ><strong
             class="font-weight-medium"
             style="color: #046792; font-size: 16px"
-            >Bạn đang tìm kiếm điều gì</strong
+            >Bạn đang tìm kiếm điều gì?</strong
           ></v-row
         >
       </v-col>
@@ -117,75 +119,169 @@
         >
       </v-col>
     </v-footer>
-    <v-footer color="white" height="494px" :padless="padless">
+    <v-footer color="white" height="auto" :padless="padless">
       <v-col cols="12">
-        <v-row justify="center"
+        <v-row justify="center" class="mt-8 mb-4"
           ><strong
             class="font-weight-medium"
             style="color: #046792; font-size: 36px"
-            >Consult Top doctor online for any health concern</strong
+            >Hãy cùng tìm hiểu về các chuyên khoa mà chúng tôi đang có</strong
           ></v-row
         ></v-col
       >
       <v-col cols="12">
-        <v-row justify="center"
+        <v-row justify="center" class="mb-4"
           ><strong
             class="font-weight-regular"
             style="color: #a3a3a3; font-size: 16px"
-            >Private online consultations with verified doctors in all
-            specialists</strong
+            >Đội ngũ bác sĩ giàu kinh nghiệm trong chẩn đoán và điều trị
+            bệnh</strong
           ></v-row
         ></v-col
       >
       <v-col cols="12">
-        <v-row justify="center"
-          ><v-card
-            class="mx-2"
-            v-for="(image_card, index) in card_list_2"
-            :key="index"
-            width="200px"
-            height="134px"
-            hover="true"
-            style="background-color: #e6f0f5"
-          >
-            <v-row justify="center" class="mt-2">
-              <v-avatar height="48px" width="48px" color="white">
-                <img :src="image_card.image" alt="" />
-              </v-avatar>
-            </v-row>
-            <br />
-            <v-row justify="center" class="mt-2">
-              <strong
-                class="font-weight-regular ml-2"
-                style="color: #046792; font-size: 16px"
-                >{{ image_card.label }}</strong
-              >
-            </v-row>
-          </v-card></v-row
-        >
+        <v-carousel height="200" class="mb-8">
+          <template v-for="(item, index) in card_list_2">
+            <v-carousel-item 
+              v-if="(index + 1) % columns === 1 || columns === 1"
+              :key="index"
+            >
+              <v-row justify="center">
+                <template v-for="(n, i) in columns">
+                  <template v-if="+index + i < card_list_2.length">
+                    <v-col :key="i" justify="center" align="center" cols = 12/columns>
+                      <v-card
+                        class="mx-2"
+                        :key="index"
+                        width="200px"
+                        height="134px"
+                        hover="true"
+                        style="background-color: #e6f0f5"
+                        @click="getlink(+index + i)"
+                      >
+                        <v-row justify="center" class="mt-3">
+                          <v-avatar height="48px" width="48px" color="white" class="mt-3">
+                            <img :src="card_list_2[+index + i].image" alt="" />
+                          </v-avatar>
+                        </v-row>
+                        <br />
+                        <v-row justify="center" class="mt-2">
+                          <strong
+                            class="font-weight-regular ml-2"
+                            style="color: #046792; font-size: 16px"
+                            >{{ card_list_2[+index + i].label }}</strong
+                          >
+                        </v-row>
+                      </v-card>
+                    </v-col>
+                  </template>
+                </template>
+              </v-row>
+            </v-carousel-item>
+          </template>
+        </v-carousel>
       </v-col>
-      <v-col cols="12">
-        <v-row justify="center"
-          ><v-btn
-            color="#3685A8"
-            rounded
-            class="my-2 white--text"
-            height="40px"
-            width="160px"
-            style="font-size: 12px"
-          >
-            See All Specialities
-          </v-btn></v-row
-        >
-      </v-col>
+      <v-row justify="center" class="mt-8 mb-8">
+        <v-col cols ="4">
+          <v-img
+             
+              max-height="362"
+              max-width="511"
+              src="@/assets/img/home/topic1.png"
+          ></v-img>
+        </v-col>
+        <v-col cols ="4" class="my-auto">
+         <p class = "text-left display-1 font-weight-bold blue--text">Bác sĩ có chuyên môn cao</p> 
+         <p class = "text-justify subtitle-1  ">Phòng khám  quy tụ đội ngũ chuyên gia, bác sĩ, dược sĩ và điều dưỡng có trình độ chuyên môn cao, tay nghề giỏi, luôn tận tâm và chu đáo với người bệnh.</p> 
+        <p class = "text-justify subtitle-1 ">Phòng khám luôn đặt người bệnh là trọng tâm, và cam kết mang đến dịch vụ chăm sóc sức khỏe tốt nhất cho quý khách hàng.</p>
+        </v-col>
+      </v-row>
+
+       <v-row justify="center" class="mt-8 mb-8">
+        
+        <v-col cols ="4" class="my-auto">
+         <p class = "text-left display-1 font-weight-bold blue--text">Khám sức khoẻ tổng quát cá nhân</p> 
+         <p class = "text-justify subtitle-1  ">Phòng khám được đầu tư cơ sở vật chất khang trang và trang thiết bị máy móc hiện đại của các thương hiệu hàng đầu thế giới.</p> 
+        <p class = "text-justify subtitle-1 ">Đáp ứng nhu cầu khám sức khoẻ toàn diện cho khách hàng ở mọi lứa tuổi, cho các cá nhân và công ty, cũng như chẩn đoán và điều trị ngoại trú các chuyên khoa nêu trên với mức chi phí hợp lý.</p>
+        </v-col>
+        <v-col cols ="4">
+          <v-img
+             
+              max-height="362"
+              max-width="511"
+              src="@/assets/img/home/topic2.png"
+          ></v-img>
+        </v-col>
+      </v-row>
     </v-footer>
+
+  <v-footer>
+    <v-row justify="center" class="mt-9 mb-9">
+      <v-col cols="2 mr-5" >
+        <v-row justify="center "><p class="body-1 font-weight-bold blue--text">Về trang web</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Được xây dựng bằng VueJs và tạo ra từ chính công sức của tập thể.</p></v-row>
+         
+      </v-col>
+
+      <v-col cols="2">
+        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Ngôn ngữ sử dụng</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Vue</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">HTML</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">CSS</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Js</p></v-row>
+
+      </v-col>
+       <v-col cols="2" >
+        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Đối tượng sử dụng</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Bệnh nhân</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Quản lí</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Bác sĩ</p></v-row>
+         <v-row justify="center"><p class="text-justify body-1">Nhân viên</p></v-row>
+        
+      </v-col>
+       <v-col cols="2" >
+        <v-row justify="center " ><p class="body-1 font-weight-bold blue--text">Liên hệ</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Email: t3@gmail.com</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">SĐT: 0123456798</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Địa chỉ: 22 abc Dĩ An Bình Dương</p></v-row>
+      </v-col>
+    </v-row>
+  </v-footer>
+  
+ 
   </div>
 </template>
 
 <script>
+
+
 export default {
+    
   data: () => ({
-    links: ["Trang chủ", "Giới thiệu", "Quy trình", "Dịch vụ", "Liên hệ"],
+
+    // links: ["Trang chủ", "Giới thiệu", "Quy trình", "Dịch vụ", "Liên hệ"],
+    links:[
+      {
+        label: "Trang chủ",
+        name: "home"
+      },
+      {
+        label: "Giới thiệu",
+        name: "Giới thiệu",
+      },
+        {
+        label: "Quy trình",
+        name: "Quy trình",
+      },
+      {
+        label: "Dịch vụ",
+        name: "Dịch vụ",
+      },
+        {
+        label: "Liên hệ",
+        name: "Liên hệ",
+      },
+    ],
     card_link: [
       {
         head: "Bác sĩ",
@@ -196,38 +292,74 @@ export default {
         body: "Với các chuyên bác sĩ",
       },
       {
-        head: "Bác sĩ",
-        body: "Đặt lịch hẹn",
+        head: "Chuyên khoa",
+        body: "Các khoa khám hiện có",
       },
       {
-        head: "Bác sĩ",
-        body: "Đặt lịch hẹn",
+        head: "Bài viết",
+        body: "Tìm hiểu về bệnh",
       },
     ],
     card_list_2: [
       {
         image: require("@/assets/img/home/home_icon1.png"),
-        label: "Infectous Disease",
+        label: "Chẩn đoán hình ảnh",
+        name: "Chẩn đoán hình ảnh",
       },
       {
         image: require("@/assets/img/home/home_icon2.png"),
-        label: "Dermatology",
+        label: "Cơ - Xương - Khớp",
+       name: "Cơ - Xương - Khớp",
       },
       {
         image: require("@/assets/img/home/home_icon3.png"),
-        label: "Urology",
+        label: "Nhi khoa",
+          name: "Nhi khoa",
       },
       {
         image: require("@/assets/img/home/home_icon4.png"),
-        label: "Psychiatry",
+        label: "Sản - Phụ Khoa",
+         name: "Sản - Phụ khoa",
       },
       {
         image: require("@/assets/img/home/home_icon5.png"),
-        label: "Stomach",
+        label: "Tai - Mũi - Họng",
+        name: "Tai - Mũi - Họng",
       },
       {
         image: require("@/assets/img/home/home_icon6.png"),
-        label: "Baby Health",
+        label: "Tim mạch",
+        name: "Tim mạch",
+      },
+      {
+        image: require("@/assets/img/home/home_icon7.png"),
+        label: "Hô hấp",
+        name: "Hô hấp và miễn dịch dị ứng lâm sàng",
+      },
+      {
+        image: require("@/assets/img/home/home_icon8.png"),
+        label: "Nội soi",
+        name: "Nội soi",
+      },
+      {
+        image: require("@/assets/img/home/home_icon9.png"),
+        label: "Tiêu hóa gan mật",
+        name: "Tiêu hóa gan mật",
+      },
+      {
+        image: require("@/assets/img/home/home_icon10.png"),
+        label: "Xét nghiệm",
+        name: "Xét nghiệm",
+      },
+      {
+        image: require("@/assets/img/home/home_icon11.png"),
+        label: "Khoa ngoại",
+        name: "Khoa ngoại",
+      },
+      {
+        image: require("@/assets/img/home/home_icon12.png"),
+        label: "Khoa tâm thần",
+        name: "Tâm thần kinh",
       },
     ],
   }),
@@ -239,6 +371,35 @@ export default {
     signup() {
       this.$router.push({ name: "Đăng ký" });
     },
+    getlink(index){
+   
+      this.$router.push({ name: this.card_list_2[index].name });
+    },
+    getpage(name){
+       this.$router.push({ name: name });
+    }
+  },
+  computed: {
+    columns() {
+      if (this.$vuetify.breakpoint.xl) {
+        return 6;
+      }
+
+      if (this.$vuetify.breakpoint.lg) {
+        return 6;
+      }
+
+      if (this.$vuetify.breakpoint.md) {
+        return 4;
+      }
+       if (this.$vuetify.breakpoint.sm) {
+        return 2;
+      }
+
+      return 1;
+    },
   },
 };
 </script>
+
+

@@ -40,7 +40,6 @@
         </v-expansion-panel-header> -->
       </v-expansion-panel>
     </v-expansion-panels>
-    <div class="content">{{ this.doctorSelection }}</div>
   </v-row>
 </template>
 

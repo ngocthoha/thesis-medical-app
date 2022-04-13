@@ -380,7 +380,7 @@ export default {
     closegetnew() {
       this.dates = [];
       this.copydate = [];
-
+      this.desserts[0] = this.copydesserts[0];
       this.schedule = this.copydesserts[0];
       this.selected[0] = this.schedule;
 
