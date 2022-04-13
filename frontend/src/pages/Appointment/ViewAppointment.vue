@@ -34,7 +34,7 @@
                       dark
                       small
                       color="primary"
-                      @click="dialog = true"
+                      @click="selectAppointment(appointment)"
                     >
                       <v-icon dark> mdi-table-eye </v-icon>
                     </v-btn></v-col
@@ -56,11 +56,11 @@
             >
             <v-dialog
               v-model="dialog"
-              width="60%"
+              width="800px"
               transition="dialog-bottom-transition"
               scrollable
             >
-              <v-card>
+              <v-card v-model="appointment_selection">
                 <v-toolbar dark color="primary" height="50px">
                   <v-col cols="1">
                     <v-btn icon dark @click="dialog = false">
@@ -77,31 +77,139 @@
                 <v-footer color="white" height="100px">
                   <v-row>
                     <v-col cols="3">
-                      <v-row justify="center">Chuyên khoa</v-row>
-                      <v-row justify="center">Nhi</v-row>
+                      <v-row justify="center"
+                        ><p class="font-weight-medium">Chuyên khoa</p></v-row
+                      >
+                      <v-row justify="center">{{
+                        appointment_selection.doctor.specialty
+                      }}</v-row>
                     </v-col>
                     <v-col cols="3"
-                      ><v-row justify="center">Bác sĩ</v-row
-                      ><v-row justify="center">Doctor</v-row></v-col
+                      ><v-row justify="center"
+                        ><p class="font-weight-medium">Bác sĩ</p></v-row
+                      ><v-row justify="center">{{
+                        appointment_selection.doctor.name
+                      }}</v-row></v-col
                     >
                     <v-col cols="3"
-                      ><v-row justify="center">Ngày khám</v-row
-                      ><v-row justify="center">2022-04-21</v-row></v-col
+                      ><v-row justify="center"
+                        ><p class="font-weight-medium">Ngày khám</p></v-row
+                      ><v-row justify="center">{{
+                        appointment_selection.date
+                      }}</v-row>
+                      <v-row justify="center">{{
+                        appointment_selection.time
+                      }}</v-row></v-col
                     >
                     <v-col cols="3"
-                      ><v-row justify="center">Phòng</v-row
-                      ><v-row justify="center">H2</v-row></v-col
+                      ><v-row justify="center"
+                        ><p class="font-weight-medium">Phòng</p></v-row
+                      ><v-row justify="center">{{
+                        appointment_selection.room.name
+                      }}</v-row></v-col
                     >
                   </v-row>
                   <!-- <v-row><v-btn>Vào phòng khám</v-btn></v-row> -->
-                </v-footer
-                >
-                 <v-footer color="white" height="100px">
-                   <v-row><v-col cols="12">STT</v-col></v-row>
-                  <v-row justify="center"><v-btn>Vào phòng khám</v-btn></v-row>
-                 </v-footer
-                >
-
+                </v-footer>
+                <v-footer color="white" class="pa-10">
+                  <v-row>
+                    <v-col cols="8" class="ml-10">
+                      <v-row class="mb-10">
+                        <p class="font-weight-medium mr-1">STT:</p>
+                        {{ appointment_selection.stt }}</v-row
+                      >
+                      <v-row>
+                        <p class="font-weight-medium mr-1">Triệu chứng:</p>
+                        {{ appointment_selection.symptom }}</v-row
+                      >
+                      <v-row>
+                        <p class="font-weight-medium mr-1">Mô tả chi tiết:</p>
+                        {{ appointment_selection.description }}</v-row
+                      >
+                      <v-row>
+                        <p class="font-weight-medium mr-1">
+                          Thời gian diễn ra tình trạng:
+                        </p>
+                        {{ appointment_selection.timeSituation }}</v-row
+                      >
+                      <v-row
+                        v-if="appointment_selection.selfTreatment === true"
+                      >
+                        <p class="font-weight-medium mr-1">
+                          Đã tự điều trị bệnh:
+                        </p>
+                        có
+                      </v-row>
+                      <v-row v-else
+                        ><p class="font-weight-medium mr-1">
+                          Đã tự điều trị bệnh:
+                        </p>
+                        chưa</v-row
+                      >
+                      <v-row
+                        ><p class="font-weight-medium mr-1">
+                          Kết quả xét nghiêm trước đó:
+                        </p>
+                      </v-row>
+                    </v-col>
+                    <v-col cols="3">
+                      <v-row class="my-5">
+                        <v-btn color="primary" @click="gotoRoom"
+                          >Vào khám</v-btn
+                        ></v-row
+                      >
+                      <v-row class="my-5">
+                        <v-btn color="primary">Bệnh án</v-btn></v-row
+                      >
+                    </v-col>
+                  </v-row>
+                </v-footer>
+                <v-toolbar dark color="primary" height="50px">
+                  <v-col cols="12"
+                    ><v-row justify="center"
+                      ><v-toolbar-title
+                        >Thông tin bệnh nhân</v-toolbar-title
+                      ></v-row
+                    ></v-col
+                  >
+                  <v-spacer></v-spacer>
+                </v-toolbar>
+                <v-footer color="white" class="pa-10">
+                  <v-row>
+                    <v-col cols="6">
+                      <v-row
+                        ><p class="font-weight-medium mr-1">Họ và tên:</p>
+                        {{ appointment_selection.profile.name }}
+                      </v-row>
+                      <v-row
+                        ><p class="font-weight-medium mr-1">Ngày sinh:</p>
+                        {{ appointment_selection.profile.dob }}
+                      </v-row>
+                      <v-row
+                        ><p class="font-weight-medium mr-1">Giới tính:</p>
+                        {{ appointment_selection.profile.gender }}</v-row
+                      >
+                      <v-row
+                        ><p class="font-weight-medium mr-1">Số điện thoại:</p>
+                        {{ appointment_selection.profile.phoneNumber }}</v-row
+                      >
+                    </v-col>
+                    <v-col cols="6">
+                      <v-row
+                        ><p class="font-weight-medium mr-1">CMND:</p>
+                        {{ appointment_selection.profile.identityCard }}</v-row
+                      >
+                      <v-row
+                        ><p class="font-weight-medium mr-1">Dân tộc:</p>
+                        {{ appointment_selection.profile.folk }}</v-row
+                      >
+                      <v-row
+                        ><p class="font-weight-medium mr-1">Nghề nghiệp:</p>
+                        {{ appointment_selection.profile.job }}</v-row
+                      >
+                    </v-col>
+                  </v-row>
+                </v-footer>
                 <div style="flex: 1 1 auto"></div>
               </v-card>
             </v-dialog>
@@ -192,17 +300,84 @@ export default {
     end_date: "",
     profile_id_selection: "",
     appointment_list: [
-      {
-        date: "1111",
-        doctor: {
-          specialty: "Nhi",
-        },
-        profile: {
-          name: "john",
-        },
-        status: "ACTIVE",
-      },
+      // {
+      //   id: "0ef258bf-2f25-4c10-adee-70abe7a7da7c",
+      //   stt: 1,
+      //   room: {
+      //     id: "b7170875-0bd8-4e22-b8fb-67f8e070971d",
+      //     name: "H2",
+      //     link: null,
+      //   },
+      //   profile: {
+      //     id: "da254d38-5430-4862-9937-1d44e5efea22",
+      //     profileNumber: 1,
+      //     name: "john",
+      //     address: "address",
+      //     phoneNumber: "phone",
+      //     dob: "2022-04-12T00:53:16.226+00:00",
+      //     job: "job",
+      //     identityCard: "identity",
+      //     healthInsurance: "healthy",
+      //     folk: "folk",
+      //     gender: "gender",
+      //     protector: "protector",
+      //   },
+      //   doctor: {
+      //     id: "92cfcb8e-b815-46b9-b7bf-b016ed843fd2",
+      //     name: "Doctor",
+      //     specialty: "Nhi Khoa",
+      //     level: "CKI",
+      //   },
+      //   date: "2022-04-13",
+      //   time: "10:00-11:00",
+      //   symptom: "aaa",
+      //   description: "ddd",
+      //   timeSituation: "12 tuần",
+      //   selfTreatment: true,
+      //   files: [],
+      //   status: "ACTIVE",
+      //   createdDate: "2022-04-12T07:38:30.786+00:00",
+      // },
     ],
+
+    appointment_selection: {
+      id: "",
+      stt: 1,
+      room: {
+        id: "",
+        name: "",
+        link: null,
+      },
+      profile: {
+        id: "",
+        profileNumber: 1,
+        name: "",
+        address: "",
+        phoneNumber: "",
+        dob: "",
+        job: "",
+        identityCard: "",
+        healthInsurance: "",
+        folk: "",
+        gender: "",
+        protector: "",
+      },
+      doctor: {
+        id: "",
+        name: "",
+        specialty: "",
+        level: "",
+      },
+      date: "",
+      time: "",
+      symptom: "",
+      description: "",
+      timeSituation: "",
+      selfTreatment: true,
+      files: [],
+      status: "",
+      createdDate: "",
+    },
   }),
 
   created() {
@@ -219,23 +394,31 @@ export default {
       //console.log(this.profile_patient_list);
     },
 
-    // async getAppointmentlist() {
-    //   console.log(this.profile_id_selection);
-    //   const params = {
-    //     token: this.$store.getters["auth/access_token"],
-    //     data: {
-    //       profileId: this.profile_id_selection,
-    //     },
-    //   };
+    async getAppointmentlist() {
+      console.log(this.profile_id_selection);
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: {
+          profileId: this.profile_id_selection,
+        },
+      };
 
-    //   await this.$store.dispatch(
-    //     "appointment/getAppointment_byProfileId",
-    //     params
-    //   );
-    //   this.appointment_list =
-    //     this.$store.getters["appointment/user_appointment_list"];
-    //   console.log(this.appointment_list);
-    // },
+      await this.$store.dispatch(
+        "appointment/getAppointment_byProfileId",
+        params
+      );
+      this.appointment_list =
+        this.$store.getters["appointment/user_appointment_list"];
+      console.log(this.appointment_list);
+    },
+    selectAppointment(appointment) {
+      this.dialog = true;
+      this.appointment_selection = appointment;
+    },
+
+    gotoRoom() {
+      window.open("https://www.google.com/");
+    },
   },
 };
 </script>
