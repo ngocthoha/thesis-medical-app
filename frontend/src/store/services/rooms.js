@@ -13,6 +13,9 @@ function get_room_list(params) {
 function add_new_room(params) {
   axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
   return axios.post(`${url}/api/rooms`, params.data).then((response) => {
+    return {
+      data: response.data,
+    };
   });
 }
 

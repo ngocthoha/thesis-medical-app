@@ -22,7 +22,7 @@ const actions = {
       },
 
       add_room({ commit }, params) {
-        return service.adđ_new_room(params).then(({ data }) => {
+        return service.add_new_room(params).then(({ data }) => {
         });
       },
 };

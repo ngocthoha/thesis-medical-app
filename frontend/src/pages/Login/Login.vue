@@ -99,7 +99,17 @@ export default {
 
       if (this.$store.getters["auth/access_token"] != null) {
         console.log(this.$store.getters["auth/access_token"]);
-        this.$router.push({ name: "Đặt lịch khám theo ngày" });
+
+        var type = this.$store.getters["auth/types"]
+        if(type[0].authority === "ROLE_USER"){
+          this.$router.push({ name: "Đặt lịch khám theo ngày" });
+        }
+        if(type[0].authority === "ROLE_DOCTOR"){
+         this.$router.push({ name: "Lịch trình" });
+        }
+        if(type[0].authority === "ROLE_ADMIN"){
+         this.$router.push({ name: "Tạo phòng" });
+        }
       }
     },
     signup() {
