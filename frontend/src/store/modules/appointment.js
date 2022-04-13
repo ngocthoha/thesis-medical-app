@@ -23,21 +23,21 @@ const mutations = {
 const actions = {
   speciality_list({ commit }, params) {
     return service.speciality_list(params).then(({ data }) => {
-      if(data.code == 1){
+      if (data.code == 1) {
         commit("SET_SPECIALITY_LIST", data.results);
-      }
-      else{
+      } else {
         console.log("error");
       }
     });
   },
 
   getDoctorList_byDateAndSpeciality({ commit }, params) {
-    return service.getDoctorList_byDateAndSpeciality(params).then(({ data }) => {
-        if(data.code == 1){
+    return service
+      .getDoctorList_byDateAndSpeciality(params)
+      .then(({ data }) => {
+        if (data.code == 1) {
           commit("SET_DOCTOR_LIST", data.results);
-        }
-        else{
+        } else {
           console.log("error");
         }
       });
@@ -51,10 +51,9 @@ const actions = {
 
   getAppointment_byDate_Doctor({ commit }, params) {
     return service.getAppointment_byDate_Doctor(params).then(({ data }) => {
-      if(data.code == 1){
+      if (data.code == 1) {
         commit("SET_DOCTOR_APPOINTMENT_LIST", data.results);
-      }
-      else{
+      } else {
         console.log("error");
       }
     });

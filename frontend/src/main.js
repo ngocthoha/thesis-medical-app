@@ -35,6 +35,7 @@ import vuetify from "./plugins/vuetify";
 
 import axios from "axios";
 import VueAxios from "vue-axios";
+import lodash from "lodash";
 // configure router
 const router = new VueRouter({
   mode: "history",
@@ -43,7 +44,7 @@ const router = new VueRouter({
 });
 
 Vue.prototype.$Chartist = Chartist;
-
+Vue.prototype._ = lodash;
 Vue.use(VueRouter);
 Vue.use(MaterialDashboard);
 Vue.use(GlobalComponents);

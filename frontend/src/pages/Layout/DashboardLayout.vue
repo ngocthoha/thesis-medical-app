@@ -106,7 +106,7 @@ export default {
     FixedPlugin,
   },
 
-  created(){
+  created() {
     this.setType();
   },
   data() {
@@ -119,21 +119,21 @@ export default {
     };
   },
 
-  methods:{
-    setType(){
-      var type = this.$store.getters["auth/types"]
-      type.forEach(element => {
-        if(element.authority === "ROLE_USER"){
+  methods: {
+    setType() {
+      var type = this.$store.getters["auth/types"];
+      type.forEach((element) => {
+        if (element.authority === "ROLE_USER") {
           this.user_type = true;
         }
-         if(element.authority === "ROLE_DOCTOR"){
+        if (element.authority === "ROLE_DOCTOR") {
           this.doctor_type = true;
         }
-         if(element.authority === "ROLE_ADMIN"){
+        if (element.authority === "ROLE_ADMIN") {
           this.admin_type = true;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
