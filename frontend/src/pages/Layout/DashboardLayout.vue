@@ -71,6 +71,10 @@
           <md-icon>person</md-icon>
           <p>Tài khoản</p>
         </sidebar-link>
+        <sidebar-link to="/home/admin/room-admin">
+          <md-icon>person</md-icon>
+          <p>Tạo phòng</p>
+        </sidebar-link>
       </div>
     </side-bar>
 

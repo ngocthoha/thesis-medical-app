@@ -31,6 +31,7 @@ import PatientAdmin from "@/pages/Admin/PatientAdmin.vue";
 import RecordAdmin from "@/pages/Admin/RecordAdmin.vue";
 import ScheduleAdmin from "@/pages/Admin/ScheduleAdmin.vue";
 import AccountAdmin from "@/pages/Admin/AccountAdmin.vue";
+import RoomAdmin from "@/pages/Admin/RoomAdmin.vue";
 
 //home page
 import Home from "@/pages/Home/home.vue";
@@ -185,6 +186,11 @@ const routes = [
         path: "admin/schedule-admin",
         name: "Lịch trình",
         component: ScheduleAdmin,
+      },
+      {
+        path: "admin/room-admin",
+        name: "Tạo phòng",
+        component: RoomAdmin,
       },
       {
         path: "appointment/view-appointment",

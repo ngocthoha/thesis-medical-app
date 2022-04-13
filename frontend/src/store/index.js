@@ -5,6 +5,7 @@ import profile from "./modules/profile";
 import appointment from "./modules/appointment";
 import scheduledoctor from "./modules/scheduledoctor";
 import record from "./modules/record";
+import rooms from "./modules/rooms";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -14,5 +15,6 @@ export default new Vuex.Store({
     appointment,
     scheduledoctor,
     record,
+    rooms,
   },
 });
