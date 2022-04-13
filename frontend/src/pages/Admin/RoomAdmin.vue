@@ -214,7 +214,6 @@ export default {
     },
 
     getnew: {
-      id: null,
       name: null,
       link: null,
     },
@@ -239,8 +238,16 @@ export default {
     closeDelete() {
       this.dialogDelete = false;
     },
-    save() {},
-    saveedit() {},
+    async save() {
+      const params = {
+        token: this.$store.getters["auth/access_token"],
+        data: this.getnew,
+      };
+      await this.$store.dispatch("rooms/add_room", params);
+      this.$refs.form.reset();
+      this.getrooms();
+    },
+ 
     async getrooms() {
       const params = {
         token: this.$store.getters["auth/access_token"],
@@ -249,6 +256,7 @@ export default {
         this.desserts = this.$store.getters["rooms/list_rooms"];
         console.log(this.desserts)
     },
+       saveedit() {},
   },
   //Cần lấy trước khi lên vỉew
   created(){

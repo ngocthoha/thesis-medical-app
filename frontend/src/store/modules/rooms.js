@@ -20,6 +20,11 @@ const actions = {
           }
         });
       },
+
+      add_room({ commit }, params) {
+        return service.adđ_new_room(params).then(({ data }) => {
+        });
+      },
 };
 
 const getters = {

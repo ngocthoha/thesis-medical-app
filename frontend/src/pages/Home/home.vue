@@ -37,6 +37,8 @@
         </v-row></v-col
       >
     </v-footer>
+
+    
     <v-footer color="#DCF5FF" height="500px" :padless="padless">
       <v-col cols="12">
         <v-row justify="center">
@@ -215,46 +217,33 @@
 
   <v-footer>
     <v-row justify="center" class="mt-9 mb-9">
-      <v-col cols="2" >
-        <v-row justify="center"><p class="body-1 font-weight-bold blue--text">Tiêu đề 1</p> </v-row>
-        <v-row justify="center"><a href="">Link</a></v-row>
-         <v-row justify="center"><a href="">Link</a></v-row>
-          <v-row justify="center"><a href="">Link</a></v-row>
-           <v-row justify="center"><a href="">Link</a></v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
+      <v-col cols="2 mr-5" >
+        <v-row justify="center "><p class="body-1 font-weight-bold blue--text">Về trang web</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Được xây dựng bằng VueJs và tạo ra từ chính công sức của tập thể.</p></v-row>
+         
       </v-col>
 
-      <v-col cols="2" >
-        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Tiêu đề 2</p> </v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
-         <v-row justify="center"><a href="">Link</a></v-row>
-          <v-row justify="center"><a href="">Link</a></v-row>
-           <v-row justify="center"><a href="">Link</a></v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
+      <v-col cols="2">
+        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Ngôn ngữ sử dụng</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Vue</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">HTML</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">CSS</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Js</p></v-row>
+
       </v-col>
        <v-col cols="2" >
-        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Tiêu đề 3</p> </v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
-         <v-row justify="center"><a href="">Link</a></v-row>
-          <v-row justify="center"><a href="">Link</a></v-row>
-           <v-row justify="center"><a href="">Link</a></v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
+        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Đối tượng sử dụng</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Bệnh nhân</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Quản lí</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Bác sĩ</p></v-row>
+         <v-row justify="center"><p class="text-justify body-1">Nhân viên</p></v-row>
+        
       </v-col>
        <v-col cols="2" >
-        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Tiêu đề 4</p> </v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
-         <v-row justify="center"><a href="">Link</a></v-row>
-          <v-row justify="center"><a href="">Link</a></v-row>
-           <v-row justify="center"><a href="">Link</a></v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
-      </v-col>
-       <v-col cols="2" >
-        <v-row justify="center" ><p class="body-1 font-weight-bold blue--text">Tiêu đề 5</p> </v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
-         <v-row justify="center"><a href="">Link</a></v-row>
-          <v-row justify="center"><a href="">Link</a></v-row>
-           <v-row justify="center"><a href="">Link</a></v-row>
-            <v-row justify="center"><a href="">Link</a></v-row>
+        <v-row justify="center " ><p class="body-1 font-weight-bold blue--text">Liên hệ</p> </v-row>
+        <v-row justify="center"><p class="text-justify body-1">Email: t3@gmail.com</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">SĐT: 0123456798</p></v-row>
+        <v-row justify="center"><p class="text-justify body-1">Địa chỉ: 22 abc Dĩ An Bình Dương</p></v-row>
       </v-col>
     </v-row>
   </v-footer>

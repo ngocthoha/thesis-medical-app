@@ -1,669 +1,142 @@
 <template>
   <div class="content">
-    <v-card>
-      <v-data-table
-        v-model="selected"
-        show-select
-        :headers="headers"
-        :items="desserts"
-        item-key="name"
-        sort-by="name"
-        class="elevation-1"
-        :search="search"
+    <v-footer color="#DCF5FF" height="auto" :padless="padless" class="mb-10">
+      <v-col cols="3">icon</v-col>
+      <v-col cols="5">
+        <v-row justify="center" no-gutters>
+          <v-btn
+            v-for="link in links"
+            :key="link.label"
+            color="#046792"
+            text
+            rounded
+            class="my-2"
+            @click="getpage(link.name)"
+          >
+            {{ link.label }}
+          </v-btn>
+        </v-row></v-col
       >
-        <template v-slot:top>
-          <v-toolbar flat>
-            <v-btn color="primary" dark class="mb-2" @click="opennewApp">
-              Thêm lịch hẹn
-            </v-btn>
-            <v-spacer></v-spacer>
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Tìm kiếm"
-              single-line
-              hide-details
-            ></v-text-field>
-            <v-spacer></v-spacer>
-            <v-btn tile color="success">
-              <v-icon left> mdi-pencil </v-icon>
-              Tools
-            </v-btn>
+      <v-col cols="4">
+        <v-row justify="end" no-gutters>
+          <v-btn
+            color="#046792"
+            rounded
+            class="my-2 white--text"
+            @click="login"
+          >
+            Đăng nhập
+          </v-btn>
+          <v-btn
+            color="#046792"
+            rounded
+            class="my-2 white--text"
+            @click="signup"
+          >
+            Đăng ký
+          </v-btn>
+        </v-row></v-col
+      >
+    </v-footer>
 
-            <v-dialog
-              v-model="dialogNewAppointment"
-              max-width="700px"
-              persistent
-            >
-              <v-card>
-                <v-card-title style="justify-content: space-between">
-                  <span class="text-h5">{{ nameTitle }}</span>
-                  <v-btn
-                    color="#333"
-                    small
-                    style="color: #ffffff; padding: 0px"
-                    @click="closegetnew"
-                  >
-                    Đóng
-                  </v-btn>
-                </v-card-title>
+    <v-footer class="mt-15">
+      <v-row justify="center" class="mt-9 mb-9">
+        <v-col cols="2 mr-5">
+          <v-row justify="center "
+            ><p class="body-1 font-weight-bold blue--text">Về trang web</p>
+          </v-row>
+          <v-row justify="center"
+            ><p class="text-justify body-1">
+              Được xây dựng bằng VueJs và tạo ra từ chính công sức của tập thể.
+            </p></v-row
+          >
+        </v-col>
 
-                <v-card-text>
-                  <v-form ref="form" max-width="700px">
-                    <v-stepper v-model="e13" vertical>
-                      <v-stepper-step step="1" @click="e13 = 1">
-                        Thông tin bệnh nhân
-                      </v-stepper-step>
-
-                      <v-stepper-content step="1">
-                        <v-btn color="primary"> Chọn hồ sơ đã có </v-btn>
-                        <v-card color="white" class="mb-12" height="auto">
-                          <v-text-field
-                            label="Tên"
-                            v-model="appointment.profile.name"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Dân tộc"
-                            v-model="appointment.profile.folk"
-                          ></v-text-field>
-
-                          <p
-                            style="
-                              font-size: 17px;
-                              color: rgba(0, 0, 0, 0.87);
-                              width: auto;
-                            "
-                          >
-                            Giới tính
-                          </p>
-                          <v-radio-group
-                            v-model="appointment.profile.gender"
-                            row
-                          >
-                            <v-radio
-                              label="Nam"
-                              value="Nam"
-                              style="margin-left: 20px"
-                            ></v-radio>
-                            <v-radio label="Nữ" value="Nữ"></v-radio>
-                          </v-radio-group>
-
-                          <v-text-field
-                            label="Địa chỉ"
-                            v-model="appointment.profile.address"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Số điện thoại"
-                            v-model="appointment.profile.phoneNumber"
-                          ></v-text-field>
-
-                          <v-menu
-                            v-model="menu2"
-                            :close-on-content-click="false"
-                            :nudge-right="40"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-text-field
-                                v-model="appointment.profile.dob"
-                                label="Ngày sinh"
-                                prepend-icon="mdi-calendar"
-                                readonly
-                                v-bind="attrs"
-                                v-on="on"
-                              ></v-text-field>
-                            </template>
-                            <v-date-picker
-                              v-model="appointment.profile.dob"
-                              @input="menu2 = false"
-                            ></v-date-picker>
-                          </v-menu>
-
-                          <v-text-field
-                            label="Công việc hiện tại"
-                            v-model="appointment.profile.job"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="CMND"
-                            v-model="appointment.profile.identityCard"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="BHYT"
-                            v-model="appointment.profile.healthInsurance"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Người giám hộ"
-                            v-model="appointment.profile.protector"
-                          ></v-text-field>
-                        </v-card>
-
-                        <v-btn color="primary" @click="e13 = 2">
-                          Tiếp tục
-                        </v-btn>
-                      </v-stepper-content>
-
-                      <v-stepper-step step="2" @click="e13 = 2">
-                        Đặt lịch
-                      </v-stepper-step>
-
-                      <v-stepper-content step="2">
-                        <v-card color="white" class="mb-12" height="auto">
-                          <v-text-field
-                            label="Chọn khoa khám"
-                            v-model="appointment.doctor.specialty"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Chọn bác sĩ"
-                            v-model="appointment.doctor.name"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Chọn ngày khám"
-                            v-model="appointment.date"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Chọn thời gian"
-                            v-model="appointment.time"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Phòng"
-                            v-model="appointment.room"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Triệu chứng"
-                            v-model="appointment.symptom"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Mô tả chi tiết triệu chứng"
-                            v-model="appointment.description"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Thời gian diễn ra tình trạng trên"
-                            v-model="appointment.timeSituation"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Đã tự điều trị"
-                            v-model="appointment.selfTreatment"
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="File đính kèm"
-                            v-model="appointment.files"
-                          ></v-text-field>
-                        </v-card>
-                        <v-btn @click="e13 = 1"> Quay lại </v-btn>
-                        <v-btn color="primary" @click="e13 = 3">
-                          Tiếp tục
-                        </v-btn>
-                      </v-stepper-content>
-
-                      <v-stepper-step step="3" @click="e13 = 3">
-                        Xác nhận thông tin
-                      </v-stepper-step>
-
-                      <v-stepper-content step="3">
-                        <v-card color="white" class="mb-12" height="auto">
-                          <p style="text-align: center">
-                            <b>Thông tin bệnh nhân</b>
-                          </p>
-                          <v-text-field
-                            label="Họ và tên"
-                            v-model="appointment.profile.name"
-                            readonly
-                          ></v-text-field>
-                          <v-text-field
-                            label="Số điện thoại"
-                            v-model="appointment.profile.phoneNumber"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Ngày sinh"
-                            v-model="appointment.profile.dob"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="CMND"
-                            v-model="appointment.profile.identityCard"
-                            readonly
-                          ></v-text-field>
-
-                          <p style="text-align: center">
-                            <b>Thông tin khám</b>
-                          </p>
-                          <v-text-field
-                            label="Chuyên khoa"
-                            v-model="appointment.doctor.specialty"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Bác sĩ"
-                            v-model="appointment.doctor.name"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Ngày khám"
-                            v-model="appointment.date"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Thời gian"
-                            v-model="appointment.time"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Phòng"
-                            v-model="appointment.room"
-                            readonly
-                          ></v-text-field>
-
-                          <v-text-field
-                            label="Triệu chứng"
-                            v-model="appointment.symptom"
-                            readonly
-                          ></v-text-field>
-                        </v-card>
-                        <v-btn @click="e13 = 2"> Quay lại </v-btn>
-                      </v-stepper-content>
-                    </v-stepper>
-                    <br />
-                    <v-btn color="error" class="mr-4" @click="reset">
-                      Reset Form
-                    </v-btn>
-                  </v-form>
-                </v-card-text>
-
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="blue darken-1" text @click="closegetnew">
-                    Hủy
-                  </v-btn>
-                  <v-btn color="blue darken-1" text @click="save"> Lưu </v-btn>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-toolbar>
-        </template>
-        <template v-slot:[`item.actions`]="{ item }">
-          <v-icon small class="mr-2" @click="editItem(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon small @click="deleteItem(item)"> mdi-delete </v-icon>
-        </template>
-      </v-data-table>
-
-      <v-dialog v-model="dialogDelete" max-width="500px" persistent>
-        <v-form>
-          <v-card>
-            <v-card-title class="text-h5">
-              Bạn chắc chắn muốn xóa lịch hẹn? <br />
-            </v-card-title>
-            <v-row class="mb-6" no-gutters>
-              <v-col sm="6" md="5" lg="6">
-                <v-card-text>
-                  <v-text-field
-                    v-model="dlItem.profile.name"
-                    label="Họ và tên"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.profile.phoneNumber"
-                    label="Số điện thoại"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.profile.dob"
-                    label="Ngày sinh"
-                    readonly
-                  ></v-text-field>
-                </v-card-text>
-              </v-col>
-              <v-col sm="6" md="5" offset-md="2" lg="6" offset-lg="0">
-                <v-card-text>
-                  <v-text-field
-                    v-model="dlItem.doctor.name"
-                    label="Bác sĩ"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.doctor.specialty"
-                    label="Chuyên khoa"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.date"
-                    label="Ngày khám"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.time"
-                    label="Thời gian"
-                    readonly
-                  ></v-text-field>
-                  <v-text-field
-                    v-model="dlItem.room"
-                    label="Phòng"
-                    readonly
-                  ></v-text-field>
-                </v-card-text> </v-col
-            ></v-row>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeDelete">Hủy</v-btn>
-              <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                >Xóa</v-btn
-              >
-              <v-spacer></v-spacer>
-            </v-card-actions>
-          </v-card>
-        </v-form>
-      </v-dialog>
-
-      <v-dialog v-model="dialogedit" max-width="600px" persistent> </v-dialog>
-    </v-card>
-
-    {{ selected }}
+        <v-col cols="2">
+          <v-row justify="center"
+            ><p class="body-1 font-weight-bold blue--text">Ngôn ngữ sử dụng</p>
+          </v-row>
+          <v-row justify="center"><p class="text-justify body-1">Vue</p></v-row>
+          <v-row justify="center"
+            ><p class="text-justify body-1">HTML</p></v-row
+          >
+          <v-row justify="center"><p class="text-justify body-1">CSS</p></v-row>
+          <v-row justify="center"><p class="text-justify body-1">Js</p></v-row>
+        </v-col>
+        <v-col cols="2">
+          <v-row justify="center"
+            ><p class="body-1 font-weight-bold blue--text">Đối tượng sử dụng</p>
+          </v-row>
+          <v-row justify="center"
+            ><p class="text-justify body-1">Bệnh nhân</p></v-row
+          >
+          <v-row justify="center"
+            ><p class="text-justify body-1">Quản lí</p></v-row
+          >
+          <v-row justify="center"
+            ><p class="text-justify body-1">Bác sĩ</p></v-row
+          >
+          <v-row justify="center"
+            ><p class="text-justify body-1">Nhân viên</p></v-row
+          >
+        </v-col>
+        <v-col cols="2">
+          <v-row justify="center "
+            ><p class="body-1 font-weight-bold blue--text">Liên hệ</p>
+          </v-row>
+          <v-row justify="center"
+            ><p class="text-justify body-1">Email: t3@gmail.com</p></v-row
+          >
+          <v-row justify="center"
+            ><p class="text-justify body-1">SĐT: 0123456798</p></v-row
+          >
+          <v-row justify="center"
+            ><p class="text-justify body-1">
+              Địa chỉ: 22 abc Dĩ An Bình Dương
+            </p></v-row
+          >
+        </v-col>
+      </v-row>
+    </v-footer>
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    menu2: false,
-    nameTitle: "",
-    e13: 1,
-    search: "",
-    selected: [],
 
-    dialogNewAppointment: false,
-    dialogDelete: false,
-    dialogedit: false,
-    indexdl: null,
-    indexedit: null,
-    headers: [
+links:[
       {
-        text: "Tên",
-        align: "start",
-        sortable: false,
-        value: "profile.name",
+        label: "Trang chủ",
+        name: "home"
       },
-      { text: "Số điện thoại", value: "profile.phoneNumber", sortable: false },
-      { text: "Bác sĩ", value: "doctor.name", sortable: false },
-      { text: "Chuyên khoa", value: "doctor.specialty", sortable: false },
-      { text: "Ngày khám", value: "date", sortable: false },
-      { text: "Thời gian", value: "time", sortable: false },
-      { text: "Phòng", value: "room", sortable: false },
-      { text: "Công cụ", value: "actions", sortable: false },
-    ],
-    desserts: [
       {
-        id: 1,
-        stt: 1,
-        room: "201",
-        profile: {
-          id: 1,
-          profileNumber: 1,
-          name: "Nguyễn Ngọc Tân",
-          address: "20 Lương thạnh",
-          phoneNumber: "0123456798",
-          dob: "2000-06-18",
-          job: "SV",
-          identityCard: "123456789",
-          healthInsurance: "123456789",
-          folk: "Kinh",
-          gender: "Nam",
-          protector: "Bố Mỹ",
-        },
-        doctor: {
-          id: 1,
-          name: "Cao nhân",
-          specialty: "Khoa Nội",
-          level: "bla",
-        },
-        date: "2022-04-05",
-        time: "9:00-10:00",
-        symptom: "Đau bụng",
-        description: "Đau nhiều lần",
-        timeSituation: "1 tuần",
-        selfTreatment: "True",
-        files: [],
+        label: "Giới thiệu",
+        name: "Giới thiệu",
       },
-
+        {
+        label: "Quy trình",
+        name: "Quy trình",
+      },
       {
-        id: 2,
-        stt: 2,
-        room: "321",
-        profile: {
-          id: 2,
-          profileNumber: 2,
-          name: "Nguyễn thị nụ",
-          address: "20 quảng bình",
-          phoneNumber: "987654321",
-          dob: "2000-06-11",
-          job: "SV",
-          identityCard: "987654321",
-          healthInsurance: "987654312",
-          folk: "Kinh",
-          gender: "Nữ",
-          protector: "Lam",
-        },
-        doctor: {
-          id: 2,
-          name: "Cao Bá quát",
-          specialty: "Khoa Ngoại",
-          level: "bla",
-        },
-        date: "2022-03-07",
-        time: "10:00-11:00",
-        symptom: "Đau bụng",
-        description: "Đau nhiều lần",
-        timeSituation: "2 tuần",
-        selfTreatment: "True",
-        files: [],
+        label: "Dịch vụ",
+        name: "Dịch vụ",
       },
-    ],
-
-    editedItem: {
-      name: "",
-      chuyenkhoa: "",
-      phonenumber: "",
-      startdate: "",
-      email: "",
-    },
-    dlItem: {
-      id: null,
-      stt: null,
-      room: null,
-      profile: {
-        id: null,
-        profileNumber: null,
-        name: null,
-        address: null,
-        phoneNumber: null,
-        dob: null,
-        job: null,
-        identityCard: null,
-        healthInsurance: null,
-        folk: null,
-        gender: null,
-        protector: null,
+        {
+        label: "Liên hệ",
+        name: "Liên hệ",
       },
-      doctor: {
-        id: null,
-        name: null,
-        specialty: null,
-        level: null,
-      },
-      date: null,
-      time: null,
-      symptom: null,
-      description: null,
-      timeSituation: null,
-      selfTreatment: null,
-      files: [],
+],
+
+ methods: {
+    login() {
+      this.$router.push({ name: "Đăng nhập" });
     },
-    appointment: {
-      id: null,
-      stt: null,
-      room: null,
-      profile: {
-        id: null,
-        profileNumber: null,
-        name: null,
-        address: null,
-        phoneNumber: null,
-        dob: null,
-        job: null,
-        identityCard: null,
-        healthInsurance: null,
-        folk: null,
-        gender: null,
-        protector: null,
-      },
-      doctor: {
-        id: null,
-        name: null,
-        specialty: null,
-        level: null,
-      },
-      date: null,
-      time: null,
-      symptom: null,
-      description: null,
-      timeSituation: null,
-      selfTreatment: null,
-      files: [],
+    signup() {
+      this.$router.push({ name: "Đăng ký" });
     },
-  }),
-
-  watch: {},
-  created() {},
-  methods: {
-    editItem(item) {
-      this.nameTitle = "Chỉnh sửa lịch hẹn";
-      this.dialogNewAppointment = true;
-      this.indexedit = this.desserts.indexOf(item);
-      this.appointment.id = this.desserts[this.indexedit].id;
-      this.appointment.stt = this.desserts[this.indexedit].stt;
-      this.appointment.room = this.desserts[this.indexedit].room;
-
-      this.appointment.profile.id = this.desserts[this.indexedit].profile.id;
-      this.appointment.profile.profileNumber =
-        this.desserts[this.indexedit].profile.profileNumber;
-      this.appointment.profile.name =
-        this.desserts[this.indexedit].profile.name;
-      this.appointment.profile.address =
-        this.desserts[this.indexedit].profile.address;
-      this.appointment.profile.phoneNumber =
-        this.desserts[this.indexedit].profile.phoneNumber;
-      this.appointment.profile.dob = this.desserts[this.indexedit].profile.dob;
-      this.appointment.profile.job = this.desserts[this.indexedit].profile.job;
-      this.appointment.profile.identityCard =
-        this.desserts[this.indexedit].profile.identityCard;
-      this.appointment.profile.healthInsurance =
-        this.desserts[this.indexedit].profile.healthInsurance;
-      this.appointment.profile.folk =
-        this.desserts[this.indexedit].profile.folk;
-      this.appointment.profile.gender =
-        this.desserts[this.indexedit].profile.gender;
-      this.appointment.profile.protector =
-        this.desserts[this.indexedit].profile.protector;
-
-      this.appointment.doctor.id = this.desserts[this.indexedit].doctor.id;
-      this.appointment.doctor.name = this.desserts[this.indexedit].doctor.name;
-      this.appointment.doctor.specialty =
-        this.desserts[this.indexedit].doctor.specialty;
-      this.appointment.doctor.level =
-        this.desserts[this.indexedit].doctor.level;
-
-      this.appointment.date = this.desserts[this.indexedit].date;
-      this.appointment.time = this.desserts[this.indexedit].time;
-      this.appointment.symptom = this.desserts[this.indexedit].symptom;
-      this.appointment.description = this.desserts[this.indexedit].description;
-      this.appointment.timeSituation =
-        this.desserts[this.indexedit].timeSituation;
-      this.appointment.selfTreatment =
-        this.desserts[this.indexedit].selfTreatment;
-      this.appointment.files = this.desserts[this.indexedit].files;
+    getlink(index){
+   
+      this.$router.push({ name: this.card_list_2[index].name });
     },
-    deleteItem(item) {
-      this.dialogDelete = true;
-      this.indexdl = this.desserts.indexOf(item);
-
-      this.dlItem.id = this.desserts[this.indexdl].id;
-      this.dlItem.stt = this.desserts[this.indexdl].stt;
-      this.dlItem.room = this.desserts[this.indexdl].room;
-
-      this.dlItem.profile.id = this.desserts[this.indexdl].profile.id;
-      this.dlItem.profile.profileNumber =
-        this.desserts[this.indexdl].profile.profileNumber;
-      this.dlItem.profile.name = this.desserts[this.indexdl].profile.name;
-      this.dlItem.profile.address = this.desserts[this.indexdl].profile.address;
-      this.dlItem.profile.phoneNumber =
-        this.desserts[this.indexdl].profile.phoneNumber;
-      this.dlItem.profile.dob = this.desserts[this.indexdl].profile.dob;
-      this.dlItem.profile.job = this.desserts[this.indexdl].profile.job;
-      this.dlItem.profile.identityCard =
-        this.desserts[this.indexdl].profile.identityCard;
-      this.dlItem.profile.healthInsurance =
-        this.desserts[this.indexdl].profile.healthInsurance;
-      this.dlItem.profile.folk = this.desserts[this.indexdl].profile.folk;
-      this.dlItem.profile.gender = this.desserts[this.indexdl].profile.gender;
-      this.dlItem.profile.protector =
-        this.desserts[this.indexdl].profile.protector;
-
-      this.dlItem.doctor.id = this.desserts[this.indexdl].doctor.id;
-      this.dlItem.doctor.name = this.desserts[this.indexdl].doctor.name;
-      this.dlItem.doctor.specialty =
-        this.desserts[this.indexdl].doctor.specialty;
-      this.dlItem.doctor.level = this.desserts[this.indexdl].doctor.level;
-
-      this.dlItem.date = this.desserts[this.indexdl].date;
-      this.dlItem.time = this.desserts[this.indexdl].time;
-      this.dlItem.symptom = this.desserts[this.indexdl].symptom;
-      this.dlItem.description = this.desserts[this.indexdl].description;
-      this.dlItem.timeSituation = this.desserts[this.indexdl].timeSituation;
-      this.dlItem.selfTreatment = this.desserts[this.indexdl].selfTreatment;
-      this.dlItem.files = this.desserts[this.indexdl].files;
-    },
-    deleteItemConfirm() {},
-
-    closegetnew() {
-      this.$refs.form.reset();
-      this.dialogNewAppointment = false;
-    },
-    closeDelete() {
-      this.dialogDelete = false;
-    },
-    save() {},
-
-    reset() {
-      this.$refs.form.reset();
-    },
-    opennewApp() {
-      this.nameTitle = "Tạo lịch hẹn mới";
-      this.dialogNewAppointment = true;
-    },
+    getpage(name){
+       this.$router.push({ name: name });
+    }
   },
-};
-</script>
