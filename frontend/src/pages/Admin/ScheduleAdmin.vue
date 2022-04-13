@@ -156,7 +156,7 @@
                     </v-btn>
                   </v-card-actions>
                 </v-form>
-           {{schedule}}
+           {{schedule}} 
            <br>
             {{selected}}
            <br>
@@ -386,7 +386,7 @@ export default {
       
       this.dates = [];
       this.copydate = [];
-
+      this.desserts[0] = this.copydesserts[0];
       this.schedule = this.copydesserts[0];
       this.selected[0] = this.schedule;
 

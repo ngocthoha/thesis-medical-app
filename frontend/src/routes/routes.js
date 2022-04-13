@@ -34,6 +34,24 @@ import AccountAdmin from "@/pages/Admin/AccountAdmin.vue";
 
 //home page
 import Home from "@/pages/Home/home.vue";
+import Contact from "@/pages/Home/Contact.vue";
+import Introduce from "@/pages/Home/Introduce.vue";
+import Procedure from "@/pages/Home/Procedure.vue";
+import Service from "@/pages/Home/Service.vue";
+
+import AllSpecialist from "@/pages/Home/Specialist/AllSpecialist.vue";
+import ImageAnalysation from "@/pages/Home/Specialist/ImageAnalysation.vue"; // hình ảnh
+import Cardiology from "@/pages/Home/Specialist/Cardiology.vue"; //tim mạch
+import EarNoseThroat from "@/pages/Home/Specialist/EarNoseThroat.vue"; // tai mũi họng
+import EndoscopyDepartment from "@/pages/Home/Specialist/EndoscopyDepartment.vue"; // nội soi
+import Gastroenterology from "@/pages/Home/Specialist/Gastroenterology.vue"; // tiêu hóa
+import MusclesBonesJoints from "@/pages/Home/Specialist/MusclesBonesJoints.vue"; // cơ xương khớp
+import Obstetric from "@/pages/Home/Specialist/Obstetric.vue"; // sản
+import Pediatrics from "@/pages/Home/Specialist/Pediatrics.vue"; // nhi
+import PsychiatryDepartment from "@/pages/Home/Specialist/PsychiatryDepartment.vue"; // tâm thần
+import RespiratoryMedicine from "@/pages/Home/Specialist/RespiratoryMedicine.vue"; // hô hấp
+import TestLaboratory from "@/pages/Home/Specialist/TestLaboratory.vue"; // xét nghiệm
+import Surgery from "@/pages/Home/Specialist/Surgery.vue"; //ngoại khoa
 
 let authPage = {
   path: "/login",
@@ -174,7 +192,96 @@ const routes = [
         component: ViewAppointment,
       },
     ],
+    
+
   },
+  {
+    path: "/specialist",
+    name: "Tất cả chuyên khoa",
+    component: AllSpecialist,
+  },
+  {
+    path: "/specialist/image-analysation",
+    name: "Chẩn đoán hình ảnh",
+    component: ImageAnalysation,
+  },
+  {
+    path: "/specialist/Cardiology",
+    name: "Tim mạch",
+    component: Cardiology,
+  },
+  {
+    path: "/specialist/EarNoseThroat",
+    name: "Tai - Mũi - Họng",
+    component: EarNoseThroat,
+  },
+  {
+    path: "/specialist/EndoscopyDepartment",
+    name: "Nội soi",
+    component: EndoscopyDepartment,
+  },
+  {
+    path: "/specialist/Gastroenterology",
+    name: "Tiêu hóa gan mật",
+    component: Gastroenterology,
+  },
+  {
+    path: "/specialist/MusclesBonesJoints",
+    name: "Cơ - Xương - Khớp",
+    component: MusclesBonesJoints,
+  },
+  {
+    path: "/specialist/Obstetric",
+    name: "Sản - Phụ khoa",
+    component: Obstetric,
+  },
+  {
+    path: "/specialist/Pediatrics",
+    name: "Nhi khoa",
+    component: Pediatrics,
+  },
+  {
+    path: "/specialist/PsychiatryDepartment",
+    name: "Tâm thần kinh",
+    component: PsychiatryDepartment,
+  },
+  {
+    path: "/specialist/RespiratoryMedicine",
+    name: "Hô hấp và miễn dịch dị ứng lâm sàng",
+    component: RespiratoryMedicine,
+  },
+  {
+    path: "/specialist/TestLaboratory",
+    name: "Xét nghiệm",
+    component: TestLaboratory,
+  },
+  {
+    path: "/specialist/Surgery",
+    name: "Khoa ngoại",
+    component: Surgery,
+  },
+
+  {
+    path: "/introduce",
+    name: "Giới thiệu",
+    component: Introduce,
+  },
+  {
+    path: "/contact",
+    name: "Liên hệ",
+    component: Contact,
+  },
+  {
+    path: "/procedure",
+    name: "Quy trình",
+    component: Procedure,
+  },
+  {
+    path: "/service",
+    name: "Dịch vụ",
+    component: Service,
+  },
+  
 ];
 
 export default routes;
