@@ -13,10 +13,9 @@ const mutations = {
 const actions = {
   profile_list({ commit }, params) {
     return service.profile_list(params).then(({ data }) => {
-      if(data.code == 1){
+      if (data.code == 1) {
         commit("SET_PROFILE_LIST", data.results);
-      }
-      else{
+      } else {
         console.log("error");
       }
     });

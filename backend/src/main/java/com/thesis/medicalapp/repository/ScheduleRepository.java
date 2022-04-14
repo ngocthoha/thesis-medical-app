@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public interface ScheduleRepository extends JpaRepository<Schedule, Integer> {
+public interface ScheduleRepository extends JpaRepository<Schedule, String> {
     List<Schedule> findAllByDate(Date date);
     List<Schedule> findAllByDoctor(Doctor doctor);
     Schedule findByDateAndDoctor(Date data, Doctor doctor);
+    Optional<Schedule> findScheduleById(String id);
 }

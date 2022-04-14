@@ -50,7 +50,7 @@ public class RecordController {
             @RequestParam(name = "partsInspection", required = false) String partsInspection,
             @RequestParam(name = "hospitalize", required = false) Boolean hospitalize,
             @RequestParam(name = "facultyTreatment", required = false) String facultyTreatment,
-            @RequestPart(name = "medicines") Medicine[] medicines,
+            @RequestPart(name = "medicines", required = false) String medicines,
             @RequestParam(name = "notes", required = false) String notes,
             @RequestParam(name = "reExaminationDate", required = false) String reExaminationDate,
             @RequestParam(name = "files", required = false) MultipartFile[] files
@@ -76,7 +76,9 @@ public class RecordController {
             record.setFacultyTreatment(facultyTreatment);
             record.setMedicines(new ArrayList<>());
             if (null != medicines) {
-                Arrays.asList(medicines).stream().forEach(m -> {
+                ObjectMapper mapper = new ObjectMapper();
+                Medicine[] medicinesMapper = mapper.readValue(medicines, Medicine[].class);
+                Arrays.asList(medicinesMapper).stream().forEach(m -> {
                     Medicine medicine = medicineService.saveMedicine(m);
                     record.getMedicines().add(medicine);
                 });

@@ -156,13 +156,13 @@
                     </v-btn>
                   </v-card-actions>
                 </v-form>
-           {{schedule}} 
-           <br>
-            {{selected}}
-           <br>
-           {{desserts[0]}}
-           <br>
-           {{copydesserts[0]}}
+                {{ schedule }}
+                <br />
+                {{ selected }}
+                <br />
+                {{ desserts[0] }}
+                <br />
+                {{ copydesserts[0] }}
               </v-card>
             </v-dialog>
           </v-toolbar>
@@ -223,7 +223,6 @@ export default {
     nameTitle: "",
     dem: 0,
     indexUnselected: 0,
-
 
     search: "",
     selected: [],
@@ -309,7 +308,7 @@ export default {
       },
     ],
 
-        copydesserts: [
+    copydesserts: [
       {
         idschedule: "1",
         schedules: [
@@ -352,12 +351,9 @@ export default {
       },
     ],
 
-   
-
     schedule: {
       idschedule: null,
-      schedules: [
-      ],
+      schedules: [],
 
       doctor: {
         name: null,
@@ -370,7 +366,6 @@ export default {
   created() {},
   methods: {
     editItem() {
-      
       this.nameTitle = "Chỉnh sửa lịch trình";
       this.schedule = this.selected[0];
       for (let i = 0; i < this.schedule.schedules.length; i++) {
@@ -383,16 +378,13 @@ export default {
     deleteItemConfirm() {},
 
     closegetnew() {
-      
       this.dates = [];
       this.copydate = [];
       this.desserts[0] = this.copydesserts[0];
       this.schedule = this.copydesserts[0];
       this.selected[0] = this.schedule;
 
-    
       this.dialogNewrecord = false;
-  
     },
     closeDelete() {
       this.dialogDelete = false;
@@ -404,7 +396,6 @@ export default {
       this.dates = [];
       this.copydate = [];
       this.dialogNewrecord = true;
-
     },
     newdate() {
       if (this.dates.length > this.copydate.length) {
@@ -412,7 +403,7 @@ export default {
           date: this.dates[this.dates.length - 1],
           times: [],
           room: null,
-        });     
+        });
         this.copydate = this.dates;
       } else {
         for (let i = 0; i < this.copydate.length; i++) {
@@ -434,4 +425,3 @@ export default {
   },
 };
 </script>
-

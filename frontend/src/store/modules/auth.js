@@ -20,8 +20,8 @@ const actions = {
       if (data.access_token != null && data.access_token != "") {
         commit("SET_TOKEN", data.access_token);
         commit("SET_TYPE", data.type);
-  // get the decoded payload and header
-      //var decoded = jwt.decode(token, {complete: true});;
+        // get the decoded payload and header
+        //var decoded = jwt.decode(token, {complete: true});;
         console.log("login success");
       } else {
         console.log("fail success");
