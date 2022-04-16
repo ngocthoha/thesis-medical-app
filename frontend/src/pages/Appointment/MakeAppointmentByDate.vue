@@ -185,7 +185,7 @@
     >
       <SelectDate ref="dateSelect"></SelectDate>
       <div class="btns-selectdate">
-        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success back-button" @click="backToProfile">Quay lại</md-button>
         <md-button
           class="md-round md-success continue-button"
           @click="SelectDateComplete"
@@ -199,7 +199,7 @@
     >
       <SelectOPD ref="OPDSelect"> </SelectOPD>
       <div class="btns-selectdate">
-        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success back-button" @click="backToDate">Quay lại</md-button>
         <md-button
           class="md-round md-success continue-button"
           @click="SelectOPDComplete"
@@ -217,7 +217,7 @@
         :listDoctor="listDoctor"
       ></SelectDoctor>
       <div class="btns-selectdate">
-        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success back-button" @click="backToOPD">Quay lại</md-button>
         <md-button
           class="md-round md-success continue-button"
           @click="SelectDoctorComplete"
@@ -353,7 +353,7 @@
         </div>
       </div>
       <div class="btns-verify">
-        <md-button class="md-round md-success back-button">Quay lại</md-button>
+        <md-button class="md-round md-success back-button" @click="backToDoctor">Quay lại</md-button>
         <md-button
           class="md-round md-success continue-button"
           @click="create_appointment"
@@ -361,6 +361,31 @@
         >
       </div>
     </v-card>
+    <v-col cols="auto">
+      <v-dialog
+        transition="dialog-top-transition"
+        max-width="600"
+        v-model="dialog2"
+      >
+        <template>
+          <v-card>
+            <v-toolbar
+              color="primary"
+              dark
+            > <v-row justify="center">Đặt lịch thành công</v-row></v-toolbar>
+            <v-card-text>
+              <div class="text-h2 pa-12"><v-row justify="center">STT: 1</v-row></div>
+            </v-card-text>
+            <v-card-actions class="justify-end">
+              <v-btn
+                text
+                @click="gotoViewAppointment"
+              >Đóng</v-btn>
+            </v-card-actions>
+          </v-card>
+        </template>
+      </v-dialog>
+    </v-col>
   </div>
 </template>
 
@@ -381,6 +406,8 @@ export default {
   data() {
     return {
       dialog: false,
+      dialog2: false,
+
       menu2: false,
 
       visible_navigation: {
@@ -476,11 +503,23 @@ export default {
       this.step.step1 = true;
     },
 
+    backToProfile(){
+      this.visible_navigation.visible_selectprofile = true;
+      this.visible_navigation.visible_selectdate = false;
+      this.step.step1 = false;
+    },
+
     SelectDateComplete() {
       this.visible_navigation.visible_selectdate = false;
       this.visible_navigation.visible_selectopd = true;
       this.dateSelection = this.$refs.dateSelect.date;
       this.step.step2 = true;
+    },
+
+    backToDate(){
+      this.visible_navigation.visible_selectdate = true;
+      this.visible_navigation.visible_selectopd = false;
+      this.step.step2 = false;
     },
 
     SelectOPDComplete() {
@@ -492,11 +531,24 @@ export default {
       this.getDoctorList();
     },
 
+    backToOPD(){
+      this.visible_navigation.visible_selectopd = true;
+      this.visible_navigation.visible_selectdoctor = false;
+      this.step.step3 = false;
+    },
+
     SelectDoctorComplete() {
       this.visible_navigation.visible_selectdoctor = false;
       this.visible_navigation.visible_verify = true;
       this.doctorSelection = this.$refs.doctorSelect.doctorSelection;
       this.step.step4 = true;
+    },
+
+    backToDoctor(){
+      this.visible_navigation.visible_selectdoctor = true;
+      this.visible_navigation.visible_verify = false;
+      //this.doctorSelection = this.$refs.doctorSelect.doctorSelection;
+      this.step.step4 = false;
     },
 
     SetPatientInfo(patient_select) {
@@ -574,7 +626,14 @@ export default {
         data: appointment_form_data,
       };
       await this.$store.dispatch("appointment/createAppointment", params);
+
+      this.dialog2 = true;
     },
+
+    gotoViewAppointment(){
+       this.dialog2 = false;
+       this.$router.push({ name: "Lịch sử đặt khám" });
+    }
   },
 };
 </script>
