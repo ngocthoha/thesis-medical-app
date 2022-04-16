@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-       <v-footer color="#DCF5FF" height="auto" :padless="padless" class="mb-10">
+    <v-footer color="#DCF5FF" height="auto" :padless="padless" class="mb-10">
       <v-col cols="3">icon</v-col>
       <v-col cols="5">
         <v-row justify="center" no-gutters>
@@ -58,7 +58,7 @@
             <img :src="image_card.image" alt="" />
           </v-avatar>
         </v-row>
-        <br>
+        <br />
         <v-row justify="center" class="mt-2">
           <strong
             class="font-weight-regular ml-2"
@@ -69,7 +69,7 @@
       </v-card>
     </v-row>
 
-        <v-footer class="mt-15">
+    <v-footer class="mt-15">
       <v-row justify="center" class="mt-9 mb-9">
         <v-col cols="2 mr-5">
           <v-row justify="center "
@@ -134,16 +134,16 @@
 <script>
 export default {
   data: () => ({
-    links:[
+    links: [
       {
         label: "Trang chủ",
-        name: "home"
+        name: "home",
       },
       {
         label: "Giới thiệu",
         name: "Giới thiệu",
       },
-        {
+      {
         label: "Quy trình",
         name: "Quy trình",
       },
@@ -151,11 +151,11 @@ export default {
         label: "Dịch vụ",
         name: "Dịch vụ",
       },
-        {
+      {
         label: "Liên hệ",
         name: "Liên hệ",
       },
-],
+    ],
     card_list_2: [
       {
         image: require("@/assets/img/home/home_icon1.png"),
@@ -219,20 +219,19 @@ export default {
       },
     ],
   }),
- methods: {
+  methods: {
     login() {
       this.$router.push({ name: "Đăng nhập" });
     },
     signup() {
       this.$router.push({ name: "Đăng ký" });
     },
-    getlink(index){
-   
+    getlink(index) {
       this.$router.push({ name: this.card_list_2[index].name });
     },
-    getpage(name){
-       this.$router.push({ name: name });
-    }
-},
+    getpage(name) {
+      this.$router.push({ name: name });
+    },
+  },
 };
 </script>

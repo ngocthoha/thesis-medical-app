@@ -190,21 +190,21 @@ export default {
       { text: "Link", value: "link", sortable: false },
     ],
     desserts: [
-    //   {
-    //     id: 1,
-    //     name: "H2",
-    //     link: "https://meet.google.com/yuy-wjaa-rcq",
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "H3",
-    //     link: "https://meet.google.com/syw-prhp-umr",
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "H4",
-    //     link: "https://meet.google.com/cdh-bbxe-hsb",
-    //   },
+      //   {
+      //     id: 1,
+      //     name: "H2",
+      //     link: "https://meet.google.com/yuy-wjaa-rcq",
+      //   },
+      //   {
+      //     id: 2,
+      //     name: "H3",
+      //     link: "https://meet.google.com/syw-prhp-umr",
+      //   },
+      //   {
+      //     id: 3,
+      //     name: "H4",
+      //     link: "https://meet.google.com/cdh-bbxe-hsb",
+      //   },
     ],
 
     editedItem: {
@@ -247,20 +247,20 @@ export default {
       this.$refs.form.reset();
       this.getrooms();
     },
- 
+
     async getrooms() {
       const params = {
         token: this.$store.getters["auth/access_token"],
       };
       await this.$store.dispatch("rooms/get_room", params);
-        this.desserts = this.$store.getters["rooms/list_rooms"];
-        console.log(this.desserts)
+      this.desserts = this.$store.getters["rooms/list_rooms"];
+      console.log(this.desserts);
     },
-       saveedit() {},
+    saveedit() {},
   },
   //Cần lấy trước khi lên vỉew
-  created(){
-      this.getrooms();
-  }
+  created() {
+    this.getrooms();
+  },
 };
 </script>

@@ -3,10 +3,10 @@
     <p class="text-center display-1 font-weight-bold blue--text mt-6">
       Về chúng tôi
     </p>
-    <p class="text-center title  mb-3 gray--text">
+    <p class="text-center title mb-3 gray--text">
       Với tâm huyết nâng cao chất lượng khám chữa bệnh và tạo điều kiện thuận
-      lợi cho người dân ngày càng tiếp cận dễ dàng hơn <br> các dịch vụ y tế chất
-      lượng cao và hiện đại.
+      lợi cho người dân ngày càng tiếp cận dễ dàng hơn <br />
+      các dịch vụ y tế chất lượng cao và hiện đại.
     </p>
     <br />
     <br />
@@ -36,15 +36,17 @@
       Tầm nhìn - Sứ mệnh
     </p>
 
-    <v-parallax
-      dark
-      height="500"
-      src="@/assets/img/home/background.jpg"
-    >
+    <v-parallax dark height="500" src="@/assets/img/home/background.jpg">
       <v-row align="center" justify="center">
         <v-col class="text-center" cols="12">
-          <p class="title black--text font-weight-bold">Trở thành phòng khám đa khoa chất lượng cao dẫn đầu Việt Nam và đạt chuẩn quốc tế.</p>
-           <p class="title black--text font-weight-bold">Xây dựng một mô hình chuẩn mực phòng khám đa khoa cung cấp dịch  vụ khám bệnh, <br>chữa bệnh chất lượng cao làm hài lòng người bệnh.</p>
+          <p class="title black--text font-weight-bold">
+            Trở thành phòng khám đa khoa chất lượng cao dẫn đầu Việt Nam và đạt
+            chuẩn quốc tế.
+          </p>
+          <p class="title black--text font-weight-bold">
+            Xây dựng một mô hình chuẩn mực phòng khám đa khoa cung cấp dịch vụ
+            khám bệnh, <br />chữa bệnh chất lượng cao làm hài lòng người bệnh.
+          </p>
         </v-col>
       </v-row>
     </v-parallax>

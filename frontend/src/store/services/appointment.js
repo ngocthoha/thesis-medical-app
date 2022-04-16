@@ -64,5 +64,5 @@ export default {
   getDoctorList_byDateAndSpeciality,
   createAppointment,
   getAppointment_byDate_Doctor,
-  getAppointment_byProfileId
+  getAppointment_byProfileId,
 };

@@ -195,33 +195,31 @@
               <strong>Danh sách bác sĩ</strong>
             </v-col>
           </v-footer>
-           <v-col
-            v-for="(doctor, index) in listDoctor"
-            :key="index"
-            cols="12"
-          >
+          <v-col v-for="(doctor, index) in listDoctor" :key="index" cols="12">
             <v-row class="my-1" justify="center" width="100%"
               ><v-card width="80%" class="pa-4"
                 ><v-row width="100%"
                   ><v-col class="pa-2" cols="5">
                     <strong>Tên Bác Sĩ: {{ doctor.doctor.name }}</strong></v-col
                   ><v-col class="pa-2" cols="5">
-                   <strong>Chuyên khoa: {{ doctor.doctor.specialty }}</strong></v-col
+                    <strong
+                      >Chuyên khoa: {{ doctor.doctor.specialty }}</strong
+                    ></v-col
                   >
                   <v-col class="pa-2" cols="2">
                     <v-btn
                       class="mx-2"
-                    
                       dark
                       small
                       color="green lighten-1"
                       @click="setSelectDoctor(doctor)"
-                    >Chọn
+                      >Chọn
                     </v-btn></v-col
                   ></v-row
                 ></v-card
               ></v-row
-            ></v-col>
+            ></v-col
+          >
           <!-- <v-row justify="center">
             <v-col cols="8">
               <v-row justify="center">
@@ -269,9 +267,7 @@
             </v-col>
             <div class="content">{{ this.doctorSelection }}</div></v-row
           > -->
-
         </v-card>
-        
       </v-col>
       <v-col cols="4"
         ><v-card width="100%" min-height="400">
@@ -294,14 +290,14 @@
             label="Solo field"
             solo
           ></v-select>
-          <v-text-field
-                        
-                        label="Nhập tên bác sĩ"
-                        required
-                      ></v-text-field>
-          
+          <v-text-field label="Nhập tên bác sĩ" required></v-text-field>
+
           <v-row class="mt-5" justify="center"
-            ><v-btn class="white--text" color="green lighten-1" @click="getDoctorList">
+            ><v-btn
+              class="white--text"
+              color="green lighten-1"
+              @click="getDoctorList"
+            >
               Tìm kiếm
             </v-btn></v-row
           >
@@ -357,8 +353,8 @@ export default {
         {
           id: 3,
           date: "16",
-           room: {
-            name: "H2 á"
+          room: {
+            name: "H2 á",
           },
           times: ["10-11", "11-12"],
           doctor: {
@@ -372,7 +368,7 @@ export default {
           id: 3,
           date: "16",
           room: {
-            name: "H2 á"
+            name: "H2 á",
           },
           times: ["10-11", "11-12"],
           doctor: {
@@ -386,7 +382,7 @@ export default {
           id: 3,
           date: "16",
           room: {
-            name: "H2 á"
+            name: "H2 á",
           },
           times: ["10-11", "11-12"],
           doctor: {
@@ -399,7 +395,6 @@ export default {
       ],
 
       doctorSelection: null,
-
     };
   },
 
@@ -448,12 +443,12 @@ export default {
     },
 
     setSelectDoctor(doctor) {
-      this.doctorSelection = doctor; 
+      this.doctorSelection = doctor;
     },
 
-    async getDoctorList(){
-      console.log("yeah")
-    }
+    async getDoctorList() {
+      console.log("yeah");
+    },
   },
 };
 </script>
