@@ -159,7 +159,7 @@ const routes = [
       },
       {
         path: "admin/doctor-admin",
-        name: "Bác sĩ",
+        name: "Tạo tài khoản bác sĩ",
         component: DoctorAdmin,
       },
       {
