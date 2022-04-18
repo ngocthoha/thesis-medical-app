@@ -1,7 +1,7 @@
 <template>
 <v-app>
   <div class="content">
-    <v-footer color="#DCF5FF" height="auto" :padless="padless">
+    <!-- <v-footer color="#DCF5FF" height="auto" :padless="padless">
       <v-col cols="3">icon</v-col>
       <v-col cols="5">
         <v-row justify="center" no-gutters>
@@ -37,7 +37,7 @@
           </v-btn>
         </v-row></v-col
       >
-    </v-footer>
+    </v-footer> -->
 
     
     <v-footer color="#DCF5FF" height="500px" :padless="padless">
