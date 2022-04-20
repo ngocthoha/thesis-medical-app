@@ -1,7 +1,7 @@
 <template>
 <v-app>
   <div class="content">
-    <v-footer color="#DCF5FF" height="auto" :padless="padless">
+    <!-- <v-footer color="#DCF5FF" height="auto" :padless="padless">
       <v-col cols="3">icon</v-col>
       <v-col cols="5">
         <v-row justify="center" no-gutters>
@@ -37,7 +37,7 @@
           </v-btn>
         </v-row></v-col
       >
-    </v-footer>
+    </v-footer> -->
 
     
     <v-footer color="#DCF5FF" height="500px" :padless="padless">
@@ -120,7 +120,7 @@
         >
       </v-col>
     </v-footer>
-    <v-footer color="white" height="auto" :padless="padless">
+    <v-footer color="#FFFFFF" height="auto" :padless="padless">
       <v-col cols="12">
         <v-row justify="center" class="mt-8 mb-4"
           ><strong
@@ -141,7 +141,7 @@
         ></v-col
       >
       <v-col cols="12">
-        <v-carousel height="200" class="mb-8">
+        <v-carousel height="200" class="mb-8" hide-delimiters show-arrows-on-hover>
           <template v-for="(item, index) in card_list_2">
             <v-carousel-item 
               v-if="(index + 1) % columns === 1 || columns === 1"

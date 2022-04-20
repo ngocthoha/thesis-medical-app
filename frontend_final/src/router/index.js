@@ -18,7 +18,7 @@ const router = new Router({
 
   routes: [
     //Home Pages
-    route("Trang chủ", { default: "home/home" }, "/"),
+    layout("Home", [route("Trang chủ", { default: "home/home" }, "/")]),
 
     //DashBoard Pages
     layout("Default", [
@@ -88,7 +88,73 @@ const router = new Router({
 
     //Auth Pages
     route("Đăng nhập", { default: "auth/Login" }, "/login"),
-    route("Đăng ký", { default: "auth/Signup" }, "/signup")
+    route("Đăng ký", { default: "auth/Signup" }, "/signup"),
+
+    //UserPages
+    // layout(
+    //   "Home",
+    //   [
+    //     layout(
+    //       "User",
+    //       [route("Đặt lịch hẹn", { default: "user/CreateAppointment" }, "add")],
+    //       "user"
+    //     )
+    //   ],
+    //   "home"
+    // )
+    layout(
+      "Home",
+      [
+        layout(
+          "User",
+          [
+            route(
+              "Đặt lịch khám theo ngày",
+              { default: "user/CreateAppointment" },
+              "create-appointment"
+            ),
+            route(
+              "Xem lịch sử cuộc hẹn",
+              { default: "user/ViewAppointment" },
+              "view-appointment"
+            )
+          ],
+          "user"
+        )
+      ],
+      "/home"
+    )
+
+    // {
+    //   path: "/home",
+    //   component: () =>
+    //     import(
+    //       /* webpackChunkName: "layout-[request]" */
+    //       `@/layouts/home/Index`
+    //     ),
+    //   children: [
+    //     {
+    //       path: "user",
+    //       component: () =>
+    //         import(
+    //           /* webpackChunkName: "layout-[request]" */
+    //           `@/layouts/user/Index`
+    //         ),
+    //       children: [
+    //         //{ path: '', redirect: { name: 'posts' } },
+    //         {
+    //           path: "add",
+    //           name: "Tạo lịch hẹn",
+    //           component: () =>
+    //             import(
+    //               /* webpackChunkName: "views-[request]" */
+    //               `@/views/user/CreateAppointment`
+    //             )
+    //         }
+    //       ]
+    //     }
+    //   ]
+    // }
   ]
 });
 
