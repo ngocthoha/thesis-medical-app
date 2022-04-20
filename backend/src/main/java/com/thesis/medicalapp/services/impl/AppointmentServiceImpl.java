@@ -1,6 +1,7 @@
 package com.thesis.medicalapp.services.impl;
 
 import com.thesis.medicalapp.models.*;
+import com.thesis.medicalapp.payload.response.AppointmentsByDateAndDoctor;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.DoctorRepository;
@@ -38,6 +39,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .stream()
                 .collect(Collectors.toList());
         List<AppointmentDTO> appointmentDTOS = appointments.stream().map(a -> {
+            System.out.println(a);
             AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
             return appointmentDTO;
         }).collect(Collectors.toList());
@@ -76,6 +78,7 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .stream()
                 .collect(Collectors.toList());
         List<AppointmentDTO> appointmentDTOS = appointments.stream().map(a -> {
+            System.out.println(a);
             AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
             return appointmentDTO;
         }).collect(Collectors.toList());
@@ -97,10 +100,4 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment findAppointmentById(String id) {
         return appointmentRepository.findAppointmentById(id);
     }
-}
-@Data
-@AllArgsConstructor
-class AppointmentsByDateAndDoctor {
-    private String time;
-    private List<AppointmentDTO> appointments;
 }

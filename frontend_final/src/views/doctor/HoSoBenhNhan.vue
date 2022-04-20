@@ -15,11 +15,11 @@
         ></v-text-field>
         <v-spacer></v-spacer>
         <v-btn class="mr-2" color="primary" tile
-          ><v-icon right dark class="mr-1"> add_circle_outline </v-icon>Tạo bệnh
-          án</v-btn
+          ><v-icon right dark class="mr-1"> mdi-plus-circle-outline </v-icon>Tạo
+          bệnh án</v-btn
         >
         <v-btn color="primary" tile
-          ><v-icon right dark class="mr-1"> edit </v-icon>Chỉnh sửa</v-btn
+          ><v-icon right dark class="mr-1"> mdi-pencil </v-icon>Chỉnh sửa</v-btn
         >
       </v-row>
       <v-row class="mt-3">
@@ -32,15 +32,19 @@
           :items-per-page="5"
           class="elevation-1"
           style="flex-basis: 100%"
+          :search="search"
         ></v-data-table>
       </v-row>
     </div>
   </div>
 </template>
 <script>
+import axios from "axios";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data() {
     return {
+      search: "",
       selected: [],
       headers: [
         {
@@ -135,8 +139,39 @@ export default {
           protein: 7,
           iron: "6%"
         }
-      ]
+      ],
+      record: {},
+      initialRecord: {
+        pathological: undefined,
+        personalMedicalHistory: undefined,
+        familyMedicalHistory: undefined,
+        bodyInspection: undefined,
+        bloodVessel: undefined,
+        temperature: undefined,
+        bloodPressure: undefined,
+        heartbeat: undefined,
+        summary: undefined,
+        partsInspection: undefined,
+        hospitalize: undefined,
+        facultyTreatment: undefined,
+        medicines: [],
+        notes: undefined,
+        reExaminationDate: undefined,
+        files: []
+      }
     };
+  },
+  created() {
+    this.getRecord();
+  },
+  methods: {
+    async getRecord() {
+      const token = this.$store.getters["auth/access_token"];
+      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
+      await axios.get(`${url}/api/doctor/schedules/date`).then(res => {
+        this.record = res.data.results;
+      });
+    }
   }
 };
 </script>

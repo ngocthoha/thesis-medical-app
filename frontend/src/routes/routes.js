@@ -198,8 +198,6 @@ const routes = [
         component: ViewAppointment,
       },
     ],
-    
-
   },
   {
     path: "/specialist",
@@ -287,7 +285,6 @@ const routes = [
     name: "Dịch vụ",
     component: Service,
   },
-  
 ];
 
 export default routes;

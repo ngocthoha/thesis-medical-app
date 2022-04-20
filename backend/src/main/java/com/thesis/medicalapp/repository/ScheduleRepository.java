@@ -15,4 +15,5 @@ public interface ScheduleRepository extends JpaRepository<Schedule, String> {
     List<Schedule> findAllByDoctor(Doctor doctor);
     Schedule findByDateAndDoctor(Date data, Doctor doctor);
     Optional<Schedule> findScheduleById(String id);
+    List<Schedule> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd, Doctor doctor);
 }

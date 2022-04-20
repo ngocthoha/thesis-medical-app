@@ -25,19 +25,15 @@
 
       <div class="doctor" v-show="doctor_type">
         <sidebar-link to="/home/doctor/doctor-schedule">
-          <md-icon>person</md-icon>
-          <p>Lịch trình của bác sĩ</p>
+          <md-icon>calendar_month</md-icon>
+          <p>Lịch trình</p>
         </sidebar-link>
         <sidebar-link to="/home/doctor/doctor-record">
-          <md-icon>person</md-icon>
-          <p>Hồ Sơ bệnh án</p>
-        </sidebar-link>
-        <sidebar-link to="/home/doctor/doctor-profile">
-          <md-icon>person</md-icon>
-          <p>Trang cá nhân</p>
+          <md-icon>note_add</md-icon>
+          <p>Bệnh án</p>
         </sidebar-link>
         <sidebar-link to="/home/doctor/doctor-notification">
-          <md-icon>person</md-icon>
+          <md-icon>send</md-icon>
           <p>Thông báo</p>
         </sidebar-link>
         <sidebar-link to="/home/doctor/doctor-healingprocess">

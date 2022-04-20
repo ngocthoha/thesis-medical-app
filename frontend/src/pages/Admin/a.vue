@@ -101,42 +101,10 @@
   </div>
 </template>
 
-
-links:[
-      {
-        label: "Trang chủ",
-        name: "home"
-      },
-      {
-        label: "Giới thiệu",
-        name: "Giới thiệu",
-      },
-        {
-        label: "Quy trình",
-        name: "Quy trình",
-      },
-      {
-        label: "Dịch vụ",
-        name: "Dịch vụ",
-      },
-        {
-        label: "Liên hệ",
-        name: "Liên hệ",
-      },
-],
-
- methods: {
-    login() {
-      this.$router.push({ name: "Đăng nhập" });
-    },
-    signup() {
-      this.$router.push({ name: "Đăng ký" });
-    },
-    getlink(index){
-   
-      this.$router.push({ name: this.card_list_2[index].name });
-    },
-    getpage(name){
-       this.$router.push({ name: name });
-    }
-  },
+links:[ { label: "Trang chủ", name: "home" }, { label: "Giới thiệu", name: "Giới
+thiệu", }, { label: "Quy trình", name: "Quy trình", }, { label: "Dịch vụ", name:
+"Dịch vụ", }, { label: "Liên hệ", name: "Liên hệ", }, ], methods: { login() {
+this.$router.push({ name: "Đăng nhập" }); }, signup() { this.$router.push({
+name: "Đăng ký" }); }, getlink(index){ this.$router.push({ name:
+this.card_list_2[index].name }); }, getpage(name){ this.$router.push({ name:
+name }); } },

@@ -96,6 +96,7 @@ public class AppointmentController {
     public ResponseEntity<ApiResponse> getAppointmentByProfileId(@RequestParam("profileId") String profileId) {
         try {
             List<AppointmentDTO> appointmentDTOS = appointmentService.getAppointmentByProfileId(profileId);
+            System.out.println("get appointmet by profile");
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ApiResponse<>(1, "Success", appointmentDTOS)
             );
