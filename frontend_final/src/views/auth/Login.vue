@@ -90,6 +90,21 @@ export default {
 
   methods: {
     async submit() {
+      //check login dev
+      if (process.env.VUE_APP_LOGIN_DEV === "TRUE") {
+        var typedev = process.env.VUE_APP_ROLE_DEV;
+        if (typedev === "ROLE_USER") {
+          this.$router.push({ name: "Đặt lịch khám theo ngày" });
+        }
+        if (typedev === "ROLE_DOCTOR") {
+          this.$router.push({ name: "Lịch trình" });
+        }
+        if (typedev === "ROLE_ADMIN") {
+          this.$router.push({ name: "Tạo phòng" });
+        }
+        return;
+      }
+
       if (!this.$refs.form.validate()) {
         return;
       }

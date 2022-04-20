@@ -27,7 +27,7 @@ const actions = {
 };
 
 const getters = {
-  list_rooms: list_rooms => state.list_rooms
+  list_rooms: state => state.list_rooms
 };
 
 export default {

@@ -76,11 +76,10 @@ const actions = {
 };
 
 const getters = {
-  speciality_list: speciality_list => state.speciality_list,
-  doctors_list: doctors_list => state.doctors_list,
-  doctor_appointment_list: doctor_appointment_list =>
-    state.doctor_appointment_list,
-  user_appointment_list: user_appointment_list => state.user_appointment_list
+  speciality_list: state => state.speciality_list,
+  doctors_list: state => state.doctors_list,
+  doctor_appointment_list: state => state.doctor_appointment_list,
+  user_appointment_list: state => state.user_appointment_list
 };
 
 export default {

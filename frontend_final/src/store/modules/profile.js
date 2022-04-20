@@ -28,7 +28,7 @@ const actions = {
 };
 
 const getters = {
-  profile_list: profile_list => state.profile_list
+  profile_list: state => state.profile_list
 };
 
 export default {

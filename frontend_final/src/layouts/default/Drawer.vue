@@ -178,7 +178,18 @@ export default {
     ...get("user", ["dark", "gradient", "image"]),
 
     items() {
-      //return this.itemDoctor;
+      //dev login
+      if (process.env.VUE_APP_LOGIN_DEV === "TRUE") {
+        var typedev = process.env.VUE_APP_ROLE_DEV;
+        if (typedev === "ROLE_DOCTOR") {
+          return this.itemDoctor;
+        }
+        if (typedev === "ROLE_ADMIN") {
+          return this.itemAdmin;
+        }
+        return;
+      }
+
       var type = this.$store.getters["auth/types"];
       if (type[0].authority === "ROLE_DOCTOR") {
         return this.itemDoctor;
