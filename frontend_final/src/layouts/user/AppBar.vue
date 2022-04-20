@@ -1,29 +1,12 @@
 <template>
-  <v-app-bar
-    id="default-app-bar"
-    absolute
-    app
-    color="#248eff"
-    height="70"
-    elevate-on-scroll
-    scroll-target="#scrolling-techniques-7"
-  >
-    <v-sheet class="mx-auto" max-width="700" color="#248eff">
+  <v-app-bar id="default-app-bar" absolute color="#fff9ed">
+    <!-- <v-sheet class="mx-auto" max-width="700" color="#248eff">
       <v-slide-group show-arrows>
         <v-slide-item
           v-for="(item, index) in links"
           :key="index"
           v-slot="{ active, toggle }"
         >
-          <!-- <v-btn
-            class="mx-2"
-            :input-value="active"
-            active-class="purple white--text"
-            depressed
-            @click="toggle"
-          >
-            Options {{ n }}
-          </v-btn> -->
           <v-card
             color="#248eff"
             active-class="primary white--text"
@@ -35,7 +18,7 @@
           >
         </v-slide-item>
       </v-slide-group>
-    </v-sheet>
+    </v-sheet> -->
   </v-app-bar>
 </template>
 
@@ -77,6 +60,7 @@ export default {
   computed: {},
 
   data: () => ({
+    image: require("@/assets/img/home/background.jpg"),
     links: [
       {
         link_name: "Đặt lịch khám theo ngày",
@@ -94,12 +78,6 @@ export default {
   }),
 
   methods: {
-    login() {
-      this.$router.push({ name: "Đăng nhập" });
-    },
-    signup() {
-      this.$router.push({ name: "Đăng ký" });
-    },
     ChangePage(item_name) {
       this.$router.push({ name: item_name });
     }

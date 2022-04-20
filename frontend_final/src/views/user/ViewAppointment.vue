@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div class="content" style="background-color: white">
     <v-footer padless width="100%" color="primary" class="mb-10 white--text">
       <v-col class="text-center" cols="12">
         <strong>Danh sách đặt lịch hẹn</strong>
