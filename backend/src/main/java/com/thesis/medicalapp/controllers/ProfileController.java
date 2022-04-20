@@ -1,6 +1,6 @@
 package com.thesis.medicalapp.controllers;
 
-import com.thesis.medicalapp.models.Profile;
+import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.ProfileDTO;
 import com.thesis.medicalapp.services.ProfileService;
 import lombok.RequiredArgsConstructor;
@@ -16,24 +16,75 @@ import java.util.List;
 public class ProfileController {
     private final ProfileService profileService;
     @PostMapping("/profiles")
-    public ResponseEntity<ProfileDTO> saveProfile(@RequestBody ProfileDTO profileDTO) {
-        ProfileDTO profileResponse = profileService.saveProfile(profileDTO);
-        return ResponseEntity.ok().body(profileResponse);
+    public ResponseEntity<ApiResponse> saveProfile(@RequestBody ProfileDTO profileDTO) {
+        if (profileService.existsByIdentityCard(profileDTO.getIdentityCard())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, "Identity card is already taken!", null)
+            );
+        }
+        try {
+            ProfileDTO profileResponse = profileService.saveProfile(profileDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", profileResponse)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
     }
     @GetMapping("/profiles")
-    public ResponseEntity<List<ProfileDTO>> getProfiles() {
-        return ResponseEntity.ok().body(profileService.getProfiles());
+    public ResponseEntity<ApiResponse> getProfilesByUser() {
+        try {
+            List<ProfileDTO> profileDTOS = profileService.getProfilesByUser();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", profileDTOS)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
+    }
+    @GetMapping("/profiles/all")
+    public ResponseEntity<ApiResponse> getProfiles() {
+        try {
+            List<ProfileDTO> profileDTOS = profileService.getProfiles();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", profileDTOS)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
     }
 
     @PatchMapping("/profiles")
-    public ResponseEntity<Integer> updateProfile(ProfileDTO profileDTO) {
-        int result = profileService.updateProfile(profileDTO);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<ApiResponse> updateProfile(ProfileDTO profileDTO) {
+        try {
+            profileService.updateProfile(profileDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
     }
 
     @DeleteMapping("/profiles/{id}")
-    public ResponseEntity<Integer> removeProfile(@PathVariable String id) {
-        int result = profileService.removeProfile(id);
-        return ResponseEntity.ok(result);
+    public ResponseEntity<ApiResponse> removeProfile(@PathVariable String id) {
+        try {
+            profileService.removeProfile(id);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
     }
 }

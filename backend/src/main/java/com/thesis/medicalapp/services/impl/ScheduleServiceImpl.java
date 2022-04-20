@@ -3,6 +3,7 @@ package com.thesis.medicalapp.services.impl;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.pojo.ScheduleDTO;
 import com.thesis.medicalapp.repository.DoctorRepository;
+import com.thesis.medicalapp.repository.RoomRepository;
 import com.thesis.medicalapp.repository.ScheduleRepository;
 import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.ScheduleService;
@@ -71,7 +72,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     @Override
     public int updateSchedule(ScheduleDTO scheduleDTO) {
-        Optional<Schedule> schedule = scheduleRepository.findById(scheduleDTO.getId());
+        Optional<Schedule> schedule = scheduleRepository.findScheduleById(scheduleDTO.getId());
         Doctor doctor = doctorRepository.findDoctorById(scheduleDTO.getDoctor().getId());
         return schedule.map(s -> {
             s.setDate(scheduleDTO.getDate());
@@ -82,8 +83,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         }).orElseGet(() -> 0);
     }
     @Override
-    public int removeSchedule(Integer id) {
-        Optional<Schedule> schedule = scheduleRepository.findById(id);
+    public int removeSchedule(String id) {
+        Optional<Schedule> schedule = scheduleRepository.findScheduleById(id);
         return schedule.map(s -> {
             scheduleRepository.delete(s);
             return 1;
@@ -91,10 +92,25 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
     public List<ScheduleDTO> getSchedulesByDoctor() {
         Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
-        System.out.println(doctor.getName());
         List<Schedule> schedules = scheduleRepository.findAllByDoctor(doctor)
                 .stream()
                 .collect(Collectors.toList());
+        List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
+            ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
+            return scheduleDTO;
+        }).collect(Collectors.toList());
+        return scheduleDTOS;
+    }
+    @Override
+    public ScheduleDTO getScheduleByDateAndDoctor(Date date, Doctor doctor) {
+        Schedule schedule = scheduleRepository.findByDateAndDoctor(date, doctor);
+        ScheduleDTO scheduleDTO = ScheduleDTO.from(schedule);
+        return scheduleDTO;
+    }
+    @Override
+    public List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd) {
+        Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
+        List<Schedule> schedules = scheduleRepository.getAllByDateIsBetweenAndDoctor(dateStart, dateEnd, doctor);
         List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
             ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
             return scheduleDTO;

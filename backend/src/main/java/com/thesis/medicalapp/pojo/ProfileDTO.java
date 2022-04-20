@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ProfileDTO {
     private String id;
-    private String profileNumber;
+    private Long profileNumber;
     private String name;
     private String address;
     private String phoneNumber;

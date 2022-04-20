@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.pojo;
 
+import com.thesis.medicalapp.models.Room;
 import com.thesis.medicalapp.models.Schedule;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,9 +15,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ScheduleDTO {
-    private Integer id;
+    private String id;
     private Date date;
-    private String room;
+    private Room room;
     private List<String> times;
     private DoctorDTO doctor;
 

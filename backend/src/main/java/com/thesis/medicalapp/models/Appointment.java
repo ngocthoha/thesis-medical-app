@@ -20,13 +20,15 @@ public class Appointment {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private Integer stt;
-    private String room;
+    @OneToOne
+    private Room room;
     @Temporal(TemporalType.DATE)
     private Date date;
     private String time;
     private String symptom;
     private String description;
     private String timeSituation;
+    private Boolean selfTreatment;
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
@@ -35,4 +37,6 @@ public class Appointment {
     private Doctor doctor;
     @OneToMany
     private Collection<File> files;
+    private String status;
+    private Date createdDate;
 }

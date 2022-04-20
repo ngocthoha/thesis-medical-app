@@ -13,6 +13,8 @@ public interface ScheduleService {
     List<ScheduleDTO> getSchedules();
     List<ScheduleDTO> getDoctorsBySchedule(String specialty, String date);
     int updateSchedule(ScheduleDTO scheduleDTO);
-    int removeSchedule(Integer id);
+    int removeSchedule(String id);
     List<ScheduleDTO> getSchedulesByDoctor();
+    ScheduleDTO getScheduleByDateAndDoctor(Date data, Doctor doctor);
+    List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd);
 }
