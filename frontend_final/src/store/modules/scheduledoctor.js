@@ -29,7 +29,7 @@ const actions = {
 
 // Lay schedule list
 const getters = {
-  schedule_list: schedule_list => state.schedule_list
+  schedule_list: state => state.schedule_list
 };
 
 export default {

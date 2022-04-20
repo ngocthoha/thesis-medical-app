@@ -31,8 +31,8 @@ const actions = {
 };
 
 const getters = {
-  access_token: access_token => state.access_token,
-  types: types => state.types
+  access_token: state => state.access_token,
+  types: state => state.types
 };
 
 export default {
