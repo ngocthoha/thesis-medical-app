@@ -22,7 +22,8 @@ const router = new Router({
 
     //DashBoard Pages
     layout("Default", [
-      route("Dashboard"),
+      route("Dashboard", { default: "Dashboard" },
+      "/dashboardall"),
 
       // Pages
       route("UserProfile", null, "components/profile"),
@@ -61,11 +62,17 @@ const router = new Router({
       ),
 
       //admin Pages
-      route("Bác sĩ", { default: "admin/DoctorAdmin" }, "/admin/doctor-admin"),
+      route("Tạo tài khoản bác sĩ", { default: "admin/DoctorAdmin" }, "/admin/doctor-admin"),
+      route("Trạng thái cuộc hẹn trong ngày", { default: "admin/AppointmentStatus" }, "/admin/appointment-status-admin"),
       route(
         "Lịch hẹn",
         { default: "admin/AppointmentAdmin" },
         "/admin/appointment-admin"
+      ),
+      route(
+        "Dashboard Admin",
+        { default: "admin/DashboardAdmin" },
+        "/admin/dashboard-admin"
       ),
       route(
         "Bệnh nhân",
