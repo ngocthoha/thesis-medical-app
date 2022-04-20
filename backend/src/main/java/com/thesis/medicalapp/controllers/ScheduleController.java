@@ -6,13 +6,16 @@ import com.thesis.medicalapp.payload.RoomDate;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.ScheduleDTO;
 import com.thesis.medicalapp.repository.RoomRepository;
+import com.thesis.medicalapp.repository.ScheduleRepository;
 import com.thesis.medicalapp.services.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -88,5 +91,24 @@ public class ScheduleController {
                     new ApiResponse<>(0, e.getMessage(), null)
             );
         }
+    }
+    @GetMapping("/doctor/schedules/date")
+    public ResponseEntity<ApiResponse> getAllByDateIsBetweenAndDoctor(@RequestParam("dateStart") String dateStart, @RequestParam("dateEnd") String dateEnd) {
+        Date DateStart = new Date();
+        try {
+            DateStart = new SimpleDateFormat("yyyy-MM-dd").parse(dateStart);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        Date DateEnd = new Date();
+        try {
+            DateEnd = new SimpleDateFormat("yyyy-MM-dd").parse(dateEnd);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        List<ScheduleDTO> scheduleDTOS = scheduleService.getAllByDateIsBetweenAndDoctor(DateStart, DateEnd);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(1, "Success", scheduleDTOS)
+        );
     }
 }

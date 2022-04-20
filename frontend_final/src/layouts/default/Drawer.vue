@@ -120,23 +120,18 @@ export default {
       itemDoctor: [
         {
           title: "Lịch trình",
-          icon: "mdi-bell",
+          icon: "mdi-calendar",
           to: "/doctor/doctor-schedule"
         },
         {
           title: "Bệnh án",
-          icon: "mdi-bell",
+          icon: "mdi-clipboard-account",
           to: "/doctor/doctor-record"
         },
         {
-          title: "Thông báo",
-          icon: "mdi-bell",
+          title: "Gửi Thông báo",
+          icon: "mdi-send",
           to: "/doctor/doctor-notification"
-        },
-        {
-          title: "Quá trình chữa bệnh",
-          icon: "mdi-bell",
-          to: "/doctor/doctor-healingprocess"
         }
       ],
 

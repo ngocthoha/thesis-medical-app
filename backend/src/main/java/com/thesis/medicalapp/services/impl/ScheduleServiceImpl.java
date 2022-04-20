@@ -107,4 +107,14 @@ public class ScheduleServiceImpl implements ScheduleService {
         ScheduleDTO scheduleDTO = ScheduleDTO.from(schedule);
         return scheduleDTO;
     }
+    @Override
+    public List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd) {
+        Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
+        List<Schedule> schedules = scheduleRepository.getAllByDateIsBetweenAndDoctor(dateStart, dateEnd, doctor);
+        List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
+            ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
+            return scheduleDTO;
+        }).collect(Collectors.toList());
+        return scheduleDTOS;
+    }
 }
