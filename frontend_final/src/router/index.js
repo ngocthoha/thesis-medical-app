@@ -22,8 +22,7 @@ const router = new Router({
 
     //DashBoard Pages
     layout("Default", [
-      route("Dashboard", { default: "Dashboard" },
-      "/dashboardall"),
+      route("Dashboard", { default: "Dashboard" }, "/dashboardall"),
 
       // Pages
       route("UserProfile", null, "components/profile"),
@@ -45,11 +44,7 @@ const router = new Router({
         { default: "doctor/Schedule" },
         "/doctor/doctor-schedule"
       ),
-      route(
-        "Bệnh Án",
-        { default: "doctor/HoSoBenhNhan" },
-        "/doctor/doctor-record"
-      ),
+      route("Bệnh Án", { default: "doctor/Record" }, "/doctor/doctor-record"),
       route(
         "Thông báo",
         { default: "doctor/Notification" },
@@ -62,8 +57,16 @@ const router = new Router({
       ),
 
       //admin Pages
-      route("Tạo tài khoản bác sĩ", { default: "admin/DoctorAdmin" }, "/admin/doctor-admin"),
-      route("Trạng thái cuộc hẹn trong ngày", { default: "admin/AppointmentStatus" }, "/admin/appointment-status-admin"),
+      route(
+        "Tạo tài khoản bác sĩ",
+        { default: "admin/DoctorAdmin" },
+        "/admin/doctor-admin"
+      ),
+      route(
+        "Trạng thái cuộc hẹn trong ngày",
+        { default: "admin/AppointmentStatus" },
+        "/admin/appointment-status-admin"
+      ),
       route(
         "Lịch hẹn",
         { default: "admin/AppointmentAdmin" },

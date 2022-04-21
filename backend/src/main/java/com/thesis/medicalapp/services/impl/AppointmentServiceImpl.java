@@ -78,7 +78,6 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .stream()
                 .collect(Collectors.toList());
         List<AppointmentDTO> appointmentDTOS = appointments.stream().map(a -> {
-            System.out.println(a);
             AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
             return appointmentDTO;
         }).collect(Collectors.toList());
@@ -100,4 +99,21 @@ public class AppointmentServiceImpl implements AppointmentService {
     public Appointment findAppointmentById(String id) {
         return appointmentRepository.findAppointmentById(id);
     }
+    @Override
+    public List<?> getAllByDateIsBetweenAndDoctor(Date start, Date end) {
+        Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
+        List<Appointment> appointments = appointmentRepository.getAllByDateIsBetweenAndDoctor(start, end, doctor);
+        List<?> appointmentReturn = appointments.stream().map(a -> {
+            NumberAppointment numberAppointment = new NumberAppointment(a.getId(), a.getStatus(), a.getDate());
+            return numberAppointment;
+        }).collect(Collectors.toList());
+        return appointmentReturn;
+    }
+}
+@Data
+@AllArgsConstructor
+class NumberAppointment {
+    String appointmentId;
+    String status;
+    Date date;
 }
