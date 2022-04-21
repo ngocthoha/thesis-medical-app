@@ -137,20 +137,35 @@ export default {
 
       itemAdmin: [
         {
+          title: "Thống kê",
+          icon: "mdi-bell",
+          to: "/admin/dashboard-admin"
+        },
+        {
           title: "Bác sĩ",
           icon: "mdi-bell",
           to: "/admin/doctor-admin"
+        },
+        {
+          title: "Trạng thái cuộc hẹn",
+          icon: "mdi-bell",
+          to: "/admin/appointment-status-admin"
+        },
+        {
+          title: "Tạo phòng",
+          icon: "mdi-bell",
+          to: "/admin/room-admin"
         },
         {
           title: "Lịch hẹn",
           icon: "mdi-bell",
           to: "/admin/appointment-admin"
         },
-        {
-          title: "Bệnh nhân",
-          icon: "mdi-bell",
-          to: "/admin/patient-admin"
-        },
+        // {
+        //   title: "Bệnh nhân",
+        //   icon: "mdi-bell",
+        //   to: "/admin/patient-admin"
+        // },
         {
           title: "Bệnh án",
           icon: "mdi-bell",
@@ -160,17 +175,12 @@ export default {
           title: "Lịch trình",
           icon: "mdi-bell",
           to: "/admin/schedule-admin"
-        },
-        {
-          title: "Tài khoản",
-          icon: "mdi-bell",
-          to: "/admin/account-admin"
-        },
-        {
-          title: "Tạo phòng",
-          icon: "mdi-bell",
-          to: "/admin/room-admin"
         }
+        // {
+        //   title: "Tài khoản",
+        //   icon: "mdi-bell",
+        //   to: "/admin/account-admin"
+        // },
       ]
     };
   },

@@ -18,7 +18,8 @@ const router = new Router({
 
   routes: [
     //Home Pages
-    layout("Home", [route("Trang chủ", { default: "home/home" }, "/")]),
+    layout("Home", [route("Trang chủ", { default: "home/home" }, "/"), route("Dịch vụ",  { default: "home/Service" }, "service"),]),
+    
 
     //DashBoard Pages
     layout("Default", [
@@ -109,6 +110,8 @@ const router = new Router({
     //   ],
     //   "home"
     // )
+
+    
     layout(
       "Home",
       [
