@@ -4,7 +4,7 @@
 
     <default-drawer />
 
-    <default-view />
+    <default-view style=""/>
 
     <default-footer />
   </v-app>
@@ -28,7 +28,7 @@ export default {
     DefaultFooter: () =>
       import(
         /* webpackChunkName: "default-footer" */
-        "./Footer"
+        "../home/Footer.vue"
       ),
     DefaultView: () =>
       import(

@@ -216,7 +216,7 @@
       </v-row>
     </v-footer>
 
-  <v-footer>
+  <!-- <v-footer>
     <v-row justify="center" class="mt-9 mb-9">
       <v-col cols="2 mr-5" >
         <v-row justify="center "><p class="body-1 font-weight-bold blue--text">Về trang web</p> </v-row>
@@ -247,7 +247,7 @@
         <v-row justify="center"><p class="text-justify body-1">Địa chỉ: 22 abc Dĩ An Bình Dương</p></v-row>
       </v-col>
     </v-row>
-  </v-footer>
+  </v-footer> -->
   </div>
   </v-app>
 </template>
