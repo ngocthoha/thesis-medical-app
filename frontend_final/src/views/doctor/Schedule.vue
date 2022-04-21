@@ -1,6 +1,12 @@
 <template>
   <div>
-    <v-row v-if="schedules.length" class="fill-height">
+    <v-row
+      v-if="
+        schedules.length &&
+          Object.values(appointmentInSchedule || {}).some(prop => prop)
+      "
+      class="fill-height"
+    >
       <v-col>
         <v-sheet height="64">
           <v-toolbar flat>
@@ -60,11 +66,14 @@
                   style="text-decoration: none"
                   v-if="selectedEvent.link"
                   :href="selectedEvent.link"
+                  target="_blank"
                   >Vào phòng google meet</a
                 >
-                <ul v-for="(item, i) in selectedEvent.time" :key="i">
-                  <li>{{ item }}</li>
-                </ul>
+                <div v-if="selectedEvent.time">
+                  <ul v-for="(item, i) in selectedEvent.time" :key="i">
+                    <li>{{ item }}</li>
+                  </ul>
+                </div>
               </v-card-text>
               <v-card-actions> </v-card-actions>
             </v-card>
@@ -80,7 +89,7 @@
       <v-btn class="ml-2" color="primary" tile>Chuyển lịch</v-btn>
     </v-row>
     <v-row class="ma-3">
-      <v-expansion-panels class="mt-3" focusable v-model="panel" multiple>
+      <v-expansion-panels class="mt-3" v-model="panel" multiple>
         <v-expansion-panel v-for="(item, i) in appointmentList" :key="i">
           <v-expansion-panel-header>{{ item.time }} </v-expansion-panel-header>
           <v-expansion-panel-content
@@ -126,7 +135,7 @@
     <v-dialog v-model="dialog" scrollable max-width="800px" persistent>
       <v-card>
         <v-card-title style="justify-content: space-between">
-          <span>Thông tin bệnh nhân</span>
+          <h2>Thông tin bệnh nhân</h2>
           <v-btn icon @click="closeDialogDetail()">
             <v-icon>mdi-close</v-icon>
           </v-btn>
@@ -949,7 +958,8 @@ export default {
     files: [],
     loading: false,
     valid: true,
-    menu2: false
+    menu2: false,
+    appointmentInSchedule: {}
   }),
   created() {
     var date = new Date();
@@ -958,12 +968,13 @@ export default {
     firstDay = firstDay.toISOString().split("T")[0];
     lastDay = lastDay.toISOString().split("T")[0];
     this.getSchedules(firstDay, lastDay);
+    this.getAppointmentInSchedule(firstDay, lastDay);
   },
   mounted() {
     this.appointment = JSON.parse(JSON.stringify(this.initialAppointment));
     this.record = JSON.parse(JSON.stringify(this.initialRecord));
     this.getSpecialties();
-    this.$refs.calendar.checkChange();
+    //this.$refs.calendar.checkChange();
   },
   methods: {
     dateFormat(date) {
@@ -982,7 +993,24 @@ export default {
         })
         .then(res => {
           this.schedules = res.data.results;
-          console.log(this.schedules);
+        });
+    },
+    async getAppointmentInSchedule(dateStart, dateEnd) {
+      const token = this.$store.getters["auth/access_token"];
+      axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
+      await axios
+        .get(`${url}/api/doctor/appointments/schedule`, {
+          params: {
+            dateStart: dateStart,
+            dateEnd: dateEnd
+          }
+        })
+        .then(res => {
+          const results = res.data.results;
+          this.appointmentInSchedule = this._.groupBy(
+            results,
+            ({ date }) => date
+          );
         });
     },
     getEventColor(event) {
@@ -1034,6 +1062,17 @@ export default {
           timed: false,
           time: this.schedules[i].times
         });
+        if (this.appointmentInSchedule[this.schedules[i].date].length) {
+          let number = this.appointmentInSchedule[this.schedules[i].date]
+            .length;
+          events.push({
+            name: `${number} Lịch hẹn`,
+            start: this.schedules[i].date,
+            end: this.schedules[i].date,
+            color: "orange",
+            timed: false
+          });
+        }
       }
       this.events = events;
     },

@@ -1,39 +1,39 @@
 <template>
   <div>
     <div style="padding: 10px 30px">
-      <v-row wrap>
-        <v-text-field
-          v-model="search"
-          append-icon="mdi-magnify"
-          label="Tìm kiếm ..."
-          single-line
-          hide-details
-          flat
-          solo
-          background-color="grey lighten-4"
-          outlined
-        ></v-text-field>
-        <v-spacer></v-spacer>
-        <v-btn class="mr-2" color="primary" tile
-          ><v-icon right dark class="mr-1"> mdi-plus-circle-outline </v-icon>Tạo
-          bệnh án</v-btn
-        >
-        <v-btn color="primary" tile
-          ><v-icon right dark class="mr-1"> mdi-pencil </v-icon>Chỉnh sửa</v-btn
-        >
-      </v-row>
       <v-row class="mt-3">
-        <v-data-table
-          v-model="selected"
-          item-key="name"
-          show-select
-          :headers="headers"
-          :items="desserts"
-          :items-per-page="5"
-          class="elevation-1"
-          style="flex-basis: 100%"
-          :search="search"
-        ></v-data-table>
+        <v-card style="flex-grow: 1;">
+          <v-card-title primary-title>
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Tìm kiếm"
+              single-line
+              hide-details
+            ></v-text-field>
+            <v-spacer></v-spacer>
+            <v-btn class="mr-2" color="primary" tile
+              ><v-icon right dark class="mr-1"> mdi-plus-circle-outline </v-icon
+              >Tạo bệnh án</v-btn
+            >
+            <v-btn color="primary" tile
+              ><v-icon right dark class="mr-1"> mdi-pencil </v-icon>Chỉnh
+              sửa</v-btn
+            >
+          </v-card-title>
+          <v-data-table
+            v-model="selected"
+            item-key="name"
+            show-select
+            :headers="headers"
+            :items="desserts"
+            :items-per-page="5"
+            class="elevation-1"
+            style="flex-basis: 100%"
+            :search="search"
+          >
+          </v-data-table>
+        </v-card>
       </v-row>
     </div>
   </div>
@@ -50,13 +50,39 @@ export default {
         {
           text: "Họ và tên",
           sortable: false,
-          value: "name"
+          value: "name",
+          class: "primary--text"
         },
-        { text: "Giới tính", sortable: false, value: "calories" },
-        { text: "Số điện thoại", sortable: false, value: "fat" },
-        { text: "Mã bệnh án", sortable: false, value: "carbs" },
-        { text: "Ngày khám", sortable: false, value: "protein" },
-        { text: "Chuyên khoa", sortable: false, value: "iron" }
+        {
+          text: "Giới tính",
+          sortable: false,
+          value: "calories",
+          class: "primary--text"
+        },
+        {
+          text: "Số điện thoại",
+          sortable: false,
+          value: "fat",
+          class: "primary--text"
+        },
+        {
+          text: "Mã bệnh án",
+          sortable: false,
+          value: "carbs",
+          class: "primary--text"
+        },
+        {
+          text: "Ngày khám",
+          sortable: false,
+          value: "protein",
+          class: "primary--text"
+        },
+        {
+          text: "Chuyên khoa",
+          sortable: false,
+          value: "iron",
+          class: "primary--text"
+        }
       ],
       desserts: [
         {
@@ -140,7 +166,7 @@ export default {
           iron: "6%"
         }
       ],
-      record: {},
+      records: {},
       initialRecord: {
         pathological: undefined,
         personalMedicalHistory: undefined,
@@ -169,10 +195,14 @@ export default {
       const token = this.$store.getters["auth/access_token"];
       axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
       await axios.get(`${url}/api/doctor/schedules/date`).then(res => {
-        this.record = res.data.results;
+        this.records = res.data.results;
       });
     }
   }
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+* {
+  font-family: "Quicksand", sans-serif;
+}
+</style>

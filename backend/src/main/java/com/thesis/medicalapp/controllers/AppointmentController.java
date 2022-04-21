@@ -182,4 +182,23 @@ public class AppointmentController {
             );
         }
     }
+    @GetMapping("/doctor/appointments/schedule")
+    public ResponseEntity<ApiResponse> getAllByDateIsBetweenAndDoctor(@RequestParam("dateStart") String dateStart, @RequestParam("dateEnd") String dateEnd) {
+        Date DateStart = new Date();
+        try {
+            DateStart = new SimpleDateFormat("yyyy-MM-dd").parse(dateStart);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        Date DateEnd = new Date();
+        try {
+            DateEnd = new SimpleDateFormat("yyyy-MM-dd").parse(dateEnd);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        List<?> appointment = appointmentService.getAllByDateIsBetweenAndDoctor(DateStart, DateEnd);
+        return ResponseEntity.ok(
+                new ApiResponse(1, "", appointment)
+        );
+    }
 }

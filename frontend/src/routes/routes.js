@@ -19,7 +19,7 @@ import ViewAppointment from "@/pages/Appointment/ViewAppointment.vue";
 
 //doctor page
 import ScheduleOfDoctor from "@/pages/Doctor/ScheduleOfDoctor.vue";
-import HoSoBenhNhan from "@/pages/Doctor/HoSoBenhNhan.vue";
+import Record from "@/pages/Doctor/Record.vue";
 import Profile from "@/pages/Doctor/Profile.vue";
 import Notification from "@/pages/Doctor/Notification.vue";
 import Healingprocess from "@/pages/Doctor/Healingprocess.vue";
@@ -118,11 +118,6 @@ const routes = [
         component: Notifications,
       },
       {
-        path: "upgrade",
-        name: "Upgrade to PRO",
-        component: UpgradeToPRO,
-      },
-      {
         path: "appointment/appointment-by-date",
         name: "Đặt lịch khám theo ngày",
         component: AppointmentByDate,
@@ -140,7 +135,7 @@ const routes = [
       {
         path: "doctor/doctor-record",
         name: "Danh sách bệnh án",
-        component: HoSoBenhNhan,
+        component: Record,
       },
       {
         path: "doctor/doctor-healingprocess",

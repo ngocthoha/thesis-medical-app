@@ -14,4 +14,5 @@ public interface AppointmentService {
     int removeAppointment(String id);
     Integer max(Date date);
     Appointment findAppointmentById(String id);
+    List<?> getAllByDateIsBetweenAndDoctor(Date start, Date end);
 }
