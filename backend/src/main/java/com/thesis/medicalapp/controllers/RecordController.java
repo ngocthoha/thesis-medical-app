@@ -115,7 +115,7 @@ public class RecordController {
         }
     }
 
-    @GetMapping("/records")
+    @GetMapping("/records/all")
     public ResponseEntity<ApiResponse> getRecords() {
         try {
             List<RecordDTO> recordDTOS = recordService.getRecords();

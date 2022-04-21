@@ -166,7 +166,7 @@ export default {
           iron: "6%"
         }
       ],
-      record: {},
+      records: {},
       initialRecord: {
         pathological: undefined,
         personalMedicalHistory: undefined,
@@ -195,10 +195,14 @@ export default {
       const token = this.$store.getters["auth/access_token"];
       axios.defaults.headers.common = { Authorization: `Bearer ${token}` };
       await axios.get(`${url}/api/doctor/schedules/date`).then(res => {
-        this.record = res.data.results;
+        this.records = res.data.results;
       });
     }
   }
 };
 </script>
-<style></style>
+<style lang="scss" scoped>
+* {
+  font-family: "Quicksand", sans-serif;
+}
+</style>

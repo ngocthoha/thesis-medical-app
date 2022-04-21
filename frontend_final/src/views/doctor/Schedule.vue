@@ -135,7 +135,7 @@
     <v-dialog v-model="dialog" scrollable max-width="800px" persistent>
       <v-card>
         <v-card-title style="justify-content: space-between">
-          <span>Thông tin bệnh nhân</span>
+          <h2>Thông tin bệnh nhân</h2>
           <v-btn icon @click="closeDialogDetail()">
             <v-icon>mdi-close</v-icon>
           </v-btn>
