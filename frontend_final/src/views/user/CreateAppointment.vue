@@ -27,10 +27,10 @@
           </v-stepper-header>
         </v-stepper>
       </v-row>
-      <div v-show="false">
+      <div v-show="true">
         <select-profile-patient></select-profile-patient>
       </div>
-      <div v-show="true">
+      <div v-show="false">
         <select-date></select-date>
       </div>
     </div>
@@ -58,11 +58,3 @@ export default {
   }
 };
 </script>
-
-
-
-
-
-
-
-

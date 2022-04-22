@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-row justify="center" style="background-color: #F3FCFF;">
-      <v-card width="80%" height="700px">
+      <v-card width="80%" height="700px" elevation="6">
         <v-row justify="center">
           <v-card width="60%" height="120px" class="profile-title my-10">
             <v-row justify="center" class="mt-7">
@@ -11,7 +11,11 @@
         </v-row>
 
         <v-row justify="center" style="margin-top: 200px">
-          <v-alert outlined color="#ffdfcc" width="60%" height="300">
+          <v-alert
+            width="60%"
+            height="320"
+            style="border: 3px solid #ffdfcc !important;"
+          >
             <v-row justify="center" class="text-profile-name"
               ><strong>Nguyễn Duy Thanh</strong></v-row
             >
@@ -83,7 +87,7 @@
   font-family: "Quicksand";
   font-style: normal;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 25px;
   color: #046792;
 }
 
@@ -94,6 +98,6 @@
   font-size: 16px;
   line-height: 18px;
 
-  color: #a3a3a3;
+  color: #5b626b;
 }
 </style>
