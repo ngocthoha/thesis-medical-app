@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-footer color="white" class="pb-10"
+    <!-- <v-footer color="white" class="pb-10"
       ><v-col cols="12">
         <v-row justify="center"
           ><strong
@@ -12,8 +12,8 @@
       ><v-row justify="center"
         ><v-img :src="image" alt="" max-height="440" max-width="660"></v-img
       ></v-row>
-    </v-footer>
-    <v-sheet class="pa-10" width="100%" color="#f8f9fd">
+    </v-footer> -->
+    <!-- <v-sheet class="pa-10" width="100%" color="#f8f9fd">
       <v-row justify="center">
         <v-slide-group show-arrows>
           <v-slide-item v-for="(item, index) in links" :key="index">
@@ -37,7 +37,7 @@
           </v-slide-item>
         </v-slide-group>
       </v-row>
-    </v-sheet>
+    </v-sheet> -->
     <default-view />
   </v-app>
 </template>

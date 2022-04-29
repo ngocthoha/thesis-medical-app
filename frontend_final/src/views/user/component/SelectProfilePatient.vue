@@ -32,13 +32,21 @@
               </v-col>
             </v-row>
             <v-row class="mt-10 ml-3"
-              ><v-btn elevation="1" color="#E6F0F5" class="mr-3"
+              ><v-btn
+                elevation="1"
+                color="#E6F0F5"
+                class="mr-3"
+                @click="onSelect"
                 ><strong style="color: #3C89AB;">Chỉnh sửa</strong></v-btn
               >
-              <v-btn elevation="1" color="#FCE6D7" class="mr-3"
+              <v-btn
+                elevation="1"
+                color="#FCE6D7"
+                class="mr-3"
+                @click="onSelect"
                 ><strong style="color: #FC544B;">Xóa</strong></v-btn
               >
-              <v-btn elevation="1" color="#eceefb"
+              <v-btn elevation="1" color="#eceefb" @click="onSelect"
                 ><strong style="color: #6e6fd9;">Chọn</strong></v-btn
               ></v-row
             >
@@ -63,6 +71,16 @@
   </v-app>
 </template>
 
+<script>
+export default {
+  methods: {
+    onSelect() {
+      console.log("yes");
+      this.$emit("select-complete", false);
+    }
+  }
+};
+</script>
 <style scoped>
 .profile-title {
   position: absolute;

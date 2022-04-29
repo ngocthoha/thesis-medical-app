@@ -10,23 +10,32 @@
   </div> -->
   <v-app class="d-flex flex-column">
     <v-row justify="center" style="background-color: #F3FCFF;">
-      <v-col cols="9">
-        <v-date-picker
-          v-model="date"
-          full-width
-          class="mt-4"
-          locale="vi-cn"
-          color="#3685a8"
-        ></v-date-picker>
-        <v-row class="mt-5 ml-2">
-          <v-btn elevation="1" color="#E6F0F5" class="mr-3"
-            ><strong style="color: #3C89AB;">Quay lại</strong></v-btn
-          >
-          <v-btn elevation="1" color="#eceefb"
-            ><strong style="color: #6e6fd9;">Chọn</strong></v-btn
-          >
+      <v-card width="80%" height="700px" elevation="6">
+        <v-row justify="center" class="mt-16">
+          <v-col cols="9">
+            <v-date-picker
+              v-model="date"
+              full-width
+              class="mt-4"
+              locale="vi-cn"
+              color="#3685a8"
+              style="border: 3px solid #3685a8 !important;"
+            ></v-date-picker>
+            <v-row class="mt-5 ml-2">
+              <v-btn
+                elevation="1"
+                color="#E6F0F5"
+                class="mr-3"
+                @click="backToProfile"
+                ><strong style="color: #3C89AB;">Quay lại</strong></v-btn
+              >
+              <v-btn elevation="1" color="#eceefb"
+                ><strong style="color: #6e6fd9;">Chọn</strong></v-btn
+              >
+            </v-row>
+          </v-col>
         </v-row>
-      </v-col>
+      </v-card>
     </v-row>
   </v-app>
 </template>
@@ -41,6 +50,13 @@ export default {
         .toISOString()
         .substr(0, 10)
     };
+  },
+
+  methods: {
+    backToProfile() {
+      console.log("back to profile from child");
+      this.$emit("back-to-profile");
+    }
   }
 };
 </script>
