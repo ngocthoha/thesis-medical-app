@@ -87,7 +87,7 @@
                         large
                         class="font-weight-bold"
                         plain
-                        :href="item.linkDetails"
+                        @click="GoToSerive(item.linkDetails)"
                       >
                         Tìm hiểu thêm
                       </v-btn>
@@ -112,7 +112,7 @@ export default {
           icon: `${require(`@/assets/img/service/timetable.png`)}`,
           title: "Đặt lịch khám theo ngày",
           subChips: ["Tiện lợi", "Nhanh chóng"],
-          linkDetails: "",
+          linkDetails: "/home/user/create-appoinment",
           color: "#e7f0f5"
         },
         {
@@ -152,6 +152,11 @@ export default {
         }
       ]
     };
+  },
+  methods: {
+    GoToSerive(link_name) {
+      this.$router.push({ name: "Đặt lịch khám theo ngày" });
+    }
   }
 };
 </script>

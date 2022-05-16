@@ -25,7 +25,7 @@
         </v-slide-group>
       </v-row>
     </v-sheet> -->
-    <div class="content" style="background-color: #F3FCFF">
+    <div class="content" style="background-color: #f5f7fa">
       <v-card width="100%" height="120px" color="#eceefb">
         <!-- <v-img v-bind:src="item.icon"> </v-img> -->
         <!-- <strong class="font-weight-black teal--text">
@@ -79,26 +79,26 @@
         </v-stepper>
       </v-row>
       <Transition name="slide-fade">
-        <div v-if="show">
+        <div v-if="show.profile_patient">
           <select-profile-patient
-            @select-complete="profileSelect"
+            @select-complete="profileShow"
           ></select-profile-patient>
         </div>
       </Transition>
       <Transition name="slide-fade">
-        <div v-show="!show">
+        <div v-show="show.date">
           <select-date
             ref="select-date"
-            @back-to-profile="dateSelect"
+            @back-to="dateShow"
+            @select-complete="dateShow"
           ></select-date>
         </div>
       </Transition>
-      <div v-show="false">
-        <select-profile-patient></select-profile-patient>
-      </div>
-      <div v-show="false">
-        <select-date></select-date>
-      </div>
+      <Transition name="slide-fade">
+        <div v-show="show.opd">
+          <select-opd ref="select-opd" @back-to="dateSelect"></select-opd>
+        </div>
+      </Transition>
     </div>
   </v-app>
 </template>
@@ -106,10 +106,12 @@
 <script>
 import SelectProfilePatient from "./component/SelectProfilePatient.vue";
 import SelectDate from "./component/SelectDate.vue";
+import SelectOPD from "./component/SelectOPD.vue";
 export default {
   components: {
     SelectProfilePatient,
-    SelectDate
+    SelectDate,
+    SelectOPD
   },
   data() {
     return {
@@ -128,19 +130,28 @@ export default {
         step4: false,
         step5: false
       },
-      show: true
+      show: {
+        profile_patient: true,
+        date: false,
+        opd: false
+      }
     };
   },
 
   methods: {
-    profileSelect(check) {
-      console.log(check);
-      this.show = false;
+    profileShow() {
+      this.show.profile_patient = false;
+      this.show.date = true;
     },
 
-    dateSelect() {
-      console.log("back to profile from parent");
-      this.show = true;
+    dateShow(isNext) {
+      if (isNext == true) {
+        this.show.date = false;
+        this.show.opd = true;
+      } else {
+        this.show.date = false;
+        this.show.profile_patient = true;
+      }
     }
   }
 };
@@ -151,7 +162,7 @@ export default {
   transition: all 1s ease;
 }
 .slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
 }
 .slide-fade-enter, .slide-fade-leave-to
 /* .slide-fade-leave-active below version 2.1.8 */ {

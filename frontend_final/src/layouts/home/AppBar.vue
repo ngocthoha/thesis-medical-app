@@ -89,7 +89,7 @@ export default {
     links: [
       {
         label: "Trang chủ",
-        name: "home"
+        name: "Trang chủ"
       },
       {
         label: "Giới thiệu",
@@ -116,6 +116,9 @@ export default {
     },
     signup() {
       this.$router.push({ name: "Đăng ký" });
+    },
+    getpage(link_name) {
+      this.$router.push({ name: link_name });
     }
   }
 };

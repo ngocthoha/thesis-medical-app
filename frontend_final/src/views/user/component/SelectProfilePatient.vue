@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <v-row justify="center" style="background-color: #F3FCFF;">
+    <v-row justify="center" style="background-color: #f5f7fa;">
       <v-card width="80%" height="700px" elevation="6">
         <v-row justify="center">
           <v-card width="60%" height="120px" class="profile-title my-10">
@@ -75,8 +75,7 @@
 export default {
   methods: {
     onSelect() {
-      console.log("yes");
-      this.$emit("select-complete", false);
+      this.$emit("select-complete");
     }
   }
 };
