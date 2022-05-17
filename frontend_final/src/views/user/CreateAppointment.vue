@@ -79,24 +79,25 @@
         </v-stepper>
       </v-row>
       <Transition name="slide-fade">
-        <div v-if="show.profile_patient">
+        <div v-if="this.show.profile_patient">
           <select-profile-patient
             @select-complete="profileShow"
           ></select-profile-patient>
         </div>
       </Transition>
       <Transition name="slide-fade">
-        <div v-show="show.date">
-          <select-date
-            ref="select-date"
-            @back-to="dateShow"
-            @select-complete="dateShow"
-          ></select-date>
+        <div v-show="this.show.date">
+          <select-date ref="select-date" @back-to="dateShow"></select-date>
         </div>
       </Transition>
       <Transition name="slide-fade">
-        <div v-show="show.opd">
-          <select-opd ref="select-opd" @back-to="dateSelect"></select-opd>
+        <div v-show="this.show.opd">
+          <SelectOPD @invisible="opdShow"></SelectOPD>
+        </div>
+      </Transition>
+      <Transition name="slide-fade">
+        <div v-show="this.show.doctor">
+          <SelectDoctor @invisible="doctorShow"></SelectDoctor>
         </div>
       </Transition>
     </div>
@@ -107,11 +108,13 @@
 import SelectProfilePatient from "./component/SelectProfilePatient.vue";
 import SelectDate from "./component/SelectDate.vue";
 import SelectOPD from "./component/SelectOPD.vue";
+import SelectDoctor from "./component/SelectDoctor.vue";
 export default {
   components: {
     SelectProfilePatient,
     SelectDate,
-    SelectOPD
+    SelectOPD,
+    SelectDoctor
   },
   data() {
     return {
@@ -133,7 +136,8 @@ export default {
       show: {
         profile_patient: true,
         date: false,
-        opd: false
+        opd: false,
+        doctor: false
       }
     };
   },
@@ -145,12 +149,29 @@ export default {
     },
 
     dateShow(isNext) {
-      if (isNext == true) {
+      if (isNext) {
         this.show.date = false;
         this.show.opd = true;
       } else {
         this.show.date = false;
         this.show.profile_patient = true;
+      }
+    },
+    opdShow(isNext) {
+      if (isNext) {
+        this.show.opd = false;
+        this.show.doctor = true;
+      } else {
+        this.show.opd = false;
+        this.show.date = true;
+      }
+    },
+    doctorShow(isNext) {
+      if (isNext) {
+        this.show.doctor = false;
+      } else {
+        this.show.doctor = false;
+        this.show.opd = true;
       }
     }
   }

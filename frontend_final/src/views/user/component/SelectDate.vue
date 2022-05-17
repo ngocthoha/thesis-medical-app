@@ -25,7 +25,7 @@
               <v-btn elevation="1" color="#E6F0F5" class="mr-3" @click="backTo"
                 ><strong style="color: #3C89AB;">Quay lại</strong></v-btn
               >
-              <v-btn elevation="1" color="#eceefb"
+              <v-btn elevation="1" color="#eceefb" @click="NextTo"
                 ><strong style="color: #6e6fd9;">Chọn</strong></v-btn
               >
             </v-row>
@@ -51,6 +51,9 @@ export default {
   methods: {
     backTo() {
       this.$emit("back-to", false);
+    },
+    NextTo() {
+      this.$emit("back-to", true);
     }
   }
 };
