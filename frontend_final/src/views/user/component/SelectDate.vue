@@ -10,7 +10,7 @@
   </div> -->
   <v-app class="d-flex flex-column">
     <v-row justify="center" style="background-color: #f5f7fa;">
-      <v-card width="80%" height="700px" elevation="6">
+      <v-card width="80%" height="700px" elevation="1">
         <v-row justify="center" class="mt-16">
           <v-col cols="9">
             <v-date-picker

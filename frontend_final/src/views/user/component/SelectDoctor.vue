@@ -1,23 +1,30 @@
 <template>
   <v-app class="d-flex flex-column">
     <v-row justify="center" style="background-color: #f5f7fa;">
-      <v-card width="80%" height="700px" elevation="6">
-        <v-row justify="center">
-          <v-expansion-panels flat style="width: 500px">
+      <v-card width="80%" height="700px" elevation="1">
+        <v-row justify="center" class="mt-16">
+          <v-expansion-panels
+            flat
+            style="width: 700px; overflow-y:auto; height: 420px;"
+            :class="'toolbar-custom'"
+            class="elevation-1 pa-3"
+          >
             <v-expansion-panel
               v-for="(doctor, index) in listDoctor"
               :key="index"
+              class="mb-5"
             >
               <div class="panel-header">
                 <v-expansion-panel-header>
-                  <div class="md-layout font-weight-bold">
+                  <div class="md-layout font-weight-bold" style="color:#046792">
                     {{ doctor.doctor.level }}. {{ doctor.doctor.name }}
                   </div>
                 </v-expansion-panel-header>
-                <div class="md-layout doctor-room">
+                <div class="md-layout doctor-room mb-1">
                   Phòng {{ doctor.room.name }}
                 </div>
                 <v-expansion-panel-content>
+                  <v-divider></v-divider>
                   <v-btn-toggle
                     v-model="time_select"
                     v-for="(time, time_index) in doctor.times"
@@ -43,6 +50,7 @@
                       color="#E6F0F5"
                       :value="time"
                       style="border:none"
+                      class="mt-3 mr-3"
                       @click="
                         setSelectDoctor(
                           doctor.doctor.id,
@@ -101,11 +109,47 @@ export default {
         {
           id: 3,
           date: "16",
-          room: "H2 á",
+          room: { name: "H2" },
           times: ["10:00-11:00", "11:00-12:00"],
           doctor: {
             id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
             name: "John",
+            specialty: "NHI KHOA",
+            level: "level"
+          }
+        },
+        {
+          id: 4,
+          date: "16",
+          room: { name: "H2" },
+          times: ["10:00-11:00", "11:00-12:00"],
+          doctor: {
+            id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+            name: "Simon",
+            specialty: "NHI KHOA",
+            level: "level"
+          }
+        },
+        {
+          id: 4,
+          date: "16",
+          room: { name: "H2" },
+          times: ["10:00-11:00", "11:00-12:00"],
+          doctor: {
+            id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+            name: "Simon",
+            specialty: "NHI KHOA",
+            level: "level"
+          }
+        },
+        {
+          id: 4,
+          date: "16",
+          room: { name: "H2" },
+          times: ["10:00-11:00", "11:00-12:00"],
+          doctor: {
+            id: "3e2c4b76-d826-4202-a987-7108047f7fb8",
+            name: "Simon",
             specialty: "NHI KHOA",
             level: "level"
           }
@@ -135,11 +179,40 @@ export default {
 <style lang="scss" scoped>
 $color-pack: false;
 .doctor-room {
-  margin-left: 50px;
+  margin-left: 25px;
+  font-size: 14px;
 }
 .panel-header {
   border-style: solid;
   border-color: #ffdfcc;
   margin: 1px;
+  border-radius: 5px;
+}
+.toolbar-custom::-webkit-scrollbar {
+  width: 15px;
+}
+
+.toolbar-custom::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border: solid 3px #e6e6e6;
+  border-radius: 7px;
+}
+
+.toolbar-custom::-webkit-scrollbar-thumb:hover {
+  background: #ff9f60;
+  border: solid 3px #ffdfcc;
+}
+
+.toolbar-custom::-webkit-scrollbar {
+  width: 15px;
+}
+
+.dark::-webkit-scrollbar-track {
+  background: #202020;
+  border-left: 1px solid #2c2c2c;
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+  background: white;
 }
 </style>

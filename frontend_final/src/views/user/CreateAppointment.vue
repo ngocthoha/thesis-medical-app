@@ -26,7 +26,7 @@
       </v-row>
     </v-sheet> -->
     <div class="content" style="background-color: #f5f7fa">
-      <v-card width="100%" height="120px" color="#eceefb">
+      <v-card width="100%" height="120px" color="#fff4ee">
         <!-- <v-img v-bind:src="item.icon"> </v-img> -->
         <!-- <strong class="font-weight-black teal--text">
           {{ item.title }}
@@ -36,9 +36,11 @@
             v-bind:src="item.icon"
             max-height="100px"
             max-width="100px"
+            class="mt-2"
           ></v-img>
           <strong
-            class="display-1 ml-5 mt-7 font-weight-black deep-purple--text text-h3"
+            class="display-1 ml-5 mt-7 font-weight-black  text-h3"
+            style="color:#046792"
           >
             {{ item.title }}
           </strong>
@@ -53,7 +55,7 @@
         <v-img height="100px" width="100px" v-bind:src="item.icon"> </v-img>
       </v-footer> -->
       <v-row justify="center">
-        <v-stepper class="my-10" alt-labels style="width:80%">
+        <v-stepper class="my-10 elevation-1" alt-labels style="width:80%">
           <v-stepper-header>
             <v-stepper-step :complete="step.step1" step="1" color="#046792">
               <v-row justify="center">Chọn hồ sơ</v-row>
@@ -120,7 +122,7 @@ export default {
     return {
       item: {
         icon: `${require(`@/assets/img/service/timetable.png`)}`,
-        title: "Đặt lịch khám theo ngày",
+        title: "ĐẶT LỊCH KHÁM THEO NGÀY",
         subChips: ["Tiện lợi", "Nhanh chóng"],
         linkDetails: "",
         color: "#e7f0f5"
