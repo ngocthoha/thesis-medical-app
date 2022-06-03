@@ -16,15 +16,14 @@
             >
               <div class="panel-header">
                 <v-expansion-panel-header>
-                  <div class="md-layout font-weight-bold" style="color:#046792">
+                  <div class="font-weight-bold" style="color:#046792">
                     {{ doctor.doctor.level }}. {{ doctor.doctor.name }}
                   </div>
                 </v-expansion-panel-header>
-                <div class="md-layout doctor-room mb-1">
-                  Phòng {{ doctor.room.name }}
-                </div>
-                <v-expansion-panel-content>
-                  <v-divider></v-divider>
+                <div class="doctor-room mb-1">Phòng {{ doctor.room.name }}</div>
+                <v-expansion-panel-content
+                  style="border-top: solid; border-color: #ffdfcc6e; "
+                >
                   <v-btn-toggle
                     v-model="time_select"
                     v-for="(time, time_index) in doctor.times"
@@ -47,7 +46,7 @@
                     > -->
                     <v-btn
                       elevation="1"
-                      color="#E6F0F5"
+                      color="white"
                       :value="time"
                       style="border:none"
                       class="mt-3 mr-3"
@@ -131,7 +130,7 @@ export default {
           }
         },
         {
-          id: 4,
+          id: 5,
           date: "16",
           room: { name: "H2" },
           times: ["10:00-11:00", "11:00-12:00"],
@@ -143,7 +142,7 @@ export default {
           }
         },
         {
-          id: 4,
+          id: 6,
           date: "16",
           room: { name: "H2" },
           times: ["10:00-11:00", "11:00-12:00"],
@@ -184,8 +183,7 @@ $color-pack: false;
 }
 .panel-header {
   border-style: solid;
-  border-color: #ffdfcc;
-  margin: 1px;
+  border-color: #ffdfcc6e;
   border-radius: 5px;
 }
 .toolbar-custom::-webkit-scrollbar {
@@ -194,13 +192,13 @@ $color-pack: false;
 
 .toolbar-custom::-webkit-scrollbar-thumb {
   background: #b0b0b0;
-  border: solid 3px #e6e6e6;
+  border: solid 3px white;
   border-radius: 7px;
 }
 
 .toolbar-custom::-webkit-scrollbar-thumb:hover {
-  background: #ff9f60;
-  border: solid 3px #ffdfcc;
+  background: #fec3a6;
+  //border: solid 3px #ffdfcc;
 }
 
 .toolbar-custom::-webkit-scrollbar {
@@ -214,5 +212,13 @@ $color-pack: false;
 
 .dark::-webkit-scrollbar-thumb:hover {
   background: white;
+}
+
+.theme--light.v-expansion-panels .v-expansion-panel {
+  background-color: #fff4ee;
+}
+
+.theme--light.v-btn-toggle:not(.v-btn-toggle--group) {
+  background: #fff4ee;
 }
 </style>
