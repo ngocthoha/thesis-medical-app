@@ -1,7 +1,72 @@
 <template>
   <div class="content">
-    <v-footer id="default-footer" absolute app inset>
-      <v-row class="blue darken-1 white--text">
+    <v-footer id="default-footer" absolute app inset padless>
+      <v-col cols="12" class="pa-0">
+        <v-row class="blue darken-1 white--text">
+          <v-col cols="12">
+            <v-row justify="center" class="mt-8 mb-8">
+              <v-col cols="2">
+                <a href="">
+                  <v-img
+                    max-height="72"
+                    max-width="72"
+                    src="@/assets/img/home/2210378.png"
+                    class="mx-auto"
+                  ></v-img>
+                </a>
+              </v-col>
+              <v-col cols="2">
+                <p class="font-weight-bold display-1">TRANG CHÍNH</p>
+                <p><a href="" class="white--text">Trang chủ</a></p>
+                <p><a href="" class="white--text">Quy trình</a></p>
+                <p><a href="" class="white--text">Dịch vụ</a></p>
+                <p><a href="" class="white--text">Liên hệ</a></p>
+              </v-col>
+              <v-col cols="2">
+                <p class="font-weight-bold display-1">THÔNG TIN</p>
+                <p><a href="" class="white--text">Bác sĩ</a></p>
+                <p><a href="" class="white--text">Khám bệnh</a></p>
+                <p><a href="" class="white--text">Chuyên khoa</a></p>
+                <p><a href="" class="white--text">Bài viết</a></p>
+              </v-col>
+              <v-col cols="2">
+                <p class="font-weight-bold display-1">ĐỐI TƯỢNG</p>
+                <p>Bác sĩ</p>
+                <p>Bệnh nhân</p>
+              </v-col>
+              <v-col cols="2">
+                <p class="font-weight-bold display-1">KHÁC</p>
+                <p><a href="" class="white--text">Chính sách bảo mật</a></p>
+                <p><a href="" class="white--text">Điều khoản sử dụng</a></p>
+                <p><a href="" class="white--text">Các thức hoạt động</a></p>
+              </v-col>
+              <v-col cols="2">
+                <p class="font-weight-bold display-1">KẾT NỐI</p>
+                <v-row>
+                  <v-col cols="4">
+                    <a href="https://www.facebook.com/" target="_blank">
+                      <v-img
+                        max-height="36"
+                        max-width="36"
+                        src="@/assets/img/home/Facebook_icon.png"
+                      ></v-img>
+                    </a>
+                  </v-col>
+                  <v-col cols="4">
+                    <a href="https://www.youtube.com/" target="_blank">
+                      <v-img
+                        height="36"
+                        width="36"
+                        src="@/assets/img/home/youtube.png"
+                      ></v-img>
+                    </a>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+          </v-col> </v-row
+      ></v-col>
+      <!-- <v-row class="blue darken-1 white--text">
         <v-col cols="12">
           <v-row justify="center" class="mt-8 mb-8">
             <v-col cols="2">
@@ -64,7 +129,7 @@
             </v-col>
           </v-row>
         </v-col>
-      </v-row>
+      </v-row> -->
       <v-row justify="center" class="blue darken-3 white--text">
         <v-col cols="10">
           <v-row justify="center" class="mt-8 mb-8">
