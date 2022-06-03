@@ -113,42 +113,42 @@ export default {
           title: "Đặt lịch khám theo ngày",
           subChips: ["Tiện lợi", "Nhanh chóng"],
           linkDetails: "/home/user/create-appoinment",
-          color: "#e7f0f5"
+          color: "#fff4ee"
         },
         {
           icon: `${require(`@/assets/img/service/doctor.png`)}`,
           title: "Đặt lịch khám theo bác sĩ",
           subChips: ["Phù hợp", "Tin tưởng"],
           linkDetails: "",
-          color: "#f6f5f2"
+          color: "#fff4ee"
         },
         {
           icon: `${require(`@/assets/img/service/health-check.png`)}`,
           title: "Lịch sử đặt khám",
           subChips: ["Dễ quản lý", "Tiện lợi"],
           linkDetails: "",
-          color: "#f6f5f2"
+          color: "#fff4ee"
         },
         {
           icon: `${require(`@/assets/img/service/online-class.png`)}`,
           title: "Khám bệnh trực tuyến",
           subChips: ["Trực tiếp", "Hiệu quả"],
           linkDetails: "",
-          color: "#fcf0e4"
+          color: "#fff4ee"
         },
         {
           icon: `${require(`@/assets/img/service/event.png`)}`,
           title: "Theo dõi bệnh án",
           subChips: ["Tiến trình", "Lịch sử"],
           linkDetails: "",
-          color: "#f4f6f7"
+          color: "#fff4ee"
         },
         {
           icon: `${require(`@/assets/img/service/book-stack.png`)}`,
           title: "Tìm hiểu về bệnh",
           subChips: ["Bài viết", "Chuẩn đoán"],
           linkDetails: "",
-          color: "#eefafb"
+          color: "#fff4ee"
         }
       ]
     };
