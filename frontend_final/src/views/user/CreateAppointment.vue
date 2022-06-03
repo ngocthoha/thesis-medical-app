@@ -54,7 +54,7 @@
       <!-- <v-footer width="100%" height="100px" color="#eceefb">
         <v-img height="100px" width="100px" v-bind:src="item.icon"> </v-img>
       </v-footer> -->
-      <v-row justify="center">
+      <v-row justify="center" :id="'steppersection'">
         <v-stepper class="my-10 elevation-1" alt-labels style="width:80%">
           <v-stepper-header>
             <v-stepper-step :complete="step.step1" step="1" color="#046792">
@@ -144,6 +144,14 @@ export default {
     };
   },
 
+  mounted() {
+    this.scroll("steppersection");
+  },
+
+  updated() {
+    this.scroll("steppersection");
+  },
+
   methods: {
     profileShow() {
       this.show.profile_patient = false;
@@ -175,6 +183,17 @@ export default {
         this.show.doctor = false;
         this.show.opd = true;
       }
+    },
+
+    scroll(id) {
+      // document.getElementById(id).scrollIntoView({
+      //   behavior: "smooth"
+      // });
+      const yOffset = -50;
+      const element = document.getElementById(id);
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   }
 };
