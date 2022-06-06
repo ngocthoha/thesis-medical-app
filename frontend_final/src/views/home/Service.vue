@@ -7,8 +7,8 @@
 </style>
 
 <template>
-  <div class="content" style="background-color: white">
-    <v-row justify="center">
+  <div class="py-16" style="background-color: white">
+    <v-row justify="center" class="py-6">
       <v-col cols="10">
         <v-row>
           <v-col cols="4">
@@ -50,7 +50,7 @@
               <v-col cols="4" v-for="(item, i) in lstCards" :key="i">
                 <v-hover v-slot="{ hover }">
                   <v-card
-                    :elevation="hover ? 16 : 2"
+                    :elevation="hover ? 16 : 1"
                     :class="{ 'on-hover': hover }"
                     width="300px"
                     height="300px"
@@ -65,7 +65,8 @@
                       >
                       </v-img>
                       <p
-                        class="display-1 py-4 my-0 font-weight-black teal--text"
+                        class="display-1 py-4 my-0 font-weight-black"
+                        style="color: #046792"
                       >
                         {{ item.title }}
                       </p>
@@ -81,12 +82,14 @@
                       </p>
                       <v-btn
                         rounded
-                        color="amber lighten-1"
+                        color="#ffc8ddb8"
                         dark
                         width="100%"
                         large
                         class="font-weight-bold"
                         plain
+                        elevation="1"
+                        style="color: #5e548e"
                         @click="GoToSerive(item.linkDetails)"
                       >
                         Tìm hiểu thêm

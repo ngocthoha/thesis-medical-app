@@ -103,19 +103,24 @@
             width="184px"
             height="84px"
             hover="true"
-            style="
-              background: linear-gradient(180deg, #ffdfcc 0%, #ffeee6 100%);
-            "
+            color="#ffeedd"
+           
           >
-            <strong
+          <v-row justify="center" class="mt-2">
+            <p
               class="font-weight-medium ml-2"
               style="color: #046792; font-size: 16px"
-              >{{ item.head }}</strong
-            ><br /><strong
+              >{{ item.head }}</p
+            >
+          </v-row>
+          <v-row  justify="center" class="mb-1">
+             <p
               class="font-weight-regular ml-2"
               style="color: #046792; font-size: 16px"
-              >{{ item.body }}</strong
+              >{{ item.body }}</p
             >
+          </v-row>
+           
           </v-card></v-row
         >
       </v-col>
@@ -168,7 +173,7 @@
                         <br />
                         <v-row justify="center" class="mt-2">
                           <strong
-                            class="font-weight-regular ml-2"
+                            class="font-weight-bold ml-2"
                             style="color: #046792; font-size: 16px"
                             >{{ card_list_2[+index + i].label }}</strong
                           >
