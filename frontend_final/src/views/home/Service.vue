@@ -82,14 +82,14 @@
                       </p>
                       <v-btn
                         rounded
-                        color="#ffc8ddb8"
+                        color="#f8ad9d82"
                         dark
                         width="100%"
                         large
                         class="font-weight-bold"
                         plain
                         elevation="1"
-                        style="color: #5e548e"
+                        style="color: #6c584cc4"
                         @click="GoToSerive(item.linkDetails)"
                       >
                         Tìm hiểu thêm
