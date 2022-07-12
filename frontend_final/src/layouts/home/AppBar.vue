@@ -4,7 +4,7 @@
     app
     color="#DCF5FF"
     height="70"
-    elevate-on-scroll
+    elevation="1"
     scroll-target="#scrolling-techniques-7"
   >
     <!-- <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer" /> -->
@@ -22,7 +22,7 @@
           text
           rounded
           class="my-2"
-          @click="getpage(link.name)"
+          @click="getpage(link)"
         >
           <strong style="font-size:14px">{{ link.label }}</strong>
         </v-btn>
@@ -89,7 +89,7 @@ export default {
     links: [
       {
         label: "Trang chủ",
-        name: "home"
+        name: "Trang chủ"
       },
       {
         label: "Giới thiệu",
@@ -101,7 +101,8 @@ export default {
       },
       {
         label: "Dịch vụ",
-        name: "Dịch vụ"
+        name: "Dịch vụ",
+        path: "/service"
       },
       {
         label: "Liên hệ",
@@ -116,6 +117,16 @@ export default {
     },
     signup() {
       this.$router.push({ name: "Đăng ký" });
+    },
+    async getpage(link) {
+      this.$router.push({ name: link.name }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     }
   }
 };

@@ -1,6 +1,6 @@
 <template>
   <v-main>
-    <v-container fluid>
+    <v-container fluid style="height:100vh;">
       <router-view :key="$route.path" />
     </v-container>
   </v-main>

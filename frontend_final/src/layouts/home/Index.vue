@@ -2,6 +2,7 @@
   <v-app>
     <default-bar />
     <default-view />
+    <default-footer />
   </v-app>
 </template>
 

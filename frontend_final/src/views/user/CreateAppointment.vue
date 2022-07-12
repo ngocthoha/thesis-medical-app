@@ -1,5 +1,214 @@
 <template>
-  <div class="content" style="background-color: white">
-    Create appointment
-  </div>
+  <v-app>
+    <!-- <v-sheet width="100%" color="#f8f9fd">
+      <v-row justify="center">
+        <v-slide-group show-arrows>
+          <v-slide-item v-for="(item, index) in links" :key="index">
+            <div>
+              <v-card
+                color="#eceefb"
+                class="pa-2 mx-10 mb-5"
+                height="100px"
+                width="100px"
+                hover="true"
+                ><v-row justify="center"
+                  ><v-icon large color="purple darken-2" class="my-5">
+                    mdi-arrow-up-bold-box-outline</v-icon
+                  ></v-row
+                ></v-card
+              >
+              <v-row justify="center" style="font-size: 11px">{{
+                item.name
+              }}</v-row>
+            </div>
+          </v-slide-item>
+        </v-slide-group>
+      </v-row>
+    </v-sheet> -->
+    <div class="content" style="background-color: #f5f7fa">
+      <v-card width="100%" height="120px" color="#fff4ee">
+        <!-- <v-img v-bind:src="item.icon"> </v-img> -->
+        <!-- <strong class="font-weight-black teal--text">
+          {{ item.title }}
+        </strong> -->
+        <v-row justify="center">
+          <v-img
+            v-bind:src="item.icon"
+            max-height="100px"
+            max-width="100px"
+            class="mt-2"
+          ></v-img>
+          <strong
+            class="display-1 ml-5 mt-7 font-weight-black  text-h3"
+            style="color:#046792"
+          >
+            {{ item.title }}
+          </strong>
+          <!-- <v-img height="100px" width="100px" v-bind:src="item.icon"> </v-img> -->
+          <!-- <v-img height="100px" width="100px" v-bind:src="item.icon"> </v-img>
+          <strong class="display-1 py-4 my-0 font-weight-black teal--text">
+            {{ item.title }}
+          </strong> -->
+        </v-row>
+      </v-card>
+      <!-- <v-footer width="100%" height="100px" color="#eceefb">
+        <v-img height="100px" width="100px" v-bind:src="item.icon"> </v-img>
+      </v-footer> -->
+      <v-row justify="center" :id="'steppersection'">
+        <v-stepper class="my-10 elevation-1" alt-labels style="width:80%">
+          <v-stepper-header>
+            <v-stepper-step :complete="step.step1" step="1" color="#046792">
+              <v-row justify="center">Chọn hồ sơ</v-row>
+            </v-stepper-step>
+
+            <v-spacer />
+
+            <v-stepper-step :complete="step.step2" step="2" color="#046792">
+              Chọn ngày khám
+            </v-stepper-step>
+
+            <v-spacer />
+
+            <v-stepper-step :complete="step.step3" step="3" color="#046792">
+              Chọn chuyên khoa khám
+            </v-stepper-step>
+            <v-spacer />
+
+            <v-stepper-step :complete="step.step4" step="4" color="#046792">
+              Chọn bác sĩ và khung giờ khám
+            </v-stepper-step>
+          </v-stepper-header>
+        </v-stepper>
+      </v-row>
+      <Transition name="slide-fade">
+        <div v-if="this.show.profile_patient">
+          <select-profile-patient
+            @select-complete="profileShow"
+          ></select-profile-patient>
+        </div>
+      </Transition>
+      <Transition name="slide-fade">
+        <div v-show="this.show.date">
+          <select-date ref="select-date" @back-to="dateShow"></select-date>
+        </div>
+      </Transition>
+      <Transition name="slide-fade">
+        <div v-show="this.show.opd">
+          <SelectOPD @invisible="opdShow"></SelectOPD>
+        </div>
+      </Transition>
+      <Transition name="slide-fade">
+        <div v-show="this.show.doctor">
+          <SelectDoctor @invisible="doctorShow"></SelectDoctor>
+        </div>
+      </Transition>
+    </div>
+  </v-app>
 </template>
+
+<script>
+import SelectProfilePatient from "./component/SelectProfilePatient.vue";
+import SelectDate from "./component/SelectDate.vue";
+import SelectOPD from "./component/SelectOPD.vue";
+import SelectDoctor from "./component/SelectDoctor.vue";
+export default {
+  components: {
+    SelectProfilePatient,
+    SelectDate,
+    SelectOPD,
+    SelectDoctor
+  },
+  data() {
+    return {
+      item: {
+        icon: `${require(`@/assets/img/service/timetable.png`)}`,
+        title: "ĐẶT LỊCH KHÁM THEO NGÀY",
+        subChips: ["Tiện lợi", "Nhanh chóng"],
+        linkDetails: "",
+        color: "#e7f0f5"
+      },
+
+      step: {
+        step1: false,
+        step2: false,
+        step3: false,
+        step4: false,
+        step5: false
+      },
+      show: {
+        profile_patient: true,
+        date: false,
+        opd: false,
+        doctor: false
+      }
+    };
+  },
+
+  mounted() {
+    this.scroll("steppersection");
+  },
+
+  updated() {
+    this.scroll("steppersection");
+  },
+
+  methods: {
+    profileShow() {
+      this.show.profile_patient = false;
+      this.show.date = true;
+    },
+
+    dateShow(isNext) {
+      if (isNext) {
+        this.show.date = false;
+        this.show.opd = true;
+      } else {
+        this.show.date = false;
+        this.show.profile_patient = true;
+      }
+    },
+    opdShow(isNext) {
+      if (isNext) {
+        this.show.opd = false;
+        this.show.doctor = true;
+      } else {
+        this.show.opd = false;
+        this.show.date = true;
+      }
+    },
+    doctorShow(isNext) {
+      if (isNext) {
+        this.show.doctor = false;
+      } else {
+        this.show.doctor = false;
+        this.show.opd = true;
+      }
+    },
+
+    scroll(id) {
+      // document.getElementById(id).scrollIntoView({
+      //   behavior: "smooth"
+      // });
+      const yOffset = -50;
+      const element = document.getElementById(id);
+      const y =
+        element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  }
+};
+</script>
+
+<style scoped>
+.slide-fade-enter-active {
+  transition: all 1s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.3s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+</style>

@@ -103,19 +103,24 @@
             width="184px"
             height="84px"
             hover="true"
-            style="
-              background: linear-gradient(180deg, #ffdfcc 0%, #ffeee6 100%);
-            "
+            color="#ffeedd"
+           
           >
-            <strong
+          <v-row justify="center" class="mt-2">
+            <p
               class="font-weight-medium ml-2"
               style="color: #046792; font-size: 16px"
-              >{{ item.head }}</strong
-            ><br /><strong
+              >{{ item.head }}</p
+            >
+          </v-row>
+          <v-row  justify="center" class="mb-1">
+             <p
               class="font-weight-regular ml-2"
               style="color: #046792; font-size: 16px"
-              >{{ item.body }}</strong
+              >{{ item.body }}</p
             >
+          </v-row>
+           
           </v-card></v-row
         >
       </v-col>
@@ -168,7 +173,7 @@
                         <br />
                         <v-row justify="center" class="mt-2">
                           <strong
-                            class="font-weight-regular ml-2"
+                            class="font-weight-bold ml-2"
                             style="color: #046792; font-size: 16px"
                             >{{ card_list_2[+index + i].label }}</strong
                           >
@@ -216,7 +221,7 @@
       </v-row>
     </v-footer>
 
-  <v-footer>
+  <!-- <v-footer>
     <v-row justify="center" class="mt-9 mb-9">
       <v-col cols="2 mr-5" >
         <v-row justify="center "><p class="body-1 font-weight-bold blue--text">Về trang web</p> </v-row>
@@ -247,7 +252,7 @@
         <v-row justify="center"><p class="text-justify body-1">Địa chỉ: 22 abc Dĩ An Bình Dương</p></v-row>
       </v-col>
     </v-row>
-  </v-footer>
+  </v-footer> -->
   </div>
   </v-app>
 </template>

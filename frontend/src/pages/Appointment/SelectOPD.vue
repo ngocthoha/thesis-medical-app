@@ -87,9 +87,9 @@ export default {
   },
   computed: {
     filteredList() {
-      return this.OPDList.filter((OPD) => {
-        return OPD.name.toLowerCase().includes(this.search.toLowerCase());
-      });
+      return this.OPDList.filter(OPD =>
+        OPD.name.toLowerCase().includes(this.search.toLowerCase());
+      );
     },
   },
   methods: {
