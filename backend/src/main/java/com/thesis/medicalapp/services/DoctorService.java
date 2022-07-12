@@ -9,4 +9,5 @@ import java.util.List;
 public interface DoctorService {
     List<UserDoctorDTO> getDoctors();
     Doctor findDoctorById(String id);
+    List<UserDoctorDTO> getDoctorsBySpecialty(String specialty);
 }

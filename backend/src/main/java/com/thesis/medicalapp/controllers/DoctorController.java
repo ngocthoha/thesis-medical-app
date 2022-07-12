@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -22,6 +23,19 @@ public class DoctorController {
     public ResponseEntity<ApiResponse> getDoctors() {
         try {
             List<UserDoctorDTO> doctors = doctorService.getDoctors();
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "Success", doctors)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
+    }
+    @GetMapping("/doctors/specialty")
+    public ResponseEntity<ApiResponse> getDoctorsBySpecialty(@RequestParam String specialty) {
+        try {
+            List<UserDoctorDTO> doctors = doctorService.getDoctorsBySpecialty(specialty);
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ApiResponse<>(1, "Success", doctors)
             );

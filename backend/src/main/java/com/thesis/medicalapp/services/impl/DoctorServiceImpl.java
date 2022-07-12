@@ -34,4 +34,15 @@ public class DoctorServiceImpl implements DoctorService {
     public Doctor findDoctorById(String id) {
         return doctorRepository.findDoctorById(id);
     }
+    @Override
+    public List<UserDoctorDTO> getDoctorsBySpecialty(String specialty) {
+        List<Doctor> doctors = doctorRepository.findAllBySpecialty(specialty)
+                .stream().collect(Collectors.toList());
+        List<UserDoctorDTO> doctorDTOS = doctors.stream().map(d -> {
+            UserDoctorDTO doctorDTO = UserDoctorDTO.from(d);
+            return doctorDTO;
+        }).collect(Collectors.toList());
+
+        return doctorDTOS;
+    }
 }
