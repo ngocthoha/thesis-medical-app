@@ -24,12 +24,9 @@ public class AppointmentDTO {
     private Date date;
     private String time;
     private String symptom;
-    private String description;
-    private String timeSituation;
-    private Boolean selfTreatment;
     private Collection<File> files;
     private String status;
-    private Date createdDate;
+    private Boolean isOnline;
 
     public static AppointmentDTO from(Appointment appointment) {
         return AppointmentDTO.builder()
@@ -41,12 +38,9 @@ public class AppointmentDTO {
                 .date(appointment.getDate())
                 .time(appointment.getTime())
                 .symptom(appointment.getSymptom())
-                .description(appointment.getDescription())
-                .timeSituation(appointment.getTimeSituation())
-                .selfTreatment(appointment.getSelfTreatment())
                 .files(appointment.getFiles())
                 .status(appointment.getStatus())
-                .createdDate(appointment.getCreatedDate())
+                .isOnline(appointment.getIsOnline())
                 .build();
     }
 }

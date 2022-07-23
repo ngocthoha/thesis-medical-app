@@ -32,14 +32,14 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = new Profile();
         profile.setName(profileDTO.getName());
         profile.setAddress(profileDTO.getAddress());
-        profile.setPhoneNumber(profileDTO.getPhoneNumber());
+        profile.setPhone(profileDTO.getPhone());
         profile.setJob(profileDTO.getJob());
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
         profile.setGender(profileDTO.getGender());
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
-        profile.setProtector(profileDTO.getProtector());
+        profile.setGuardian(profileDTO.getGuardian());
         User user = userRepository.findByUsername(Global.user.getUsername());
         profile.setUser(user);
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
@@ -79,14 +79,14 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = profileRepository.findById(profileDTO.getId());
         profile.setName(profileDTO.getName());
         profile.setJob(profileDTO.getJob());
-        profile.setPhoneNumber(profileDTO.getPhoneNumber());
+        profile.setPhone(profileDTO.getPhone());
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGender(profileDTO.getGender());
         profile.setAddress(profileDTO.getAddress());
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
-        profile.setProtector(profileDTO.getProtector());
+        profile.setGuardian(profileDTO.getGuardian());
         profileRepository.save(profile);
     }
     @Override

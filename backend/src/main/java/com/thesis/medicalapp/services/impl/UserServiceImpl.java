@@ -16,9 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -104,5 +102,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return userDTO;
         }).collect(Collectors.toList());
         return userDTOS;
+    }
+
+    @Override
+    public UserDTO partialUpdateUser(String id, UserDTO userDTO) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(!optionalUser.isPresent()) {
+           throw new UsernameNotFoundException("User id not found!");
+        }
+        User user = optionalUser.get();
+        if (userDTO.getName() != null)
+            user.setName(userDTO.getName());
+        if (userDTO.getEmail() != null)
+            user.setEmail(userDTO.getEmail());
+        if (userDTO.getAddress() != null)
+            user.setAddress(userDTO.getAddress());
+        if (userDTO.getDob() != null)
+            user.setDob(userDTO.getDob());
+        if (userDTO.getImageUrl() != null)
+            user.setImageUrl(userDTO.getImageUrl());
+        if (userDTO.getPhone() != null)
+            user.setPhone(userDTO.getPhone());
+        userRepository.save(user);
+        return UserDTO.from(user);
     }
 }

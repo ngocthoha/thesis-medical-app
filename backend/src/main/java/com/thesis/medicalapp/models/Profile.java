@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
-public class Profile {
+public class Profile extends AuditLog{
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -22,15 +22,18 @@ public class Profile {
     private Long profileNumber;
     private String name;
     private String address;
-    private String phoneNumber;
+    private String phone;
     private Date dob;
     private String job;
     private String identityCard;
     private String healthInsurance;
     private String folk;
     private String gender;
-    private String protector;
-    @ManyToOne
+    private String guardian;
+    private String guardianPhone;
+    private String guardianIdentityCard;
+    private String relationship;
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 }

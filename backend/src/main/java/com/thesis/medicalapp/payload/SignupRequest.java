@@ -19,6 +19,7 @@ public class SignupRequest {
     private final String address;
     private final String phoneNumber;
     private final String dob;
+    private final String imageLink;
     private final String specialty;
     private final String level;
     private final String role;

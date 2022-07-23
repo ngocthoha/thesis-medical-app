@@ -16,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "appointments")
-public class Appointment {
+public class Appointment extends AuditLog{
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -28,9 +28,6 @@ public class Appointment {
     private Date date;
     private String time;
     private String symptom;
-    private String description;
-    private String timeSituation;
-    private Boolean selfTreatment;
     @ManyToOne
     @JoinColumn(name = "profile_id")
     private Profile profile;
@@ -41,5 +38,5 @@ public class Appointment {
     @Fetch(value= FetchMode.SELECT)
     private Collection<File> files;
     private String status;
-    private Date createdDate;
+    private Boolean isOnline;
 }

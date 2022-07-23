@@ -17,14 +17,17 @@ public class ProfileDTO {
     private Long profileNumber;
     private String name;
     private String address;
-    private String phoneNumber;
+    private String phone;
     private Date dob;
     private String job;
     private String identityCard;
     private String healthInsurance;
     private String folk;
     private String gender;
-    private String protector;
+    private String guardian;
+    private String guardianPhone;
+    private String guardianIdentityCard;
+    private String relationship;
 
     public static ProfileDTO from(Profile profile) {
         return ProfileDTO.builder()
@@ -32,14 +35,17 @@ public class ProfileDTO {
                 .profileNumber(profile.getProfileNumber())
                 .name(profile.getName())
                 .address(profile.getAddress())
-                .phoneNumber(profile.getPhoneNumber())
+                .phone(profile.getPhone())
                 .dob(profile.getDob())
                 .job(profile.getJob())
                 .identityCard(profile.getIdentityCard())
                 .healthInsurance(profile.getHealthInsurance())
                 .folk(profile.getFolk())
                 .gender(profile.getGender())
-                .protector(profile.getProtector())
+                .guardian(profile.getGuardian())
+                .guardianPhone(profile.getGuardianPhone())
+                .guardianIdentityCard(profile.getGuardianIdentityCard())
+                .relationship(profile.getRelationship())
                 .build();
     }
 }

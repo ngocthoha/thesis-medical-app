@@ -9,6 +9,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 
 @Data
@@ -33,7 +34,7 @@ public class RecordDTO {
     private String facultyTreatment;
     private Collection<Medicine> medicines;
     private String notes;
-    private Date reExaminationDate;
+    private List<Date> reExaminationDate;
     private Collection<File> files;
     private Date createdDate;
 

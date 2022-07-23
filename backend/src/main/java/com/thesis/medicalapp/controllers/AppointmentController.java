@@ -25,6 +25,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class AppointmentController {
     private final AppointmentService appointmentService;
     private final ProfileService profileService;
@@ -64,9 +65,6 @@ public class AppointmentController {
                 appointment.setRoom(scheduleDTO.getRoom());
                 appointment.setTime(time);
                 appointment.setSymptom(symptom);
-                appointment.setDescription(description);
-                appointment.setTimeSituation(timeSituation);
-                appointment.setSelfTreatment(selfTreatment);
                 appointment.setFiles(new ArrayList<>());
                 if (null != files) {
                     Arrays.asList(files).stream().forEach(file -> {
@@ -79,7 +77,6 @@ public class AppointmentController {
                     });
                 }
                 appointment.setStatus("ACTIVE");
-                appointment.setCreatedDate(new Date());
                 AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
                 return ResponseEntity.status(HttpStatus.OK).body(
                         new ApiResponse(1, "Success", appointmentDTO)
@@ -116,9 +113,6 @@ public class AppointmentController {
             @RequestParam("date") Date date,
             @RequestParam("time") String time,
             @RequestParam(name = "symptom", required = false) String symptom,
-            @RequestParam(name = "description", required = false) String description,
-            @RequestParam(name = "timeSituation", required = false) String timeSituation,
-            @RequestParam(name = "selfTreatment", required = false) Boolean selfTreatment,
             @RequestParam(name = "files", required = false) MultipartFile[] files,
             @RequestParam(name = "deleteFile", required = false) String fileId,
             @RequestParam(name = "status", required = false) String status
@@ -134,9 +128,6 @@ public class AppointmentController {
                 appointment.setProfile(profile);
                 appointment.setDoctor(doctor);
                 appointment.setSymptom(symptom);
-                appointment.setDescription(description);
-                appointment.setTimeSituation(timeSituation);
-                appointment.setSelfTreatment(selfTreatment);
                 appointment.setStatus(status);
                 if (null != files) {
                     Arrays.asList(files).stream().forEach(file -> {

@@ -1,6 +1,7 @@
 package com.thesis.medicalapp.services.impl;
 
 import com.thesis.medicalapp.models.Record;
+import com.thesis.medicalapp.pojo.ProfileDTO;
 import com.thesis.medicalapp.pojo.RecordDTO;
 import com.thesis.medicalapp.repository.RecordRepository;
 import com.thesis.medicalapp.services.RecordService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -20,7 +22,13 @@ public class RecordServiceImpl implements RecordService {
     private final RecordRepository recordRepository;
     @Override
     public List<RecordDTO> getRecords() {
-        List<RecordDTO> recordDTOS = new ArrayList<>();
+        List<Record> records = recordRepository.findAll()
+                .stream()
+                .collect(Collectors.toList());
+        List<RecordDTO> recordDTOS = records.stream().map(p -> {
+            RecordDTO recordDTO = RecordDTO.from(p);
+            return recordDTO;
+        }).collect(Collectors.toList());
         return recordDTOS;
     }
 

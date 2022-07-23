@@ -84,13 +84,17 @@ public class RecordController {
                 });
             }
             record.setNotes(notes);
-            Date dateFormat = new Date();
-            try {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(reExaminationDate);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
+            record.setReExaminationDate(new ArrayList<>());
+            if (null != reExaminationDate) {
+                Date dateFormat = new Date();
+                try {
+                    dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(reExaminationDate);
+                    record.getReExaminationDate().add(dateFormat);
+                    appointment.setDate(dateFormat);
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                }
             }
-            record.setReExaminationDate(dateFormat);
             record.setFiles(new ArrayList<>());
             if (null != files) {
                 Arrays.asList(files).stream().forEach(file -> {

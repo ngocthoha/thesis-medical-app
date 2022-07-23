@@ -19,7 +19,7 @@ public class UserDoctorDTO {
     private String name;
     private String email;
     private String address;
-    private String phoneNumber;
+    private String phone;
     private Date dob;
     private String specialty;
     private String level;
@@ -31,7 +31,7 @@ public class UserDoctorDTO {
                 .name(doctor.getName())
                 .email(doctor.getEmail())
                 .address(doctor.getAddress())
-                .phoneNumber(doctor.getPhoneNumber())
+                .phone(doctor.getPhone())
                 .dob(doctor.getDob())
                 .specialty(doctor.getSpecialty())
                 .level(doctor.getLevel())

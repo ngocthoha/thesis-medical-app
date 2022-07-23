@@ -8,6 +8,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -38,7 +39,8 @@ public class Record {
     @OneToMany
     private Collection<Medicine> medicines;
     private String notes;
-    private Date reExaminationDate;
+    @ElementCollection
+    private List<Date> reExaminationDate;
     @OneToMany
     private Collection<File> files;
     private Date createdDate;

@@ -34,6 +34,7 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UserController {
     private final UserService userService;
     @GetMapping("/users/all")
@@ -96,7 +97,8 @@ public class UserController {
                     signupRequest.getAddress(),
                     signupRequest.getPhoneNumber(),
                     dateFormat,
-                    new ArrayList<>()
+                    new ArrayList<>(),
+                    null
             );
         } else {
             user = new Doctor(
@@ -109,8 +111,10 @@ public class UserController {
                     signupRequest.getPhoneNumber(),
                     dateFormat,
                     new ArrayList<>(),
+                    null,
                     signupRequest.getSpecialty(),
-                    signupRequest.getLevel()
+                    signupRequest.getLevel(),
+                    null
             );
         }
         userService.saveUser(user);
@@ -118,6 +122,20 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(1, "User registered successfully!", null)
         );
+    }
+
+    @PatchMapping(value ="/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> partialUpdateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        try {
+            UserDTO userRes = userService.partialUpdateUser(id, userDTO);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>(1, "User updated successfully!", userRes)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse(0, e.getMessage(), null)
+            );
+        }
     }
 
     @PostMapping("/role/save")

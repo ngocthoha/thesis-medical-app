@@ -18,8 +18,9 @@ public class UserDTO {
     private String name;
     private String email;
     private String address;
-    private String phoneNumber;
+    private String phone;
     private Date dob;
+    private String imageUrl;
 
     public static UserDTO from(User user) {
         return UserDTO.builder()
@@ -28,8 +29,9 @@ public class UserDTO {
                 .name(user.getName())
                 .email(user.getEmail())
                 .address(user.getAddress())
-                .phoneNumber(user.getPhoneNumber())
+                .phone(user.getPhone())
                 .dob(user.getDob())
+                .imageUrl(user.getImageUrl())
                 .build();
     }
 }

@@ -15,6 +15,9 @@ public class DoctorDTO {
     private String name;
     private String specialty;
     private String level;
+    private String bio;
+    private Integer registrationNumber;
+    private String price;
 
     public static DoctorDTO from(Doctor doctor){
         return DoctorDTO.builder()
@@ -22,6 +25,9 @@ public class DoctorDTO {
                 .name(doctor.getName())
                 .specialty(doctor.getSpecialty())
                 .level(doctor.getLevel())
+                .bio(doctor.getBio())
+                .registrationNumber(doctor.getRegistrationNumber())
+                .price(doctor.getPrice())
                 .build();
     }
 }

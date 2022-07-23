@@ -1062,17 +1062,17 @@ export default {
           timed: false,
           time: this.schedules[i].times
         });
-        if (this.appointmentInSchedule[this.schedules[i].date].length) {
-          let number = this.appointmentInSchedule[this.schedules[i].date]
-            .length;
-          events.push({
-            name: `${number} Lịch hẹn`,
-            start: this.schedules[i].date,
-            end: this.schedules[i].date,
-            color: "orange",
-            timed: false
-          });
-        }
+        // if (this.appointmentInSchedule[this.schedules[i].date].length) {
+        //   let number = this.appointmentInSchedule[this.schedules[i].date]
+        //     .length;
+        //   events.push({
+        //     name: `${number} Lịch hẹn`,
+        //     start: this.schedules[i].date,
+        //     end: this.schedules[i].date,
+        //     color: "orange",
+        //     timed: false
+        //   });
+        // }
       }
       this.events = events;
     },
