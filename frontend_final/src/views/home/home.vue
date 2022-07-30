@@ -314,12 +314,12 @@ export default {
       {
         image: require("@/assets/img/home/home_icon2.png"),
         label: "Cơ - Xương - Khớp",
-       name: "Cơ - Xương - Khớp",
+        name: "Cơ - Xương - Khớp",
       },
       {
         image: require("@/assets/img/home/home_icon3.png"),
         label: "Nhi khoa",
-          name: "Nhi khoa",
+        name: "Nhi khoa",
       },
       {
         image: require("@/assets/img/home/home_icon4.png"),

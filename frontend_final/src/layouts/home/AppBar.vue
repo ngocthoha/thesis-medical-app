@@ -39,7 +39,7 @@
 
     <default-account /> -->
 
-    <v-btn color="#046792" rounded class="my-2 white--text" @click="login">
+    <v-btn color="#046792" rounded class="my-2 white--text mr-1" @click="login">
       Đăng nhập
     </v-btn>
     <v-btn color="#046792" rounded class="my-2 white--text" @click="signup">
