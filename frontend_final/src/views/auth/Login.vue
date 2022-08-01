@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div style="height: 100%">
+    <!-- <div style="height: 100%">
       <v-container fluid full-height style="height: 100%">
         <v-row justify="center">
           <v-col class="d-flex justify-end" cols="12" sm="8" md="4">
@@ -65,6 +65,24 @@
           </v-col>
         </v-row>
       </v-container>
+    </div> -->
+    <div
+      style="height: 100%; background: linear-gradient(268.58deg, #DCF5FF 2.14%, rgba(220, 245, 255, 0) 98.24%);"
+    >
+      <v-col cols="12" class="fill-height">
+        <v-row class="fill-height">
+          <v-col cols="6" class="d-flex align-center mb-6">
+            <div>
+              <v-img
+                src="@/assets/img/auth/image1-login.png"
+                max-height="400px"
+                max-width="620px"
+              ></v-img>
+            </div>
+          </v-col>
+          <v-col cols="6"> </v-col>
+        </v-row>
+      </v-col>
     </div>
   </v-app>
 </template>
