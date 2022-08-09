@@ -2,10 +2,8 @@
   <v-responsive aspect-ratio="18:1">
     <v-app-bar
       id="default-app-bar"
-      app
       color="white"
-      elevation="1"
-      class="px-18 py-80"
+      height="80px"
       scroll-target="#scrolling-techniques-7"
     >
       <!-- <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer" /> -->
@@ -51,7 +49,20 @@
       <v-btn color="#046792" rounded class="my-2 white--text" @click="signup">
         Đăng ký
       </v-btn> -->
-      <div style="padding: "></div>
+      <v-row justify="center" class="my-3 mx-16">
+        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+          >Trang chủ</v-btn
+        >
+        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+          >Đặt lịch</v-btn
+        >
+        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+          >Chuyên khoa</v-btn
+        >
+        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+          >Cộng đồng</v-btn
+        >
+      </v-row>
     </v-app-bar>
   </v-responsive>
 </template>
@@ -139,3 +150,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.btn {
+  text-transform: none;
+}
+</style>
