@@ -50,17 +50,71 @@
         Đăng ký
       </v-btn> -->
       <v-row justify="center" class="my-3 mx-16">
+        <v-spacer />
         <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
           >Trang chủ</v-btn
         >
-        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+        <v-menu offset-y open-on-hover content-class="elevation-1">
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="#667085"
+              elevation="0"
+              class="text-body-1 btn"
+              text
+              v-bind="attrs"
+              v-on="on"
+            >
+              Đặt lịch <v-icon right>mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+          <div style="background-color: white">
+            <v-hover v-slot="{ hover }">
+              <v-card
+                :elevation="hover ? 1 : 0"
+                class="mt-4 mx-4"
+                width="296px"
+                height="92px"
+                >hello</v-card
+              >
+            </v-hover>
+            <v-hover v-slot="{ hover }">
+              <v-card
+                :elevation="hover ? 1 : 0"
+                class="mt-1 mx-4"
+                width="296px"
+                height="92px"
+                >hello</v-card
+              >
+            </v-hover>
+            <v-hover v-slot="{ hover }">
+              <v-card
+                :elevation="hover ? 1 : 0"
+                class="mt-1 mx-4 mb-4"
+                width="296px"
+                height="92px"
+                >hello</v-card
+              >
+            </v-hover>
+          </div>
+        </v-menu>
+        <!-- <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
           >Đặt lịch</v-btn
-        >
+        > -->
         <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
           >Chuyên khoa</v-btn
         >
         <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
           >Cộng đồng</v-btn
+        >
+        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+          >Cẩm nang</v-btn
+        >
+        <v-spacer />
+        <v-btn color="#667085" elevation="0" class="mr-3 text-body-1 btn" text
+          >Đăng nhập</v-btn
+        >
+        <v-btn color="#537DA5" elevation="0" class="text-body-1 btn white--text"
+          >Đăng ký</v-btn
         >
       </v-row>
     </v-app-bar>
