@@ -51,7 +51,11 @@
       </v-btn> -->
       <v-row justify="center" class="my-3 mx-16">
         <v-spacer />
-        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+        <v-btn
+          color="#667085"
+          elevation="0"
+          class="font-weight-medium text-body-1 btn"
+          text
           >Trang chủ</v-btn
         >
         <v-menu offset-y open-on-hover content-class="elevation-1">
@@ -59,7 +63,7 @@
             <v-btn
               color="#667085"
               elevation="0"
-              class="text-body-1 btn"
+              class="font-weight-medium text-body-1 btn"
               text
               v-bind="attrs"
               v-on="on"
@@ -74,7 +78,21 @@
                 class="mt-4 mx-4"
                 width="296px"
                 height="92px"
-                >hello</v-card
+                ><v-col cols="12" class="pa-0">
+                  <v-row class="ma-0"
+                    ><v-col cols="2" class="pb-0"
+                      ><v-img
+                        src="@/assets/img/home/appbar/doctor.svg"
+                      ></v-img></v-col
+                    ><v-col cols="10" class="pl-0"
+                      ><p class="font-weight-medium text-body-1 ma-0">Bác sĩ</p>
+                      <p class="text-body-2" style="color:#667085">
+                        Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc
+                        online
+                      </p></v-col
+                    ></v-row
+                  ></v-col
+                ></v-card
               >
             </v-hover>
             <v-hover v-slot="{ hover }">
@@ -100,17 +118,33 @@
         <!-- <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
           >Đặt lịch</v-btn
         > -->
-        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+        <v-btn
+          color="#667085"
+          elevation="0"
+          class="font-weight-medium text-body-1 btn"
+          text
           >Chuyên khoa</v-btn
         >
-        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+        <v-btn
+          color="#667085"
+          elevation="0"
+          class="font-weight-medium text-body-1 btn"
+          text
           >Cộng đồng</v-btn
         >
-        <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
+        <v-btn
+          color="#667085"
+          elevation="0"
+          class="font-weight-medium text-body-1 btn"
+          text
           >Cẩm nang</v-btn
         >
         <v-spacer />
-        <v-btn color="#667085" elevation="0" class="mr-3 text-body-1 btn" text
+        <v-btn
+          color="#667085"
+          elevation="0"
+          class="mr-3 font-weight-medium text-body-1 btn"
+          text
           >Đăng nhập</v-btn
         >
         <v-btn color="#537DA5" elevation="0" class="text-body-1 btn white--text"

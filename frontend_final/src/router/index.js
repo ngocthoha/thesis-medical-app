@@ -19,19 +19,50 @@ const router = new Router({
   routes: [
     //Home Pages
     layout("Home", [
-      route("Trang chủ", { default: "home/home" }, "/"), 
-      route("Dịch vụ",  { default: "home/Service" }, "/service"),
-      route("Giới thiệu",  { default: "home/Introduce" }, "/introduce"),
-      route("Tim mạch", {default: "home/Specialist/Cardiology"}, "/specialist-cardiology"),
-      route("Tai - Mũi - Họng", {default: "home/Specialist/EarNoseThroat"}, "/specialist-earNoseThroat"),
-      route("Nội soi", {default: "home/Specialist/EndoscopyDepartment"}, "/specialist-EndoscopyDepartment"),
-      route("Tiêu hóa gan mật", {default: "home/Specialist/Gastroenterology"}, "/specialist-Gastroenterology"),
-      route("Chẩn đoán hình ảnh", {default: "home/Specialist/ImageAnalysation"}, "/specialist-ImageAnalysation"),
-      route("Cơ - Xương - Khớp", {default: "home/Specialist/MusclesBonesJoints"}, "/specialist-MusclesBonesJoints"),
-      route("Sản - Phụ khoa", {default: "home/Specialist/Obstetric"}, "/specialist-Obstetric"),
-      route("Nhi khoa", {default: "home/Specialist/Pediatrics"}, "/specialist-Pediatrics")
+      route("Trang chủ", { default: "home/home" }, "/"),
+      route("Dịch vụ", { default: "home/Service" }, "/service"),
+      route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
+      route(
+        "Tim mạch",
+        { default: "home/Specialist/Cardiology" },
+        "/specialist-cardiology"
+      ),
+      route(
+        "Tai - Mũi - Họng",
+        { default: "home/Specialist/EarNoseThroat" },
+        "/specialist-earNoseThroat"
+      ),
+      route(
+        "Nội soi",
+        { default: "home/Specialist/EndoscopyDepartment" },
+        "/specialist-EndoscopyDepartment"
+      ),
+      route(
+        "Tiêu hóa gan mật",
+        { default: "home/Specialist/Gastroenterology" },
+        "/specialist-Gastroenterology"
+      ),
+      route(
+        "Chẩn đoán hình ảnh",
+        { default: "home/Specialist/ImageAnalysation" },
+        "/specialist-ImageAnalysation"
+      ),
+      route(
+        "Cơ - Xương - Khớp",
+        { default: "home/Specialist/MusclesBonesJoints" },
+        "/specialist-MusclesBonesJoints"
+      ),
+      route(
+        "Sản - Phụ khoa",
+        { default: "home/Specialist/Obstetric" },
+        "/specialist-Obstetric"
+      ),
+      route(
+        "Nhi khoa",
+        { default: "home/Specialist/Pediatrics" },
+        "/specialist-Pediatrics"
+      )
     ]),
-    
 
     //DashBoard Pages
     layout("Default", [
@@ -126,7 +157,6 @@ const router = new Router({
     //   "home"
     // )
 
-    
     layout(
       "Home",
       [
@@ -148,8 +178,9 @@ const router = new Router({
         )
       ],
       "/home"
-    )
+    ),
 
+    route("test", { default: "test/test" }, "/test")
     // {
     //   path: "/home",
     //   component: () =>
