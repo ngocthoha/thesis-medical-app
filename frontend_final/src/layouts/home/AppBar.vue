@@ -4,51 +4,10 @@
       id="default-app-bar"
       color="white"
       height="80px"
+      app
+      elevation="1"
       scroll-target="#scrolling-techniques-7"
     >
-      <!-- <v-app-bar-nav-icon class="hidden-md-and-up" @click="drawer = !drawer" /> -->
-
-      <!-- <default-drawer-toggle class="hidden-sm-and-down" /> -->
-
-      <!-- <v-toolbar-title class="font-weight-light text-h5" v-text="name" />
-      <v-spacer />
-      <v-col cols="5">
-        <v-row justify="center" no-gutters>
-          <v-btn
-            v-for="link in links"
-            :key="link.label"
-            color="#046792"
-            text
-            rounded
-            class="my-2"
-            @click="getpage(link)"
-          >
-            <strong style="font-size:14px">{{ link.label }}</strong>
-          </v-btn>
-        </v-row></v-col
-      > -->
-
-      <!-- <v-spacer /> -->
-
-      <!-- <default-search class="hidden-sm-and-down" /> -->
-
-      <!-- <default-go-home /> -->
-
-      <!-- <default-notifications />
-
-    <default-account /> -->
-
-      <!-- <v-btn
-        color="#046792"
-        rounded
-        class="my-2 white--text mr-1"
-        @click="login"
-      >
-        Đăng nhập
-      </v-btn>
-      <v-btn color="#046792" rounded class="my-2 white--text" @click="signup">
-        Đăng ký
-      </v-btn> -->
       <v-row justify="center" class="my-3 mx-16">
         <v-spacer />
         <v-btn
@@ -58,7 +17,13 @@
           text
           >Trang chủ</v-btn
         >
-        <v-menu offset-y open-on-hover content-class="elevation-1">
+        <v-menu
+          offset-y
+          open-on-hover
+          content-class="elevation-1 overflow-hidden"
+          style="overflow: hidden !important"
+          max-height="332px"
+        >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="#667085"
@@ -71,53 +36,35 @@
               Đặt lịch <v-icon right>mdi-chevron-down</v-icon>
             </v-btn>
           </template>
-          <div style="background-color: white">
-            <v-hover v-slot="{ hover }">
+          <div style="background-color: white;">
+            <v-hover
+              v-for="(item, i) in appointment_list"
+              :key="i"
+              v-slot="{ hover }"
+            >
               <v-card
                 :elevation="hover ? 1 : 0"
-                class="mt-4 mx-4"
+                class="my-2 mx-4"
                 width="296px"
                 height="92px"
                 ><v-col cols="12" class="pa-0">
                   <v-row class="ma-0"
                     ><v-col cols="2" class="pb-0"
-                      ><v-img
-                        src="@/assets/img/home/appbar/doctor.svg"
-                      ></v-img></v-col
+                      ><v-img :src="item.icon"></v-img></v-col
                     ><v-col cols="10" class="pl-0"
-                      ><p class="font-weight-medium text-body-1 ma-0">Bác sĩ</p>
+                      ><p class="font-weight-medium text-body-1 ma-0">
+                        {{ item.title }}
+                      </p>
                       <p class="text-body-2" style="color:#667085">
-                        Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc
-                        online
+                        {{ item.content }}
                       </p></v-col
                     ></v-row
                   ></v-col
                 ></v-card
               >
             </v-hover>
-            <v-hover v-slot="{ hover }">
-              <v-card
-                :elevation="hover ? 1 : 0"
-                class="mt-1 mx-4"
-                width="296px"
-                height="92px"
-                >hello</v-card
-              >
-            </v-hover>
-            <v-hover v-slot="{ hover }">
-              <v-card
-                :elevation="hover ? 1 : 0"
-                class="mt-1 mx-4 mb-4"
-                width="296px"
-                height="92px"
-                >hello</v-card
-              >
-            </v-hover>
           </div>
         </v-menu>
-        <!-- <v-btn color="#667085" elevation="0" class="text-body-1 btn" text
-          >Đặt lịch</v-btn
-        > -->
         <v-btn
           color="#667085"
           elevation="0"
@@ -193,6 +140,24 @@ export default {
   computed: {},
 
   data: () => ({
+    appointment_list: [
+      {
+        icon: require("@/assets/img/home/appbar/doctor.svg"),
+        title: "Bác sĩ",
+        content:
+          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/hospital.svg"),
+        title: "Bệnh viện",
+        content: "Đặt lịch khám chuyên khoa tại các bệnh viện"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/service.svg"),
+        title: "Dịch vụ",
+        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu"
+      }
+    ]
     // links: [
     //   {
     //     label: "Trang chủ",
@@ -242,5 +207,9 @@ export default {
 <style scoped>
 .btn {
   text-transform: none;
+}
+
+.btn:hover::before {
+  opacity: 0 !important;
 }
 </style>

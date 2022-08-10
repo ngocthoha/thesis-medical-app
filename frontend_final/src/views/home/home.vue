@@ -39,7 +39,31 @@
       >
     </v-footer> -->
 
-    
+    <v-card width="100%" class="d-flex flex-row" height="500px" color="#EEF2F6">
+      <v-card color="#EEF2F6"  width="564px" style="margin-top: 108px; margin-left: 102px" elevation="0">
+        <div>
+          <div class="d-flex flex-column">
+            <v-card width="564px" height="96px" color="#EEF2F6" elevation="0"><p class="font-weight-bold" style="font-size:40px; color:#537DA5">IVIE | Ứng dụng đặt lịch khám 
+online hàng đầu</p></v-card>
+        </div>
+        <br/>
+        <div class="d-flex flex-column">
+            <v-card width="564px" height="96px" color="#EEF2F6" elevation="0" class="d-flex flex-column"><p class="font-weight-medium" style="color:#667085">Người tiêu dùng thông thái, hãy khám bệnh thông minh. Bạn là người tiêu dùng thông thái, bạn yêu gia đình hơn chính bản thân mình. Hãy cùng IVIE chăm sóc sức khỏe cho bản thân và gia đình để mỗi ngày bên nhau là một ngày ý nghĩa.</p></v-card>
+        </div>
+        <div class="d-flex flex-column">
+          <v-btn height="48px" width="155px" color="#537DA5" class="white--text text-body-1" style="text-transform: none;">Đặt khám ngay</v-btn>
+        </div>
+        </div>
+      </v-card>
+      <v-sheet class="rounded-circle" height="72px" width="72px" color="#BACBDC" style="margin-top: 268px; margin-left: 123px;"></v-sheet>
+      <v-card color="#EEF2F6" elevation="0" class="d-flex align-end" style="margin-left: 73px">
+         <v-img src="@/assets/img/home/Rectangle39.svg" style="margin-left: 74px; position: absolute" ></v-img>
+        <v-img class="d-flex" src="@/assets/img/home/toppng1.svg" style="position: relative">
+        </v-img>
+      </v-card>
+       <v-sheet class="rounded-circle" height="116px" width="116px" color="#BACBDC" style="margin-top: 12px; margin-left: 56px;"></v-sheet>
+    </v-card>
+
     <v-footer color="#DCF5FF" height="500px" :padless="padless">
       <v-col cols="12">
         <v-row justify="center">
