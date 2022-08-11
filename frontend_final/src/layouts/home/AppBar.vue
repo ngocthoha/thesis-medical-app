@@ -22,7 +22,6 @@
           open-on-hover
           content-class="elevation-1 overflow-hidden"
           style="overflow: hidden !important"
-          max-height="332px"
         >
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -36,18 +35,10 @@
               Đặt lịch <v-icon right>mdi-chevron-down</v-icon>
             </v-btn>
           </template>
-          <div style="background-color: white;">
-            <v-hover
-              v-for="(item, i) in appointment_list"
-              :key="i"
-              v-slot="{ hover }"
-            >
-              <v-card
-                :elevation="hover ? 1 : 0"
-                class="my-2 mx-4"
-                width="296px"
-                height="92px"
-                ><v-col cols="12" class="pa-0">
+          <v-list>
+            <v-list-item v-for="(item, i) in appointment_list" :key="i" link>
+              <v-list-item-content style="height:92px; width:296px">
+                <v-col cols="12" class="pa-0">
                   <v-row class="ma-0"
                     ><v-col cols="2" class="pb-0"
                       ><v-img :src="item.icon"></v-img></v-col
@@ -60,10 +51,10 @@
                       </p></v-col
                     ></v-row
                   ></v-col
-                ></v-card
-              >
-            </v-hover>
-          </div>
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </v-menu>
         <v-btn
           color="#667085"

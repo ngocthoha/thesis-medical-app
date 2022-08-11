@@ -1,45 +1,7 @@
 <template>
 <v-app>
   <div class="content">
-    <!-- <v-footer color="#DCF5FF" height="auto" :padless="padless">
-      <v-col cols="3">icon</v-col>
-      <v-col cols="5">
-        <v-row justify="center" no-gutters>
-          <v-btn
-            v-for="link in links"
-            :key="link.label"
-            color="#046792"
-            text
-            rounded
-            class="my-2"
-            @click="getpage(link.name)"
-          >
-            {{ link.label }}
-          </v-btn>
-        </v-row></v-col>
-      <v-col cols="4">
-        <v-row justify="end" no-gutters>
-          <v-btn
-            color="#046792"
-            rounded
-            class="my-2 white--text"
-            @click="login"
-          >
-            Đăng nhập
-          </v-btn>
-          <v-btn
-            color="#046792"
-            rounded
-            class="my-2 white--text"
-            @click="signup"
-          >
-            Đăng ký
-          </v-btn>
-        </v-row></v-col
-      >
-    </v-footer> -->
-
-    <v-card width="100%" class="d-flex flex-row" height="500px" color="#EEF2F6">
+    <v-card width="100%" class="d-flex flex-row justify-sm-center" height="500px" color="#EEF2F6">
       <v-card color="#EEF2F6"  width="564px" style="margin-top: 108px; margin-left: 102px" elevation="0">
         <div>
           <div class="d-flex flex-column">
@@ -63,92 +25,11 @@ online hàng đầu</p></v-card>
       </v-card>
        <v-sheet class="rounded-circle" height="116px" width="116px" color="#BACBDC" style="margin-top: 12px; margin-left: 56px;"></v-sheet>
     </v-card>
+    
+    <v-layout>
+    <v-card height="296px"></v-card>
+    </v-layout>
 
-    <v-footer color="#DCF5FF" height="500px" :padless="padless">
-      <v-col cols="12">
-        <v-row justify="center">
-          <strong
-            class="font-weight-medium"
-            style="color: #046792; font-size: 20px"
-            >Điều trị chuyên nghiệp</strong
-          >
-        </v-row></v-col
-      >
-      <v-col cols="12">
-        <v-row justify="center"
-          ><strong
-            class="font-weight-medium"
-            style="color: #046792; font-size: 64px"
-            >Hỗ Trợ Khám Bệnh Online</strong
-          ></v-row
-        ></v-col
-      >
-      <v-col cols="12">
-        <v-row justify="center"
-          ><strong
-            class="font-weight-medium"
-            style="color: #68a4be; font-size: 16px"
-            >Đặt lịch 24/7 - Tư vấn và khám bệnh nhanh chóng - Hoàn toàn miễn
-            phí - Theo dõi lịch hẹn</strong
-          ></v-row
-        ></v-col
-      >
-      <v-col cols="12">
-        <v-row justify="center">
-          <v-card color="white" width="721px" class="rounded-pill"
-            ><input
-              type="text"
-              v-model="search"
-              placeholder="..."
-              style="width: 80%"
-              class="ml-5"
-            />
-            <v-btn color="#3685A8" rounded class="my-2 white--text">
-              <v-icon small>fas fa-search</v-icon>
-              Tìm kiếm
-            </v-btn>
-          </v-card></v-row
-        ></v-col
-      ><v-col cols="8">
-        <v-row justify="center"
-          ><strong
-            class="font-weight-medium"
-            style="color: #046792; font-size: 16px"
-            >Bạn đang tìm kiếm điều gì?</strong
-          ></v-row
-        >
-      </v-col>
-      <v-col cols="12">
-        <v-row justify="center"
-          ><v-card
-            class="mx-2"
-            v-for="(item, index) in card_link"
-            :key="index"
-            width="184px"
-            height="84px"
-            hover="true"
-            color="#ffeedd"
-           
-          >
-          <v-row justify="center" class="mt-2">
-            <p
-              class="font-weight-medium ml-2"
-              style="color: #046792; font-size: 16px"
-              >{{ item.head }}</p
-            >
-          </v-row>
-          <v-row  justify="center" class="mb-1">
-             <p
-              class="font-weight-regular ml-2"
-              style="color: #046792; font-size: 16px"
-              >{{ item.body }}</p
-            >
-          </v-row>
-           
-          </v-card></v-row
-        >
-      </v-col>
-    </v-footer>
     <v-footer color="#FFFFFF" height="auto" :padless="padless">
       <v-col cols="12">
         <v-row justify="center" class="mt-8 mb-4"
