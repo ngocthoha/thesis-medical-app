@@ -1,11 +1,12 @@
 <template>
 <v-app>
   <div class="content">
+    <!-- section 1 -->
     <v-card width="100%" class="d-flex flex-row justify-sm-center" height="500px" color="#EEF2F6">
       <v-card color="#EEF2F6"  width="564px" style="margin-top: 108px; margin-left: 102px" elevation="0">
         <div>
           <div class="d-flex flex-column">
-            <v-card width="564px" height="96px" color="#EEF2F6" elevation="0"><p class="font-weight-bold" style="font-size:40px; color:#537DA5">IVIE | Ứng dụng đặt lịch khám 
+            <v-card width="564px" height="96px" color="#EEF2F6" elevation="0"><p class="font-weight-bold" style="font-size:40px; color:#537DA5">BLOUSE CARE | Ứng dụng đặt lịch khám 
 online hàng đầu</p></v-card>
         </div>
         <br/>
@@ -26,8 +27,43 @@ online hàng đầu</p></v-card>
        <v-sheet class="rounded-circle" height="116px" width="116px" color="#BACBDC" style="margin-top: 12px; margin-left: 56px;"></v-sheet>
     </v-card>
     
-    <v-layout>
-    <v-card height="296px"></v-card>
+     <!-- section 2 -->
+    <v-layout justify-center>
+    <v-card class="d-flex flex-column justify-center" width="100%" height="296px">
+      <p class="d-flex justify-center font-weight-bold mb-0" style="font-size: 40px">Tra cứu nhanh thông tin sức khỏe</p>
+      <!---->
+      <v-card elevation="0" class="d-flex justify-center" >
+        <v-card elevation="0" class="d-flex align-center mt-15" width="720px" height="76px" outlined >
+        <v-card elevation="0" ><p class="ma-0 font-weight-medium text-body-1 ml-3" style="color: #667085">Search Title</p></v-card> 
+          <v-spacer />
+        <v-divider inset vertical></v-divider>
+        <v-menu>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              color="#667085"
+              elevation="0"
+              class="font-weight-medium text-body-1 btn"
+              text
+              v-bind="attrs"
+              v-on="on"
+              width="135px"
+              height="44px"
+            >
+              Địa điểm <v-icon right>mdi-chevron-down</v-icon>
+            </v-btn>
+          </template>
+        </v-menu>
+        <v-btn color="#537DA5" elevation="0" class="white--text btn font-weight-medium text-body-1 mr-3">Tìm kiếm</v-btn>
+        </v-card>
+      </v-card>
+      <!---->
+      <v-card elevation="0" class="d-flex justify-center">
+        <v-card elevation="0" class="d-flex align-center mt-5" width="720px">
+          <p class="ma-0 mr-4 font-weight-medium text-body-1">Tìm kiếm phổ biến:</p>
+          <v-card class="px-1 px-2" color="#D0D5DD">Khám tai mũi họng</v-card>
+        </v-card>
+      </v-card>
+    </v-card>
     </v-layout>
 
     <v-footer color="#FFFFFF" height="auto" :padless="padless">
@@ -312,4 +348,8 @@ export default {
 };
 </script>
 
-
+<style scoped>
+.btn {
+  text-transform: none;
+}
+</style>
