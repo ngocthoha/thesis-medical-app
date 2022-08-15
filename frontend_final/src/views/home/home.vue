@@ -69,7 +69,9 @@ online hàng đầu</p></v-card>
      <!-- section 3 -->
      <v-layout>
       <v-card class="d-flex flex-column justify-center" width="100%" height="441px" color="#FCFCFD"> 
-        <v-card color="#FCFCFD"></v-card>
+        <v-card color="#FCFCFD">
+          <v-card></v-card>
+        </v-card>
       </v-card>
      </v-layout>
 
