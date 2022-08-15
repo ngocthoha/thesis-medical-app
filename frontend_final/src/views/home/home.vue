@@ -28,12 +28,12 @@ online hàng đầu</p></v-card>
     </v-card>
     
      <!-- section 2 -->
-    <v-layout justify-center>
+    <v-layout>
     <v-card class="d-flex flex-column justify-center" width="100%" height="296px">
       <p class="d-flex justify-center font-weight-bold mb-0" style="font-size: 40px">Tra cứu nhanh thông tin sức khỏe</p>
       <!---->
       <v-card elevation="0" class="d-flex justify-center" >
-        <v-card elevation="0" class="d-flex align-center mt-15" width="720px" height="76px" outlined >
+        <v-card elevation="0" class="d-flex align-center mt-8" width="720px" height="76px" outlined >
         <v-card elevation="0" ><p class="ma-0 font-weight-medium text-body-1 ml-3" style="color: #667085">Search Title</p></v-card> 
           <v-spacer />
         <v-divider inset vertical></v-divider>
@@ -53,19 +53,27 @@ online hàng đầu</p></v-card>
             </v-btn>
           </template>
         </v-menu>
-        <v-btn color="#537DA5" elevation="0" class="white--text btn font-weight-medium text-body-1 mr-3">Tìm kiếm</v-btn>
+        <v-btn color="#537DA5" elevation="0" class="white--text btn font-weight-medium text-body-1 mr-3">Tìm kiếm <v-img class="ml-3" src="@/assets/img/home/search_icon.svg"></v-img></v-btn>
         </v-card>
       </v-card>
       <!---->
       <v-card elevation="0" class="d-flex justify-center">
         <v-card elevation="0" class="d-flex align-center mt-5" width="720px">
           <p class="ma-0 mr-4 font-weight-medium text-body-1">Tìm kiếm phổ biến:</p>
-          <v-card class="px-1 px-2" color="#D0D5DD">Khám tai mũi họng</v-card>
+          <v-card v-for="(item,i) in poular_search_list" :key="i" class="py-1 px-2 mr-2 font-weight-medium text-body-2" elevation="0" color="#F9FAFB" dark style="border: 1px solid #D0D5DD; color:#667085">{{item}}</v-card>
         </v-card>
       </v-card>
     </v-card>
     </v-layout>
 
+     <!-- section 3 -->
+     <v-layout>
+      <v-card class="d-flex flex-column justify-center" width="100%" height="441px" color="#FCFCFD"> 
+        <v-card color="#FCFCFD"></v-card>
+      </v-card>
+     </v-layout>
+
+     
     <v-footer color="#FFFFFF" height="auto" :padless="padless">
       <v-col cols="12">
         <v-row justify="center" class="mt-8 mb-4"
@@ -308,6 +316,8 @@ export default {
         name: "Tâm thần kinh",
       },
     ],
+
+    poular_search_list:["Khám tai mũi họng","Khám sản phụ khoa","Nội soi tiêu hóa","Siêu âm 2D"]
   }),
 
   methods: {
