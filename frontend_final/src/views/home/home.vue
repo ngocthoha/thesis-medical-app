@@ -70,14 +70,27 @@ online hàng đầu</p></v-card>
      <v-layout>
       <v-card class="d-flex flex-column" width="100%" height="441px" color="#FCFCFD"> 
         <v-card>
-          <v-card class="d-flex justify-center">
-            <v-card class="d-flex justify-space-between" width="65%">
-              <v-card>Dịch vụ nổi bật</v-card>
-              <v-card>Xem tất cả</v-card>
+          <v-card class="d-flex justify-center" color="#FCFCFD" elevation="0">
+            <v-card class="d-flex justify-space-between" width="65%" color="#FCFCFD" elevation="0">
+              <p class="font-weight-bold" :style="{'font-size': 24+'px'}">Dịch vụ nổi bật</p>
+              <v-btn class="btn font-weight-medium text-body-1" elevation="0"  color="#FCFCFD" :style="{color:'#667085'}">Xem tất cả</v-btn>
             </v-card>
           </v-card>
         </v-card>
-         <v-card><v-card class="d-flex justify-center" >haha</v-card></v-card>
+        <v-card elevation="0" color="#FCFCFD">
+          <v-card class="d-flex justify-center" elevation="0" color="#FCFCFD">
+            <div class="d-flex flex-row">
+                <v-card class="mr-8" v-for="(item, i) in service_list" :key="i" width="320px" height="290px">
+                  <div class="d-flex flex-column mx-3 mt-3">
+                    <v-img :src="item.img"></v-img>
+                    <p class="font-weight-medium text-body-2">{{item.title}}</p>
+                    <p  class="font-weight-medium text-body-2" style="color:#667085">{{item.place}}</p>
+                    <p  class="font-weight-bold text-body-2" style="color:#537DA5">{{item.price}}</p>
+                  </div>
+                </v-card>
+            </div>
+          </v-card>
+        </v-card>
       </v-card>
      </v-layout>
 
@@ -325,7 +338,33 @@ export default {
       },
     ],
 
-    poular_search_list:["Khám tai mũi họng","Khám sản phụ khoa","Nội soi tiêu hóa","Siêu âm 2D"]
+    poular_search_list:["Khám tai mũi họng","Khám sản phụ khoa","Nội soi tiêu hóa","Siêu âm 2D"],
+    service_list:[
+      {
+        img: require("@/assets/img/home/service1.svg"),
+        title: "Gói Khám Gan nhiễm mỡ - Tổ hợp y tế MEDIPLUS",
+        place: "Tổ Hợp Phòng Khám MEDIPLUS",
+        price: "2.480.000 đ"
+      },
+       {
+        img: require("@/assets/img/home/service2.svg"),
+        title: "Gói khám tổng quát hệ tiêu hoá, gan mật tiêu chuẩn - Tổ hợp y tế MEDIPLUS",
+        place: "Tổ Hợp Phòng Khám MEDIPLUS",
+        price: "2.220.000 đ"
+      },
+       {
+        img: require("@/assets/img/home/service3.svg"),
+        title: "Gói Xét nghiệm tổng quát cho Nam - TTXN LABHOUSE",
+        place: "Tổ Hợp Phòng Khám MEDIPLUS",
+        price: "1.335.000 đ"
+      },
+       {
+        img: require("@/assets/img/home/service4.svg"),
+        title: "Test nhanh Cúm A,B cho người Nước ngoài tại Bệnh viện Đa khoa Bảo Sơn",
+        place: "Tổ Hợp Phòng Khám MEDIPLUS",
+        price: "2.480.000 đ"
+      },
+    ]
   }),
 
   methods: {
