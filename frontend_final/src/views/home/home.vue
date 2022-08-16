@@ -69,8 +69,15 @@ online hàng đầu</p></v-card>
      <!-- section 3 -->
      <v-layout>
       <v-card class="d-flex flex-column justify-center" width="100%" height="441px" color="#FCFCFD"> 
-        <v-card color="#FCFCFD">
-          <v-card></v-card>
+        <v-card elevation="0" color="#FCFCFD" class="d-flex justify-center" width="564px" height="200px" style="margin-left: 102px">
+          <v-card class="d-flex">
+            <v-card elevation="0" color="#FCFCFD" width="200px">
+            Dịch vụ nổi bật
+          </v-card>
+          <v-card elevation="0" color="#FCFCFD"  width="200px">
+            Dịch vụ nổi bật
+          </v-card>
+          </v-card>
         </v-card>
       </v-card>
      </v-layout>
