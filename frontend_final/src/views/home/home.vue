@@ -68,17 +68,16 @@ online hàng đầu</p></v-card>
 
      <!-- section 3 -->
      <v-layout>
-      <v-card class="d-flex flex-column justify-center" width="100%" height="441px" color="#FCFCFD"> 
-        <v-card elevation="0" color="#FCFCFD" class="d-flex justify-center" width="564px" height="200px" style="margin-left: 102px">
-          <v-card class="d-flex">
-            <v-card elevation="0" color="#FCFCFD" width="200px">
-            Dịch vụ nổi bật
-          </v-card>
-          <v-card elevation="0" color="#FCFCFD"  width="200px">
-            Dịch vụ nổi bật
-          </v-card>
+      <v-card class="d-flex flex-column" width="100%" height="441px" color="#FCFCFD"> 
+        <v-card>
+          <v-card class="d-flex justify-center">
+            <v-card class="d-flex justify-space-between" width="65%">
+              <v-card>Dịch vụ nổi bật</v-card>
+              <v-card>Xem tất cả</v-card>
+            </v-card>
           </v-card>
         </v-card>
+         <v-card><v-card class="d-flex justify-center" >haha</v-card></v-card>
       </v-card>
      </v-layout>
 
