@@ -78,13 +78,31 @@
           >Cẩm nang</v-btn
         >
         <v-spacer />
-        <v-btn
+        <div>
+          <v-dialog v-model="dialog">
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="#667085"
+                elevation="0"
+                class="mr-3 font-weight-medium text-body-1 btn"
+                text
+                v-on="on"
+                v-bind="attrs"
+                >Đăng nhập</v-btn
+              >
+            </template>
+            <v-card>
+              hello
+            </v-card>
+          </v-dialog>
+        </div>
+        <!-- <v-btn
           color="#667085"
           elevation="0"
           class="mr-3 font-weight-medium text-body-1 btn"
           text
           >Đăng nhập</v-btn
-        >
+        > -->
         <v-btn color="#537DA5" elevation="0" class="text-body-1 btn white--text"
           >Đăng ký</v-btn
         >

@@ -82,8 +82,8 @@ online hàng đầu</p></v-card>
             <div class="d-flex flex-row">
                 <v-card class="mr-8" v-for="(item, i) in service_list" :key="i" width="320px" height="290px">
                   <div class="d-flex flex-column mx-3 mt-3">
-                    <v-img :src="item.img"></v-img>
-                    <p class="font-weight-medium text-body-2">{{item.title}}</p>
+                    <v-img :src="item.img" width="296px" height="145px"></v-img>
+                    <p class="font-weight-medium text-body-2 mt-3">{{item.title}}</p>
                     <p  class="font-weight-medium text-body-2" style="color:#667085">{{item.place}}</p>
                     <p  class="font-weight-bold text-body-2" style="color:#537DA5">{{item.price}}</p>
                   </div>
