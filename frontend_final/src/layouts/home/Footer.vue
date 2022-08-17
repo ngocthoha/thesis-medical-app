@@ -1,6 +1,6 @@
 <template>
   <div class="content">
-    <v-footer id="default-footer" absolute app inset padless>
+    <v-footer id="default-footer" absolute app inset>
       <v-col cols="12" class="pa-0">
         <v-row class="blue darken-1 white--text">
           <v-col cols="12">

@@ -95,7 +95,7 @@ online hàng đầu</p></v-card>
      </v-layout>
 
      
-    <v-footer color="#FFFFFF" height="auto" :padless="padless">
+    <v-footer color="#FFFFFF" height="auto">
       <v-col cols="12">
         <v-row justify="center" class="mt-8 mb-4"
           ><strong
@@ -131,7 +131,6 @@ online hàng đầu</p></v-card>
                         :key="index"
                         width="200px"
                         height="134px"
-                        hover="true"
                         style="background-color: #e6f0f5"
                         @click="getlink(+index + i)"
                       >

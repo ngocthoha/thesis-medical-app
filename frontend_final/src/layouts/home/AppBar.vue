@@ -6,7 +6,6 @@
       height="80px"
       app
       elevation="1"
-      scroll-target="#scrolling-techniques-7"
     >
       <v-row justify="center" class="my-3 mx-16">
         <v-spacer />
@@ -79,7 +78,8 @@
         >
         <v-spacer />
         <div>
-          <v-dialog v-model="dialog">
+          <!-- Login Section -->
+          <v-dialog v-model="login_dialog" width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="#667085"
@@ -91,8 +91,46 @@
                 >Đăng nhập</v-btn
               >
             </template>
-            <v-card>
-              hello
+            <v-card class="d-flex flex-row" height="610px">
+              <v-card width="50%" elevation="0" class="d-flex flex-column">
+                <p
+                  class="mt-16 ml-8 font-weight-bold"
+                  :style="{ 'font-size': 32 + 'px' }"
+                >
+                  Đăng nhập
+                </p>
+                <p
+                  class="ml-8 font-weight-normal"
+                  :style="{ 'font-size': 16 + 'px', color: '#667085' }"
+                >
+                  Vui lòng nhập các thông tin phía dưới để đăng nhập.
+                </p>
+                <v-card
+                  class="mt-12 ml-8 d-flex flex-column"
+                  color="white"
+                  elevation="0"
+                >
+                  <v-card
+                    width="320px"
+                    height="44px"
+                    outlined
+                    class="d-flex mb-5"
+                    elevation="0"
+                  >
+                    <v-text-field
+                      placeholder="Số điện thoại/Tên đăng nhập"
+                      solo
+                    ></v-text-field
+                  ></v-card>
+                  <v-card width="320px" height="44px" outlined>
+                    <v-text-field placeholder="Mật khẩu" dense></v-text-field>
+                  </v-card>
+                </v-card>
+              </v-card>
+              <v-img
+                src="@/assets/img/home/login_image.png"
+                width="50%"
+              ></v-img>
             </v-card>
           </v-dialog>
         </div>
@@ -166,7 +204,9 @@ export default {
         title: "Dịch vụ",
         content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu"
       }
-    ]
+    ],
+
+    login_dialog: true
     // links: [
     //   {
     //     label: "Trang chủ",
