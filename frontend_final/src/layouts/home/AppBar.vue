@@ -105,6 +105,7 @@
                 >
                   Vui lòng nhập các thông tin phía dưới để đăng nhập.
                 </p>
+                <!-- input -->
                 <v-card
                   class="mt-12 ml-8 d-flex flex-column"
                   color="white"
@@ -113,19 +114,39 @@
                   <v-card
                     width="320px"
                     height="44px"
-                    outlined
                     class="d-flex mb-5"
                     elevation="0"
+                    outlined
                   >
                     <v-text-field
                       placeholder="Số điện thoại/Tên đăng nhập"
                       solo
+                      flat
+                      dense
+                      class="text-body-2"
                     ></v-text-field
                   ></v-card>
-                  <v-card width="320px" height="44px" outlined>
-                    <v-text-field placeholder="Mật khẩu" dense></v-text-field>
+
+                  <v-card width="320px" height="44px" elevation="0" outlined>
+                    <v-text-field
+                      placeholder="Mật khẩu"
+                      solo
+                      flat
+                      dense
+                      class="text-body-2"
+                    ></v-text-field>
                   </v-card>
                 </v-card>
+                <v-card width="320px" elevation="0">
+                  <p class="d-flex justify-end">Quên mật khẩu</p>
+                </v-card>
+                <v-btn
+                  width="320px"
+                  class="ml-8 white--text btn"
+                  color="#537DA5"
+                  elevation="0"
+                  >Đăng nhập</v-btn
+                >
               </v-card>
               <v-img
                 src="@/assets/img/home/login_image.png"
