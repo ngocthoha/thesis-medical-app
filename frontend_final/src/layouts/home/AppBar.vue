@@ -137,16 +137,33 @@
                     ></v-text-field>
                   </v-card>
                 </v-card>
-                <v-card width="320px" elevation="0">
-                  <p class="d-flex justify-end">Quên mật khẩu</p>
+                <v-card width="320px" elevation="0" class="ml-8">
+                  <a
+                    class="d-flex font-weight-medium justify-end my-4 text-body-2"
+                    style="color: #537DA5"
+                  >
+                    Quên mật khẩu?
+                  </a>
                 </v-card>
                 <v-btn
                   width="320px"
-                  class="ml-8 white--text btn"
+                  height="48px"
+                  class="ml-8 white--text btn text-body-1"
                   color="#537DA5"
                   elevation="0"
                   >Đăng nhập</v-btn
                 >
+                <v-card
+                  class="mt-8 d-flex flex-row align-center ml-8"
+                  elevation="0"
+                  width="320px"
+                >
+                  <v-divider></v-divider>
+                  <p class="ma-0 mx-3" style="color: #667085">
+                    hoặc đăng nhập với
+                  </p>
+                  <v-divider></v-divider>
+                </v-card>
               </v-card>
               <v-img
                 src="@/assets/img/home/login_image.png"
