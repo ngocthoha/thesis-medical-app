@@ -94,7 +94,25 @@ online hàng đầu</p></v-card>
       </v-card>
      </v-layout>
 
-     
+     <!-- section 4 -->
+     <v-layout>
+      <v-card height="336px" class="d-flex flex-column" width="100%">
+          <p class="d-flex justify-center mt-16 text-body-1 font-weight-bold"  style="color:#537DA5">Dịch vụ</p>
+          <p class="d-flex justify-center font-weight-bold mb-0" style="font-size: 40px">Trải nghiệm khám bệnh hiện đại</p>
+          <p class="d-flex justify-center font-weight-bold" style="font-size: 40px">cùng BLOUSE CARE</p>
+          <p class="d-flex justify-center text-body-1  font-weight-medium">Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint.</p>
+      </v-card>
+     </v-layout>
+
+    <!-- section 5 -->
+    <v-layout>
+      <v-card class="d-flex justify-center" width="100%" height="312px">
+        <v-card class="d-flex justify-center" v-for="n in 4" :key="n" height="228px" width="280px">
+
+        </v-card>
+      </v-card>
+    </v-layout>
+
     <v-footer color="#FFFFFF" height="auto">
       <v-col cols="12">
         <v-row justify="center" class="mt-8 mb-4"
