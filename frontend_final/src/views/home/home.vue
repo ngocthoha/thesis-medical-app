@@ -1,6 +1,6 @@
 <template>
 <v-app>
-  <div class="content">
+  <div class="content my-application">
     <!-- section 1 -->
     <v-card width="100%" class="d-flex flex-row justify-sm-center" height="500px" color="#EEF2F6">
       <v-card color="#EEF2F6"  width="564px" style="margin-top: 108px; margin-left: 102px" elevation="0">
@@ -106,9 +106,16 @@ online hàng đầu</p></v-card>
 
     <!-- section 5 -->
     <v-layout>
-      <v-card class="d-flex justify-center" width="100%" height="312px">
-        <v-card class="d-flex justify-center" v-for="n in 4" :key="n" height="228px" width="280px">
-
+      <v-card class="d-flex justify-center" width="100%" height="312px" elevation="0">
+        <v-card class="d-flex flex-column mr-8" v-for="n in 4" :key="n" height="228px" width="280px" elevation="0">
+          <div class="d-flex justify-center">
+             <v-card width="56px" height="56px" class="d-flex align-center" color="#FCFCFD" elevation="0">
+            <v-img src="@/assets/img/home/service_intro1.svg" width="33px" height="22px" contain></v-img>
+          </v-card>
+          </div>
+          <p class="d-flex justify-center font-weight-bold">Đặt khám từ xa</p>
+          <p class="d-flex justify-center text-center font-weight-medium" style="color:#667085">Bác sĩ của IVIE luôn sẵn sàng tư vấn và chăm sóc sức khỏe cho bạn mọi lúc mọi nơi qua video & chat.</p>
+          <p class="d-flex justify-center">Đặt khám từ xa</p>
         </v-card>
       </v-card>
     </v-layout>
@@ -427,3 +434,5 @@ export default {
   text-transform: none;
 }
 </style>
+
+
