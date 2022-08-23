@@ -368,7 +368,6 @@
 
 <script>
 // Utilities
-import { get, sync } from "vuex-pathify";
 
 export default {
   name: "HomeBar",
