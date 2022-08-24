@@ -262,10 +262,10 @@
           >
             cùng BLOUSE CARE
           </p>
-          <p class="d-flex justify-center text-body-1  font-weight-medium">
+          <!-- <p class="d-flex justify-center text-body-1  font-weight-medium">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
             sint.
-          </p>
+          </p> -->
         </v-card>
       </v-layout>
 
@@ -303,7 +303,7 @@
             </div>
             <v-card class="d-flex flex-column" height="140px" elevation="0">
               <p
-                class="d-flex justify-center text-center text-h6  font-weight-bold"
+                class="d-flex justify-center text-center text-h6 font-weight-bold"
               >
                 {{ item.title }}
               </p>
@@ -322,6 +322,94 @@
               >Khám phá ngay</v-btn
             >
           </v-card>
+        </v-card>
+      </v-layout>
+
+      <!-- section 6 -->
+      <v-layout>
+        <v-card
+          height="600px"
+          width="100%"
+          elevation="0"
+          color="#FCFCFD"
+          class="d-flex flex-column"
+        >
+          <!-- Container -->
+          <v-card elevation="0" color="#FCFCFD" class="d-flex flex-column">
+            <p
+              class="d-flex justify-center mt-16 font-weight-bold text-body-1"
+              style="color: #537DA5"
+            >
+              Chuyên khoa
+            </p>
+            <p
+              class="d-flex justify-center font-weight-bold"
+              style="font-size: 40px"
+            >
+              Một số chuyên khoa nổi bật
+            </p>
+            <div class="d-flex justify-center">
+              <v-card elevation="0" color="#FCFCFD" width="717px">
+                <p
+                  class="d-flex justify-center font-weight-normal text-body-1 text-center"
+                  style="color: #667085"
+                >
+                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                  amet sint. Velit officia consequat duis enim velit mollit.
+                  Exercitation veniam consequat sunt nostrud amet.
+                </p>
+              </v-card>
+            </div>
+          </v-card>
+          <!-- List Member -->
+          <v-card
+            elevation="0"
+            color="#FCFCFD"
+            class="d-flex justify-center mt-16"
+          >
+            <v-card
+              width="183px"
+              height="148px"
+              class="d-flex  justify-center align-center mr-6"
+              v-for="(item, i) in special_list"
+              :key="i"
+              elevation="0"
+            >
+              <div class="d-flex flex-column">
+                <div class="d-flex justify-center">
+                  <v-card
+                    width="56px"
+                    height="56px"
+                    class="d-flex align-center"
+                    color="#EEF2F6"
+                    elevation="0"
+                    rounded="circle"
+                  >
+                    <v-img
+                      :src="item.img"
+                      width="33px"
+                      height="22px"
+                      contain
+                    ></v-img>
+                  </v-card>
+                </div>
+                <p class="d-flex justify-center font-weight-medium mt-5">
+                  {{ item.title }}
+                </p>
+              </div>
+            </v-card>
+          </v-card>
+          <!-- Button view all -->
+          <div class="d-flex justify-center">
+            <v-btn
+              width="122px"
+              height="48px"
+              class="mt-6 white--text btn text-body-1 rounded-lg"
+              elevation="0"
+              color="#537DA5"
+              >Xem tất cả
+            </v-btn>
+          </div>
         </v-card>
       </v-layout>
     </div>
@@ -452,6 +540,32 @@ export default {
         title: "Giá khám bằng với giá tại cơ sở y tế",
         content:
           "Không những vậy còn giúp bạn tiết kiệm thời gian và các chi phí khác."
+      }
+    ],
+    special_list: [
+      {
+        img: require("@/assets/img/home/ThanKinh.svg"),
+        title: "Thần kinh"
+      },
+      {
+        img: require("@/assets/img/home/Nhi.svg"),
+        title: "Nhi khoa"
+      },
+      {
+        img: require("@/assets/img/home/CoXuongKhop.svg"),
+        title: "Cơ - Xương - Khớp"
+      },
+      {
+        img: require("@/assets/img/home/San.svg"),
+        title: "Sản - Phụ khoa"
+      },
+      {
+        img: require("@/assets/img/home/TaiMuiHong.svg"),
+        title: "Tai - Mũi - Họng"
+      },
+      {
+        img: require("@/assets/img/home/Tim.svg"),
+        title: "Tim mạch"
       }
     ]
   }),
