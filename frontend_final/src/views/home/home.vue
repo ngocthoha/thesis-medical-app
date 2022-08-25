@@ -374,6 +374,7 @@
               v-for="(item, i) in special_list"
               :key="i"
               elevation="0"
+              link
             >
               <div class="d-flex flex-column">
                 <div class="d-flex justify-center">
@@ -400,11 +401,11 @@
             </v-card>
           </v-card>
           <!-- Button view all -->
-          <div class="d-flex justify-center">
+          <div class="d-flex justify-center mt-6">
             <v-btn
               width="122px"
               height="48px"
-              class="mt-6 white--text btn text-body-1 rounded-lg"
+              class="white--text btn text-body-1 rounded-lg"
               elevation="0"
               color="#537DA5"
               >Xem tất cả

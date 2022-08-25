@@ -12,7 +12,7 @@
         <v-btn
           color="#667085"
           elevation="0"
-          class="font-weight-medium text-body-1 btn"
+          class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
           text
           >Trang chủ</v-btn
         >
@@ -26,7 +26,7 @@
             <v-btn
               color="#667085"
               elevation="0"
-              class="font-weight-medium text-body-1 btn"
+              class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
               text
               v-bind="attrs"
               v-on="on"
@@ -58,33 +58,33 @@
         <v-btn
           color="#667085"
           elevation="0"
-          class="font-weight-medium text-body-1 btn"
+          class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
           text
           >Chuyên khoa</v-btn
         >
         <v-btn
           color="#667085"
           elevation="0"
-          class="font-weight-medium text-body-1 btn"
+          class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
           text
           >Cộng đồng</v-btn
         >
         <v-btn
           color="#667085"
           elevation="0"
-          class="font-weight-medium text-body-1 btn"
+          class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
           text
           >Cẩm nang</v-btn
         >
         <v-spacer />
         <!-- Login Section -->
-        <div>
+        <div v-show="false">
           <v-dialog v-model="login_dialog" width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="#667085"
                 elevation="0"
-                class="mr-3 font-weight-medium text-body-1 btn"
+                class="mr-3 font-weight-medium text-body-1 btn-not-hover btn-not-transform"
                 text
                 v-on="on"
                 v-bind="attrs"
@@ -151,7 +151,7 @@
                 <v-btn
                   width="320px"
                   height="48px"
-                  class="ml-8 white--text btn text-body-1"
+                  class="ml-8 white--text btn-not-hover btn-not-transform text-body-1"
                   color="#537DA5"
                   elevation="0"
                   >Đăng nhập</v-btn
@@ -182,7 +182,7 @@
                       contain
                     ></v-img>
                     <v-card
-                      class="ma-0 btn font-weight-medium"
+                      class="ma-0 btn-not-hover btn-not-transform font-weight-medium"
                       style="color:#667085"
                       elevation="0"
                       width="60%"
@@ -202,7 +202,9 @@
                       width="24px"
                       contain
                     ></v-img>
-                    <p class="font-weight-medium white--text ma-0 btn">
+                    <p
+                      class="font-weight-medium white--text ma-0 btn-not-hover btn-not-transform"
+                    >
                       Facebook
                     </p></v-btn
                   >
@@ -217,13 +219,13 @@
         </div>
 
         <!-- Sign up Section -->
-        <div>
+        <div v-show="false">
           <v-dialog v-model="signu_up_dialog" width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="#537DA5"
                 elevation="0"
-                class="text-body-1 btn white--text"
+                class="text-body-1 btn-not-hover btn-not-transform white--text"
                 v-on="on"
                 v-bind="attrs"
                 >Đăng ký</v-btn
@@ -296,7 +298,7 @@
                 <v-btn
                   width="320px"
                   height="48px"
-                  class="ml-8 white--text btn text-body-1"
+                  class="ml-8 white--text btn-not-hover btn-not-transform text-body-1"
                   color="#537DA5"
                   elevation="0"
                   >Đăng kí</v-btn
@@ -327,7 +329,7 @@
                       contain
                     ></v-img>
                     <v-card
-                      class="ma-0 btn font-weight-medium"
+                      class="ma-0 btn-not-hover btn-not-transform font-weight-medium"
                       style="color:#667085"
                       elevation="0"
                       width="60%"
@@ -347,7 +349,9 @@
                       width="24px"
                       contain
                     ></v-img>
-                    <p class="font-weight-medium white--text ma-0 btn">
+                    <p
+                      class="font-weight-medium white--text ma-0 btn-not-hover btn-not-transform"
+                    >
                       Facebook
                     </p></v-btn
                   >
@@ -360,6 +364,67 @@
               ></v-img>
             </v-card>
           </v-dialog>
+        </div>
+        <div v-show="true" class="d-flex flex-row">
+          <v-card
+            rounded="circle"
+            width="40px"
+            height="40px"
+            color="#FCFCFD"
+            class="d-flex justify-center align-center mr-6"
+            elevation="0"
+          >
+            <v-btn icon class="btn-not-hover" :ripple="false">
+              <v-img
+                src="@/assets/img/home/appbar/bell_icon.svg"
+                contain
+                height="16.63px"
+                width="13.33px"
+              ></v-img>
+            </v-btn>
+          </v-card>
+          <v-card
+            rounded="circle"
+            width="40px"
+            height="40px"
+            color="#FCFCFD"
+            class="d-flex justify-center align-center"
+            elevation="0"
+          >
+            <!-- <v-btn icon class="btn-not-hover" :ripple="false">
+              <v-avatar size="40">
+                <img src="@/assets/img/home/appbar/avatar.png" />
+              </v-avatar>
+            </v-btn> -->
+            <v-menu
+              offset-y
+              left
+              open-on-hover
+              content-class="elevation-1 overflow-hidden"
+              style="overflow: hidden !important"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  class="btn-not-hover"
+                  :ripple="false"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-avatar size="40">
+                    <img src="@/assets/img/home/appbar/avatar.png" />
+                  </v-avatar>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item v-for="n in 4" :key="n" link>
+                  <v-list-item-content>
+                    Hồ sơ cá nhân
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-card>
         </div>
       </v-row>
     </v-app-bar>
@@ -449,11 +514,11 @@ export default {
 </script>
 
 <style scoped>
-.btn {
+.btn-not-transform {
   text-transform: none;
 }
 
-.btn:hover::before {
+.btn-not-hover:hover::before {
   opacity: 0 !important;
 }
 </style>
