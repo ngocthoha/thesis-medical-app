@@ -419,7 +419,18 @@
               <v-list>
                 <v-list-item v-for="n in 4" :key="n" link>
                   <v-list-item-content>
-                    Hồ sơ cá nhân
+                    <div class="d-flex flex-row">
+                      <v-img
+                        src="@/assets/img/home/appbar/account_icon.svg"
+                        height="20px"
+                        width="20px"
+                        contain
+                        class="d-flex align-end"
+                      ></v-img>
+                      <p class="ml-3 d-flex align-end pa-0 ma-0">
+                        Hồ sơ cá nhân
+                      </p>
+                    </div>
                   </v-list-item-content>
                 </v-list-item>
               </v-list>
