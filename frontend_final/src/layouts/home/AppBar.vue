@@ -220,7 +220,7 @@
 
         <!-- Sign up Section -->
         <div v-show="false">
-          <v-dialog v-model="signu_up_dialog" width="800px">
+          <v-dialog v-model="sign_up_dialog" width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
                 color="#537DA5"
@@ -417,21 +417,27 @@
                 </v-btn>
               </template>
               <v-list>
-                <v-list-item v-for="n in 4" :key="n" link>
-                  <v-list-item-content>
-                    <div class="d-flex flex-row">
+                <v-list-item v-for="(item, i) in function_menu" :key="i" link>
+                  <div class="d-flex flex-row">
+                    <v-list-item-icon class="mr-3">
                       <v-img
-                        src="@/assets/img/home/appbar/account_icon.svg"
+                        :src="item.icon"
                         height="20px"
                         width="20px"
                         contain
-                        class="d-flex align-end"
+                        content-class
+                        class="d-flex align-end justify-start"
                       ></v-img>
-                      <p class="ml-3 d-flex align-end pa-0 ma-0">
-                        Hồ sơ cá nhân
+                    </v-list-item-icon>
+                    <v-list-item-content>
+                      <p
+                        class="d-flex align-end pa-0 ma-0 text-body-2"
+                        :style="{ color: item.color }"
+                      >
+                        {{ item.content }}
                       </p>
-                    </div>
-                  </v-list-item-content>
+                    </v-list-item-content>
+                  </div>
                 </v-list-item>
               </v-list>
             </v-menu>
@@ -500,7 +506,40 @@ export default {
     ],
 
     login_dialog: false,
-    signu_up_dialog: false
+    sign_up_dialog: false,
+
+    function_menu: [
+      {
+        icon: require("@/assets/img/home/appbar/account_icon.svg"),
+        content: "Hồ sơ cá nhân",
+        color: "#667085"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/clock_icon.svg"),
+        content: "Lịch sử khám",
+        color: "#667085"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/document_icon.svg"),
+        content: "Hồ sơ sức khỏe",
+        color: "#667085"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/connection_icon.svg"),
+        content: "Lịch sử giao dịch",
+        color: "#667085"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/help_icon.svg"),
+        content: "Câu hỏi của bạn",
+        color: "#667085"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/logout_icon.svg"),
+        content: "Đăng xuất",
+        color: "#F04438"
+      }
+    ]
   }),
 
   methods: {
