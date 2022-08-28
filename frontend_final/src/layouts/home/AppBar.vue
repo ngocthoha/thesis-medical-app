@@ -78,7 +78,7 @@
         >
         <v-spacer />
         <!-- Login Section -->
-        <div v-show="false">
+        <div v-show="!is_login">
           <v-dialog v-model="login_dialog" width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -154,6 +154,7 @@
                   class="ml-8 white--text btn-not-hover btn-not-transform text-body-1"
                   color="#537DA5"
                   elevation="0"
+                  @click="onLoginSubmmit"
                   >Đăng nhập</v-btn
                 >
                 <v-card
@@ -219,7 +220,7 @@
         </div>
 
         <!-- Sign up Section -->
-        <div v-show="false">
+        <div v-show="!is_login">
           <v-dialog v-model="sign_up_dialog" width="800px">
             <template v-slot:activator="{ on, attrs }">
               <v-btn
@@ -301,6 +302,7 @@
                   class="ml-8 white--text btn-not-hover btn-not-transform text-body-1"
                   color="#537DA5"
                   elevation="0"
+                  @click="onSignupSubmit"
                   >Đăng kí</v-btn
                 >
                 <v-card
@@ -365,83 +367,88 @@
             </v-card>
           </v-dialog>
         </div>
-        <div v-show="true" class="d-flex flex-row">
-          <v-card
-            rounded="circle"
-            width="40px"
-            height="40px"
-            color="#FCFCFD"
-            class="d-flex justify-center align-center mr-6"
-            elevation="0"
-          >
-            <v-btn icon class="btn-not-hover" :ripple="false">
-              <v-img
-                src="@/assets/img/home/appbar/bell_icon.svg"
-                contain
-                height="16.63px"
-                width="13.33px"
-              ></v-img>
-            </v-btn>
-          </v-card>
-          <v-card
-            rounded="circle"
-            width="40px"
-            height="40px"
-            color="#FCFCFD"
-            class="d-flex justify-center align-center"
-            elevation="0"
-          >
-            <!-- <v-btn icon class="btn-not-hover" :ripple="false">
-              <v-avatar size="40">
-                <img src="@/assets/img/home/appbar/avatar.png" />
-              </v-avatar>
-            </v-btn> -->
-            <v-menu
-              offset-y
-              left
-              open-on-hover
-              content-class="elevation-1 overflow-hidden"
-              style="overflow: hidden !important"
+        <!-- show when logging success -->
+        <div v-show="is_login">
+          <div class="d-flex flex-row">
+            <!-- notification -->
+            <v-card
+              rounded="circle"
+              width="40px"
+              height="40px"
+              color="#FCFCFD"
+              class="d-flex justify-center align-center mr-6"
+              elevation="0"
             >
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  class="btn-not-hover"
-                  :ripple="false"
-                  v-bind="attrs"
-                  v-on="on"
-                >
-                  <v-avatar size="40">
-                    <img src="@/assets/img/home/appbar/avatar.png" />
-                  </v-avatar>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item v-for="(item, i) in function_menu" :key="i" link>
-                  <div class="d-flex flex-row">
-                    <v-list-item-icon class="mr-3">
-                      <v-img
-                        :src="item.icon"
-                        height="20px"
-                        width="20px"
-                        contain
-                        content-class
-                        class="d-flex align-end justify-start"
-                      ></v-img>
-                    </v-list-item-icon>
-                    <v-list-item-content>
-                      <p
-                        class="d-flex align-end pa-0 ma-0 text-body-2"
-                        :style="{ color: item.color }"
-                      >
-                        {{ item.content }}
-                      </p>
-                    </v-list-item-content>
-                  </div>
-                </v-list-item>
-              </v-list>
-            </v-menu>
-          </v-card>
+              <v-btn icon class="btn-not-hover" :ripple="false">
+                <v-img
+                  src="@/assets/img/home/appbar/bell_icon.svg"
+                  contain
+                  height="16.63px"
+                  width="13.33px"
+                ></v-img>
+              </v-btn>
+            </v-card>
+            <!-- dropdown user menu  -->
+            <v-card
+              rounded="circle"
+              width="40px"
+              height="40px"
+              color="#FCFCFD"
+              class="d-flex justify-center align-center"
+              elevation="0"
+            >
+              <v-menu
+                offset-y
+                left
+                content-class="elevation-1 overflow-hidden"
+                style="overflow: hidden !important"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    class="btn-not-hover"
+                    :ripple="false"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    <v-avatar size="40">
+                      <img src="@/assets/img/home/appbar/avatar.png" />
+                    </v-avatar>
+                  </v-btn>
+                </template>
+                <v-card class="mx-auto" width="240px" tile>
+                  <v-list>
+                    <v-list-item
+                      v-for="(item, i) in function_menu"
+                      :key="i"
+                      @click="onMenuClick(item)"
+                    >
+                      <div class="d-flex flex-row">
+                        <v-list-item-icon class="mr-3">
+                          <v-img
+                            :src="item.icon"
+                            height="20px"
+                            width="20px"
+                            contain
+                            content-class
+                            class="d-flex align-end justify-start"
+                          ></v-img>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                          <p
+                            class="d-flex align-end pa-0 ma-0 text-body-2"
+                            :style="{ color: item.color }"
+                          >
+                            {{ item.content }}
+                          </p>
+                        </v-list-item-content>
+                      </div>
+                    </v-list-item>
+                  </v-list>
+                </v-card>
+              </v-menu>
+            </v-card>
+          </div>
         </div>
       </v-row>
     </v-app-bar>
@@ -450,42 +457,19 @@
 
 <script>
 // Utilities
-
+const ButtonFunctionType = {
+  LOG_OUT: 0,
+  FUNCTION: 1
+};
 export default {
   name: "HomeBar",
-
-  components: {
-    DefaultAccount: () =>
-      import(
-        /* webpackChunkName: "default-account" */
-        "./widgets/Account"
-      ),
-    DefaultDrawerToggle: () =>
-      import(
-        /* webpackChunkName: "default-drawer-toggle" */
-        "./widgets/DrawerToggle"
-      ),
-    DefaultGoHome: () =>
-      import(
-        /* webpackChunkName: "default-go-home" */
-        "./widgets/GoHome"
-      ),
-    DefaultNotifications: () =>
-      import(
-        /* webpackChunkName: "default-notifications" */
-        "./widgets/Notifications"
-      ),
-    DefaultSearch: () =>
-      import(
-        /* webpackChunkName: "default-search" */
-        "./widgets/Search"
-      )
-  },
-
   computed: {},
 
   data: () => ({
     show1: false,
+    login_dialog: false,
+    sign_up_dialog: false,
+    is_login: false,
     appointment_list: [
       {
         icon: require("@/assets/img/home/appbar/doctor.svg"),
@@ -505,39 +489,42 @@ export default {
       }
     ],
 
-    login_dialog: false,
-    sign_up_dialog: false,
-
     function_menu: [
       {
         icon: require("@/assets/img/home/appbar/account_icon.svg"),
         content: "Hồ sơ cá nhân",
-        color: "#667085"
+        color: "#667085",
+        type: ButtonFunctionType.FUNCTION
       },
       {
         icon: require("@/assets/img/home/appbar/clock_icon.svg"),
         content: "Lịch sử khám",
-        color: "#667085"
+        color: "#667085",
+        type: ButtonFunctionType.FUNCTION
       },
       {
         icon: require("@/assets/img/home/appbar/document_icon.svg"),
         content: "Hồ sơ sức khỏe",
-        color: "#667085"
+        color: "#667085",
+        type: ButtonFunctionType.FUNCTION
       },
       {
         icon: require("@/assets/img/home/appbar/connection_icon.svg"),
         content: "Lịch sử giao dịch",
-        color: "#667085"
+        color: "#667085",
+        type: ButtonFunctionType.FUNCTION
       },
       {
         icon: require("@/assets/img/home/appbar/help_icon.svg"),
         content: "Câu hỏi của bạn",
-        color: "#667085"
+        color: "#667085",
+        type: ButtonFunctionType.FUNCTION
       },
       {
         icon: require("@/assets/img/home/appbar/logout_icon.svg"),
         content: "Đăng xuất",
-        color: "#F04438"
+        color: "#F04438",
+        type: ButtonFunctionType.LOG_OUT
       }
     ]
   }),
@@ -546,6 +533,7 @@ export default {
     login() {
       this.$router.push({ name: "Đăng nhập" });
     },
+
     signup() {
       this.$router.push({ name: "Đăng ký" });
     },
@@ -558,6 +546,21 @@ export default {
           throw error;
         }
       });
+    },
+
+    onMenuClick(button) {
+      if (button.type == ButtonFunctionType.LOG_OUT) {
+        this.is_login = false;
+      }
+    },
+
+    onLoginSubmmit() {
+      this.login_dialog = false;
+      this.is_login = true;
+    },
+
+    onSignupSubmit() {
+      this.sign_up_dialog = false;
     }
   }
 };

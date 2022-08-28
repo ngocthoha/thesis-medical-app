@@ -41,15 +41,102 @@
                 </p></v-card
               >
             </div>
+            <!-- fast book appointment -->
             <div class="d-flex flex-column">
-              <v-btn
-                height="48px"
-                width="155px"
-                color="#537DA5"
-                class="white--text text-body-1"
-                style="text-transform: none;"
-                >Đặt khám ngay</v-btn
-              >
+              <v-dialog v-model="fast_book_dialog" width="640px">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    height="48px"
+                    width="155px"
+                    color="#537DA5"
+                    class="white--text text-body-1"
+                    style="text-transform: none;"
+                    v-on="on"
+                    v-bind="attrs"
+                    >Đặt khám ngay</v-btn
+                  >
+                </template>
+                <v-card class="d-flex flex-column">
+                  <v-card
+                    class="d-flex justify-end mt-10"
+                    elevation="0"
+                    width="586px"
+                  >
+                    <v-icon color="#101828" @click="fast_book_dialog = false"
+                      >mdi-close</v-icon
+                    >
+                  </v-card>
+                  <v-card class="d-flex flex-column" elevation="0" width="100%">
+                    <div class="d-flex justify-center">
+                      <v-img
+                        height="107px"
+                        width="177px"
+                        contain
+                        src="@/assets/img/home/fast_book.svg"
+                      ></v-img>
+                    </div>
+                  </v-card>
+                  <p
+                    class="d-flex justify-center font-weight-bold"
+                    style="font-size:32px"
+                  >
+                    Đặt khám nhanh
+                  </p>
+                  <p class="d-flex justify-center">
+                    Vui lòng để lại thông tin, chúng tôi sẽ liên hệ lại với bạn
+                    để tư vấn.
+                  </p>
+                  <!-- input -->
+                  <v-card
+                    class="d-flex justify-center"
+                    height="328px"
+                    elevation="0"
+                  >
+                    <v-card width="592px" elevation="0">
+                      <div class="d-flex flex-column">
+                        <div class="d-flex flex-row">
+                          <div class="d-flex flex-column">
+                            <label for="">Họ và tên</label>
+                            <v-card
+                              width="288px"
+                              height="44px"
+                              class="d-flex mb-5"
+                              elevation="0"
+                              outlined
+                            >
+                              <v-text-field
+                                placeholder="VD: Nguyen Xuan H"
+                                solo
+                                flat
+                                dense
+                                class="text-body-2"
+                              ></v-text-field
+                            ></v-card>
+                          </div>
+                          <div class="d-flex flex-column ml-4">
+                            <label for="">Số điện thoại</label>
+                            <v-card
+                              width="288px"
+                              height="44px"
+                              class="d-flex mb-5"
+                              elevation="0"
+                              outlined
+                            >
+                              <v-text-field
+                                placeholder="VD: 012345689"
+                                solo
+                                flat
+                                dense
+                                class="text-body-2"
+                              ></v-text-field
+                            ></v-card>
+                          </div>
+                        </div>
+                      </div>
+                    </v-card>
+                  </v-card>
+                </v-card>
+              </v-dialog>
             </div>
           </div>
         </v-card>
@@ -420,6 +507,7 @@
 <script>
 export default {
   data: () => ({
+    fast_book_dialog: false,
     card_list_2: [
       {
         image: require("@/assets/img/home/home_icon1.png"),
