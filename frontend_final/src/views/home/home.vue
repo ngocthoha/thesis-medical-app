@@ -157,6 +157,43 @@
                             ></v-textarea
                           ></v-card>
                         </div>
+                        <div class="d-flex flex-row">
+                          <v-card class="d-flex align-center" elevation="0">
+                            <v-img
+                              sizes="24px"
+                              src="@/assets/img/home/phone_icon.svg"
+                              contain
+                            ></v-img>
+                            <p class="ma-0 ml-3 font-weight-medium text-body-2">
+                              Liên hệ Hotline:
+                            </p>
+                            <p
+                              class="ma-0 ml-2 font-weight-medium text-body-2"
+                              style="color: #537DA5"
+                            >
+                              190017473
+                            </p>
+                          </v-card>
+
+                          <v-card class="ml-auto"
+                            ><v-btn
+                              class="d-flex align-center btn"
+                              color="#537DA5"
+                              ><v-img
+                                src="@/assets/img/home/send_mail_icon.svg"
+                                sizes="20px"
+                                class="mr-3"
+                              ></v-img>
+                              <p class="ma-0 white--text">Gửi yêu cầu</p></v-btn
+                            ></v-card
+                          >
+
+                          <!-- <div>
+                            <v-card class="d-flex justify-end">
+                              <v-btn>Gửi yêu cầu</v-btn>
+                            </v-card>
+                          </div> -->
+                        </div>
                       </div>
                     </v-card>
                   </v-card>
