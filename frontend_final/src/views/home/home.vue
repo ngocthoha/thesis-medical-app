@@ -96,7 +96,9 @@
                       <div class="d-flex flex-column">
                         <div class="d-flex flex-row">
                           <div class="d-flex flex-column">
-                            <label for="">Họ và tên</label>
+                            <label for="" class="font-weight-bold text-body-2"
+                              >Họ và tên</label
+                            >
                             <v-card
                               width="288px"
                               height="44px"
@@ -114,7 +116,9 @@
                             ></v-card>
                           </div>
                           <div class="d-flex flex-column ml-4">
-                            <label for="">Số điện thoại</label>
+                            <label for="" class="font-weight-bold text-body-2"
+                              >Số điện thoại</label
+                            >
                             <v-card
                               width="288px"
                               height="44px"
@@ -131,6 +135,27 @@
                               ></v-text-field
                             ></v-card>
                           </div>
+                        </div>
+                        <div class="d-flex flex-column">
+                          <label for="" class="font-weight-bold text-body-2"
+                            >Nhu cầu khám</label
+                          >
+                          <v-card
+                            width="592px"
+                            height="128px"
+                            class="d-flex mb-5"
+                            elevation="0"
+                            outlined
+                          >
+                            <v-textarea
+                              solo
+                              placeholder="Vui lòng nhập mô tả về nhu cầu khám"
+                              class="text-body-2"
+                              dense
+                              flat
+                              height="120px"
+                            ></v-textarea
+                          ></v-card>
                         </div>
                       </div>
                     </v-card>
