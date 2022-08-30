@@ -98,6 +98,51 @@
     </v-footer>
   </div> -->
   <footer>
-    <v-card height="392px" color="#314E6A" tile></v-card>
+    <v-card height="392px" color="#314E6A" tile class="d-flex justify-center">
+      <v-card
+        class="d-flex justify-space-around mt-12"
+        min-width="1280px"
+        max-height="200px"
+        color="#314E6A"
+        elevation="0"
+      >
+        <v-card class="d-flex flex-column" color="#314E6A" elevation="0">
+          <p class="white--text font-weight-medium">Blouse Care</p>
+          <p class="white--text">Hotline: 19001008</p>
+          <p class="white--text">Email: support@isofhcare.com</p>
+        </v-card>
+        <v-card class="d-flex flex-column" color="#314E6A" elevation="0">
+          <p class="white--text font-weight-regular">Điều khoản sử dụng</p>
+          <p class="white--text font-weight-regular">Chính sách bảo mật</p>
+          <p class="white--text font-weight-regular">Trung tâm trợ giúp</p>
+          <p class="white--text font-weight-regular">Quy chế hoạt động</p>
+        </v-card>
+        <v-card class="d-flex flex-column" color="#314E6A" elevation="0">
+          <p class="font-weight-regular" style="color: #D0D5DD">
+            Điều khoản sử dụng
+          </p>
+          <p class="font-weight-regular" style="color: #D0D5DD">
+            Chính sách bảo mật
+          </p>
+          <p class="font-weight-regular" style="color: #D0D5DD">
+            Trung tâm trợ giúp
+          </p>
+          <p class="font-weight-regular" style="color: #D0D5DD">
+            Quy chế hoạt động
+          </p>
+        </v-card>
+        <v-card class="d-flex flex-column" color="#314E6A" elevation="0">
+          <p class="font-weight-regular" style="color: #D0D5DD">
+            Trang chủ
+          </p>
+          <p class="font-weight-regular" style="color: #D0D5DD">Cộng đồng</p>
+          <p class="font-weight-regular" style="color: #D0D5DD">Cẩm nang</p>
+          <p class="font-weight-regular" style="color: #D0D5DD">
+            Quy chế hoạt động
+          </p>
+        </v-card>
+        <v-card class="d-flex flex-column"></v-card>
+      </v-card>
+    </v-card>
   </footer>
 </template>
