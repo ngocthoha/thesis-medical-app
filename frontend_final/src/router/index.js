@@ -144,19 +144,6 @@ const router = new Router({
     route("Đăng nhập", { default: "auth/Login" }, "/login"),
     route("Đăng ký", { default: "auth/Signup" }, "/signup"),
 
-    //UserPages
-    // layout(
-    //   "Home",
-    //   [
-    //     layout(
-    //       "User",
-    //       [route("Đặt lịch hẹn", { default: "user/CreateAppointment" }, "add")],
-    //       "user"
-    //     )
-    //   ],
-    //   "home"
-    // )
-
     layout(
       "Home",
       [
@@ -164,14 +151,18 @@ const router = new Router({
           "User",
           [
             route(
-              "Đặt lịch khám theo ngày",
-              { default: "user/CreateAppointment" },
-              "create-appointment"
+              "Hồ sơ cá nhân",
+              {
+                default: "user/profile"
+              },
+              "profile"
             ),
             route(
-              "Xem lịch sử cuộc hẹn",
-              { default: "user/ViewAppointment" },
-              "view-appointment"
+              "Lịch sử Đặt khám",
+              {
+                default: "user/appointmentHistory"
+              },
+              "appointment-history"
             )
           ],
           "user"

@@ -494,13 +494,15 @@ export default {
         icon: require("@/assets/img/home/appbar/account_icon.svg"),
         content: "Hồ sơ cá nhân",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
+        link: "/home/user/profile"
       },
       {
         icon: require("@/assets/img/home/appbar/clock_icon.svg"),
-        content: "Lịch sử khám",
+        content: "Lịch sử Đặt khám",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
+        link: "/home/user/appointment-history"
       },
       {
         icon: require("@/assets/img/home/appbar/document_icon.svg"),
@@ -524,7 +526,8 @@ export default {
         icon: require("@/assets/img/home/appbar/logout_icon.svg"),
         content: "Đăng xuất",
         color: "#F04438",
-        type: ButtonFunctionType.LOG_OUT
+        type: ButtonFunctionType.LOG_OUT,
+        link: "/"
       }
     ]
   }),
@@ -548,10 +551,18 @@ export default {
       });
     },
 
-    onMenuClick(button) {
+    async onMenuClick(button) {
       if (button.type == ButtonFunctionType.LOG_OUT) {
         this.is_login = false;
       }
+      this.$router.push({ path: button.link }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     },
 
     onLoginSubmmit() {

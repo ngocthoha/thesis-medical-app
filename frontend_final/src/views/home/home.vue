@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="content my-application">
+    <div>
       <!-- section 1 -->
       <v-card
         width="100%"
