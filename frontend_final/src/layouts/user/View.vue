@@ -3,7 +3,7 @@
     <div>
       <v-card
         width="100%"
-        height="100%"
+        min-height="1000px"
         color="#fcfcfd"
         class="d-flex justify-center py-12"
       >
@@ -62,19 +62,6 @@ export default {
         { text: "Lịch sử giao dịch", icon: "mdi-swap-horizontal" }
       ]
     };
-  },
-
-  updated() {
-    this.isUserPage();
-  },
-
-  methods: {
-    isUserPage() {
-      console.log("hello");
-      if (this.$route.name != "Trang chủ") {
-        this.isMenuShow = true;
-      } else this.isMenuShow = false;
-    }
   }
 };
 </script>
