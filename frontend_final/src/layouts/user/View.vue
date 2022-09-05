@@ -21,10 +21,10 @@
                   class="mt-4 mx-5"
                   :to="item.link"
                 >
-                  <v-list-item-icon>
+                  <v-list-item-icon class="mr-3">
                     <v-icon v-text="item.icon"></v-icon>
                   </v-list-item-icon>
-                  <v-list-item-content class="pr-6">
+                  <v-list-item-content class="pr-6 ma-0">
                     <v-list-item-title
                       v-text="item.text"
                       class="font-weight-medium text-body-1"
