@@ -26,7 +26,38 @@
     <v-divider
       style=" border-color: rgba(16, 24, 40, 0.03) !important;"
     ></v-divider>
-
+    <!-- remove profile dialog -->
+    <v-dialog v-model="dialog" width="408px">
+      <v-card height="192px" class="d-flex flex-column">
+        <div class="d-flex flex-column mt-8 ml-8">
+          <p style="font-size:24px" class="font-weight-bold">
+            Xác nhận xoá hồ sơ
+          </p>
+          <p style="color: #667085">
+            Bạn có chắc chắn muốn xoá hồ sơ này không?
+          </p>
+        </div>
+        <div class="d-flex flex-row justify-space-between ml-8 mr-8">
+          <v-btn
+            class="btn-not-transform font-weight-medium"
+            width="160px"
+            outlined
+            color="#667085"
+            text
+            @click="dialog = false"
+            >Huỷ bỏ</v-btn
+          >
+          <v-btn
+            class="btn-not-transform white--text font-weight-medium"
+            width="160px"
+            color="#F04438"
+            elevation="0"
+            @click="dialog = false"
+            >Xoá hồ sơ</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
     <!-- list profile -->
     <div class="d-flex justify-center mt-8">
       <v-card width="858px" elevation="0">
@@ -79,6 +110,7 @@
                   width="32px"
                   height="32px"
                   class="d-flex justify-center  mr-5"
+                  @click.stop="dialog = true"
                 >
                   <v-icon small color="#F04438">
                     mdi-account-remove-outline
@@ -246,5 +278,17 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      dialog: false
+    };
+  }
+};
 </script>
+
+<style scoped>
+.btn-not-transform {
+  text-transform: none;
+}
+</style>

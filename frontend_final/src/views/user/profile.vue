@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card width="922px" elevation="4" class="pb-8">
-      <profile-list v-if="false"></profile-list>
+      <profile-list v-if="true"></profile-list>
     </v-card>
   </div>
 </template>
@@ -14,9 +14,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.btn-not-transform {
-  text-transform: none;
-}
-</style>
