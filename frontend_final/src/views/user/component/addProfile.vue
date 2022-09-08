@@ -38,7 +38,9 @@
     </v-tabs>
     <v-tabs-items v-model="tab">
       <v-tab-item :value="'tab-1'">
-        <v-card flat> </v-card>
+        <v-card flat class="ma-6">
+          <profile-form> </profile-form>
+        </v-card>
       </v-tab-item>
       <v-tab-item :value="'tab-2'">
         <v-card flat class="d-flex flex-column">
@@ -52,6 +54,7 @@
               height="48px"
               class="d-flex mb-5"
               elevation="0"
+              style="padding-top: 1px"
               outlined
             >
               <v-text-field
@@ -59,14 +62,16 @@
                 solo
                 flat
                 dense
-                class="text-body-2"
-              ></v-text-field
-            ></v-card>
+                class="text-body-1"
+                v-model="phoneInputData"
+              ></v-text-field>
+            </v-card>
             <v-btn
               color="#537DA5"
               width="102px"
               height="44px"
               class="white--text btn-not-transform  text-body-1"
+              @click="lookingSubmit()"
               >Tìm kiếm</v-btn
             >
           </div>
@@ -74,25 +79,68 @@
             class="mt-6"
             style=" border-color: rgba(16, 24, 40, 0.03) !important;"
           ></v-divider>
-          <div v-if="true" class="d-flex flex-column mt-6">
+          <div class="d-flex flex-column mt-6" v-if="hasLookingResult">
             <p class="font-weight-bold ml-8" style="font-size:20px">
               Kết quả tìm kiếm
             </p>
-            <v-card width="100%" class="d-flex flex-column" elevation="0">
-              <v-img
-                class="d-flex justify-center"
-                src="@/assets/img/user/profile/lookingNotFound.svg"
-                width="183px"
-                height="186px"
-                contain
-              ></v-img>
-              <div>
-                <p>Không có kết quả tìm kiếm</p>
-                <p>
-                  Vui lòng nhập số điện thoại thân nhân để hiển thị kết quả.
-                </p>
-              </div>
-            </v-card>
+            <div class="d-flex flex-column" v-if="notFound">
+              <v-card width="100%" class="d-flex justify-center" elevation="0">
+                <v-img
+                  class="d-flex"
+                  src="@/assets/img/user/profile/lookingNotFound.png"
+                  width="183px"
+                  height="186px"
+                  contain
+                ></v-img>
+              </v-card>
+              <p
+                class="font-weight-bold ml-8 d-flex justify-center"
+                style="font-size:20px"
+              >
+                Không có kết quả tìm kiếm
+              </p>
+              <p class=" ml-8 d-flex justify-center" style="color:#667085">
+                Vui lòng nhập số điện thoại thân nhân để hiển thị kết quả.
+              </p>
+            </div>
+            <div v-if="!notFound">
+              <v-list>
+                <v-list-item v-for="n in 1" :key="n">
+                  <v-card
+                    class="d-flex flex-row align-center justify-space-between mb-5 mx-4"
+                    outlined
+                    width="100%"
+                    height="92px"
+                  >
+                    <div class="d-flex flex-row align-center ml-6">
+                      <v-avatar size="40">
+                        <img src="@/assets/img/home/appbar/avatar.png" />
+                      </v-avatar>
+                      <div class="d-flex flex-column ml-3">
+                        <p class="ma-0 font-weight-bold text-body-1">
+                          Nguyễn Xuân Hoà
+                        </p>
+                        <p
+                          class="ma-0 font-weight-normal text-body-2"
+                          style="color: #667085"
+                        >
+                          Chủ tài khoản
+                        </p>
+                      </div>
+                    </div>
+                    <div class="d-flex">
+                      <v-btn
+                        width="106px"
+                        height="36px"
+                        color="#537DA5"
+                        class="white--text mr-4 btn-not-transform text-body-2"
+                        >Gửi yêu cầu</v-btn
+                      >
+                    </div>
+                  </v-card>
+                </v-list-item>
+              </v-list>
+            </div>
           </div>
         </v-card>
       </v-tab-item>
@@ -101,12 +149,30 @@
 </template>
 
 <script>
+import ProfileForm from "./profileForm.vue";
 export default {
+  components: {
+    ProfileForm
+  },
   data() {
     return {
       items: ["web", "shopping", "videos", "images", "news"],
-      tab: null
+      tab: null,
+      hasLookingResult: false,
+      notFound: true,
+      phoneInputData: ""
     };
+  },
+  methods: {
+    lookingSubmit() {
+      console.log(this.phoneInputData);
+      if (this.phoneInputData != "") {
+        this.notFound = false;
+      } else {
+        this.notFound = true;
+      }
+      this.hasLookingResult = true;
+    }
   }
 };
 </script>
@@ -115,4 +181,8 @@ export default {
 .btn-not-transform {
   text-transform: none;
 }
+
+/* .v-text-field--outlined >>> fieldset {
+  border-color: #d0d5dd;
+} */
 </style>
