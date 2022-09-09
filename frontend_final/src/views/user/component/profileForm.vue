@@ -13,7 +13,7 @@
       </v-card>
       <v-card width="50%" flat class="d-flex flex-row align-center">
         <v-avatar size="64">
-          <img src="@/assets/img/user/profile/avatar1.svg" />
+          <v-img contain :src="avt_img" ref="avt" />
         </v-avatar>
         <v-card
           class="d-flex align-center justify-center ml-8"
@@ -26,8 +26,18 @@
               <v-card
                 class="d-flex align-center justify-center pa-2"
                 rounded="circle"
+                color="#EEF2F6"
               >
-                <v-icon large @click="true">mdi-cloud-upload-outline</v-icon>
+                <v-icon color="#537DA5" large @click="$refs.file.click()"
+                  >mdi-cloud-upload-outline
+                </v-icon>
+                <input
+                  type="file"
+                  ref="file"
+                  accept="image/*"
+                  style="display: none"
+                  @change="previewFiles"
+                />
               </v-card>
             </div>
             <p class="d-flex font-weight-medium">
@@ -42,3 +52,33 @@
     </v-card>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      avt_img: require("@/assets/img/user/profile/avatar1.svg")
+    };
+  },
+  methods: {
+    previewFiles(event) {
+      //console.log(event.target.files);
+      var file_1 = event.target.files[0];
+      var reader = new FileReader();
+      reader.addEventListener(
+        "load",
+        () => {
+          // convert image file to base64 string
+          this.avt_img = reader.result;
+        },
+        false
+      );
+      if (file_1) {
+        reader.readAsDataURL(file_1);
+      } else {
+        this.avt_img = require("@/assets/img/user/profile/avatar1.svg");
+      }
+    }
+  }
+};
+</script>
