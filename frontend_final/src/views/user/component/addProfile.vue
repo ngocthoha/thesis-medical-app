@@ -40,6 +40,25 @@
       <v-tab-item :value="'tab-1'">
         <v-card flat class="ma-6">
           <profile-form> </profile-form>
+          <v-divider
+            style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+          ></v-divider>
+          <div class="d-flex flex-row justify-end mt-8">
+            <v-btn
+              class="mr-6 btn-not-transform text-body-1 font-weight-medium"
+              elevation="0"
+              outlined
+              color="#667085"
+              text
+              >Hủy bỏ</v-btn
+            >
+            <v-btn
+              class="btn-not-transform white--text text-body-1 font-weight-medium"
+              elevation="0"
+              color="#537DA5"
+              >Thêm hồ sơ</v-btn
+            >
+          </div>
         </v-card>
       </v-tab-item>
       <v-tab-item :value="'tab-2'">
@@ -165,7 +184,6 @@ export default {
   },
   methods: {
     lookingSubmit() {
-      console.log(this.phoneInputData);
       if (this.phoneInputData != "") {
         this.notFound = false;
       } else {
