@@ -36,6 +36,7 @@
         >Tìm kiếm hồ sơ</v-tab
       >
     </v-tabs>
+    <!-- Add new profile tab -->
     <v-tabs-items v-model="tab">
       <v-tab-item :value="'tab-1'">
         <v-card flat class="ma-6">
@@ -50,6 +51,7 @@
               outlined
               color="#667085"
               text
+              @click="cancleAddProfile"
               >Hủy bỏ</v-btn
             >
             <v-btn
@@ -61,6 +63,7 @@
           </div>
         </v-card>
       </v-tab-item>
+      <!-- Search and add existing profiles -->
       <v-tab-item :value="'tab-2'">
         <v-card flat class="d-flex flex-column">
           <div class="d-flex flex-column ml-8 mt-6">
@@ -85,14 +88,24 @@
                 v-model="phoneInputData"
               ></v-text-field>
             </v-card>
-            <v-btn
-              color="#537DA5"
-              width="102px"
-              height="44px"
-              class="white--text btn-not-transform  text-body-1"
-              @click="lookingSubmit()"
-              >Tìm kiếm</v-btn
-            >
+            <div class="d-flex flex-row">
+              <v-btn
+                color="#537DA5"
+                class="white--text btn-not-transform  text-body-1"
+                elevation="0"
+                @click="lookingSubmit()"
+                >Tìm kiếm</v-btn
+              >
+              <v-btn
+                class="ml-6 btn-not-transform text-body-1 font-weight-medium"
+                elevation="0"
+                outlined
+                color="#667085"
+                text
+                @click="cancleAddProfile"
+                >Hủy bỏ</v-btn
+              >
+            </div>
           </div>
           <v-divider
             class="mt-6"
@@ -190,6 +203,9 @@ export default {
         this.notFound = true;
       }
       this.hasLookingResult = true;
+    },
+    cancleAddProfile() {
+      this.$emit("addProfileClose");
     }
   }
 };

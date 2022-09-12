@@ -18,7 +18,10 @@
         </div>
       </div>
       <div class="d-flex align-center mr-8">
-        <v-btn color="#537DA5" class="white--text btn-not-transform text-body-2"
+        <v-btn
+          color="#537DA5"
+          class="white--text btn-not-transform text-body-2"
+          @click="createProfile"
           ><v-icon left>mdi-account-plus-outline</v-icon> Thêm mới hồ sơ</v-btn
         >
       </div>
@@ -96,6 +99,7 @@
                   width="32px"
                   height="32px"
                   class="d-flex justify-center mr-5"
+                  @click="editProfile"
                 >
                   <v-icon small color="#537DA5">
                     mdi-pencil-outline
@@ -283,6 +287,16 @@ export default {
     return {
       dialog: false
     };
+  },
+
+  methods: {
+    createProfile() {
+      this.$emit("OpenCreateProfile");
+    },
+
+    editProfile() {
+      this.$emit("OpenEditProfile");
+    }
   }
 };
 </script>
