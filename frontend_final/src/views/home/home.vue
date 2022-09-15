@@ -5,7 +5,7 @@
       <v-card
         width="100%"
         class="d-flex flex-row justify-sm-center"
-        height="500px"
+        max-height="500px"
         color="#EEF2F6"
       >
         <v-card
@@ -187,12 +187,6 @@
                               <p class="ma-0 white--text">Gửi yêu cầu</p></v-btn
                             ></v-card
                           >
-
-                          <!-- <div>
-                            <v-card class="d-flex justify-end">
-                              <v-btn>Gửi yêu cầu</v-btn>
-                            </v-card>
-                          </div> -->
                         </div>
                       </div>
                     </v-card>
@@ -203,31 +197,30 @@
           </div>
         </v-card>
         <v-sheet
-          class="rounded-circle"
+          class="rounded-circle hidden-lg-and-down"
           height="72px"
           width="72px"
           color="#BACBDC"
           style="margin-top: 268px; margin-left: 123px;"
         ></v-sheet>
-        <v-card
-          color="#EEF2F6"
-          elevation="0"
-          class="d-flex align-end"
-          style="margin-left: 73px"
-        >
-          <v-img
-            src="@/assets/img/home/Rectangle39.svg"
-            style="margin-left: 74px; position: absolute"
-          ></v-img>
-          <v-img
-            class="d-flex"
-            src="@/assets/img/home/toppng1.svg"
-            style="position: relative"
+        <div class="d-flex align-center">
+          <v-card
+            color="#EEF2F6"
+            elevation="0"
+            class="d-flex align-end ml-16"
+            min-height="100"
           >
-          </v-img>
-        </v-card>
+            <v-img
+              src="@/assets/img/home/Rectangle39.svg"
+              class="ml-16"
+              style="position: absolute"
+            ></v-img>
+            <v-img src="@/assets/img/home/toppng1.svg"> </v-img>
+          </v-card>
+        </div>
+
         <v-sheet
-          class="rounded-circle"
+          class="rounded-circle hidden-md-and-down"
           height="116px"
           width="116px"
           color="#BACBDC"
