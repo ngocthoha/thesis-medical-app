@@ -36,7 +36,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.setRoom(scheduleDTO.getRoom());
         Doctor doctor = doctorRepository.findDoctorById(scheduleDTO.getDoctor().getId());
         schedule.setDoctor(doctor);
-        log.info("Saving new schedule of {} to the database", doctor.getName());
+        log.info("Saving new schedule of {} to the database", doctor.getUsername());
         scheduleRepository.save(schedule);
         ScheduleDTO scheduleResponse = ScheduleDTO.from(schedule);
         return scheduleResponse;

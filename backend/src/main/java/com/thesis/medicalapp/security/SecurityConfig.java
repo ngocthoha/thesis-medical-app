@@ -14,8 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static org.springframework.http.HttpMethod.GET;
-import static org.springframework.http.HttpMethod.POST;
+import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
@@ -38,8 +37,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
         http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll()
-                .antMatchers(POST, "/api/auth/signup/**").permitAll()
+                .antMatchers(POST, "/api/auth/register/**").permitAll()
                 .antMatchers(GET, "/api/users/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers(PATCH, "/api/users/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/profiles/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(GET, "/api/specialties/**").permitAll()
@@ -50,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/api/records/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/doctors/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/rooms/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers("/api/hospitals/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

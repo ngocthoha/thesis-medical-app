@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.Date;
 
 @Data
@@ -14,23 +15,17 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserDTO {
     private String id;
+    @NotEmpty
     private String username;
-    private String name;
-    private String email;
-    private String address;
+    @NotEmpty
     private String phone;
-    private Date dob;
     private String imageUrl;
 
     public static UserDTO from(User user) {
         return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .name(user.getName())
-                .email(user.getEmail())
-                .address(user.getAddress())
                 .phone(user.getPhone())
-                .dob(user.getDob())
                 .imageUrl(user.getImageUrl())
                 .build();
     }

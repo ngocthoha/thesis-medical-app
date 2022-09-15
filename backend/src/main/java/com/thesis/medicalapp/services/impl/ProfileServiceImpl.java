@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,8 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGuardian(profileDTO.getGuardian());
-        User user = userRepository.findByUsername(Global.user.getUsername());
+        Optional<User> userOp = userRepository.findByUsername(Global.user.getUsername());
+        User user = userOp.get();
         profile.setUser(user);
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         Long profileNumber = sequenceGenerator.nextId();
@@ -51,7 +53,8 @@ public class ProfileServiceImpl implements ProfileService {
     };
     @Override
     public List<ProfileDTO> getProfilesByUser(){
-        User user = userRepository.findByUsername(Global.user.getUsername());
+        Optional<User> userOp = userRepository.findByUsername(Global.user.getUsername());
+        User user = userOp.get();
         List<Profile> profiles = profileRepository.findAllByUser(user)
                 .stream()
                 .collect(Collectors.toList());

@@ -28,7 +28,7 @@ public class Profile extends AuditLog{
     private String identityCard;
     private String healthInsurance;
     private String folk;
-    private String gender;
+    private Gender gender;
     private String guardian;
     private String guardianPhone;
     private String guardianIdentityCard;

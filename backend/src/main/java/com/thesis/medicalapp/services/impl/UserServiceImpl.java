@@ -30,15 +30,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
-        if(user == null) {
+        Optional<User> userOp = userRepository.findByUsername(username);
+        if(!userOp.isPresent()) {
             log.error("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
         } else {
             log.info("User found in the database: {}", username);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-
+        User user = userOp.get();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         });
@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User saveUser(User user) {
-        log.info("Saving new user {} to the database", user.getName());
+        log.info("Saving new user {} to the database", user.getUsername());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
@@ -60,14 +60,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public void addRoleToUser(String username, String roleName) {
-        User user = userRepository.findByUsername(username);
+        Optional<User> userOp = userRepository.findByUsername(username);
+        User user = userOp.get();
         Role role = roleRepository.findByName(roleName);
         user.getRoles().add(role);
     }
 
     @Override
     public User getUser(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.findByUsername(username).get();
     }
 
     @Override
@@ -83,13 +84,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public Boolean existsByUsername(String username) {
-        return userRepository.existsByUsername(username);
+    public Boolean existsByPhone(String phone) {
+        return userRepository.existsByPhone(phone);
     }
 
     @Override
-    public Boolean existsByEmail(String email) {
-        return userRepository.existsByEmail(email);
+    public Boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
     @Override
@@ -111,19 +112,16 @@ public class UserServiceImpl implements UserService, UserDetailsService {
            throw new UsernameNotFoundException("User id not found!");
         }
         User user = optionalUser.get();
-        if (userDTO.getName() != null)
-            user.setName(userDTO.getName());
-        if (userDTO.getEmail() != null)
-            user.setEmail(userDTO.getEmail());
-        if (userDTO.getAddress() != null)
-            user.setAddress(userDTO.getAddress());
-        if (userDTO.getDob() != null)
-            user.setDob(userDTO.getDob());
         if (userDTO.getImageUrl() != null)
             user.setImageUrl(userDTO.getImageUrl());
-        if (userDTO.getPhone() != null)
-            user.setPhone(userDTO.getPhone());
         userRepository.save(user);
         return UserDTO.from(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (!user.isPresent()) throw new UsernameNotFoundException("Username not found!");
+        return user.get();
     }
 }

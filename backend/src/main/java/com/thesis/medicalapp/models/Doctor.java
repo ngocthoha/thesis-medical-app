@@ -16,6 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 @Table(name = "doctors")
 public class Doctor extends User{
+    @Column(nullable = false)
+    private String name;
+    private String gender;
+    private Date dob;
+    private String email;
     private String specialty;
     private String level;
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
@@ -25,8 +30,12 @@ public class Doctor extends User{
     private Integer registrationNumber = 0;
     private String price;
 
-    public Doctor(String id, String name, String username, String password, String email, String address, String phone, Date dob, Collection<Role> roles, String imageLink, String specialty, String level, Hospital hospital) {
-        super(id, name, username, password, email, address, phone, dob, roles, imageLink);
+    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, String gender, Date dob, String email,  String specialty, String level, Hospital hospital) {
+        super(id, username, phone, password, enabled, imageUrl, roles);
+        this.name = name;
+        this.gender = gender;
+        this.dob = dob;
+        this.email = email;
         this.specialty = specialty;
         this.level = level;
         this.hospital = hospital;

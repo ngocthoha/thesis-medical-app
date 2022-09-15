@@ -13,6 +13,7 @@ import lombok.experimental.SuperBuilder;
 public class DoctorDTO {
     private String id;
     private String name;
+    private String email;
     private String specialty;
     private String level;
     private String bio;
@@ -22,7 +23,7 @@ public class DoctorDTO {
     public static DoctorDTO from(Doctor doctor){
         return DoctorDTO.builder()
                 .id(doctor.getId())
-                .name(doctor.getName())
+                .name(doctor.getUsername())
                 .specialty(doctor.getSpecialty())
                 .level(doctor.getLevel())
                 .bio(doctor.getBio())

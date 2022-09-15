@@ -5,6 +5,7 @@ import com.thesis.medicalapp.filestore.FileStore;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.payload.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,8 @@ import java.util.Arrays;
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class FileStoreController {
+    @Value("${s3.host}")
+    private String S3Host;
     private final FileStore fileStore;
 
     @PostMapping("/files/upload")
@@ -38,10 +41,10 @@ public class FileStoreController {
         }
         String fileName = String.format("%s", file.getOriginalFilename());
         String path = String.format("%s/%s", UUID.randomUUID(), fileName);
-
+        String imageUrl = String.format("%s/%s", S3Host, path);
         try {
             fileStore.upload(path, file, file.getInputStream());
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(1, "Uploaded the file successfully.", path));
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(1, "Uploaded the file successfully.", imageUrl));
         } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ApiResponse(0, "Could not upload the file!", null));
         }

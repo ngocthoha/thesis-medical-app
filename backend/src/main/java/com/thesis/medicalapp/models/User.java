@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -21,14 +24,21 @@ public class User extends AuditLog {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private String name;
+    @NotNull
+    @NotBlank
+    @NotEmpty
     private String username;
-    private String password;
-    private String email;
-    private String address;
+    @NotNull
+    @NotBlank
+    @NotEmpty
     private String phone;
-    private Date dob;
+    @NotNull
+    @NotBlank
+    @NotEmpty
+    private String password;
+    @NotNull
+    private Boolean enabled;
+    private String imageUrl;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
-    private String imageUrl;
 }

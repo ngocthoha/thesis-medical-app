@@ -14,8 +14,9 @@ public interface UserService {
     void addRoleToUser(String username, String roleName);
     User getUser(String username);
     List<UserDTO>getUsers();
+    Boolean existsByPhone(String phone);
     Boolean existsByUsername(String username);
-    Boolean existsByEmail(String email);
     List<UserDTO> findAllByRoles_Name(String role);
     UserDTO partialUpdateUser(String id, UserDTO userDTO);
+    User findByUsername(String username);
 }

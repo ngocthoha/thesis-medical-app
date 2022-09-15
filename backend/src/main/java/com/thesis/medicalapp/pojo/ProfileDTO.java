@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.pojo;
 
+import com.thesis.medicalapp.models.Gender;
 import com.thesis.medicalapp.models.Profile;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,7 +24,7 @@ public class ProfileDTO {
     private String identityCard;
     private String healthInsurance;
     private String folk;
-    private String gender;
+    private Gender gender;
     private String guardian;
     private String guardianPhone;
     private String guardianIdentityCard;

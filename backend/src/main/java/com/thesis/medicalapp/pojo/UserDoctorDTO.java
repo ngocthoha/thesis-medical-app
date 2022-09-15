@@ -17,8 +17,8 @@ public class UserDoctorDTO {
     private String id;
     private String username;
     private String name;
+    private String gender;
     private String email;
-    private String address;
     private String phone;
     private Date dob;
     private String specialty;
@@ -30,7 +30,6 @@ public class UserDoctorDTO {
                 .username(doctor.getUsername())
                 .name(doctor.getName())
                 .email(doctor.getEmail())
-                .address(doctor.getAddress())
                 .phone(doctor.getPhone())
                 .dob(doctor.getDob())
                 .specialty(doctor.getSpecialty())

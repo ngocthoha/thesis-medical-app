@@ -5,12 +5,13 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.thesis.medicalapp.models.Doctor;
-import com.thesis.medicalapp.models.Role;
-import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.SignupRequest;
+import com.thesis.medicalapp.payload.VerificationRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.UserDTO;
+import com.thesis.medicalapp.services.OTPService;
+import com.thesis.medicalapp.services.SmsService;
 import com.thesis.medicalapp.services.UserService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +19,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.MimeTypeUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -37,6 +39,9 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 @CrossOrigin("*")
 public class UserController {
     private final UserService userService;
+    private final SmsService smsService;
+    private final OTPService otpService;
+
     @GetMapping("/users/all")
     public ResponseEntity<ApiResponse>getAllUser() {
         try {
@@ -64,64 +69,62 @@ public class UserController {
             );
         }
     }
-    @PostMapping("/auth/signup")
-    public ResponseEntity<ApiResponse>saveUser(@RequestBody SignupRequest signupRequest) {
+    @PostMapping("/auth/register")
+    public ResponseEntity<ApiResponse>createUser(@RequestBody @Valid SignupRequest signupRequest) {
         if (userService.existsByUsername(signupRequest.getUsername())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResponse<>(0, "Username is already taken!", null)
             );
         }
-        if (userService.existsByEmail(signupRequest.getEmail())) {
+        if (userService.existsByPhone(signupRequest.getPhone())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, "Email is already in use!", null)
+                    new ApiResponse<>(0, "Phone number is already taken!", null)
             );
         }
-        Date dateFormat = null;
-        if (signupRequest.getDob() != null) {
-            try {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(signupRequest.getDob());
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                        new ApiResponse<>(0, "Date is invalid!", null)
-                );
-            }
-        }
-        User user;
-        if (signupRequest.getRole().equals("ROLE_USER") || signupRequest.getRole().equals("ROLE_ADMIN")) {
-            user = new User(
-                    null,
-                    signupRequest.getName(),
-                    signupRequest.getUsername(),
-                    signupRequest.getPassword(),
-                    signupRequest.getEmail(),
-                    signupRequest.getAddress(),
-                    signupRequest.getPhoneNumber(),
-                    dateFormat,
-                    new ArrayList<>(),
-                    null
-            );
-        } else {
-            user = new Doctor(
-                    null,
-                    signupRequest.getName(),
-                    signupRequest.getUsername(),
-                    signupRequest.getPassword(),
-                    signupRequest.getEmail(),
-                    signupRequest.getAddress(),
-                    signupRequest.getPhoneNumber(),
-                    dateFormat,
-                    new ArrayList<>(),
-                    null,
-                    signupRequest.getSpecialty(),
-                    signupRequest.getLevel(),
-                    null
-            );
-        }
-        userService.saveUser(user);
-        userService.addRoleToUser(user.getUsername(), signupRequest.getRole());
-        return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(1, "User registered successfully!", null)
+        User user = new User(
+                null,
+                signupRequest.getUsername(),
+                signupRequest.getPhone(),
+                signupRequest.getPassword(),
+                false,
+                null,
+                new ArrayList<>()
         );
+        try {
+            User userDB = userService.saveUser(user);
+            OTP otp = new OTP();
+            otp.setToken(OTP.generateOTP());
+            OTP otpDB = otpService.generateOTP(userDB);
+            Sms sms = new Sms();
+            sms.setTo(signupRequest.getPhone());
+            sms.setMessage(otpDB.getToken());
+            smsService.sendSMS(sms);
+            String role = "";
+            if (signupRequest.getRole() == null) role = "ROLE_USER";
+            else role = signupRequest.getRole();
+            userService.addRoleToUser(user.getUsername(), role);
+            return ResponseEntity.status(HttpStatus.CREATED).body(
+                    new ApiResponse<>(1, "User registered successfully!", null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(0, e.getMessage(), null)
+            );
+        }
+    }
+    @PostMapping("/auth/register/verify")
+    public ResponseEntity<ApiResponse> verifyUser(@RequestBody @Valid VerificationRequest verificationRequest) {
+        try {
+            String token = verificationRequest.getOtp();
+            otpService.verifyUser(verificationRequest.getUsername(), token);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse(1, "Verify Successfully!", null)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse(0, e.getMessage(), null)
+            );
+        }
     }
 
     @PatchMapping(value ="/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -162,7 +165,7 @@ public class UserController {
                 String username = decodedJWT.getSubject();
                 User user = userService.getUser(username);
                 String access_token = JWT.create()
-                        .withSubject(user.getUsername())
+                        .withSubject(user.getPhone())
                         .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                         .withIssuer(request.getRequestURL().toString())
                         .withClaim("roles", user.getRoles().stream().map(Role::getName).collect(Collectors.toList()))
