@@ -19,11 +19,50 @@ const router = new Router({
   routes: [
     //Home Pages
     layout("Home", [
-      route("Trang chủ", { default: "home/home" }, "/"), 
-      route("Dịch vụ",  { default: "home/Service" }, "/service"),
-      route("Giới thiệu",  { default: "home/Introduce" }, "/introduce"),
+      route("Trang chủ", { default: "home/home" }, "/"),
+      route("Dịch vụ", { default: "home/Service" }, "/service"),
+      route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
+      route(
+        "Tim mạch",
+        { default: "home/Specialist/Cardiology" },
+        "/specialist-cardiology"
+      ),
+      route(
+        "Tai - Mũi - Họng",
+        { default: "home/Specialist/EarNoseThroat" },
+        "/specialist-earNoseThroat"
+      ),
+      route(
+        "Nội soi",
+        { default: "home/Specialist/EndoscopyDepartment" },
+        "/specialist-EndoscopyDepartment"
+      ),
+      route(
+        "Tiêu hóa gan mật",
+        { default: "home/Specialist/Gastroenterology" },
+        "/specialist-Gastroenterology"
+      ),
+      route(
+        "Chẩn đoán hình ảnh",
+        { default: "home/Specialist/ImageAnalysation" },
+        "/specialist-ImageAnalysation"
+      ),
+      route(
+        "Cơ - Xương - Khớp",
+        { default: "home/Specialist/MusclesBonesJoints" },
+        "/specialist-MusclesBonesJoints"
+      ),
+      route(
+        "Sản - Phụ khoa",
+        { default: "home/Specialist/Obstetric" },
+        "/specialist-Obstetric"
+      ),
+      route(
+        "Nhi khoa",
+        { default: "home/Specialist/Pediatrics" },
+        "/specialist-Pediatrics"
+      )
     ]),
-    
 
     //DashBoard Pages
     layout("Default", [
@@ -105,20 +144,6 @@ const router = new Router({
     route("Đăng nhập", { default: "auth/Login" }, "/login"),
     route("Đăng ký", { default: "auth/Signup" }, "/signup"),
 
-    //UserPages
-    // layout(
-    //   "Home",
-    //   [
-    //     layout(
-    //       "User",
-    //       [route("Đặt lịch hẹn", { default: "user/CreateAppointment" }, "add")],
-    //       "user"
-    //     )
-    //   ],
-    //   "home"
-    // )
-
-    
     layout(
       "Home",
       [
@@ -126,22 +151,27 @@ const router = new Router({
           "User",
           [
             route(
-              "Đặt lịch khám theo ngày",
-              { default: "user/CreateAppointment" },
-              "create-appointment"
+              "Hồ sơ cá nhân",
+              {
+                default: "user/profile"
+              },
+              "profile"
             ),
             route(
-              "Xem lịch sử cuộc hẹn",
-              { default: "user/ViewAppointment" },
-              "view-appointment"
+              "Lịch sử Đặt khám",
+              {
+                default: "user/appointmentHistory"
+              },
+              "appointment-history"
             )
           ],
           "user"
         )
       ],
       "/home"
-    )
+    ),
 
+    route("test", { default: "test/test" }, "/test")
     // {
     //   path: "/home",
     //   component: () =>
