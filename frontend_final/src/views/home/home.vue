@@ -4,32 +4,41 @@
       <!-- section 1 -->
       <v-card
         width="100%"
-        class="d-flex flex-row justify-sm-center"
-        max-height="500px"
+        class="d-flex flex-column flex-lg-row justify-space-around align-center"
+        min-height="500px"
         color="#EEF2F6"
       >
         <v-card
           color="#EEF2F6"
-          width="564px"
-          style="margin-top: 108px; margin-left: 102px"
+          max-width="564px"
           elevation="0"
+          class="d-flex justify-sm-center"
         >
-          <div>
-            <div class="d-flex flex-column">
-              <v-card width="564px" height="96px" color="#EEF2F6" elevation="0"
-                ><p
-                  class="font-weight-bold"
-                  style="font-size:40px; color:#537DA5"
-                >
-                  BLOUSE CARE | Ứng dụng đặt lịch khám online hàng đầu
-                </p></v-card
+          <div class="d-flex flex-column">
+            <v-card
+              max-width="564px"
+              min-height="96px"
+              color="#EEF2F6"
+              elevation="0"
+              ><p
+                class="font-weight-bold ma-0"
+                :style="{ color: '#537DA5', fontSize: section1_title + 'px' }"
               >
-            </div>
+                BLOUSE CARE | Ứng dụng
+              </p>
+              <p
+                class="font-weight-bold"
+                :style="{ color: '#537DA5', fontSize: section1_title + 'px' }"
+              >
+                đặt lịch khám online hàng đầu
+              </p>
+            </v-card>
+
             <br />
             <div class="d-flex flex-column">
               <v-card
-                width="564px"
-                height="96px"
+                max-width="564px"
+                min-height="96px"
                 color="#EEF2F6"
                 elevation="0"
                 class="d-flex flex-column"
@@ -41,6 +50,7 @@
                 </p></v-card
               >
             </div>
+            <br />
             <!-- fast book appointment -->
             <div class="d-flex flex-column">
               <v-dialog v-model="fast_book_dialog" width="640px">
@@ -196,7 +206,23 @@
             </div>
           </div>
         </v-card>
-        <v-sheet
+        <!-- <v-card height="500px">a</v-card> -->
+        <v-card
+          class="d-flex flex-row align-end"
+          :height="$vuetify.breakpoint.mdAndDown ? '250px' : '500'"
+          elevation="0"
+          color="#EEF2F6"
+        >
+          <v-card
+            elevation="0"
+            color="#EEF2F6"
+            :width="$vuetify.breakpoint.mdAndDown ? '300px' : '600px'"
+          >
+            <v-img src="@/assets/img/home/section1-doctor.svg"></v-img>
+          </v-card>
+        </v-card>
+
+        <!-- <v-sheet
           class="rounded-circle hidden-lg-and-down"
           height="72px"
           width="72px"
@@ -225,8 +251,19 @@
           width="116px"
           color="#BACBDC"
           style="margin-top: 12px; margin-left: 56px;"
-        ></v-sheet>
+        ></v-sheet> -->
       </v-card>
+
+      <!-- <v-card width="100%" min-height="500px" color="#EEF2F6">
+        <v-row>
+          <v-col md="6" sm="12" align-self="end">
+            <v-card width="50" height="50">a</v-card>
+          </v-col>
+          <v-col md="6" sm="12" align-self="start">
+            <v-card width="50" height="50">a</v-card>
+          </v-col>
+        </v-row>
+      </v-card> -->
 
       <!-- section 2 -->
       <v-layout>
@@ -746,6 +783,12 @@ export default {
       }
 
       return 1;
+    },
+    section1_title() {
+      if (this.$vuetify.breakpoint.mdAndDown) {
+        return 24;
+      }
+      return 40;
     }
   }
 };
