@@ -4,6 +4,7 @@ import com.thesis.medicalapp.ThesisMedicalAppApplication;
 import com.thesis.medicalapp.models.Global;
 import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.payload.response.ProfileSearch;
 import com.thesis.medicalapp.pojo.ProfileDTO;
 import com.thesis.medicalapp.repository.ProfileRepository;
 import com.thesis.medicalapp.repository.UserRepository;
@@ -41,6 +42,9 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGuardian(profileDTO.getGuardian());
+        profile.setGuardianPhone(profileDTO.getGuardianPhone());
+        profile.setGuardianIdentityCard(profileDTO.getGuardianIdentityCard());
+        profile.setRelationship(profileDTO.getRelationship());
         Optional<User> userOp = userRepository.findByUsername(Global.user.getUsername());
         User user = userOp.get();
         profile.setUser(user);
@@ -104,5 +108,19 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public Boolean existsByIdentityCard(String ic) {
         return profileRepository.existsByIdentityCard(ic);
+    }
+    @Override
+    public ProfileSearch searchProfile(String phone) {
+        System.out.println(phone);
+        Optional<Profile> profile = profileRepository.findProfileByPhone(phone);
+        if (!profile.isPresent()) {
+            System.out.println("no result");
+            return null;
+        }
+        ProfileSearch profileSearch = new ProfileSearch();
+        profileSearch.setId(profile.get().getId());
+        profileSearch.setPhone(profile.get().getPhone());
+        profileSearch.setName(profile.get().getName());
+        return profileSearch;
     }
 }

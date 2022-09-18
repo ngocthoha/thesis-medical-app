@@ -7,6 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Data
@@ -16,14 +19,26 @@ import java.util.Date;
 public class ProfileDTO {
     private String id;
     private Long profileNumber;
+    @NotEmpty
+    @NotBlank
     private String name;
+    @NotEmpty
+    @NotBlank
     private String address;
+    @NotEmpty
+    @NotBlank
     private String phone;
+    @NotNull
     private Date dob;
     private String job;
+    @NotEmpty
+    @NotBlank
     private String identityCard;
     private String healthInsurance;
+    @NotEmpty
+    @NotBlank
     private String folk;
+    @NotNull
     private Gender gender;
     private String guardian;
     private String guardianPhone;

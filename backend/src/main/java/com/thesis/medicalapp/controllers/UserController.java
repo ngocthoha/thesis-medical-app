@@ -71,27 +71,39 @@ public class UserController {
     }
     @PostMapping("/auth/register")
     public ResponseEntity<ApiResponse>createUser(@RequestBody @Valid SignupRequest signupRequest) {
-        if (userService.existsByUsername(signupRequest.getUsername())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, "Username is already taken!", null)
-            );
+        String username = signupRequest.getUsername();
+        System.out.println("aaaaaaaaaaaaaa");
+        if (userService.existsByUsername(username)) {
+                User user_request = userService.getUser(username);
+                if (user_request.getEnabled())
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                            new ApiResponse<>(0, "Username is already taken!", null)
+                    );
         }
+        User userDB = new User();
         if (userService.existsByPhone(signupRequest.getPhone())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            userDB = userService.getUser(username);
+            if (userDB.getEnabled())
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
                     new ApiResponse<>(0, "Phone number is already taken!", null)
+                );
+        } else {
+            User user = new User(
+                    null,
+                    signupRequest.getUsername(),
+                    signupRequest.getPhone(),
+                    signupRequest.getPassword(),
+                    false,
+                    null,
+                    new ArrayList<>()
             );
+            userDB = userService.saveUser(user);
+            String role = "";
+            if (signupRequest.getRole() == null) role = "ROLE_USER";
+            else role = signupRequest.getRole();
+            userService.addRoleToUser(username, role);
         }
-        User user = new User(
-                null,
-                signupRequest.getUsername(),
-                signupRequest.getPhone(),
-                signupRequest.getPassword(),
-                false,
-                null,
-                new ArrayList<>()
-        );
         try {
-            User userDB = userService.saveUser(user);
             OTP otp = new OTP();
             otp.setToken(OTP.generateOTP());
             OTP otpDB = otpService.generateOTP(userDB);
@@ -99,10 +111,6 @@ public class UserController {
             sms.setTo(signupRequest.getPhone());
             sms.setMessage(otpDB.getToken());
             smsService.sendSMS(sms);
-            String role = "";
-            if (signupRequest.getRole() == null) role = "ROLE_USER";
-            else role = signupRequest.getRole();
-            userService.addRoleToUser(user.getUsername(), role);
             return ResponseEntity.status(HttpStatus.CREATED).body(
                     new ApiResponse<>(1, "User registered successfully!", null)
             );
@@ -115,6 +123,7 @@ public class UserController {
     @PostMapping("/auth/register/verify")
     public ResponseEntity<ApiResponse> verifyUser(@RequestBody @Valid VerificationRequest verificationRequest) {
         try {
+            System.out.println("verify user");
             String token = verificationRequest.getOtp();
             otpService.verifyUser(verificationRequest.getUsername(), token);
             return ResponseEntity.status(HttpStatus.OK).body(

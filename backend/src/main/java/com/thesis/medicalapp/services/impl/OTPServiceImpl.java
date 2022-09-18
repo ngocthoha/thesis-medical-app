@@ -1,19 +1,20 @@
 package com.thesis.medicalapp.services.impl;
 
 import com.thesis.medicalapp.models.OTP;
+import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.repository.OTPRepository;
+import com.thesis.medicalapp.repository.ProfileRepository;
 import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.OTPService;
 import com.thesis.medicalapp.services.UserService;
+import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +24,7 @@ public class OTPServiceImpl implements OTPService {
     private final OTPRepository otpRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
     private static final int EXPIRE_TIME_MINUTES = 2;
 
     @Override
@@ -48,6 +50,14 @@ public class OTPServiceImpl implements OTPService {
         }
         otpRepository.delete(otp);
         user.setEnabled(Boolean.TRUE);
-        userRepository.save(user);
+        User user_db = userRepository.save(user);
+        Profile profile = new Profile();
+        SequenceGenerator sequenceGenerator = new SequenceGenerator();
+        Long profile_number = sequenceGenerator.nextId();
+        profile.setProfileNumber(profile_number);
+        profile.setPhone(user_db.getPhone());
+        profile.setRelationship("Chủ tài khoản");
+        profile.setUser(user_db);
+        profileRepository.save(profile);
     }
 }
