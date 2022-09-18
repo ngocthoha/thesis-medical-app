@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import java.util.UUID;
 @SpringBootApplication
 @RestController
 @EnableJpaAuditing
+@EnableScheduling
 public class ThesisMedicalAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(ThesisMedicalAppApplication.class, args);
@@ -36,11 +38,11 @@ public class ThesisMedicalAppApplication {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
             userService.saveRole(new Role(null, "ROLE_DOCTOR"));
-            Hospital hospital = new Hospital(null, "BV Dai Hoc Y Duoc", "address", "info", null, null, null);
+            Hospital hospital = new Hospital(null, "BV Dai Hoc Y Duoc", "address", "info", 0, null, null);
             hospitalRepository.save(hospital);
-            User user = new User(null, "User", "user", "1234","user@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>(), null);
-            User admin = new User(null, "Admin", "admin", "1234","admin@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>(), null);
-            User doctor = new Doctor(null, "Doctor", "doctor", "1234","doctor@gmail.com", "Thanh Hoa", "0326185282", new Date(), new ArrayList<>(), null, "Nhi Khoa", "CKI", hospital);
+            User user = new User(null, "user", "0326185282", "1234", true, null, new ArrayList<>());
+            User admin = new User(null, "admin", "0326185283","1234", true, null, new ArrayList<>());
+            User doctor = new Doctor(null, "doctor", "0326185284","1234", true, null, new ArrayList<>(), "Doctor Name", "MALE", new Date(), "email", "Nhi Khoa", "CKI", hospital);
             User userEntity = userService.saveUser(user);
             userService.saveUser(admin);
 
@@ -61,7 +63,7 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
-            profileRepository.save(new Profile(null, 1L, "user", "address", "phone", new Date(), "job", "identity", "healthy", "folk", "gender", "guardian",null, null, null, userEntity));
+            profileRepository.save(new Profile(null, 1L, "user", "address", "phone", new Date(), "job", "identity", "healthy", "folk", Gender.MALE, "guardian",null, null, null, userEntity));
         };
     }
     @GetMapping
