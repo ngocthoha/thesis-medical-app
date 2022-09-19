@@ -21,13 +21,13 @@
               color="#EEF2F6"
               elevation="0"
               ><p
-                class="font-weight-bold ma-0"
+                class="font-weight-bold ma-0 d-flex justify-lg-start justify-center"
                 :style="{ color: '#537DA5', fontSize: section1_title + 'px' }"
               >
                 BLOUSE CARE | Ứng dụng
               </p>
               <p
-                class="font-weight-bold"
+                class="font-weight-bold d-flex justify-lg-start justify-center"
                 :style="{ color: '#537DA5', fontSize: section1_title + 'px' }"
               >
                 đặt lịch khám online hàng đầu
