@@ -14,7 +14,7 @@
           elevation="0"
           class="d-flex justify-sm-center"
         >
-          <div class="d-flex flex-column">
+          <div class="d-flex flex-column pa-12">
             <v-card
               max-width="564px"
               min-height="96px"
@@ -33,8 +33,6 @@
                 đặt lịch khám online hàng đầu
               </p>
             </v-card>
-
-            <br />
             <div class="d-flex flex-column">
               <v-card
                 max-width="564px"
@@ -42,7 +40,10 @@
                 color="#EEF2F6"
                 elevation="0"
                 class="d-flex flex-column"
-                ><p class="font-weight-medium" style="color:#667085">
+                ><p
+                  class="font-weight-medium text-center text-lg-start"
+                  style="color:#667085"
+                >
                   Người tiêu dùng thông thái, hãy khám bệnh thông minh. Bạn là
                   người tiêu dùng thông thái, bạn yêu gia đình hơn chính bản
                   thân mình. Hãy cùng IVIE chăm sóc sức khỏe cho bản thân và gia
@@ -50,9 +51,9 @@
                 </p></v-card
               >
             </div>
-            <br />
+
             <!-- fast book appointment -->
-            <div class="d-flex flex-column">
+            <div class="d-flex justify-center justify-lg-start">
               <v-dialog v-model="fast_book_dialog" width="640px">
                 <template v-slot:activator="{ on, attrs }">
                   <v-btn

@@ -7,7 +7,7 @@
       app
       elevation="1"
     >
-      <v-row justify="center" class="my-3 mx-16">
+      <v-row justify="center" class="my-3 mx-16 hidden-md-and-down">
         <v-spacer />
         <v-btn
           color="#667085"
