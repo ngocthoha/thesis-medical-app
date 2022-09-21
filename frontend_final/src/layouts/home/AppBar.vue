@@ -453,6 +453,28 @@
           </div>
         </div>
       </v-row>
+      <!-- OTP -->
+      <v-dialog v-model="opt_dialog" width="376px">
+        <v-card
+          height="678"
+          elevation="0"
+          class="d-flex flex-column align-center justify-center"
+        >
+          <v-card max-height="176" max-width="184" elevation="0">
+            <v-img src="@/assets/img/home/appbar/otp_image.svg" contain></v-img>
+          </v-card>
+          <p class="font-weight-bold" style="font-size:32px">Xác nhận OTP</p>
+          <p class="font-weight-medium text-body-2 ma-0" style="color: #667085">
+            Mã xác thực vừa được gửi tới số điện thoại:
+          </p>
+          <p class="font-weight-bold text-body-2">
+            0962530448
+          </p>
+          <v-card max-width="80%" elevation="0">
+            <v-otp-input length="6" type="number"></v-otp-input>
+          </v-card>
+        </v-card>
+      </v-dialog>
     </v-app-bar>
   </v-responsive>
 </template>
@@ -471,6 +493,7 @@ export default {
     show1: false,
     login_dialog: false,
     sign_up_dialog: false,
+    opt_dialog: true,
     is_login: false,
     appointment_list: [
       {

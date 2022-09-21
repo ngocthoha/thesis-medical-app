@@ -21,6 +21,7 @@ module.exports = {
     indent: 'off',
     //
     'no-unused-vars': 'warn',
+    "global-require": 0 
   },
 
   overrides: [
