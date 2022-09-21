@@ -24,6 +24,7 @@ const actions = {
         //var decoded = jwt.decode(token, {complete: true});;
         console.log("login success");
       } else {
+        commit("SET_TOKEN", "");
         console.log("fail success");
       }
     });

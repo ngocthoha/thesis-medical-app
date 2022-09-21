@@ -119,6 +119,7 @@
                     outlined
                   >
                     <v-text-field
+                      v-model="user.username"
                       placeholder="Số điện thoại/Tên đăng nhập"
                       solo
                       flat
@@ -129,6 +130,7 @@
 
                   <v-card width="320px" height="44px" elevation="0" outlined>
                     <v-text-field
+                      v-model="user.password"
                       placeholder="Mật khẩu"
                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                       solo
@@ -529,7 +531,12 @@ export default {
         type: ButtonFunctionType.LOG_OUT,
         link: "/"
       }
-    ]
+    ],
+
+    user: {
+      username: "",
+      password: ""
+    }
   }),
 
   methods: {
@@ -566,12 +573,32 @@ export default {
     },
 
     onLoginSubmmit() {
-      this.login_dialog = false;
-      this.is_login = true;
+      if (this.submit() == true) {
+        this.login_dialog = false;
+        this.is_login = true;
+      }
     },
 
     onSignupSubmit() {
       this.sign_up_dialog = false;
+    },
+
+    async submit() {
+      //check login dev
+      // if (process.env.VUE_APP_LOGIN_DEV === "TRUE") {
+      //   return true;
+      // }
+
+      const user = {
+        username: this.user.username,
+        password: this.user.password
+      };
+      await this.$store.dispatch("auth/login", user);
+
+      if (this.$store.getters["auth/access_token"] != "") {
+        this.login_dialog = false;
+        this.is_login = true;
+      }
     }
   }
 };
