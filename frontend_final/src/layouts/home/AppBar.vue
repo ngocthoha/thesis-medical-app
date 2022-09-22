@@ -9,6 +9,9 @@
     >
       <v-row justify="center" class="my-3 mx-16 hidden-md-and-down">
         <v-spacer />
+        <v-avatar>
+          <v-img src="@/assets/img/home/appbar/logo.png"></v-img>
+        </v-avatar>
         <v-btn
           color="#667085"
           elevation="0"
@@ -473,6 +476,29 @@
           <v-card max-width="80%" elevation="0">
             <v-otp-input length="6" type="number"></v-otp-input>
           </v-card>
+          <v-card width="245" elevation="0">
+            <p class="text-center text-body-2" style="color: #667085">
+              Nếu chưa nhận được mã xác thực, bấm Gửi lại mã sau:
+            </p>
+          </v-card>
+          <v-btn
+            elevation="0"
+            color="#D0D5DD"
+            class="btn-not-transform btn-not-hover text-body-2"
+            text
+            >Gửi lại mã</v-btn
+          >
+          <p style="color:#537DA5;" class="text-body-1 font-weight-medium">
+            02:00
+          </p>
+          <v-btn
+            elevation="0"
+            color="#537DA5"
+            class="btn-not-transform btn-not-hover text-body-1 white--text"
+            width="320"
+            height="48"
+            >Xác nhận</v-btn
+          >
         </v-card>
       </v-dialog>
     </v-app-bar>
