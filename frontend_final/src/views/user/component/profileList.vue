@@ -66,8 +66,8 @@
       <v-card width="858px" elevation="0">
         <v-expansion-panels accordion tile flat>
           <v-expansion-panel
-            v-for="n in 3"
-            :key="n"
+            v-for="profile in profile_list"
+            :key="profile.id"
             class="mb-4 rounded-lg"
             style="border:#F2F4F7 1px solid"
           >
@@ -78,13 +78,13 @@
                 </v-avatar>
                 <div class="d-flex flex-column ml-3">
                   <p class="ma-0 font-weight-bold text-body-1">
-                    Nguyễn Xuân Hoà
+                    {{ profile.name }}
                   </p>
                   <p
                     class="ma-0 font-weight-normal text-body-2"
                     style="color: #667085"
                   >
-                    Chủ tài khoản
+                    {{ profile.relationship }}
                   </p>
                 </div>
               </v-card>
@@ -153,7 +153,7 @@
                     Email
                   </p>
                   <p class="ma-0 font-weight-medium">
-                    germanydesign@figma.com
+                    {{ profile.email }}
                   </p>
                 </v-card>
                 <!-- phone -->
@@ -169,7 +169,7 @@
                     Số điện thoại
                   </p>
                   <p class="ma-0 font-weight-medium">
-                    0123456789
+                    {{ profile.phone }}
                   </p>
                 </v-card>
                 <!-- address -->
@@ -185,7 +185,7 @@
                     Địa chỉ
                   </p>
                   <p class="ma-0 font-weight-medium">
-                    42 Tự Cường, phường 4, quận Tân Bình, thành phố Hồ Chí Minh
+                    {{ profile.address }}
                   </p>
                 </v-card>
                 <!-- gender -->
@@ -200,7 +200,7 @@
                   <p class="ma-0 font-weight-medium" style="color:#667085">
                     Giới tính
                   </p>
-                  <p class="ma-0 font-weight-medium">Nam</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.gender }}</p>
                 </v-card>
                 <!-- birthday -->
                 <v-divider
@@ -214,7 +214,7 @@
                   <p class="ma-0 font-weight-medium" style="color:#667085">
                     Ngày sinh
                   </p>
-                  <p class="ma-0 font-weight-medium">24/01/2000</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.dob }}</p>
                 </v-card>
                 <!-- identify -->
                 <v-divider
@@ -228,7 +228,9 @@
                   <p class="ma-0 font-weight-medium" style="color:#667085">
                     Số CMND/CCCD
                   </p>
-                  <p class="ma-0 font-weight-medium">098300004323</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ profile.identityCard }}
+                  </p>
                 </v-card>
                 <!-- job -->
                 <v-divider
@@ -242,7 +244,7 @@
                   <p class="ma-0 font-weight-medium" style="color:#667085">
                     Nghề nghiệp
                   </p>
-                  <p class="ma-0 font-weight-medium">Sinh viên</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.job }}</p>
                 </v-card>
                 <!-- country -->
                 <v-divider
@@ -270,7 +272,7 @@
                   <p class="ma-0 font-weight-medium" style="color:#667085">
                     Dân tộc
                   </p>
-                  <p class="ma-0 font-weight-medium">Kinh</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.folk }}</p>
                 </v-card>
               </div>
             </v-expansion-panel-content>
@@ -287,6 +289,10 @@ export default {
     return {
       dialog: false
     };
+  },
+
+  props: {
+    profile_list: Array
   },
 
   methods: {

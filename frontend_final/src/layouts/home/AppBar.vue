@@ -270,6 +270,7 @@
                       outlined
                     >
                       <v-text-field
+                        v-model="sign_up_form.username"
                         placeholder="Tên đăng nhập"
                         solo
                         flat
@@ -285,6 +286,7 @@
                       outlined
                     >
                       <v-text-field
+                        v-model="sign_up_form.phone"
                         placeholder="Số điện thoại"
                         solo
                         flat
@@ -295,6 +297,7 @@
 
                     <v-card width="320px" height="44px" elevation="0" outlined>
                       <v-text-field
+                        v-model="sign_up_form.password"
                         placeholder="Mật khẩu"
                         :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                         solo
@@ -525,7 +528,7 @@ export default {
     show1: false,
     login_dialog: false,
     sign_up_dialog: false,
-    opt_dialog: true,
+    opt_dialog: false,
     is_login: false,
     appointment_list: [
       {
@@ -591,8 +594,18 @@ export default {
     user: {
       username: "",
       password: ""
+    },
+
+    sign_up_form: {
+      username: "",
+      password: "",
+      phone: ""
     }
   }),
+
+  created() {
+    this.is_login = this.$store.getters["auth/isLogin"];
+  },
 
   methods: {
     login() {
@@ -615,6 +628,7 @@ export default {
 
     async onMenuClick(button) {
       if (button.type == ButtonFunctionType.LOG_OUT) {
+        this.$store.dispatch("auth/logout", {});
         this.is_login = false;
       }
       this.$router.push({ path: button.link }).catch(error => {
@@ -627,7 +641,7 @@ export default {
       });
     },
 
-    onLoginSubmmit() {
+    async onLoginSubmmit() {
       //check login dev
       if (process.env.VUE_APP_LOGIN_DEV === "TRUE") {
         this.login_dialog = false;
@@ -635,17 +649,6 @@ export default {
         return;
       }
 
-      if (this.submit() == true) {
-        this.login_dialog = false;
-        this.is_login = true;
-      }
-    },
-
-    onSignupSubmit() {
-      this.sign_up_dialog = false;
-    },
-
-    async submit() {
       const user = {
         username: this.user.username,
         password: this.user.password
@@ -657,6 +660,23 @@ export default {
         this.login_dialog = false;
         this.is_login = true;
       }
+    },
+
+    onSignupSubmit() {
+      const form = {
+        username: this.sign_up_form.username,
+        password: this.sign_up_form.password,
+        phone: "+84" + this.sign_up_form.phone.substring(1),
+        role: "ROLE_USER"
+      };
+
+      console.log(form);
+      this.sign_up_dialog = false;
+      this.opt_dialog = true;
+    },
+
+    onOtpSubmit() {
+      this.opt_dialog = false;
     }
   }
 };
