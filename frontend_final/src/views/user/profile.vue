@@ -27,14 +27,15 @@ export default {
   components: {
     ProfileList,
     AddProfile,
-    EditProfile
+    EditProfile,
   },
   data() {
     return {
       visible_profile_list: true,
       visible_add_profile: false,
       visible_edit_profile: false,
-      profile_list: []
+      profile_list: [],
+      edit_profile: null,
     };
   },
 
@@ -66,11 +67,11 @@ export default {
     async getProfileList() {
       let token = this.$store.getters["auth/access_token"];
       const param = {
-        token: token
+        token: token,
       };
       await this.$store.dispatch("profile/profile_list", param);
       this.profile_list = this.$store.getters["profile/profile_list"];
-    }
-  }
+    },
+  },
 };
 </script>

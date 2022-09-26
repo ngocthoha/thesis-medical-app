@@ -59,7 +59,7 @@
     <!-- form -->
     <div class="d-flex flex-column">
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <!-- header -->
       <v-card height="112px" elevation="0">
@@ -88,7 +88,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.last_name"
+                placeholder="VD: Nguyễn Duy"
                 solo
                 flat
                 dense
@@ -107,7 +108,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.first_name"
+                placeholder="VD: Thanh"
                 solo
                 flat
                 dense
@@ -120,14 +122,12 @@
 
       <!-- phone, email -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Số điện thoại:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại:</p>
             <v-card
               width="417px"
               height="48px"
@@ -137,6 +137,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.phone"
                 placeholder="Số điện thoại"
                 solo
                 flat
@@ -148,6 +149,7 @@
           <div class="d-flex flex-column">
             <p class="mb-2 font-weight-medium text-body-2">Email:</p>
             <v-card
+              v-model="profile.email"
               width="417px"
               height="48px"
               class="d-flex mb-5"
@@ -156,7 +158,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder="VD thanhbkcse@gmail.com"
                 solo
                 flat
                 dense
@@ -169,13 +171,11 @@
 
       <!-- birthday -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-column">
-          <p class="mb-2 font-weight-medium text-body-2">
-            Ngày sinh:
-          </p>
+          <p class="mb-2 font-weight-medium text-body-2">Ngày sinh:</p>
           <div class="d-flex flex-row justify-space-between">
             <v-card
               width="270px"
@@ -186,8 +186,9 @@
               outlined
             >
               <v-select
+                v-model="profile.dob.date"
                 :items="days.date"
-                label="24"
+                :label="profile.dob.date"
                 solo
                 flat
                 dense
@@ -204,8 +205,9 @@
               outlined
             >
               <v-select
+                v-model="profile.dob.month"
                 :items="days.month"
-                label="01"
+                :label="profile.dob.month"
                 solo
                 flat
                 dense
@@ -222,8 +224,9 @@
               outlined
             >
               <v-select
+                v-model="profile.dob.year"
                 :items="days.year"
-                label="2000"
+                :label="profile.dob.year"
                 solo
                 flat
                 dense
@@ -237,22 +240,20 @@
 
       <!-- gender -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Giới tính
-            </p>
-            <v-radio-group row>
+            <p class="mb-2 font-weight-medium text-body-2">Giới tính</p>
+            <v-radio-group row v-model="profile.gender">
               <v-radio
                 label="Nam"
-                value="radio-1"
+                value="Nam"
                 color="#537DA5"
                 class="mr-6"
               ></v-radio>
-              <v-radio label="Nữ" value="radio-2" color="#537DA5"></v-radio>
+              <v-radio label="Nữ" value="Nữ" color="#537DA5"></v-radio>
             </v-radio-group>
           </div>
         </div>
@@ -260,14 +261,12 @@
 
       <!-- national, identify -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Quốc gia:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Quốc gia:</p>
             <v-card
               width="417px"
               height="48px"
@@ -277,7 +276,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder="Việt Nam"
                 solo
                 flat
                 dense
@@ -309,14 +308,12 @@
 
       <!-- ethnic, job -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Dân tộc:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Dân tộc:</p>
             <v-card
               width="417px"
               height="48px"
@@ -326,7 +323,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder="VD: Kinh"
                 solo
                 flat
                 dense
@@ -345,7 +342,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder="VD: Sinh viên"
                 solo
                 flat
                 dense
@@ -358,14 +355,12 @@
 
       <!-- city, district -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Tỉnh/Thành phố:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Tỉnh/Thành phố:</p>
             <v-card
               width="417px"
               height="48px"
@@ -411,14 +406,12 @@
 
       <!-- sub-district, street, number -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Xã/Phường:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Xã/Phường:</p>
             <v-card
               width="417px"
               height="48px"
@@ -525,14 +518,12 @@
 
       <!-- phone, email -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Số điện thoại:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại:</p>
             <v-card
               width="417px"
               height="48px"
@@ -561,7 +552,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder="VD: duythanh0303@gmail.com"
                 solo
                 flat
                 dense
@@ -576,15 +567,89 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  props: {
+    last_name: {
+      type: String,
+      default: "",
+    },
+
+    first_name: {
+      type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
+      default: "",
+    },
+    email: {
+      type: String,
+      default: "",
+    },
+
+    date: {
+      type: Number,
+      default: 1,
+    },
+
+    month: {
+      type: Number,
+      default: 1,
+    },
+
+    year: {
+      type: Number,
+      default: 1970,
+    },
+
+    gender: {
+      type: String,
+      default: "Nam",
+    },
+
+    identify: {
+      type: String,
+      default: "",
+    },
+    country: {
+      type: String,
+      default: "Việt Nam",
+    },
+  },
+
   data() {
     return {
       avt_img: require("@/assets/img/user/profile/avatar1.svg"),
       days: {
         date: [],
         month: [],
-        year: []
-      }
+        year: [],
+      },
+
+      profile: {
+        last_name: "",
+        first_name: "",
+        phone: "",
+        email: "",
+        dob: {
+          date: 0,
+          month: 0,
+          year: 0,
+        },
+        gender: "",
+        identify: "",
+        folk: "",
+        job: "",
+        address: {
+          country: "",
+          city: "",
+          district: "",
+          sub_district: "",
+          street: "",
+          number: "",
+        },
+      },
     };
   },
 
@@ -592,15 +657,15 @@ export default {
     //create day
     this.days.month = Array.from({ length: 12 }, (_, i) => i + 1);
     this.days.date = Array.from({ length: 31 }, (_, i) => i + 1);
-    var year = Array.from({ length: 100 }, (_, i) => i + 1923);
+    let year = Array.from({ length: 100 }, (_, i) => i + 1923);
     this.days.year = year.reverse();
+    this.this.setDataForm();
   },
 
   methods: {
     previewFiles(event) {
-      //console.log(event.target.files);
-      var file_1 = event.target.files[0];
-      var reader = new FileReader();
+      let file_1 = event.target.files[0];
+      let reader = new FileReader();
       reader.addEventListener(
         "load",
         () => {
@@ -614,7 +679,18 @@ export default {
       } else {
         this.avt_img = require("@/assets/img/user/profile/avatar1.svg");
       }
-    }
-  }
+    },
+
+    setDataForm() {
+      this.profile.last_name = this.last_name;
+      this.profile.first_name = this.first_name;
+      this.profile.phone = this.phone;
+      this.profile.email = this.email;
+      this.profile.dob.date = this.date;
+      this.profile.dob.month = this.month;
+      this.profile.dob.year = this.year;
+      this.profile.gender = this.gender;
+    },
+  },
 };
 </script>

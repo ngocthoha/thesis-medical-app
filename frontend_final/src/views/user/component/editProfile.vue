@@ -36,7 +36,7 @@
       </div>
     </v-card>
     <v-divider
-      style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+      style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
     <profile-form class="ma-6"></profile-form>
   </div>
@@ -46,13 +46,13 @@
 import ProfileForm from "./profileForm.vue";
 export default {
   components: {
-    ProfileForm
+    ProfileForm,
   },
   methods: {
     cancleEditProfile() {
       this.$emit("editProfileClose");
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
