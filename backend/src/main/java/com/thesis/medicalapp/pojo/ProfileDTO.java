@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -43,6 +44,8 @@ public class ProfileDTO {
     @NotEmpty
     @NotBlank
     private String phone;
+    @Email(message = "ivalid email address")
+    private String email;
     @NotNull
     private Date dob;
     private String job;

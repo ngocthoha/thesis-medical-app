@@ -30,6 +30,7 @@ public class Profile extends AuditLog{
     private String commune;
     private String detailedAddress;
     private String phone;
+    private String email;
     private Date dob;
     private String job;
     private String identityCard;
