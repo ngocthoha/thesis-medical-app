@@ -21,10 +21,25 @@ public class ProfileDTO {
     private Long profileNumber;
     @NotEmpty
     @NotBlank
-    private String name;
+    private String firstName;
     @NotEmpty
     @NotBlank
-    private String address;
+    private String lastName;
+    @NotEmpty
+    @NotBlank
+    private String country;
+    @NotEmpty
+    @NotBlank
+    private String province;
+    @NotEmpty
+    @NotBlank
+    private String town;
+    @NotEmpty
+    @NotBlank
+    private String commune;
+    @NotEmpty
+    @NotBlank
+    private String detailedAddress;
     @NotEmpty
     @NotBlank
     private String phone;
@@ -44,13 +59,19 @@ public class ProfileDTO {
     private String guardianPhone;
     private String guardianIdentityCard;
     private String relationship;
+    private String relationshipWithPatient;
 
     public static ProfileDTO from(Profile profile) {
         return ProfileDTO.builder()
                 .id(profile.getId())
                 .profileNumber(profile.getProfileNumber())
-                .name(profile.getName())
-                .address(profile.getAddress())
+                .firstName(profile.getFirstName())
+                .lastName(profile.getLastName())
+                .country(profile.getCountry())
+                .province(profile.getProvince())
+                .town(profile.getTown())
+                .commune(profile.getCommune())
+                .detailedAddress(profile.getDetailedAddress())
                 .phone(profile.getPhone())
                 .dob(profile.getDob())
                 .job(profile.getJob())
@@ -62,6 +83,7 @@ public class ProfileDTO {
                 .guardianPhone(profile.getGuardianPhone())
                 .guardianIdentityCard(profile.getGuardianIdentityCard())
                 .relationship(profile.getRelationship())
+                .relationshipWithPatient(profile.getRelationshipWithPatient())
                 .build();
     }
 }

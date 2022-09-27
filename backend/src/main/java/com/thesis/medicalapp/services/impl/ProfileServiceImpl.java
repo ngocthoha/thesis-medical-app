@@ -30,10 +30,15 @@ public class ProfileServiceImpl implements ProfileService {
 
     @Override
     public ProfileDTO saveProfile(ProfileDTO profileDTO) {
-        log.info("Saving new profile of {} to the database", profileDTO.getName());
+        log.info("Saving new profile of {} to the database", profileDTO.getFirstName());
         Profile profile = new Profile();
-        profile.setName(profileDTO.getName());
-        profile.setAddress(profileDTO.getAddress());
+        profile.setFirstName(profileDTO.getFirstName());
+        profile.setLastName(profileDTO.getLastName());
+        profile.setCountry(profileDTO.getCountry());
+        profile.setProvince(profileDTO.getProvince());
+        profile.setTown(profileDTO.getTown());
+        profile.setCommune(profileDTO.getCommune());
+        profile.setDetailedAddress(profileDTO.getDetailedAddress());
         profile.setPhone(profileDTO.getPhone());
         profile.setJob(profileDTO.getJob());
         profile.setDob(profileDTO.getDob());
@@ -45,6 +50,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setGuardianPhone(profileDTO.getGuardianPhone());
         profile.setGuardianIdentityCard(profileDTO.getGuardianIdentityCard());
         profile.setRelationship(profileDTO.getRelationship());
+        profile.setRelationshipWithPatient(profileDTO.getRelationshipWithPatient());
         Optional<User> userOp = userRepository.findByUsername(Global.user.getUsername());
         User user = userOp.get();
         profile.setUser(user);
@@ -84,16 +90,23 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void updateProfile(ProfileDTO profileDTO) {
         Profile profile = profileRepository.findById(profileDTO.getId());
-        profile.setName(profileDTO.getName());
+        profile.setFirstName(profileDTO.getFirstName());
+        profile.setLastName(profileDTO.getLastName());
         profile.setJob(profileDTO.getJob());
         profile.setPhone(profileDTO.getPhone());
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGender(profileDTO.getGender());
-        profile.setAddress(profileDTO.getAddress());
+        profile.setCountry(profileDTO.getCountry());
+        profile.setProvince(profileDTO.getProvince());
+        profile.setTown(profileDTO.getTown());
+        profile.setCommune(profileDTO.getCommune());
+        profile.setDetailedAddress(profileDTO.getDetailedAddress());
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
         profile.setGuardian(profileDTO.getGuardian());
+        profile.setRelationship(profileDTO.getRelationship());
+        profile.setRelationshipWithPatient(profileDTO.getRelationshipWithPatient());
         profileRepository.save(profile);
     }
     @Override
@@ -120,7 +133,8 @@ public class ProfileServiceImpl implements ProfileService {
         ProfileSearch profileSearch = new ProfileSearch();
         profileSearch.setId(profile.get().getId());
         profileSearch.setPhone(profile.get().getPhone());
-        profileSearch.setName(profile.get().getName());
+        profileSearch.setFirstName(profile.get().getFirstName());
+        profileSearch.setLastName(profile.get().getLastName());
         return profileSearch;
     }
 }

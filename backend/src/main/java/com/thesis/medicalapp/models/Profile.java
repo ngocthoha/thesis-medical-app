@@ -22,8 +22,13 @@ public class Profile extends AuditLog{
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private Long profileNumber;
-    private String name;
-    private String address;
+    private String firstName;
+    private String lastName;
+    private String country;
+    private String province;
+    private String town;
+    private String commune;
+    private String detailedAddress;
     private String phone;
     private Date dob;
     private String job;
@@ -35,6 +40,7 @@ public class Profile extends AuditLog{
     private String guardianPhone;
     private String guardianIdentityCard;
     private String relationship;
+    private String relationshipWithPatient;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

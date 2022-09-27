@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class ProfileSearch {
     private String id;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String phone;
 }
