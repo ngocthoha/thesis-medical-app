@@ -70,9 +70,8 @@ public class UserController {
         }
     }
     @PostMapping("/auth/register")
-    public ResponseEntity<ApiResponse>createUser(@RequestBody @Valid SignupRequest signupRequest) {
+    public ResponseEntity<Object>createUser(@RequestBody @Valid SignupRequest signupRequest) {
         String username = signupRequest.getUsername();
-        System.out.println("aaaaaaaaaaaaaa");
         if (userService.existsByUsername(username)) {
                 User user_request = userService.getUser(username);
                 if (user_request.getEnabled())
@@ -123,7 +122,6 @@ public class UserController {
     @PostMapping("/auth/register/verify")
     public ResponseEntity<ApiResponse> verifyUser(@RequestBody @Valid VerificationRequest verificationRequest) {
         try {
-            System.out.println("verify user");
             String token = verificationRequest.getOtp();
             otpService.verifyUser(verificationRequest.getUsername(), token);
             return ResponseEntity.status(HttpStatus.OK).body(
