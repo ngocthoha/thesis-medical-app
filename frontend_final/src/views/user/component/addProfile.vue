@@ -19,18 +19,18 @@
       </div>
     </v-card>
     <v-divider
-      style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+      style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
     <!-- tab -->
     <v-tabs color="#537DA5" fixed-tabs slider-size="3" v-model="tab">
       <v-tab
-        style="text-transform: none;"
+        style="text-transform: none"
         class="font-weight-medium text-body-1"
         href="#tab-1"
         >Tạo hồ sơ mới</v-tab
       >
       <v-tab
-        style="text-transform: none;"
+        style="text-transform: none"
         class="font-weight-medium text-body-1"
         href="#tab-2"
         >Tìm kiếm hồ sơ</v-tab
@@ -40,9 +40,9 @@
     <v-tabs-items v-model="tab">
       <v-tab-item :value="'tab-1'">
         <v-card flat class="ma-6">
-          <profile-form> </profile-form>
+          <profile-form v-on:interface="getChildInterface"> </profile-form>
           <v-divider
-            style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+            style="border-color: rgba(16, 24, 40, 0.03) !important"
           ></v-divider>
           <div class="d-flex flex-row justify-end mt-8">
             <v-btn
@@ -58,6 +58,7 @@
               class="btn-not-transform white--text text-body-1 font-weight-medium"
               elevation="0"
               color="#537DA5"
+              @click="AddProfile"
               >Thêm hồ sơ</v-btn
             >
           </div>
@@ -67,7 +68,7 @@
       <v-tab-item :value="'tab-2'">
         <v-card flat class="d-flex flex-column">
           <div class="d-flex flex-column ml-8 mt-6">
-            <p class="font-weight-bold" style="font-size:20px">
+            <p class="font-weight-bold" style="font-size: 20px">
               Nhập số điện thoại
             </p>
             <p>Vui lòng nhập số điện thoại của thân nhân</p>
@@ -91,7 +92,7 @@
             <div class="d-flex flex-row">
               <v-btn
                 color="#537DA5"
-                class="white--text btn-not-transform  text-body-1"
+                class="white--text btn-not-transform text-body-1"
                 elevation="0"
                 @click="lookingSubmit()"
                 >Tìm kiếm</v-btn
@@ -109,10 +110,10 @@
           </div>
           <v-divider
             class="mt-6"
-            style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+            style="border-color: rgba(16, 24, 40, 0.03) !important"
           ></v-divider>
           <div class="d-flex flex-column mt-6" v-if="hasLookingResult">
-            <p class="font-weight-bold ml-8" style="font-size:20px">
+            <p class="font-weight-bold ml-8" style="font-size: 20px">
               Kết quả tìm kiếm
             </p>
             <div class="d-flex flex-column" v-if="notFound">
@@ -127,11 +128,11 @@
               </v-card>
               <p
                 class="font-weight-bold ml-8 d-flex justify-center"
-                style="font-size:20px"
+                style="font-size: 20px"
               >
                 Không có kết quả tìm kiếm
               </p>
-              <p class=" ml-8 d-flex justify-center" style="color:#667085">
+              <p class="ml-8 d-flex justify-center" style="color: #667085">
                 Vui lòng nhập số điện thoại thân nhân để hiển thị kết quả.
               </p>
             </div>
@@ -184,7 +185,7 @@
 import ProfileForm from "./profileForm.vue";
 export default {
   components: {
-    ProfileForm
+    ProfileForm,
   },
   data() {
     return {
@@ -192,7 +193,7 @@ export default {
       tab: null,
       hasLookingResult: false,
       notFound: true,
-      phoneInputData: ""
+      phoneInputData: "",
     };
   },
   methods: {
@@ -206,8 +207,17 @@ export default {
     },
     cancleAddProfile() {
       this.$emit("addProfileClose");
-    }
-  }
+    },
+
+    getChildInterface(childInterface) {
+      this.$options.childInterface = childInterface;
+    },
+
+    AddProfile() {
+      this.$options.childInterface.addNewProfile();
+      this.$emit("addProfileClose");
+    },
+  },
 };
 </script>
 

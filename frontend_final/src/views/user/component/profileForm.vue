@@ -188,7 +188,6 @@
               <v-select
                 v-model="profile.dob.date"
                 :items="days.date"
-                :label="profile.dob.date"
                 solo
                 flat
                 dense
@@ -207,7 +206,6 @@
               <v-select
                 v-model="profile.dob.month"
                 :items="days.month"
-                :label="profile.dob.month"
                 solo
                 flat
                 dense
@@ -226,7 +224,6 @@
               <v-select
                 v-model="profile.dob.year"
                 :items="days.year"
-                :label="profile.dob.year"
                 solo
                 flat
                 dense
@@ -249,11 +246,11 @@
             <v-radio-group row v-model="profile.gender">
               <v-radio
                 label="Nam"
-                value="Nam"
+                value="MALE"
                 color="#537DA5"
                 class="mr-6"
               ></v-radio>
-              <v-radio label="Nữ" value="Nữ" color="#537DA5"></v-radio>
+              <v-radio label="Nữ" value="FEMALE" color="#537DA5"></v-radio>
             </v-radio-group>
           </div>
         </div>
@@ -370,8 +367,7 @@
               outlined
             >
               <v-select
-                :items="days.date"
-                label="24"
+                :items="province_list"
                 solo
                 flat
                 dense
@@ -392,7 +388,7 @@
             >
               <v-select
                 :items="days.date"
-                label="24"
+                label=""
                 solo
                 flat
                 dense
@@ -422,7 +418,6 @@
             >
               <v-select
                 :items="days.date"
-                label="24"
                 solo
                 flat
                 dense
@@ -444,7 +439,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder=""
                 solo
                 flat
                 dense
@@ -481,13 +476,7 @@
               style="padding-top: 1px"
               outlined
             >
-              <v-text-field
-                placeholder="Số điện thoại"
-                solo
-                flat
-                dense
-                class="text-body-1"
-              ></v-text-field>
+              <v-text-field solo flat dense class="text-body-1"></v-text-field>
             </v-card>
           </div>
           <div class="d-flex flex-column">
@@ -503,8 +492,8 @@
               outlined
             >
               <v-select
-                :items="days.date"
-                label="24"
+                v-model="profile.relationship"
+                :items="relationship"
                 solo
                 flat
                 dense
@@ -605,7 +594,7 @@ export default {
 
     gender: {
       type: String,
-      default: "Nam",
+      default: "MALE",
     },
 
     identify: {
@@ -615,6 +604,10 @@ export default {
     country: {
       type: String,
       default: "Việt Nam",
+    },
+    type: {
+      type: Number,
+      default: 0, // 0 is create, 1 is edit
     },
   },
 
@@ -626,6 +619,24 @@ export default {
         month: [],
         year: [],
       },
+      relationship: [
+        "Ba",
+        "Mẹ",
+        "Ông",
+        "Bà",
+        "Anh",
+        "Chị",
+        "Em",
+        "Con",
+        "Vợ",
+        "Chồng",
+        "Khác",
+      ],
+      province_list: [
+        "Thủ đô Hà Nội",
+        "Thành phố Hồ Chí Minh",
+        "Bà Rịa-Vũng Tàu",
+      ],
 
       profile: {
         last_name: "",
@@ -649,6 +660,7 @@ export default {
           street: "",
           number: "",
         },
+        relationship: "",
       },
     };
   },
@@ -659,9 +671,12 @@ export default {
     this.days.date = Array.from({ length: 31 }, (_, i) => i + 1);
     let year = Array.from({ length: 100 }, (_, i) => i + 1923);
     this.days.year = year.reverse();
-    this.this.setDataForm();
+    this.setDataForm();
   },
-
+  mounted() {
+    // Emits on mount
+    this.emitInterface();
+  },
   methods: {
     previewFiles(event) {
       let file_1 = event.target.files[0];
@@ -690,6 +705,51 @@ export default {
       this.profile.dob.month = this.month;
       this.profile.dob.year = this.year;
       this.profile.gender = this.gender;
+    },
+
+    async addNewProfile() {
+      let param = {
+        name: "last_name",
+        address: "address",
+        phone: "phoneNumber",
+        dob: "2012-04-23T18:25:43.511Z",
+        job: "job",
+        identityCard: "09102312",
+        healthInsurance: "healthInsurance",
+        folk: "folk",
+        gender: "MALE",
+        guardian: "guardian",
+        guardianPhone: "guardianPhone",
+        guardianIdentityCard: "guardianIdentityCard",
+        relationship: "relationship",
+      };
+      // param.name = this.profile.last_name + " " + this.profile.first_name;
+      // param.phone = this.profile.phone;
+      // param.dob = this.profile.dob.year + "-01-12";
+      // param.job = this.profile.job;
+      // param.gender = this.profile.gender;
+
+      let token = this.$store.getters["auth/access_token"];
+      const params = {
+        token: token,
+        data: param,
+      };
+      await this.$store.dispatch("profile/add_new_profile", params);
+      console.log("addprofile");
+    },
+
+    editProfile() {
+      console.log("editprofile");
+    },
+
+    /**
+     * Emitting an interface with callable methods from outside
+     */
+    emitInterface() {
+      this.$emit("interface", {
+        addNewProfile: () => this.addNewProfile(),
+        editProfile: () => this.editProfile(),
+      });
     },
   },
 };
