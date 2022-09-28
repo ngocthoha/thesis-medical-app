@@ -40,6 +40,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setCommune(profileDTO.getCommune());
         profile.setDetailedAddress(profileDTO.getDetailedAddress());
         profile.setPhone(profileDTO.getPhone());
+        profile.setEmail(profileDTO.getEmail());
         profile.setJob(profileDTO.getJob());
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
@@ -94,6 +95,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setLastName(profileDTO.getLastName());
         profile.setJob(profileDTO.getJob());
         profile.setPhone(profileDTO.getPhone());
+        profile.setEmail(profileDTO.getEmail());
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGender(profileDTO.getGender());

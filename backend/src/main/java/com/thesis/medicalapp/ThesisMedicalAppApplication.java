@@ -63,7 +63,7 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
-            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc","Viet Nam", "Tinh", "Huyen", "Xa", "364 Do Bi", "phone", new Date(), "job", "identity", "healthy", "folk", Gender.MALE, "guardian","guardian phone", "guardian identity card", "relationship", "relation ship with patient", userEntity));
+            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc","Viet Nam", "Tinh", "Huyen", "Xa", "364 Do Bi", "phone", "email@gmail.com", new Date(), "job", "identity", "healthy", "folk", Gender.MALE, "guardian","guardian phone", "guardian identity card", "relationship", "relation ship with patient", userEntity));
         };
     }
     @GetMapping
