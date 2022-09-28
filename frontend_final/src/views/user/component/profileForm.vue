@@ -531,7 +531,7 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Email:</p>
+            <p class="mb-2 font-weight-medium text-body-2">CMND:</p>
             <v-card
               width="417px"
               height="48px"
@@ -541,7 +541,7 @@
               outlined
             >
               <v-text-field
-                placeholder="VD: duythanh0303@gmail.com"
+                placeholder="VD: 07720xxxxxx"
                 solo
                 flat
                 dense
@@ -639,39 +639,40 @@ export default {
       ],
 
       profile: {
-        last_name: "",
-        first_name: "",
+        firstName: "",
+        lastName: "",
+        country: "",
+        province: "",
+        town: "",
+        commune: "",
+        detailedAddress: "",
         phone: "",
-        email: "",
         dob: {
-          date: 0,
-          month: 0,
-          year: 0,
+          year: "",
+          month: "",
+          date: "",
         },
-        gender: "",
-        identify: "",
-        folk: "",
         job: "",
-        address: {
-          country: "",
-          city: "",
-          district: "",
-          sub_district: "",
-          street: "",
-          number: "",
-        },
+        identityCard: "",
+        healthInsurance: "e",
+        folk: "",
+        gender: "",
+        guardian: "",
+        guardianPhone: "",
+        guardianIdentityCard: "",
         relationship: "",
+        relationshipWithPatient: "",
       },
     };
   },
 
   created() {
     //create day
-    this.days.month = Array.from({ length: 12 }, (_, i) => i + 1);
-    this.days.date = Array.from({ length: 31 }, (_, i) => i + 1);
-    let year = Array.from({ length: 100 }, (_, i) => i + 1923);
+    this.days.month = Array.from({ length: 12 }, (_, i) => (i + 1).toString);
+    this.days.date = Array.from({ length: 31 }, (_, i) => (i + 1).toString);
+    let year = Array.from({ length: 100 }, (_, i) => (i + 1923).toString);
     this.days.year = year.reverse();
-    this.setDataForm();
+    //this.setDataForm();
   },
   mounted() {
     // Emits on mount
@@ -708,7 +709,7 @@ export default {
     },
 
     async addNewProfile() {
-      let param = {
+      let data = {
         name: "last_name",
         address: "address",
         phone: "phoneNumber",
@@ -723,19 +724,37 @@ export default {
         guardianIdentityCard: "guardianIdentityCard",
         relationship: "relationship",
       };
-      // param.name = this.profile.last_name + " " + this.profile.first_name;
-      // param.phone = this.profile.phone;
-      // param.dob = this.profile.dob.year + "-01-12";
-      // param.job = this.profile.job;
-      // param.gender = this.profile.gender;
-
-      let token = this.$store.getters["auth/access_token"];
-      const params = {
-        token: token,
-        data: param,
-      };
-      await this.$store.dispatch("profile/add_new_profile", params);
-      console.log("addprofile");
+      //process data
+      data.name = this.profile.last_name + " " + this.profile.first_name;
+      data.address = this.profile.address.country;
+      data.address = data.address + "," + this.profile.address.city;
+      data.address = data.address + "," + this.profile.address.district;
+      data.address = data.address + "," + this.profile.address.sub_district;
+      data.address =
+        data.address + "," + this.profile.address.street_and_number;
+      data.dob =
+        this.profile.dob.year +
+        "-" +
+        this.profile.dob.month +
+        "-" +
+        this.profile.dob.date;
+      data.phone = this.profile.phone;
+      data.job = this.profile.job;
+      data.identityCard = this.profile.identityCard;
+      data.healthInsurance = this.profile.healthInsurance;
+      data.folk = this.profile.folk;
+      data.gender = this.profile.gender;
+      data.guardian = this.profile.guardian;
+      data.guardianPhone = this.profile.guardianPhone;
+      data.guardianIdentityCard = this.profile.guardianIdentityCard;
+      data.relationship = this.profile.relationship;
+      // let token = this.$store.getters["auth/access_token"];
+      // const params = {
+      //   token: token,
+      //   data: data,
+      // };
+      // await this.$store.dispatch("profile/add_new_profile", params);
+      console.log(data);
     },
 
     editProfile() {
