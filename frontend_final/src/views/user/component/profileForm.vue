@@ -88,7 +88,7 @@
               outlined
             >
               <v-text-field
-                v-model="profile.last_name"
+                v-model="profile.lastName"
                 placeholder="VD: Nguyễn Duy"
                 solo
                 flat
@@ -108,7 +108,7 @@
               outlined
             >
               <v-text-field
-                v-model="profile.first_name"
+                v-model="profile.firstName"
                 placeholder="VD: Thanh"
                 solo
                 flat
@@ -273,6 +273,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.country"
                 placeholder="Việt Nam"
                 solo
                 flat
@@ -292,7 +293,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.identityCard"
+                placeholder="07720xxxxx"
                 solo
                 flat
                 dense
@@ -320,6 +322,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.folk"
                 placeholder="VD: Kinh"
                 solo
                 flat
@@ -339,6 +342,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.job"
                 placeholder="VD: Sinh viên"
                 solo
                 flat
@@ -387,7 +391,8 @@
               outlined
             >
               <v-select
-                :items="days.date"
+                :items="town_list"
+                v-model="profile.town"
                 label=""
                 solo
                 flat
@@ -417,7 +422,8 @@
               outlined
             >
               <v-select
-                :items="days.date"
+                :items="commune_list"
+                v-model="profile.commune"
                 solo
                 flat
                 dense
@@ -439,6 +445,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.detailedAddress"
                 placeholder=""
                 solo
                 flat
@@ -476,7 +483,13 @@
               style="padding-top: 1px"
               outlined
             >
-              <v-text-field solo flat dense class="text-body-1"></v-text-field>
+              <v-text-field
+                v-model="profile.guardian"
+                solo
+                flat
+                dense
+                class="text-body-1"
+              ></v-text-field>
             </v-card>
           </div>
           <div class="d-flex flex-column">
@@ -492,7 +505,7 @@
               outlined
             >
               <v-select
-                v-model="profile.relationship"
+                v-model="profile.relationshipWithPatient"
                 :items="relationship"
                 solo
                 flat
@@ -522,6 +535,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.guardianPhone"
                 placeholder="Số điện thoại"
                 solo
                 flat
@@ -541,6 +555,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.guardianIdentityCard"
                 placeholder="VD: 07720xxxxxx"
                 solo
                 flat
@@ -561,54 +576,54 @@ export default {
   props: {
     last_name: {
       type: String,
-      default: "",
+      default: ""
     },
 
     first_name: {
       type: String,
-      default: "",
+      default: ""
     },
     phone: {
       type: String,
-      default: "",
+      default: ""
     },
     email: {
       type: String,
-      default: "",
+      default: ""
     },
 
     date: {
       type: Number,
-      default: 1,
+      default: 1
     },
 
     month: {
       type: Number,
-      default: 1,
+      default: 1
     },
 
     year: {
       type: Number,
-      default: 1970,
+      default: 1970
     },
 
     gender: {
       type: String,
-      default: "MALE",
+      default: "MALE"
     },
 
     identify: {
       type: String,
-      default: "",
+      default: ""
     },
     country: {
       type: String,
-      default: "Việt Nam",
+      default: "Việt Nam"
     },
     type: {
       type: Number,
-      default: 0, // 0 is create, 1 is edit
-    },
+      default: 0 // 0 is create, 1 is edit
+    }
   },
 
   data() {
@@ -617,7 +632,7 @@ export default {
       days: {
         date: [],
         month: [],
-        year: [],
+        year: []
       },
       relationship: [
         "Ba",
@@ -630,14 +645,16 @@ export default {
         "Con",
         "Vợ",
         "Chồng",
-        "Khác",
+        "Khác"
       ],
       province_list: [
         "Thủ đô Hà Nội",
         "Thành phố Hồ Chí Minh",
-        "Bà Rịa-Vũng Tàu",
+        "Bà Rịa-Vũng Tàu"
       ],
 
+      town_list: ["Quận 1", "Quận 2", "Quận 3"],
+      commune_list: ["Phường 1", "Phường 2", "Phường 3"],
       profile: {
         firstName: "",
         lastName: "",
@@ -647,30 +664,35 @@ export default {
         commune: "",
         detailedAddress: "",
         phone: "",
+        email: "",
         dob: {
-          year: "",
-          month: "",
-          date: "",
+          date: 0,
+          month: 0,
+          year: 0
         },
         job: "",
         identityCard: "",
-        healthInsurance: "e",
+        healthInsurance: "",
         folk: "",
         gender: "",
         guardian: "",
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: "",
-      },
+        relationshipWithPatient: ""
+      }
     };
   },
 
   created() {
     //create day
-    this.days.month = Array.from({ length: 12 }, (_, i) => (i + 1).toString);
-    this.days.date = Array.from({ length: 31 }, (_, i) => (i + 1).toString);
-    let year = Array.from({ length: 100 }, (_, i) => (i + 1923).toString);
+    this.days.month = Array.from({ length: 12 }, (_, i) =>
+      i + 1 > 9 ? String(i + 1) : "0" + String(i + 1)
+    );
+    this.days.date = Array.from({ length: 31 }, (_, i) =>
+      i + 1 > 9 ? String(i + 1) : "0" + String(i + 1)
+    );
+    let year = Array.from({ length: 100 }, (_, i) => String(i + 1923));
     this.days.year = year.reverse();
     //this.setDataForm();
   },
@@ -710,28 +732,35 @@ export default {
 
     async addNewProfile() {
       let data = {
-        name: "last_name",
-        address: "address",
-        phone: "phoneNumber",
-        dob: "2012-04-23T18:25:43.511Z",
-        job: "job",
-        identityCard: "09102312",
-        healthInsurance: "healthInsurance",
-        folk: "folk",
-        gender: "MALE",
-        guardian: "guardian",
-        guardianPhone: "guardianPhone",
-        guardianIdentityCard: "guardianIdentityCard",
-        relationship: "relationship",
+        firstName: "",
+        lastName: "",
+        country: "",
+        province: "",
+        town: "",
+        commune: "",
+        detailedAddress: "",
+        phone: "",
+        email: "",
+        dob: "",
+        job: "",
+        identityCard: "",
+        healthInsurance: "",
+        folk: "",
+        gender: "",
+        guardian: "",
+        guardianPhone: "",
+        guardianIdentityCard: "",
+        relationship: "",
+        relationshipWithPatient: ""
       };
       //process data
-      data.name = this.profile.last_name + " " + this.profile.first_name;
-      data.address = this.profile.address.country;
-      data.address = data.address + "," + this.profile.address.city;
-      data.address = data.address + "," + this.profile.address.district;
-      data.address = data.address + "," + this.profile.address.sub_district;
-      data.address =
-        data.address + "," + this.profile.address.street_and_number;
+      data.lastName = this.profile.lastName;
+      data.firstName = this.profile.firstName;
+      data.country = this.profile.country;
+      data.province = this.profile.province;
+      data.town = this.profile.town;
+      data.commune = this.profile.commune;
+      data.detailedAddress = this.profile.detailedAddress;
       data.dob =
         this.profile.dob.year +
         "-" +
@@ -739,6 +768,7 @@ export default {
         "-" +
         this.profile.dob.date;
       data.phone = this.profile.phone;
+      data.email = this.profile.email;
       data.job = this.profile.job;
       data.identityCard = this.profile.identityCard;
       data.healthInsurance = this.profile.healthInsurance;
@@ -748,12 +778,6 @@ export default {
       data.guardianPhone = this.profile.guardianPhone;
       data.guardianIdentityCard = this.profile.guardianIdentityCard;
       data.relationship = this.profile.relationship;
-      // let token = this.$store.getters["auth/access_token"];
-      // const params = {
-      //   token: token,
-      //   data: data,
-      // };
-      // await this.$store.dispatch("profile/add_new_profile", params);
       console.log(data);
     },
 
@@ -767,9 +791,9 @@ export default {
     emitInterface() {
       this.$emit("interface", {
         addNewProfile: () => this.addNewProfile(),
-        editProfile: () => this.editProfile(),
+        editProfile: () => this.editProfile()
       });
-    },
-  },
+    }
+  }
 };
 </script>

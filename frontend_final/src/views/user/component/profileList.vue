@@ -265,12 +265,12 @@
 export default {
   data() {
     return {
-      dialog: false,
+      dialog: false
     };
   },
 
   props: {
-    profile_list: Array,
+    profile_list: Array
   },
 
   methods: {
@@ -293,8 +293,8 @@ export default {
         ", " +
         profile.detailedAddress
       );
-    },
-  },
+    }
+  }
 };
 </script>
 
