@@ -149,7 +149,6 @@
           <div class="d-flex flex-column">
             <p class="mb-2 font-weight-medium text-body-2">Email:</p>
             <v-card
-              v-model="profile.email"
               width="417px"
               height="48px"
               class="d-flex mb-5"
@@ -159,6 +158,7 @@
             >
               <v-text-field
                 placeholder="VD thanhbkcse@gmail.com"
+                v-model="profile.email"
                 solo
                 flat
                 dense
@@ -372,6 +372,7 @@
             >
               <v-select
                 :items="province_list"
+                v-model="profile.province"
                 solo
                 flat
                 dense
@@ -446,6 +447,60 @@
             >
               <v-text-field
                 v-model="profile.detailedAddress"
+                placeholder=""
+                solo
+                flat
+                dense
+                class="text-body-1"
+              ></v-text-field>
+            </v-card>
+          </div>
+        </div>
+      </v-card>
+
+      <!-- sub-district, street, number -->
+      <v-divider
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
+      ></v-divider>
+      <v-card height="140px" elevation="0">
+        <div class="mt-6 d-flex flex-row justify-space-between">
+          <div class="d-flex flex-column">
+            <p class="mb-2 font-weight-medium text-body-2">
+              Quan hệ với tài khoản
+            </p>
+            <v-card
+              width="417px"
+              height="48px"
+              class="d-flex mb-5"
+              elevation="0"
+              style="padding-top: 1px"
+              outlined
+            >
+              <v-select
+                :items="relationship"
+                v-model="profile.relationship"
+                solo
+                flat
+                dense
+                append-icon="mdi-chevron-down"
+                menu-props="auto"
+              ></v-select>
+            </v-card>
+          </div>
+          <div class="d-flex flex-column">
+            <p class="mb-2 font-weight-medium text-body-2">
+              Mã số Bảo hiểm y tế
+            </p>
+            <v-card
+              width="417px"
+              height="48px"
+              class="d-flex mb-5"
+              elevation="0"
+              style="padding-top: 1px"
+              outlined
+            >
+              <v-text-field
+                v-model="profile.healthInsurance"
                 placeholder=""
                 solo
                 flat
@@ -576,54 +631,59 @@ export default {
   props: {
     last_name: {
       type: String,
-      default: ""
+      default: "",
     },
 
     first_name: {
       type: String,
-      default: ""
+      default: "",
     },
     phone: {
       type: String,
-      default: ""
+      default: "",
     },
     email: {
       type: String,
-      default: ""
+      default: "",
     },
 
     date: {
       type: Number,
-      default: 1
+      default: 1,
     },
 
     month: {
       type: Number,
-      default: 1
+      default: 1,
     },
 
     year: {
       type: Number,
-      default: 1970
+      default: 1970,
     },
 
     gender: {
       type: String,
-      default: "MALE"
+      default: "MALE",
     },
 
     identify: {
       type: String,
-      default: ""
+      default: "",
     },
     country: {
       type: String,
-      default: "Việt Nam"
+      default: "Việt Nam",
     },
     type: {
       type: Number,
-      default: 0 // 0 is create, 1 is edit
-    }
+      default: 0, // 0 is create, 1 is edit
+    },
+
+    edit_profile: {
+      type: Object,
+      default: null,
+    },
   },
 
   data() {
@@ -632,7 +692,7 @@ export default {
       days: {
         date: [],
         month: [],
-        year: []
+        year: [],
       },
       relationship: [
         "Ba",
@@ -645,12 +705,13 @@ export default {
         "Con",
         "Vợ",
         "Chồng",
-        "Khác"
+        "Khác",
       ],
+
       province_list: [
         "Thủ đô Hà Nội",
         "Thành phố Hồ Chí Minh",
-        "Bà Rịa-Vũng Tàu"
+        "Bà Rịa-Vũng Tàu",
       ],
 
       town_list: ["Quận 1", "Quận 2", "Quận 3"],
@@ -666,9 +727,9 @@ export default {
         phone: "",
         email: "",
         dob: {
-          date: 0,
-          month: 0,
-          year: 0
+          date: "01",
+          month: "01",
+          year: "2000",
         },
         job: "",
         identityCard: "",
@@ -679,8 +740,8 @@ export default {
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: ""
-      }
+        relationshipWithPatient: "",
+      },
     };
   },
 
@@ -694,7 +755,7 @@ export default {
     );
     let year = Array.from({ length: 100 }, (_, i) => String(i + 1923));
     this.days.year = year.reverse();
-    //this.setDataForm();
+    this.setDataForm();
   },
   mounted() {
     // Emits on mount
@@ -720,14 +781,40 @@ export default {
     },
 
     setDataForm() {
-      this.profile.last_name = this.last_name;
-      this.profile.first_name = this.first_name;
-      this.profile.phone = this.phone;
-      this.profile.email = this.email;
-      this.profile.dob.date = this.date;
-      this.profile.dob.month = this.month;
-      this.profile.dob.year = this.year;
-      this.profile.gender = this.gender;
+      if (this.type != 0 && this.edit_profile != null) {
+        this.profile.lastName = this.edit_profile.lastName;
+        this.profile.firstName = this.edit_profile.firstName;
+        this.profile.country = this.edit_profile.country;
+        this.profile.province = this.edit_profile.province;
+        this.profile.town = this.edit_profile.town;
+        this.profile.commune = this.edit_profile.commune;
+        this.profile.detailedAddress = this.edit_profile.detailedAddress;
+        this.profile.phone = this.edit_profile.phone;
+        this.profile.email = this.edit_profile.email;
+        this.profile.job = this.edit_profile.job;
+        this.profile.identityCard = this.edit_profile.identityCard;
+        this.profile.healthInsurance = this.edit_profile.healthInsurance;
+        this.profile.folk = this.edit_profile.folk;
+        this.profile.gender = this.edit_profile.gender;
+        this.profile.guardian = this.edit_profile.guardian;
+        this.profile.guardianIdentityCard =
+          this.edit_profile.guardianIdentityCard;
+        this.profile.guardianPhone = this.edit_profile.guardianPhone;
+        this.profile.relationship = this.edit_profile.relationship;
+        this.profile.relationshipWithPatient =
+          this.edit_profile.relationshipWithPatient;
+        let date = new Date(this.edit_profile.dob);
+
+        this.profile.dob.year = String(date.getFullYear());
+        this.profile.dob.month =
+          date.getMonth() > 9
+            ? String(date.getMonth())
+            : "0" + String(date.getMonth());
+        this.profile.dob.date =
+          date.getDate() > 9
+            ? String(date.getDate())
+            : "0" + String(date.getDate());
+      }
     },
 
     async addNewProfile() {
@@ -751,7 +838,7 @@ export default {
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: ""
+        relationshipWithPatient: "",
       };
       //process data
       data.lastName = this.profile.lastName;
@@ -778,7 +865,15 @@ export default {
       data.guardianPhone = this.profile.guardianPhone;
       data.guardianIdentityCard = this.profile.guardianIdentityCard;
       data.relationship = this.profile.relationship;
-      console.log(data);
+      data.relationshipWithPatient = this.profile.relationship;
+
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token,
+        data: data,
+      };
+      await this.$store.dispatch("profile/add_new_profile", param);
+      console.log("add profile successfully");
     },
 
     editProfile() {
@@ -791,9 +886,9 @@ export default {
     emitInterface() {
       this.$emit("interface", {
         addNewProfile: () => this.addNewProfile(),
-        editProfile: () => this.editProfile()
+        editProfile: () => this.editProfile(),
       });
-    }
-  }
+    },
+  },
 };
 </script>

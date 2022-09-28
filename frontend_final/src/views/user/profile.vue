@@ -14,6 +14,7 @@
       <edit-profile
         v-if="visible_edit_profile"
         v-on:editProfileClose="closeEditProfile"
+        :profile="edit_profile"
       ></edit-profile>
     </v-card>
   </div>
@@ -52,16 +53,19 @@ export default {
     closeAddProfile() {
       this.visible_profile_list = true;
       this.visible_add_profile = false;
+      this.getProfileList();
     },
 
-    editProfile() {
+    editProfile(profile) {
       this.visible_profile_list = false;
       this.visible_edit_profile = true;
+      this.edit_profile = profile;
     },
 
     closeEditProfile() {
       this.visible_profile_list = true;
       this.visible_edit_profile = false;
+      this.getProfileList();
     },
 
     async getProfileList() {

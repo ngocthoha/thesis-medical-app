@@ -78,7 +78,7 @@
                 </v-avatar>
                 <div class="d-flex flex-column ml-3">
                   <p class="ma-0 font-weight-bold text-body-1">
-                    {{ profile.lastName }}{{ profile.firstName }}
+                    {{ profile.lastName }} {{ profile.firstName }}
                   </p>
                   <p
                     class="ma-0 font-weight-normal text-body-2"
@@ -99,7 +99,7 @@
                   width="32px"
                   height="32px"
                   class="d-flex justify-center mr-5"
-                  @click="editProfile"
+                  @click="editProfile(profile)"
                 >
                   <v-icon small color="#537DA5"> mdi-pencil-outline </v-icon>
                 </v-btn>
@@ -188,7 +188,9 @@
                   <p class="ma-0 font-weight-medium" style="color: #667085">
                     Giới tính
                   </p>
-                  <p class="ma-0 font-weight-medium">{{ profile.gender }}</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ getGender(profile.gender) }}
+                  </p>
                 </v-card>
                 <!-- birthday -->
                 <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -200,7 +202,9 @@
                   <p class="ma-0 font-weight-medium" style="color: #667085">
                     Ngày sinh
                   </p>
-                  <p class="ma-0 font-weight-medium">{{ profile.dob }}</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ getDate(profile.dob) }}
+                  </p>
                 </v-card>
                 <!-- identify -->
                 <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -265,12 +269,12 @@
 export default {
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
   },
 
   props: {
-    profile_list: Array
+    profile_list: Array,
   },
 
   methods: {
@@ -278,8 +282,8 @@ export default {
       this.$emit("OpenCreateProfile");
     },
 
-    editProfile() {
-      this.$emit("OpenEditProfile");
+    editProfile(profile) {
+      this.$emit("OpenEditProfile", profile);
     },
     getAddress(profile) {
       return (
@@ -293,8 +297,17 @@ export default {
         ", " +
         profile.detailedAddress
       );
-    }
-  }
+    },
+
+    getDate(date_string) {
+      let date = new Date(date_string);
+      return date.toLocaleDateString();
+    },
+
+    getGender(string_gender) {
+      return string_gender === "MALE" ? "Nam" : "Nữ";
+    },
+  },
 };
 </script>
 

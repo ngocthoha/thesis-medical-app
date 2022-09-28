@@ -42,6 +42,8 @@
     <profile-form
       class="ma-6"
       v-on:interface="getChildInterface"
+      :type="1"
+      :edit_profile="profile"
     ></profile-form>
   </div>
 </template>
@@ -49,6 +51,9 @@
 <script>
 import ProfileForm from "./profileForm.vue";
 export default {
+  props: {
+    profile: Object,
+  },
   components: {
     ProfileForm,
   },
