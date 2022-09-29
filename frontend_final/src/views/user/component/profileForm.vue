@@ -393,7 +393,7 @@
             >
               <v-select
                 :items="town_list"
-                v-model="profile.town"
+                v-model="profile.district"
                 label=""
                 solo
                 flat
@@ -424,7 +424,7 @@
             >
               <v-select
                 :items="commune_list"
-                v-model="profile.commune"
+                v-model="profile.ward"
                 solo
                 flat
                 dense
@@ -446,7 +446,7 @@
               outlined
             >
               <v-text-field
-                v-model="profile.detailedAddress"
+                v-model="profile.address"
                 placeholder=""
                 solo
                 flat
@@ -626,55 +626,8 @@
 </template>
 
 <script>
-import axios from "axios";
 export default {
   props: {
-    last_name: {
-      type: String,
-      default: "",
-    },
-
-    first_name: {
-      type: String,
-      default: "",
-    },
-    phone: {
-      type: String,
-      default: "",
-    },
-    email: {
-      type: String,
-      default: "",
-    },
-
-    date: {
-      type: Number,
-      default: 1,
-    },
-
-    month: {
-      type: Number,
-      default: 1,
-    },
-
-    year: {
-      type: Number,
-      default: 1970,
-    },
-
-    gender: {
-      type: String,
-      default: "MALE",
-    },
-
-    identify: {
-      type: String,
-      default: "",
-    },
-    country: {
-      type: String,
-      default: "Việt Nam",
-    },
     type: {
       type: Number,
       default: 0, // 0 is create, 1 is edit
@@ -717,13 +670,14 @@ export default {
       town_list: ["Quận 1", "Quận 2", "Quận 3"],
       commune_list: ["Phường 1", "Phường 2", "Phường 3"],
       profile: {
+        id: "",
         firstName: "",
         lastName: "",
         country: "",
         province: "",
-        town: "",
-        commune: "",
-        detailedAddress: "",
+        district: "",
+        ward: "",
+        address: "",
         phone: "",
         email: "",
         dob: {
@@ -782,13 +736,14 @@ export default {
 
     setDataForm() {
       if (this.type != 0 && this.edit_profile != null) {
+        this.profile.id = this.edit_profile.id;
         this.profile.lastName = this.edit_profile.lastName;
         this.profile.firstName = this.edit_profile.firstName;
-        this.profile.country = this.edit_profile.country;
-        this.profile.province = this.edit_profile.province;
-        this.profile.town = this.edit_profile.town;
-        this.profile.commune = this.edit_profile.commune;
-        this.profile.detailedAddress = this.edit_profile.detailedAddress;
+        this.profile.country = this.edit_profile.address.country;
+        this.profile.province = this.edit_profile.address.province;
+        this.profile.district = this.edit_profile.address.district;
+        this.profile.ward = this.edit_profile.address.ward;
+        this.profile.address = this.edit_profile.address.address;
         this.profile.phone = this.edit_profile.phone;
         this.profile.email = this.edit_profile.email;
         this.profile.job = this.edit_profile.job;
@@ -804,7 +759,7 @@ export default {
         this.profile.relationshipWithPatient =
           this.edit_profile.relationshipWithPatient;
         let date = new Date(this.edit_profile.dob);
-
+        console.log(date.getMonth());
         this.profile.dob.year = String(date.getFullYear());
         this.profile.dob.month =
           date.getMonth() > 9
@@ -821,11 +776,13 @@ export default {
       let data = {
         firstName: "",
         lastName: "",
-        country: "",
-        province: "",
-        town: "",
-        commune: "",
-        detailedAddress: "",
+        address: {
+          country: "",
+          province: "",
+          district: "",
+          ward: "",
+          address: "",
+        },
         phone: "",
         email: "",
         dob: "",
@@ -843,11 +800,11 @@ export default {
       //process data
       data.lastName = this.profile.lastName;
       data.firstName = this.profile.firstName;
-      data.country = this.profile.country;
-      data.province = this.profile.province;
-      data.town = this.profile.town;
-      data.commune = this.profile.commune;
-      data.detailedAddress = this.profile.detailedAddress;
+      data.address.country = this.profile.country;
+      data.address.province = this.profile.province;
+      data.address.district = this.profile.district;
+      data.address.ward = this.profile.ward;
+      data.address.address = this.profile.address;
       data.dob =
         this.profile.dob.year +
         "-" +
@@ -876,8 +833,68 @@ export default {
       console.log("add profile successfully");
     },
 
-    editProfile() {
-      console.log("editprofile");
+    async editProfile() {
+      let data = {
+        id: "",
+        firstName: "",
+        lastName: "",
+        address: {
+          country: "",
+          province: "",
+          district: "",
+          ward: "",
+          address: "",
+        },
+        phone: "",
+        email: "",
+        dob: "",
+        job: "",
+        identityCard: "",
+        healthInsurance: "",
+        folk: "",
+        gender: "",
+        guardian: "",
+        guardianPhone: "",
+        guardianIdentityCard: "",
+        relationship: "",
+        relationshipWithPatient: "",
+      };
+      //process data
+      data.id = this.profile.id;
+      console.log(data.id);
+      data.lastName = this.profile.lastName;
+      data.firstName = this.profile.firstName;
+      data.address.country = this.profile.country;
+      data.address.province = this.profile.province;
+      data.address.district = this.profile.district;
+      data.address.ward = this.profile.ward;
+      data.address.address = this.profile.address;
+      data.dob =
+        this.profile.dob.year +
+        "-" +
+        this.profile.dob.month +
+        "-" +
+        this.profile.dob.date;
+      data.phone = this.profile.phone;
+      data.email = this.profile.email;
+      data.job = this.profile.job;
+      data.identityCard = this.profile.identityCard;
+      data.healthInsurance = this.profile.healthInsurance;
+      data.folk = this.profile.folk;
+      data.gender = this.profile.gender;
+      data.guardian = this.profile.guardian;
+      data.guardianPhone = this.profile.guardianPhone;
+      data.guardianIdentityCard = this.profile.guardianIdentityCard;
+      data.relationship = this.profile.relationship;
+      data.relationshipWithPatient = this.profile.relationship;
+
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token,
+        data: data,
+      };
+      await this.$store.dispatch("profile/edit_profile", param);
+      console.log("edit profile success");
     },
 
     /**
