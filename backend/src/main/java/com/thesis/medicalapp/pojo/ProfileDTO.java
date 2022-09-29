@@ -27,8 +27,6 @@ public class ProfileDTO {
     @NotEmpty
     @NotBlank
     private String lastName;
-    @NotEmpty
-    @NotBlank
     private Address address;
     @NotEmpty
     @NotBlank
