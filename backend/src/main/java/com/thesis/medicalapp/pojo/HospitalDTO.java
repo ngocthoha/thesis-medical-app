@@ -1,11 +1,14 @@
 package com.thesis.medicalapp.pojo;
 
-import com.thesis.medicalapp.models.File;
+import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Hospital;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @SuperBuilder
@@ -13,12 +16,17 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 public class HospitalDTO {
     private String id;
+    @NotBlank
+    @NotEmpty
     private String name;
-    private String address;
+    @NotBlank
+    @NotEmpty
+    private Address address;
     private String info;
     private Integer registrationNumber;
     private String mapImageUrl;
     private String hospitalImageUrl;
+    private Boolean isActive;
 
     public static HospitalDTO from(Hospital hospital) {
         return HospitalDTO.builder()
@@ -29,6 +37,7 @@ public class HospitalDTO {
                 .registrationNumber(hospital.getRegistrationNumber())
                 .mapImageUrl(hospital.getMapImageUrl())
                 .hospitalImageUrl(hospital.getHospitalImageUrl())
+                .isActive(hospital.getIsActive())
                 .build();
     }
 }

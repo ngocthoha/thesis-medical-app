@@ -16,30 +16,18 @@ import java.util.List;
 public class HospitalController {
     private final HospitalService hospitalService;
     @PostMapping("")
-    public ResponseEntity<ApiResponse> saveHospital(@RequestBody HospitalDTO hospitalDTO) {
-        try {
-            HospitalDTO hospitalResponse = hospitalService.saveHospital(hospitalDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", hospitalResponse)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> saveHospital(@RequestBody HospitalDTO hospitalDTO) {
+        HospitalDTO hospitalResponse = hospitalService.saveHospital(hospitalDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", hospitalResponse)
+        );
     }
     @GetMapping("")
     public ResponseEntity<ApiResponse> getHospitals() {
-        try {
-            List<HospitalDTO> hospitals = hospitalService.getHospitals();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", hospitals)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        List<HospitalDTO> hospitals = hospitalService.getHospitals();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", hospitals)
+        );
     }
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getHospitalById(@PathVariable("id") String id) {

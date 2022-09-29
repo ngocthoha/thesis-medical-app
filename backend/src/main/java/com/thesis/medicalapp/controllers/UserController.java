@@ -5,14 +5,17 @@ import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.SignupRequest;
 import com.thesis.medicalapp.payload.VerificationRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.UserDTO;
+import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.OTPService;
 import com.thesis.medicalapp.services.SmsService;
 import com.thesis.medicalapp.services.UserService;
+import com.twilio.exception.ApiException;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -41,51 +44,37 @@ public class UserController {
     private final UserService userService;
     private final SmsService smsService;
     private final OTPService otpService;
+    private final UserRepository userRepository;
 
     @GetMapping("/users/all")
-    public ResponseEntity<ApiResponse>getAllUser() {
-        try {
-            List<UserDTO> userDTOS = userService.getUsers();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", userDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object>getAllUser() {
+        List<UserDTO> userDTOS = userService.getUsers();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", userDTOS)
+        );
     }
 
     @GetMapping("/users")
-    public ResponseEntity<ApiResponse> getUsers() {
-        try {
-            List<UserDTO> userDTOS = userService.findAllByRoles_Name("ROLE_USER");
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", userDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> getUsers() {
+        List<UserDTO> userDTOS = userService.findAllByRoles_Name("ROLE_USER");
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", userDTOS)
+        );
     }
     @PostMapping("/auth/register")
-    public ResponseEntity<Object>createUser(@RequestBody @Valid SignupRequest signupRequest) {
+    public ResponseEntity<Object>addUser(@RequestBody @Valid SignupRequest signupRequest) {
         String username = signupRequest.getUsername();
         if (userService.existsByUsername(username)) {
                 User user_request = userService.getUser(username);
                 if (user_request.getEnabled())
-                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                            new ApiResponse<>(0, "Username is already taken!", null)
-                    );
+                    throw new ApiRequestException("Username already exists!");
         }
-        User userDB = new User();
-        if (userService.existsByPhone(signupRequest.getPhone())) {
-            userDB = userService.getUser(username);
+        User userDB;
+        String phone_request = signupRequest.getPhone();
+        if (userService.existsByPhone(phone_request)) {
+            userDB = userRepository.findByPhone(phone_request).get();
             if (userDB.getEnabled())
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, "Phone number is already taken!", null)
-                );
+                throw new ApiRequestException("Phone already exists!");
         } else {
             User user = new User(
                     null,
@@ -102,50 +91,33 @@ public class UserController {
             else role = signupRequest.getRole();
             userService.addRoleToUser(username, role);
         }
-        try {
-            OTP otp = new OTP();
-            otp.setToken(OTP.generateOTP());
-            OTP otpDB = otpService.generateOTP(userDB);
-            Sms sms = new Sms();
-            sms.setTo(signupRequest.getPhone());
-            sms.setMessage(otpDB.getToken());
-            smsService.sendSMS(sms);
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ApiResponse<>(1, "User registered successfully!", null)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        OTP otp = new OTP();
+        otp.setToken(OTP.generateOTP());
+        OTP otpDB = otpService.generateOTP(userDB);
+        if (otpDB == null) throw new ApiRequestException("OTP not found!", HttpStatus.NOT_FOUND);
+        Sms sms = new Sms();
+        sms.setTo(signupRequest.getPhone());
+        sms.setMessage(otpDB.getToken());
+        smsService.sendSMS(sms);
+        return ResponseEntity.status(HttpStatus.CREATED).body(
+                new ApiResponse<>(HttpStatus.CREATED.value(), "User registered successfully!")
+        );
     }
     @PostMapping("/auth/register/verify")
-    public ResponseEntity<ApiResponse> verifyUser(@RequestBody @Valid VerificationRequest verificationRequest) {
-        try {
-            String token = verificationRequest.getOtp();
-            otpService.verifyUser(verificationRequest.getUsername(), token);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse(1, "Verify Successfully!", null)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> verifyUser(@RequestBody @Valid VerificationRequest verificationRequest) throws Exception {
+        String token = verificationRequest.getOtp();
+        otpService.verifyUser(verificationRequest.getUsername(), token);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse(HttpStatus.OK.value(), "Verify Successfully!")
+        );
     }
 
     @PatchMapping(value ="/users/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApiResponse> partialUpdateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
-        try {
-            UserDTO userRes = userService.partialUpdateUser(id, userDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "User updated successfully!", userRes)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> partialUpdateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
+        UserDTO userRes = userService.partialUpdateUser(id, userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(1, "User updated successfully!", userRes)
+        );
     }
 
     @PostMapping("/role/save")

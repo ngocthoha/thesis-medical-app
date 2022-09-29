@@ -1,11 +1,14 @@
 package com.thesis.medicalapp.services.impl;
 
 import com.thesis.medicalapp.ThesisMedicalAppApplication;
+import com.thesis.medicalapp.exception.ApiRequestException;
+import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Global;
 import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.payload.response.ProfileSearch;
 import com.thesis.medicalapp.pojo.ProfileDTO;
+import com.thesis.medicalapp.repository.AddressRepository;
 import com.thesis.medicalapp.repository.ProfileRepository;
 import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.ProfileService;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 public class ProfileServiceImpl implements ProfileService {
     private final ProfileRepository profileRepository;
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
 
     @Override
     public ProfileDTO saveProfile(ProfileDTO profileDTO) {
@@ -34,11 +38,9 @@ public class ProfileServiceImpl implements ProfileService {
         Profile profile = new Profile();
         profile.setFirstName(profileDTO.getFirstName());
         profile.setLastName(profileDTO.getLastName());
-        profile.setCountry(profileDTO.getCountry());
-        profile.setProvince(profileDTO.getProvince());
-        profile.setTown(profileDTO.getTown());
-        profile.setCommune(profileDTO.getCommune());
-        profile.setDetailedAddress(profileDTO.getDetailedAddress());
+        Address address = addressRepository.save(profileDTO.getAddress());
+        if (address == null) throw new ApiRequestException("Can not save address!");
+        profile.setAddress(address);
         profile.setPhone(profileDTO.getPhone());
         profile.setEmail(profileDTO.getEmail());
         profile.setJob(profileDTO.getJob());
@@ -99,11 +101,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGender(profileDTO.getGender());
-        profile.setCountry(profileDTO.getCountry());
-        profile.setProvince(profileDTO.getProvince());
-        profile.setTown(profileDTO.getTown());
-        profile.setCommune(profileDTO.getCommune());
-        profile.setDetailedAddress(profileDTO.getDetailedAddress());
+        profile.setAddress(profileDTO.getAddress());
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
         profile.setGuardian(profileDTO.getGuardian());

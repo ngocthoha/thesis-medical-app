@@ -24,11 +24,8 @@ public class Profile extends AuditLog{
     private Long profileNumber;
     private String firstName;
     private String lastName;
-    private String country;
-    private String province;
-    private String town;
-    private String commune;
-    private String detailedAddress;
+    @OneToOne
+    private Address address;
     private String phone;
     private String email;
     private Date dob;

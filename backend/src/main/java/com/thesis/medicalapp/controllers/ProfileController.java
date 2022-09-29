@@ -24,16 +24,11 @@ public class ProfileController {
                     new ApiResponse<>(0, "Identity card is already taken!", null)
             );
         }
-        try {
-            ProfileDTO profileResponse = profileService.saveProfile(profileDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", profileResponse)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        System.out.println("save profile");
+        ProfileDTO profileResponse = profileService.saveProfile(profileDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(1, "Success", profileResponse)
+        );
     }
     @GetMapping("/profiles")
     public ResponseEntity<ApiResponse> getProfilesByUser() {

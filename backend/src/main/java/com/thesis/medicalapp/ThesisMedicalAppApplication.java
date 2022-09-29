@@ -33,12 +33,14 @@ public class ThesisMedicalAppApplication {
         return new BCryptPasswordEncoder();
     }
     @Bean
-    CommandLineRunner run(UserService userService, ProfileRepository profileRepository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, RoomRepository roomRepository, HospitalRepository hospitalRepository) {
+    CommandLineRunner run(UserService userService, ProfileRepository profileRepository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, RoomRepository roomRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository) {
         return args -> {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
             userService.saveRole(new Role(null, "ROLE_DOCTOR"));
-            Hospital hospital = new Hospital(null, "BV Dai Hoc Y Duoc", "address", "info", 0, null, null);
+            Address address = new Address(null, "Viet Nam", "Tinh", "Huyen", "Xa", "");
+            Address address1 = addressRepository.save(address);
+            Hospital hospital = new Hospital(null, "BV Dai Hoc Y Duoc", address1, "info", 0, null, null, true);
             hospitalRepository.save(hospital);
             User user = new User(null, "user", "0326185282", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "0326185283","1234", true, null, new ArrayList<>());
@@ -63,7 +65,7 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
-            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc","Viet Nam", "Tinh", "Huyen", "Xa", "364 Do Bi", "phone", "email@gmail.com", new Date(), "job", "identity", "healthy", "folk", Gender.MALE, "guardian","guardian phone", "guardian identity card", "relationship", "relation ship with patient", userEntity));
+            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc", address1, "phone", "email@gmail.com", new Date(), "job", "identity", "healthy", "folk", Gender.MALE, "guardian","guardian phone", "guardian identity card", "relationship", "relation ship with patient", userEntity));
         };
     }
     @GetMapping

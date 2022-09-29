@@ -1,7 +1,10 @@
 package com.thesis.medicalapp.services.impl;
 
+import com.thesis.medicalapp.exception.ApiRequestException;
+import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.pojo.HospitalDTO;
+import com.thesis.medicalapp.repository.AddressRepository;
 import com.thesis.medicalapp.repository.HospitalRepository;
 import com.thesis.medicalapp.services.HospitalService;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +22,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
+    private final AddressRepository addressRepository;
     @Override
     public HospitalDTO saveHospital(HospitalDTO hospitalDTO) {
-        log.info("Saving new profile of {} to the database", hospitalDTO.getName());
+        log.info("Saving new hospital {} to the database", hospitalDTO.getName());
         Hospital hospital = new Hospital();
         hospital.setName(hospitalDTO.getName());
-        hospital.setAddress(hospitalDTO.getAddress());
+        Address address = addressRepository.save(hospitalDTO.getAddress());
+        if (address == null) throw new ApiRequestException("Can not save address!");
+        hospital.setAddress(address);
         hospital.setInfo(hospitalDTO.getInfo());
         hospital.setRegistrationNumber(0);
         hospital.setMapImageUrl(hospitalDTO.getMapImageUrl());
         hospital.setHospitalImageUrl(hospitalDTO.getHospitalImageUrl());
+        hospital.setIsActive(true);
         Hospital hospital1 = hospitalRepository.save(hospital);
         HospitalDTO hospitalDTO1 = HospitalDTO.from(hospital1);
         return hospitalDTO1;

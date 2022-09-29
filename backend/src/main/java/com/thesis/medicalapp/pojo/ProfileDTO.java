@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.pojo;
 
+import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Gender;
 import com.thesis.medicalapp.models.Profile;
 import lombok.AllArgsConstructor;
@@ -28,23 +29,11 @@ public class ProfileDTO {
     private String lastName;
     @NotEmpty
     @NotBlank
-    private String country;
-    @NotEmpty
-    @NotBlank
-    private String province;
-    @NotEmpty
-    @NotBlank
-    private String town;
-    @NotEmpty
-    @NotBlank
-    private String commune;
-    @NotEmpty
-    @NotBlank
-    private String detailedAddress;
+    private Address address;
     @NotEmpty
     @NotBlank
     private String phone;
-    @Email(message = "ivalid email address")
+    @Email(message = "invalid email address")
     private String email;
     @NotNull
     private Date dob;
@@ -70,12 +59,9 @@ public class ProfileDTO {
                 .profileNumber(profile.getProfileNumber())
                 .firstName(profile.getFirstName())
                 .lastName(profile.getLastName())
-                .country(profile.getCountry())
-                .province(profile.getProvince())
-                .town(profile.getTown())
-                .commune(profile.getCommune())
-                .detailedAddress(profile.getDetailedAddress())
+                .address(profile.getAddress())
                 .phone(profile.getPhone())
+                .email(profile.getEmail())
                 .dob(profile.getDob())
                 .job(profile.getJob())
                 .identityCard(profile.getIdentityCard())

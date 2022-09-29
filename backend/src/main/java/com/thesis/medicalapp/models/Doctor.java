@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Table(name = "doctors")
-public class Doctor extends User{
+public class Doctor extends User {
     @Column(nullable = false)
     private String name;
     private String gender;

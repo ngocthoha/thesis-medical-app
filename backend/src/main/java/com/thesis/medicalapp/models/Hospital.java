@@ -15,15 +15,17 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "hospitals")
-public class Hospital extends AuditLog{
+public class Hospital extends AuditLog {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String name;
-    private String address;
+    @OneToOne
+    private Address address;
     private String info;
     private Integer registrationNumber;
     private String mapImageUrl;
     private String hospitalImageUrl;
+    private Boolean isActive;
 }
