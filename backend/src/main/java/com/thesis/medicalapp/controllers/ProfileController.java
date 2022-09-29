@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.controllers;
 
+import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.payload.response.ProfileSearch;
 import com.thesis.medicalapp.pojo.ProfileDTO;
@@ -19,84 +20,51 @@ public class ProfileController {
     private final ProfileService profileService;
     @PostMapping("/profiles")
     public ResponseEntity<ApiResponse> saveProfile(@RequestBody @Valid ProfileDTO profileDTO) {
-        if (profileService.existsByIdentityCard(profileDTO.getIdentityCard())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, "Identity card is already taken!", null)
-            );
-        }
-        System.out.println("save profile");
+        if (profileService.existsByIdentityCard(profileDTO.getIdentityCard()))
+            throw new ApiRequestException("Identity card already exists!");
         ProfileDTO profileResponse = profileService.saveProfile(profileDTO);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(1, "Success", profileResponse)
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", profileResponse)
         );
     }
+
     @GetMapping("/profiles")
     public ResponseEntity<ApiResponse> getProfilesByUser() {
-        try {
-            List<ProfileDTO> profileDTOS = profileService.getProfilesByUser();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", profileDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        List<ProfileDTO> profileDTOS = profileService.getProfilesByUser();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(1, "Success", profileDTOS)
+        );
     }
+
     @GetMapping("/profiles/search")
     public ResponseEntity<ApiResponse> getProfilesByPhone(@RequestParam("phone") String phone) {
-        try {
-            ProfileSearch profileSearch = profileService.searchProfile(phone);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", profileSearch)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        ProfileSearch profileSearch = profileService.searchProfile(phone);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", profileSearch)
+        );
     }
 
     @GetMapping("/profiles/all")
     public ResponseEntity<ApiResponse> getProfiles() {
-        try {
-            List<ProfileDTO> profileDTOS = profileService.getProfiles();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", profileDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        List<ProfileDTO> profileDTOS = profileService.getProfiles();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", profileDTOS)
+        );
     }
 
     @PatchMapping("/profiles")
     public ResponseEntity<ApiResponse> updateProfile(ProfileDTO profileDTO) {
-        try {
-            profileService.updateProfile(profileDTO);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", null)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        profileService.updateProfile(profileDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success")
+        );
     }
 
     @DeleteMapping("/profiles/{id}")
     public ResponseEntity<ApiResponse> removeProfile(@PathVariable String id) {
-        try {
-            System.out.println("remove profile");
-            profileService.removeProfile(id);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", null)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        profileService.removeProfile(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success")
+        );
     }
 }
