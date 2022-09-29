@@ -31,28 +31,44 @@
           color="#537DA5"
           class="white--text btn-not-transform text-body-1"
           elevation="0"
+          @click="editProfile"
           >Lưu chỉnh sửa</v-btn
         >
       </div>
     </v-card>
     <v-divider
-      style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+      style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
-    <profile-form class="ma-6"></profile-form>
+    <profile-form
+      class="ma-6"
+      v-on:interface="getChildInterface"
+      :type="1"
+      :edit_profile="profile"
+    ></profile-form>
   </div>
 </template>
 
 <script>
 import ProfileForm from "./profileForm.vue";
 export default {
+  props: {
+    profile: Object,
+  },
   components: {
-    ProfileForm
+    ProfileForm,
   },
   methods: {
     cancleEditProfile() {
       this.$emit("editProfileClose");
-    }
-  }
+    },
+    getChildInterface(childInterface) {
+      this.$options.childInterface = childInterface;
+    },
+    editProfile() {
+      this.$options.childInterface.editProfile();
+      this.$emit("editProfileClose");
+    },
+  },
 };
 </script>
 <style scoped>

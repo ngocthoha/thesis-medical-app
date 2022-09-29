@@ -27,13 +27,13 @@
       </div>
     </v-card>
     <v-divider
-      style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+      style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
     <!-- remove profile dialog -->
     <v-dialog v-model="dialog" width="408px">
       <v-card height="192px" class="d-flex flex-column">
         <div class="d-flex flex-column mt-8 ml-8">
-          <p style="font-size:24px" class="font-weight-bold">
+          <p style="font-size: 24px" class="font-weight-bold">
             Xác nhận xoá hồ sơ
           </p>
           <p style="color: #667085">
@@ -66,10 +66,10 @@
       <v-card width="858px" elevation="0">
         <v-expansion-panels accordion tile flat>
           <v-expansion-panel
-            v-for="n in 3"
-            :key="n"
+            v-for="profile in profile_list"
+            :key="profile.id"
             class="mb-4 rounded-lg"
-            style="border:#F2F4F7 1px solid"
+            style="border: #f2f4f7 1px solid"
           >
             <v-expansion-panel-header>
               <v-card class="d-flex flex-row align-center" elevation="0">
@@ -78,13 +78,13 @@
                 </v-avatar>
                 <div class="d-flex flex-column ml-3">
                   <p class="ma-0 font-weight-bold text-body-1">
-                    Nguyễn Xuân Hoà
+                    {{ profile.lastName }} {{ profile.firstName }}
                   </p>
                   <p
                     class="ma-0 font-weight-normal text-body-2"
                     style="color: #667085"
                   >
-                    Chủ tài khoản
+                    {{ profile.relationship }}
                   </p>
                 </div>
               </v-card>
@@ -99,11 +99,9 @@
                   width="32px"
                   height="32px"
                   class="d-flex justify-center mr-5"
-                  @click="editProfile"
+                  @click="editProfile(profile)"
                 >
-                  <v-icon small color="#537DA5">
-                    mdi-pencil-outline
-                  </v-icon>
+                  <v-icon small color="#537DA5"> mdi-pencil-outline </v-icon>
                 </v-btn>
                 <v-btn
                   fab
@@ -113,7 +111,7 @@
                   color="#FEF3F2"
                   width="32px"
                   height="32px"
-                  class="d-flex justify-center  mr-5"
+                  class="d-flex justify-center mr-5"
                   @click.stop="dialog = true"
                 >
                   <v-icon small color="#F04438">
@@ -130,9 +128,7 @@
                   height="32px"
                   class="d-flex justify-center"
                 >
-                  <v-icon small>
-                    mdi-chevron-down
-                  </v-icon>
+                  <v-icon small> mdi-chevron-down </v-icon>
                 </v-card>
               </template>
             </v-expansion-panel-header>
@@ -141,136 +137,124 @@
               <!-- user information -->
               <div class="d-flex flex-column">
                 <!-- email -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Email
                   </p>
                   <p class="ma-0 font-weight-medium">
-                    germanydesign@figma.com
+                    {{ profile.email }}
                   </p>
                 </v-card>
                 <!-- phone -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Số điện thoại
                   </p>
                   <p class="ma-0 font-weight-medium">
-                    0123456789
+                    {{ profile.phone }}
                   </p>
                 </v-card>
                 <!-- address -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Địa chỉ
                   </p>
                   <p class="ma-0 font-weight-medium">
-                    42 Tự Cường, phường 4, quận Tân Bình, thành phố Hồ Chí Minh
+                    {{ getAddress(profile) }}
                   </p>
                 </v-card>
                 <!-- gender -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Giới tính
                   </p>
-                  <p class="ma-0 font-weight-medium">Nam</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ getGender(profile.gender) }}
+                  </p>
                 </v-card>
                 <!-- birthday -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Ngày sinh
                   </p>
-                  <p class="ma-0 font-weight-medium">24/01/2000</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ getDate(profile.dob) }}
+                  </p>
                 </v-card>
                 <!-- identify -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Số CMND/CCCD
                   </p>
-                  <p class="ma-0 font-weight-medium">098300004323</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ profile.identityCard }}
+                  </p>
                 </v-card>
                 <!-- job -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Nghề nghiệp
                   </p>
-                  <p class="ma-0 font-weight-medium">Sinh viên</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.job }}</p>
                 </v-card>
                 <!-- country -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Quốc gia
                   </p>
-                  <p class="ma-0 font-weight-medium">Việt Nam</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.country }}</p>
                 </v-card>
                 <!-- ethnic -->
-                <v-divider
-                  style=" border-color: #F2F4F7 !important;"
-                ></v-divider>
+                <v-divider style="border-color: #f2f4f7 !important"></v-divider>
                 <v-card
                   class="d-flex flec-row justify-space-between align-center"
                   elevation="0"
                   height="72px"
                 >
-                  <p class="ma-0 font-weight-medium" style="color:#667085">
+                  <p class="ma-0 font-weight-medium" style="color: #667085">
                     Dân tộc
                   </p>
-                  <p class="ma-0 font-weight-medium">Kinh</p>
+                  <p class="ma-0 font-weight-medium">{{ profile.folk }}</p>
                 </v-card>
               </div>
             </v-expansion-panel-content>
@@ -285,8 +269,12 @@
 export default {
   data() {
     return {
-      dialog: false
+      dialog: false,
     };
+  },
+
+  props: {
+    profile_list: Array,
   },
 
   methods: {
@@ -294,10 +282,32 @@ export default {
       this.$emit("OpenCreateProfile");
     },
 
-    editProfile() {
-      this.$emit("OpenEditProfile");
-    }
-  }
+    editProfile(profile) {
+      this.$emit("OpenEditProfile", profile);
+    },
+    getAddress(profile) {
+      return (
+        profile.country +
+        ", " +
+        profile.province +
+        ", " +
+        profile.town +
+        ", " +
+        profile.commune +
+        ", " +
+        profile.detailedAddress
+      );
+    },
+
+    getDate(date_string) {
+      let date = new Date(date_string);
+      return date.toLocaleDateString();
+    },
+
+    getGender(string_gender) {
+      return string_gender === "MALE" ? "Nam" : "Nữ";
+    },
+  },
 };
 </script>
 

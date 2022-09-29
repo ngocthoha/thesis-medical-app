@@ -59,7 +59,7 @@
     <!-- form -->
     <div class="d-flex flex-column">
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <!-- header -->
       <v-card height="112px" elevation="0">
@@ -88,7 +88,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.lastName"
+                placeholder="VD: Nguyễn Duy"
                 solo
                 flat
                 dense
@@ -107,7 +108,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.firstName"
+                placeholder="VD: Thanh"
                 solo
                 flat
                 dense
@@ -120,14 +122,12 @@
 
       <!-- phone, email -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Số điện thoại:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại:</p>
             <v-card
               width="417px"
               height="48px"
@@ -137,6 +137,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.phone"
                 placeholder="Số điện thoại"
                 solo
                 flat
@@ -156,7 +157,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                placeholder="VD thanhbkcse@gmail.com"
+                v-model="profile.email"
                 solo
                 flat
                 dense
@@ -169,13 +171,11 @@
 
       <!-- birthday -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-column">
-          <p class="mb-2 font-weight-medium text-body-2">
-            Ngày sinh:
-          </p>
+          <p class="mb-2 font-weight-medium text-body-2">Ngày sinh:</p>
           <div class="d-flex flex-row justify-space-between">
             <v-card
               width="270px"
@@ -186,8 +186,8 @@
               outlined
             >
               <v-select
+                v-model="profile.dob.date"
                 :items="days.date"
-                label="24"
                 solo
                 flat
                 dense
@@ -204,8 +204,8 @@
               outlined
             >
               <v-select
+                v-model="profile.dob.month"
                 :items="days.month"
-                label="01"
                 solo
                 flat
                 dense
@@ -222,8 +222,8 @@
               outlined
             >
               <v-select
+                v-model="profile.dob.year"
                 :items="days.year"
-                label="2000"
                 solo
                 flat
                 dense
@@ -237,22 +237,20 @@
 
       <!-- gender -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Giới tính
-            </p>
-            <v-radio-group row>
+            <p class="mb-2 font-weight-medium text-body-2">Giới tính</p>
+            <v-radio-group row v-model="profile.gender">
               <v-radio
                 label="Nam"
-                value="radio-1"
+                value="MALE"
                 color="#537DA5"
                 class="mr-6"
               ></v-radio>
-              <v-radio label="Nữ" value="radio-2" color="#537DA5"></v-radio>
+              <v-radio label="Nữ" value="FEMALE" color="#537DA5"></v-radio>
             </v-radio-group>
           </div>
         </div>
@@ -260,14 +258,12 @@
 
       <!-- national, identify -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Quốc gia:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Quốc gia:</p>
             <v-card
               width="417px"
               height="48px"
@@ -277,7 +273,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.country"
+                placeholder="Việt Nam"
                 solo
                 flat
                 dense
@@ -296,7 +293,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.identityCard"
+                placeholder="07720xxxxx"
                 solo
                 flat
                 dense
@@ -309,14 +307,12 @@
 
       <!-- ethnic, job -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Dân tộc:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Dân tộc:</p>
             <v-card
               width="417px"
               height="48px"
@@ -326,7 +322,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.folk"
+                placeholder="VD: Kinh"
                 solo
                 flat
                 dense
@@ -345,7 +342,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.job"
+                placeholder="VD: Sinh viên"
                 solo
                 flat
                 dense
@@ -358,14 +356,12 @@
 
       <!-- city, district -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Tỉnh/Thành phố:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Tỉnh/Thành phố:</p>
             <v-card
               width="417px"
               height="48px"
@@ -375,8 +371,8 @@
               outlined
             >
               <v-select
-                :items="days.date"
-                label="24"
+                :items="province_list"
+                v-model="profile.province"
                 solo
                 flat
                 dense
@@ -396,8 +392,9 @@
               outlined
             >
               <v-select
-                :items="days.date"
-                label="24"
+                :items="town_list"
+                v-model="profile.town"
+                label=""
                 solo
                 flat
                 dense
@@ -411,14 +408,12 @@
 
       <!-- sub-district, street, number -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Xã/Phường:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Xã/Phường:</p>
             <v-card
               width="417px"
               height="48px"
@@ -428,8 +423,8 @@
               outlined
             >
               <v-select
-                :items="days.date"
-                label="24"
+                :items="commune_list"
+                v-model="profile.commune"
                 solo
                 flat
                 dense
@@ -451,7 +446,62 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.detailedAddress"
+                placeholder=""
+                solo
+                flat
+                dense
+                class="text-body-1"
+              ></v-text-field>
+            </v-card>
+          </div>
+        </div>
+      </v-card>
+
+      <!-- sub-district, street, number -->
+      <v-divider
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
+      ></v-divider>
+      <v-card height="140px" elevation="0">
+        <div class="mt-6 d-flex flex-row justify-space-between">
+          <div class="d-flex flex-column">
+            <p class="mb-2 font-weight-medium text-body-2">
+              Quan hệ với tài khoản
+            </p>
+            <v-card
+              width="417px"
+              height="48px"
+              class="d-flex mb-5"
+              elevation="0"
+              style="padding-top: 1px"
+              outlined
+            >
+              <v-select
+                :items="relationship"
+                v-model="profile.relationship"
+                solo
+                flat
+                dense
+                append-icon="mdi-chevron-down"
+                menu-props="auto"
+              ></v-select>
+            </v-card>
+          </div>
+          <div class="d-flex flex-column">
+            <p class="mb-2 font-weight-medium text-body-2">
+              Mã số Bảo hiểm y tế
+            </p>
+            <v-card
+              width="417px"
+              height="48px"
+              class="d-flex mb-5"
+              elevation="0"
+              style="padding-top: 1px"
+              outlined
+            >
+              <v-text-field
+                v-model="profile.healthInsurance"
+                placeholder=""
                 solo
                 flat
                 dense
@@ -489,7 +539,7 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.guardian"
                 solo
                 flat
                 dense
@@ -510,8 +560,8 @@
               outlined
             >
               <v-select
-                :items="days.date"
-                label="24"
+                v-model="profile.relationshipWithPatient"
+                :items="relationship"
                 solo
                 flat
                 dense
@@ -525,14 +575,12 @@
 
       <!-- phone, email -->
       <v-divider
-        style=" border-color: rgba(16, 24, 40, 0.03) !important;"
+        style="border-color: rgba(16, 24, 40, 0.03) !important"
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">
-              Số điện thoại:
-            </p>
+            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại:</p>
             <v-card
               width="417px"
               height="48px"
@@ -542,6 +590,7 @@
               outlined
             >
               <v-text-field
+                v-model="profile.guardianPhone"
                 placeholder="Số điện thoại"
                 solo
                 flat
@@ -551,7 +600,7 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Email:</p>
+            <p class="mb-2 font-weight-medium text-body-2">CMND:</p>
             <v-card
               width="417px"
               height="48px"
@@ -561,7 +610,8 @@
               outlined
             >
               <v-text-field
-                placeholder="Số điện thoại"
+                v-model="profile.guardianIdentityCard"
+                placeholder="VD: 07720xxxxxx"
                 solo
                 flat
                 dense
@@ -576,31 +626,145 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  props: {
+    last_name: {
+      type: String,
+      default: "",
+    },
+
+    first_name: {
+      type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
+      default: "",
+    },
+    email: {
+      type: String,
+      default: "",
+    },
+
+    date: {
+      type: Number,
+      default: 1,
+    },
+
+    month: {
+      type: Number,
+      default: 1,
+    },
+
+    year: {
+      type: Number,
+      default: 1970,
+    },
+
+    gender: {
+      type: String,
+      default: "MALE",
+    },
+
+    identify: {
+      type: String,
+      default: "",
+    },
+    country: {
+      type: String,
+      default: "Việt Nam",
+    },
+    type: {
+      type: Number,
+      default: 0, // 0 is create, 1 is edit
+    },
+
+    edit_profile: {
+      type: Object,
+      default: null,
+    },
+  },
+
   data() {
     return {
       avt_img: require("@/assets/img/user/profile/avatar1.svg"),
       days: {
         date: [],
         month: [],
-        year: []
-      }
+        year: [],
+      },
+      relationship: [
+        "Ba",
+        "Mẹ",
+        "Ông",
+        "Bà",
+        "Anh",
+        "Chị",
+        "Em",
+        "Con",
+        "Vợ",
+        "Chồng",
+        "Khác",
+      ],
+
+      province_list: [
+        "Thủ đô Hà Nội",
+        "Thành phố Hồ Chí Minh",
+        "Bà Rịa-Vũng Tàu",
+      ],
+
+      town_list: ["Quận 1", "Quận 2", "Quận 3"],
+      commune_list: ["Phường 1", "Phường 2", "Phường 3"],
+      profile: {
+        firstName: "",
+        lastName: "",
+        country: "",
+        province: "",
+        town: "",
+        commune: "",
+        detailedAddress: "",
+        phone: "",
+        email: "",
+        dob: {
+          date: "01",
+          month: "01",
+          year: "2000",
+        },
+        job: "",
+        identityCard: "",
+        healthInsurance: "",
+        folk: "",
+        gender: "",
+        guardian: "",
+        guardianPhone: "",
+        guardianIdentityCard: "",
+        relationship: "",
+        relationshipWithPatient: "",
+      },
     };
   },
 
   created() {
     //create day
-    this.days.month = Array.from({ length: 12 }, (_, i) => i + 1);
-    this.days.date = Array.from({ length: 31 }, (_, i) => i + 1);
-    var year = Array.from({ length: 100 }, (_, i) => i + 1923);
+    this.days.month = Array.from({ length: 12 }, (_, i) =>
+      i + 1 > 9 ? String(i + 1) : "0" + String(i + 1)
+    );
+    this.days.date = Array.from({ length: 31 }, (_, i) =>
+      i + 1 > 9 ? String(i + 1) : "0" + String(i + 1)
+    );
+    let year = Array.from({ length: 100 }, (_, i) => String(i + 1923));
     this.days.year = year.reverse();
+    this.setDataForm();
   },
-
+  mounted() {
+    // Emits on mount
+    this.emitInterface();
+  },
   methods: {
     previewFiles(event) {
-      //console.log(event.target.files);
-      var file_1 = event.target.files[0];
-      var reader = new FileReader();
+      let file_1 = event.target.files[0];
+      let reader = new FileReader();
       reader.addEventListener(
         "load",
         () => {
@@ -614,7 +778,117 @@ export default {
       } else {
         this.avt_img = require("@/assets/img/user/profile/avatar1.svg");
       }
-    }
-  }
+    },
+
+    setDataForm() {
+      if (this.type != 0 && this.edit_profile != null) {
+        this.profile.lastName = this.edit_profile.lastName;
+        this.profile.firstName = this.edit_profile.firstName;
+        this.profile.country = this.edit_profile.country;
+        this.profile.province = this.edit_profile.province;
+        this.profile.town = this.edit_profile.town;
+        this.profile.commune = this.edit_profile.commune;
+        this.profile.detailedAddress = this.edit_profile.detailedAddress;
+        this.profile.phone = this.edit_profile.phone;
+        this.profile.email = this.edit_profile.email;
+        this.profile.job = this.edit_profile.job;
+        this.profile.identityCard = this.edit_profile.identityCard;
+        this.profile.healthInsurance = this.edit_profile.healthInsurance;
+        this.profile.folk = this.edit_profile.folk;
+        this.profile.gender = this.edit_profile.gender;
+        this.profile.guardian = this.edit_profile.guardian;
+        this.profile.guardianIdentityCard =
+          this.edit_profile.guardianIdentityCard;
+        this.profile.guardianPhone = this.edit_profile.guardianPhone;
+        this.profile.relationship = this.edit_profile.relationship;
+        this.profile.relationshipWithPatient =
+          this.edit_profile.relationshipWithPatient;
+        let date = new Date(this.edit_profile.dob);
+
+        this.profile.dob.year = String(date.getFullYear());
+        this.profile.dob.month =
+          date.getMonth() > 9
+            ? String(date.getMonth())
+            : "0" + String(date.getMonth());
+        this.profile.dob.date =
+          date.getDate() > 9
+            ? String(date.getDate())
+            : "0" + String(date.getDate());
+      }
+    },
+
+    async addNewProfile() {
+      let data = {
+        firstName: "",
+        lastName: "",
+        country: "",
+        province: "",
+        town: "",
+        commune: "",
+        detailedAddress: "",
+        phone: "",
+        email: "",
+        dob: "",
+        job: "",
+        identityCard: "",
+        healthInsurance: "",
+        folk: "",
+        gender: "",
+        guardian: "",
+        guardianPhone: "",
+        guardianIdentityCard: "",
+        relationship: "",
+        relationshipWithPatient: "",
+      };
+      //process data
+      data.lastName = this.profile.lastName;
+      data.firstName = this.profile.firstName;
+      data.country = this.profile.country;
+      data.province = this.profile.province;
+      data.town = this.profile.town;
+      data.commune = this.profile.commune;
+      data.detailedAddress = this.profile.detailedAddress;
+      data.dob =
+        this.profile.dob.year +
+        "-" +
+        this.profile.dob.month +
+        "-" +
+        this.profile.dob.date;
+      data.phone = this.profile.phone;
+      data.email = this.profile.email;
+      data.job = this.profile.job;
+      data.identityCard = this.profile.identityCard;
+      data.healthInsurance = this.profile.healthInsurance;
+      data.folk = this.profile.folk;
+      data.gender = this.profile.gender;
+      data.guardian = this.profile.guardian;
+      data.guardianPhone = this.profile.guardianPhone;
+      data.guardianIdentityCard = this.profile.guardianIdentityCard;
+      data.relationship = this.profile.relationship;
+      data.relationshipWithPatient = this.profile.relationship;
+
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token,
+        data: data,
+      };
+      await this.$store.dispatch("profile/add_new_profile", param);
+      console.log("add profile successfully");
+    },
+
+    editProfile() {
+      console.log("editprofile");
+    },
+
+    /**
+     * Emitting an interface with callable methods from outside
+     */
+    emitInterface() {
+      this.$emit("interface", {
+        addNewProfile: () => this.addNewProfile(),
+        editProfile: () => this.editProfile(),
+      });
+    },
+  },
 };
 </script>
