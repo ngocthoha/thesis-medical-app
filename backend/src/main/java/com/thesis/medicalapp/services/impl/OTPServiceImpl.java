@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.services.impl;
 
+import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.OTP;
 import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.User;
@@ -38,15 +39,15 @@ public class OTPServiceImpl implements OTPService {
     }
 
     @Override
-    public void verifyUser(String username, String token) throws Exception {
+    public void verifyUser(String username, String token) {
         User user = userService.findByUsername(username);
         Optional<OTP> otpOp = otpRepository.findByUserIdAndAndToken(user.getId(), token);
         if (!otpOp.isPresent()) {
-            throw new Exception("OTP is not correct!");
+            throw new ApiRequestException("OTP is not correct!");
         }
         OTP otp = otpOp.get();
         if (!otp.isValid()) {
-            throw new Exception("OTP is expire!");
+            throw new ApiRequestException("OTP is expire!");
         }
         otpRepository.delete(otp);
         user.setEnabled(Boolean.TRUE);
