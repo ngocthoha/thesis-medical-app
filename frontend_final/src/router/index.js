@@ -20,6 +20,7 @@ const router = new Router({
     //Home Pages
     layout("Home", [
       route("Trang chủ", { default: "home/home" }, "/"),
+      route("Đặt lịch bác sĩ", { default: "home/appointment/doctor_appointment" }, "/doctor-appointment"),
       route("Dịch vụ", { default: "home/Service" }, "/service"),
       route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
       route(

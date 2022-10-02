@@ -20,6 +20,7 @@
             elevation="0"
             class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
             text
+            @click="onHomeClick"
             >Trang chủ</v-btn
           >
           <v-menu
@@ -42,7 +43,10 @@
             </template>
             <v-list>
               <v-list-item v-for="(item, i) in appointment_list" :key="i" link>
-                <v-list-item-content style="height:92px; width:296px">
+                <v-list-item-content
+                  style="height:92px; width:296px"
+                  @click="onAppointmentServiceClick(item)"
+                >
                   <v-col cols="12" class="pa-0">
                     <v-row class="ma-0"
                       ><v-col cols="2" class="pb-0"
@@ -535,7 +539,8 @@ export default {
         icon: require("@/assets/img/home/appbar/doctor.svg"),
         title: "Bác sĩ",
         content:
-          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online"
+          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
+        link_name: "Đặt lịch bác sĩ"
       },
       {
         icon: require("@/assets/img/home/appbar/hospital.svg"),
@@ -677,6 +682,28 @@ export default {
 
     onOtpSubmit() {
       this.opt_dialog = false;
+    },
+
+    onHomeClick() {
+      this.$router.push({ name: "Trang chủ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
+    },
+
+    onAppointmentServiceClick(item) {
+      this.$router.push({ name: item.link_name }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     }
   }
 };

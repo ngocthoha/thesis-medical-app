@@ -21,7 +21,27 @@ function add_new_profile(params) {
   });
 }
 
+function remove_profile(params) {
+  axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
+  return axios.delete(`${url}/api/profiles/${params.data}`).then((response) => {
+    return {
+      data: response.data,
+    };
+  });
+}
+
+function edit_profile(params) {
+  axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
+  return axios.patch(`${url}/api/profiles`, params.data).then((response) => {
+    return {
+      data: response.data,
+    };
+  });
+}
+
 export default {
   profile_list,
   add_new_profile,
+  remove_profile,
+  edit_profile,
 };

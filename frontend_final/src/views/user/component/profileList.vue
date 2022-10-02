@@ -47,7 +47,7 @@
             outlined
             color="#667085"
             text
-            @click="dialog = false"
+            @click="cancle_remove()"
             >Huỷ bỏ</v-btn
           >
           <v-btn
@@ -55,7 +55,7 @@
             width="160px"
             color="#F04438"
             elevation="0"
-            @click="dialog = false"
+            @click="remove_submit()"
             >Xoá hồ sơ</v-btn
           >
         </div>
@@ -112,7 +112,7 @@
                   width="32px"
                   height="32px"
                   class="d-flex justify-center mr-5"
-                  @click.stop="dialog = true"
+                  @click.stop="notify_remove_profile(profile)"
                 >
                   <v-icon small color="#F04438">
                     mdi-account-remove-outline
@@ -242,7 +242,9 @@
                   <p class="ma-0 font-weight-medium" style="color: #667085">
                     Quốc gia
                   </p>
-                  <p class="ma-0 font-weight-medium">{{ profile.country }}</p>
+                  <p class="ma-0 font-weight-medium">
+                    {{ profile.address.country }}
+                  </p>
                 </v-card>
                 <!-- ethnic -->
                 <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -270,11 +272,13 @@ export default {
   data() {
     return {
       dialog: false,
+      profile_remove: null,
+      profile_list: [],
     };
   },
 
-  props: {
-    profile_list: Array,
+  created() {
+    this.getProfileList();
   },
 
   methods: {
@@ -287,15 +291,13 @@ export default {
     },
     getAddress(profile) {
       return (
-        profile.country +
+        profile.address.province +
         ", " +
-        profile.province +
+        profile.address.district +
         ", " +
-        profile.town +
+        profile.address.ward +
         ", " +
-        profile.commune +
-        ", " +
-        profile.detailedAddress
+        profile.address.address
       );
     },
 
@@ -306,6 +308,36 @@ export default {
 
     getGender(string_gender) {
       return string_gender === "MALE" ? "Nam" : "Nữ";
+    },
+
+    notify_remove_profile(profile) {
+      this.dialog = true;
+      this.profile_remove = profile;
+    },
+
+    cancle_remove() {
+      this.profile_remove = null;
+      this.dialog = false;
+    },
+
+    async remove_submit() {
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token,
+        data: this.profile_remove.id,
+      };
+      await this.$store.dispatch("profile/remove_profile", param);
+      this.getProfileList();
+      this.dialog = false;
+    },
+
+    async getProfileList() {
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token,
+      };
+      await this.$store.dispatch("profile/profile_list", param);
+      this.profile_list = this.$store.getters["profile/profile_list"];
     },
   },
 };

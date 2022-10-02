@@ -213,8 +213,8 @@ export default {
       this.$options.childInterface = childInterface;
     },
 
-    AddProfile() {
-      this.$options.childInterface.addNewProfile();
+    async AddProfile() {
+      await this.$options.childInterface.addNewProfile();
       this.$emit("addProfileClose");
     },
   },
