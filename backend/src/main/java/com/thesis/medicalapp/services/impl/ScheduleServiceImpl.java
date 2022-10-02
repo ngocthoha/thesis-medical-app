@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.services.impl;
 
+import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.pojo.ScheduleDTO;
 import com.thesis.medicalapp.repository.DoctorRepository;
@@ -7,12 +8,14 @@ import com.thesis.medicalapp.repository.RoomRepository;
 import com.thesis.medicalapp.repository.ScheduleRepository;
 import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.ScheduleService;
+import com.thesis.medicalapp.validation.ValidationHandler;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.print.Doc;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,8 +32,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final DoctorRepository doctorRepository;
 
     @Override
-    public ScheduleDTO saveSchedule(ScheduleDTO scheduleDTO) {
+    public ScheduleDTO saveSchedule(@Valid ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
+//        if (scheduleDTO.getType() == null) throw new ValidationHandler();
+        schedule.setType(scheduleDTO.getType());
         schedule.setDate(scheduleDTO.getDate());
         schedule.setTimes(scheduleDTO.getTimes());
         schedule.setRoom(scheduleDTO.getRoom());
@@ -52,6 +57,26 @@ public class ScheduleServiceImpl implements ScheduleService {
         }).collect(Collectors.toList());
         return scheduleDTOS;
     }
+    @Override
+    public List<ScheduleDTO> getSchedulesByDateAndDoctor(String date, String doctorId) {
+        Date dateFormat = new Date();
+        try {
+            dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(date);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        Doctor doctor = doctorRepository.findDoctorById(doctorId);
+        if (doctor == null) throw new ApiRequestException("Could not find doctor!");
+        List<Schedule> schedules = scheduleRepository.findAllByDateAndDoctor(dateFormat, doctor)
+                .stream()
+                .collect(Collectors.toList());
+        List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
+            ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
+            return scheduleDTO;
+        }).collect(Collectors.toList());
+        return scheduleDTOS;
+    }
+
     @Override
     public List<ScheduleDTO> getDoctorsBySchedule(String specialty, String date) {
         Date dateFormat = new Date();

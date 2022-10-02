@@ -17,29 +17,17 @@ public class RoomController {
     private final RoomService roomService;
 
     @GetMapping("/rooms")
-    public ResponseEntity<ApiResponse> getRooms() {
-        try {
-            List<Room> rooms = roomService.getRooms();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", rooms)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> getRooms() {
+        List<Room> rooms = roomService.getRooms();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", rooms)
+        );
     }
     @PostMapping("/rooms")
-    public ResponseEntity<ApiResponse> saveRoom(@RequestBody Room room) {
-        try {
-            Room roomEntity = roomService.saveRoom(room);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", roomEntity)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> saveRoom(@RequestBody Room room) {
+        Room roomEntity = roomService.saveRoom(room);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", roomEntity)
+        );
     }
 }

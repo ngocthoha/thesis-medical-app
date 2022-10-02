@@ -10,18 +10,19 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "appointments")
-public class Appointment extends AuditLog{
+public class Appointment extends AuditLog {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private Integer stt;
+    private Long code;
     @OneToOne
     private Room room;
     @Temporal(TemporalType.DATE)
@@ -36,7 +37,7 @@ public class Appointment extends AuditLog{
     private Doctor doctor;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value= FetchMode.SELECT)
-    private Collection<File> files;
-    private String status;
-    private Boolean isOnline;
+    private Collection<MedicalFile> files;
+    private Status status;
+    private ScheduleType type;
 }

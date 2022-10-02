@@ -50,6 +50,7 @@ public class ProfileDTO {
     private String guardianIdentityCard;
     private String relationship;
     private String relationshipWithPatient;
+    private String imageUrl;
 
     public static ProfileDTO from(Profile profile) {
         return ProfileDTO.builder()
@@ -71,6 +72,7 @@ public class ProfileDTO {
                 .guardianIdentityCard(profile.getGuardianIdentityCard())
                 .relationship(profile.getRelationship())
                 .relationshipWithPatient(profile.getRelationshipWithPatient())
+                .imageUrl(profile.getImageUrl())
                 .build();
     }
 }

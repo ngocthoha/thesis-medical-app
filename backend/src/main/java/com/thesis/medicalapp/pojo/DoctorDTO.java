@@ -19,16 +19,19 @@ public class DoctorDTO {
     private String bio;
     private Integer registrationNumber;
     private String price;
+    private String imageUrl;
 
     public static DoctorDTO from(Doctor doctor){
         return DoctorDTO.builder()
                 .id(doctor.getId())
-                .name(doctor.getUsername())
+                .name(doctor.getName())
+                .email(doctor.getEmail())
                 .specialty(doctor.getSpecialty())
                 .level(doctor.getLevel())
                 .bio(doctor.getBio())
                 .registrationNumber(doctor.getRegistrationNumber())
                 .price(doctor.getPrice())
+                .imageUrl(doctor.getImageUrl())
                 .build();
     }
 }

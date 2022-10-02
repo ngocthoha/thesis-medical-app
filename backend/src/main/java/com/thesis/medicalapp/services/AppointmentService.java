@@ -12,7 +12,7 @@ public interface AppointmentService {
     List<Object> getAppointmentsByDateAndDoctor(String date);
     int updateAppointment(Appointment appointment);
     int removeAppointment(String id);
-    Integer max(Date date);
+//    Integer max(Date date);
     Appointment findAppointmentById(String id);
     List<?> getAllByDateIsBetweenAndDoctor(Date start, Date end);
 }

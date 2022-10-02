@@ -31,7 +31,7 @@ public class SpecialtyController {
     @GetMapping("/specialties")
     public ResponseEntity<ApiResponse> getSpecialty() {
         return ResponseEntity.ok(
-                new ApiResponse(1, "Success", this.specialties)
+                new ApiResponse(this.specialties)
         );
     }
 }

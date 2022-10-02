@@ -18,7 +18,7 @@ import java.util.Date;
 public class Doctor extends User {
     @Column(nullable = false)
     private String name;
-    private String gender;
+    private Gender gender;
     private Date dob;
     private String email;
     private String specialty;
@@ -30,7 +30,7 @@ public class Doctor extends User {
     private Integer registrationNumber = 0;
     private String price;
 
-    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, String gender, Date dob, String email,  String specialty, String level, Hospital hospital) {
+    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  String specialty, String level, String bio, String price, Hospital hospital) {
         super(id, username, phone, password, enabled, imageUrl, roles);
         this.name = name;
         this.gender = gender;
@@ -38,6 +38,8 @@ public class Doctor extends User {
         this.email = email;
         this.specialty = specialty;
         this.level = level;
+        this.bio = bio;
+        this.price = price;
         this.hospital = hospital;
     }
 }

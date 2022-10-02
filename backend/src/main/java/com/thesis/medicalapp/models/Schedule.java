@@ -19,6 +19,7 @@ public class Schedule {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+    private ScheduleType type;
     @Temporal(TemporalType.DATE)
     private Date date;
     @OneToOne

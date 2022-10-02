@@ -3,8 +3,10 @@ package com.thesis.medicalapp.services.impl;
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Hospital;
+import com.thesis.medicalapp.models.HospitalHour;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.repository.AddressRepository;
+import com.thesis.medicalapp.repository.HospitalHourRepository;
 import com.thesis.medicalapp.repository.HospitalRepository;
 import com.thesis.medicalapp.services.HospitalService;
 import lombok.RequiredArgsConstructor;
@@ -23,22 +25,26 @@ import java.util.stream.Collectors;
 public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final AddressRepository addressRepository;
+    private final HospitalHourRepository hospitalHourRepository;
     @Override
     public HospitalDTO saveHospital(HospitalDTO hospitalDTO) {
         log.info("Saving new hospital {} to the database", hospitalDTO.getName());
         Hospital hospital = new Hospital();
         hospital.setName(hospitalDTO.getName());
+        if (hospitalDTO.getAddress() == null) throw new ApiRequestException("Can not save address!");
         Address address = addressRepository.save(hospitalDTO.getAddress());
-        if (address == null) throw new ApiRequestException("Can not save address!");
         hospital.setAddress(address);
         hospital.setInfo(hospitalDTO.getInfo());
         hospital.setRegistrationNumber(0);
         hospital.setMapImageUrl(hospitalDTO.getMapImageUrl());
         hospital.setHospitalImageUrl(hospitalDTO.getHospitalImageUrl());
         hospital.setIsActive(true);
-        Hospital hospital1 = hospitalRepository.save(hospital);
-        HospitalDTO hospitalDTO1 = HospitalDTO.from(hospital1);
-        return hospitalDTO1;
+        if (hospitalDTO.getHospitalHour() == null) throw new ApiRequestException("Can not save hospital hour!");
+        HospitalHour hospitalHour = hospitalHourRepository.save(hospitalDTO.getHospitalHour());
+        hospital.setHospitalHour(hospitalHour);
+        Hospital hospital_db = hospitalRepository.save(hospital);
+        HospitalDTO hospital_response = HospitalDTO.from(hospital_db);
+        return hospital_response;
     }
     @Override
     public List<HospitalDTO> getHospitals() {

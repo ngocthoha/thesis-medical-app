@@ -53,7 +53,7 @@ public class ProfileController {
     }
 
     @PatchMapping("/profiles")
-    public ResponseEntity<ApiResponse> updateProfile(ProfileDTO profileDTO) {
+    public ResponseEntity<ApiResponse> updateProfile(@RequestBody ProfileDTO profileDTO) {
         profileService.updateProfile(profileDTO);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(HttpStatus.OK.value(), "Success")

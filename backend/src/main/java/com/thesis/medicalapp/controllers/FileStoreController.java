@@ -27,7 +27,7 @@ public class FileStoreController {
     private final FileStore fileStore;
 
     @PostMapping("/files/upload")
-    public ResponseEntity<ApiResponse> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Object> uploadFile(@RequestParam("file") MultipartFile file) {
         //check if the file is empty
         if (file.isEmpty()) {
             throw new IllegalStateException("Cannot upload empty file");
@@ -44,9 +44,9 @@ public class FileStoreController {
         String imageUrl = String.format("%s/%s", S3Host, path);
         try {
             fileStore.upload(path, file, file.getInputStream());
-            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(1, "Uploaded the file successfully.", imageUrl));
+            return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(imageUrl));
         } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ApiResponse(0, "Could not upload the file!", null));
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ApiResponse(HttpStatus.EXPECTATION_FAILED.value(), "Could not upload the file!", null));
         }
     }
 }

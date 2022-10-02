@@ -39,6 +39,7 @@ public class Profile extends AuditLog{
     private String guardianIdentityCard;
     private String relationship;
     private String relationshipWithPatient;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

@@ -1,6 +1,8 @@
 package com.thesis.medicalapp.pojo;
 
 import com.thesis.medicalapp.models.Doctor;
+import com.thesis.medicalapp.models.Gender;
+import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,25 +17,34 @@ import java.util.Date;
 @AllArgsConstructor
 public class UserDoctorDTO {
     private String id;
-    private String username;
     private String name;
-    private String gender;
+    private Gender gender;
     private String email;
     private String phone;
     private Date dob;
     private String specialty;
     private String level;
+    private String bio;
+    private Integer registrationNumber;
+    private String price;
+    private String imageUrl;
+    private HospitalDTO hospital;
 
     public static UserDoctorDTO from(Doctor doctor) {
         return UserDoctorDTO.builder()
                 .id(doctor.getId())
-                .username(doctor.getUsername())
                 .name(doctor.getName())
+                .gender(doctor.getGender())
                 .email(doctor.getEmail())
                 .phone(doctor.getPhone())
                 .dob(doctor.getDob())
                 .specialty(doctor.getSpecialty())
                 .level(doctor.getLevel())
+                .bio(doctor.getBio())
+                .registrationNumber(doctor.getRegistrationNumber())
+                .price(doctor.getPrice())
+                .hospital(HospitalDTO.from(doctor.getHospital()))
+                .imageUrl(doctor.getImageUrl())
                 .build();
     }
 }

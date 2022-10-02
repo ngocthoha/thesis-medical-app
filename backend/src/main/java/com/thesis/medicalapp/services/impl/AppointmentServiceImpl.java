@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.services.impl;
 
+import com.amazonaws.services.dynamodbv2.xspec.S;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.AppointmentsByDateAndDoctor;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
@@ -83,7 +84,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }).collect(Collectors.toList());
 
         List<Object> obs = new ArrayList<>();
-        for (String t : Time.times) {
+        for (String t : Time.durationTimes) {
             List<AppointmentDTO> aps = appointmentDTOS.stream().filter(a -> a.getTime().equals(t)).collect(Collectors.toList());
             if(!aps.isEmpty()) {
                 obs.add(new AppointmentsByDateAndDoctor(t, aps));
@@ -91,10 +92,10 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
         return obs;
     }
-    @Override
-    public Integer max(Date date) {
-        return appointmentRepository.max(date);
-    }
+//    @Override
+//    public Integer max(Date date) {
+//        return appointmentRepository.max(date);
+//    }
     @Override
     public Appointment findAppointmentById(String id) {
         return appointmentRepository.findAppointmentById(id);
@@ -114,6 +115,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 @AllArgsConstructor
 class NumberAppointment {
     String appointmentId;
-    String status;
+    Status status;
     Date date;
 }

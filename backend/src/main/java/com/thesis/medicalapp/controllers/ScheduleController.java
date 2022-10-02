@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.controllers;
 
+import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Room;
 import com.thesis.medicalapp.payload.ListSchedule;
 import com.thesis.medicalapp.payload.RoomDate;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,50 +27,47 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
     private final RoomRepository roomRepository;
     @PostMapping("/schedules")
-    public ResponseEntity<ApiResponse> saveSchedule(@RequestBody ListSchedule request) {
-        try {
-            List<ScheduleDTO> scheduleDTOS = new ArrayList<>();
-            for (RoomDate d : request.getList()) {
-                ScheduleDTO schedule = new ScheduleDTO();
-                schedule.setDate(d.getDate());
-                schedule.setDoctor(request.getDoctor());
-                Room room = roomRepository.findRoomById(d.getRoom().getId());
-                if (room == null) {
-                    return ResponseEntity.status(HttpStatus.OK).body(
-                            new ApiResponse<>(0, "Can't find room", null)
-                    );
-                }
-                schedule.setRoom(room);
-                schedule.setTimes(d.getTimes());
-                ScheduleDTO scheduleDTO = scheduleService.saveSchedule(schedule);
-                scheduleDTOS.add(scheduleDTO);
-            }
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", scheduleDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
+    public ResponseEntity<Object> saveSchedule(@RequestBody @Valid ListSchedule request) {
+        List<ScheduleDTO> scheduleDTOS = new ArrayList<>();
+        for (RoomDate d : request.getList()) {
+            ScheduleDTO schedule = new ScheduleDTO();
+            schedule.setType(d.getType());
+            schedule.setDate(d.getDate());
+            schedule.setDoctor(request.getDoctor());
+            Room room = roomRepository.findRoomById(d.getRoom().getId());
+            if (room == null) throw new ApiRequestException("Could not find room!");
+            schedule.setRoom(room);
+            schedule.setTimes(d.getTimes());
+            ScheduleDTO scheduleDTO = scheduleService.saveSchedule(schedule);
+            scheduleDTOS.add(scheduleDTO);
         }
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(scheduleDTOS)
+        );
     }
-    @GetMapping("/schedules")
-    public ResponseEntity<List<ScheduleDTO>> getSchedules() {
-        return ResponseEntity.ok().body(scheduleService.getSchedules());
+    @GetMapping("/schedules/all")
+    public ResponseEntity<Object> getSchedules() {
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(scheduleService.getSchedules())
+        );
     }
+
     @GetMapping("/schedules/doctors")
-    public ResponseEntity<ApiResponse> getDoctorsBySchedule(@RequestParam("specialty") String specialty, @RequestParam("date") String date) {
-        try {
-            List<ScheduleDTO> scheduleDTOS = scheduleService.getDoctorsBySchedule(specialty, date);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", scheduleDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> getDoctorsBySchedule(@RequestParam("specialty") String specialty, @RequestParam("date") String date) {
+        List<ScheduleDTO> scheduleDTOS = scheduleService.getDoctorsBySchedule(specialty, date);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(scheduleDTOS)
+        );
     }
+
+    @GetMapping("/schedules")
+    public ResponseEntity<Object> getScheduleByDateAndDoctor(@RequestParam("date") String date, @RequestParam("doctorId") String doctorId) {
+        List<ScheduleDTO> scheduleDTOS = scheduleService.getSchedulesByDateAndDoctor(date, doctorId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(scheduleDTOS)
+        );
+    }
+
     @PatchMapping("/schedules")
     public ResponseEntity<Integer> updateSchedule(@RequestBody ScheduleDTO scheduleDTO) {
         int result = scheduleService.updateSchedule(scheduleDTO);
@@ -81,16 +80,10 @@ public class ScheduleController {
     }
     @GetMapping("/doctor/schedules")
     public ResponseEntity<ApiResponse> getSchedulesByDoctor() {
-        try {
-            List<ScheduleDTO> scheduleDTOS = scheduleService.getSchedulesByDoctor();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", scheduleDTOS)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        List<ScheduleDTO> scheduleDTOS = scheduleService.getSchedulesByDoctor();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(scheduleDTOS)
+        );
     }
     @GetMapping("/doctor/schedules/date")
     public ResponseEntity<ApiResponse> getAllByDateIsBetweenAndDoctor(@RequestParam("dateStart") String dateStart, @RequestParam("dateEnd") String dateEnd) {
@@ -108,7 +101,7 @@ public class ScheduleController {
         }
         List<ScheduleDTO> scheduleDTOS = scheduleService.getAllByDateIsBetweenAndDoctor(DateStart, DateEnd);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(1, "Success", scheduleDTOS)
+                new ApiResponse<>(scheduleDTOS)
         );
     }
 }

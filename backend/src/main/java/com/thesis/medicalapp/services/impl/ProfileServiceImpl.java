@@ -54,7 +54,9 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setGuardianIdentityCard(profileDTO.getGuardianIdentityCard());
         profile.setRelationship(profileDTO.getRelationship());
         profile.setRelationshipWithPatient(profileDTO.getRelationshipWithPatient());
+        profile.setImageUrl(profileDTO.getImageUrl());
         Optional<User> userOp = userRepository.findByUsername(Global.user.getUsername());
+        if (!userOp.isPresent()) throw new ApiRequestException("Can not found user!");
         User user = userOp.get();
         profile.setUser(user);
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
@@ -93,6 +95,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public void updateProfile(ProfileDTO profileDTO) {
         Profile profile = profileRepository.findById(profileDTO.getId());
+        if (profile == null) throw new ApiRequestException("Can not found profile!");
         profile.setFirstName(profileDTO.getFirstName());
         profile.setLastName(profileDTO.getLastName());
         profile.setJob(profileDTO.getJob());
@@ -101,12 +104,20 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGender(profileDTO.getGender());
-        profile.setAddress(profileDTO.getAddress());
+        Address address = addressRepository.findById(profile.getAddress().getId()).get();
+        if (address == null) throw new ApiRequestException("Can not found address!");
+        address.setCountry(profileDTO.getAddress().getCountry());
+        address.setProvince(profileDTO.getAddress().getProvince());
+        address.setDistrict(profileDTO.getAddress().getDistrict());
+        address.setWard(profileDTO.getAddress().getWard());
+        address.setAddress(profileDTO.getAddress().getAddress());
+        addressRepository.save(address);
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
         profile.setGuardian(profileDTO.getGuardian());
         profile.setRelationship(profileDTO.getRelationship());
         profile.setRelationshipWithPatient(profileDTO.getRelationshipWithPatient());
+        profile.setImageUrl(profileDTO.getImageUrl());
         profileRepository.save(profile);
     }
     @Override

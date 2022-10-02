@@ -18,29 +18,25 @@ import java.util.List;
 public class DoctorController {
     private final DoctorService doctorService;
     @GetMapping("/doctors/all")
-    public ResponseEntity<ApiResponse> getDoctors() {
-        try {
-            List<UserDoctorDTO> doctors = doctorService.getDoctors();
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", doctors)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> getDoctors() {
+        List<UserDoctorDTO> doctors = doctorService.getDoctors();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", doctors)
+        );
     }
     @GetMapping("/doctors/specialty")
-    public ResponseEntity<ApiResponse> getDoctorsBySpecialty(@RequestParam String specialty) {
-        try {
-            List<UserDoctorDTO> doctors = doctorService.getDoctorsBySpecialty(specialty);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", doctors)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+    public ResponseEntity<Object> getDoctorsBySpecialty(@RequestParam String specialty) {
+        List<UserDoctorDTO> doctors = doctorService.getDoctorsBySpecialty(specialty);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", doctors)
+        );
+    }
+
+    @GetMapping("/doctors/hospital")
+    public ResponseEntity<Object> getDoctorsByHospital(@RequestParam String hospitalId) {
+        List<UserDoctorDTO> doctors = doctorService.getDoctorsByHospital(hospitalId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Success", doctors)
+        );
     }
 }

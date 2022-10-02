@@ -28,4 +28,6 @@ public class Hospital extends AuditLog {
     private String mapImageUrl;
     private String hospitalImageUrl;
     private Boolean isActive;
+    @OneToOne
+    private HospitalHour hospitalHour;
 }

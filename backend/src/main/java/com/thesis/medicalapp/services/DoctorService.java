@@ -10,4 +10,5 @@ public interface DoctorService {
     List<UserDoctorDTO> getDoctors();
     Doctor findDoctorById(String id);
     List<UserDoctorDTO> getDoctorsBySpecialty(String specialty);
+    List<UserDoctorDTO> getDoctorsByHospital(String hospitalId);
 }

@@ -1,13 +1,14 @@
 package com.thesis.medicalapp.pojo;
 
-import com.thesis.medicalapp.models.Appointment;
-import com.thesis.medicalapp.models.File;
-import com.thesis.medicalapp.models.Room;
+import com.thesis.medicalapp.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.Date;
 
@@ -17,21 +18,30 @@ import java.util.Date;
 @AllArgsConstructor
 public class AppointmentDTO {
     private String id;
-    private Integer stt;
+    private Long code;
+    @NotNull
     private Room room;
+    @NotNull
     private ProfileDTO profile;
+    @NotNull
     private DoctorDTO doctor;
+    @NotNull
     private Date date;
+    @NotEmpty
+    @NotBlank
     private String time;
+    @NotEmpty
+    @NotBlank
     private String symptom;
-    private Collection<File> files;
-    private String status;
-    private Boolean isOnline;
+    private Collection<MedicalFile> files;
+    private Status status;
+    @NotNull
+    private ScheduleType type;
 
     public static AppointmentDTO from(Appointment appointment) {
         return AppointmentDTO.builder()
                 .id(appointment.getId())
-                .stt(appointment.getStt())
+                .code(appointment.getCode())
                 .room(appointment.getRoom())
                 .profile(ProfileDTO.from(appointment.getProfile()))
                 .doctor(DoctorDTO.from(appointment.getDoctor()))
@@ -40,7 +50,7 @@ public class AppointmentDTO {
                 .symptom(appointment.getSymptom())
                 .files(appointment.getFiles())
                 .status(appointment.getStatus())
-                .isOnline(appointment.getIsOnline())
+                .type(appointment.getType())
                 .build();
     }
 }
