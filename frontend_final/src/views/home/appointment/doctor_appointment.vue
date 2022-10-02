@@ -6,7 +6,7 @@
       min-height="316px"
       color="#EEF2F6"
     >
-      <p class="font-weight-bold mt-12" style="color:#537DA5; font-size:40px">
+      <p class="font-weight-bold mt-12" style="color: #537da5; font-size: 40px">
         Tìm kiếm bác sĩ theo tên
       </p>
       <v-card width="640px" color="#EEF2F6" elevation="0">
@@ -64,101 +64,154 @@
       color="#FCFCFD"
       class="py-12 px-16 d-flex justify-center"
     >
-      <!-- <v-card width="100%" height="100%"> </v-card> -->
       <v-card
-        class="mx-4 pa-8 d-flex flex-wrap justify-center justify-space-between align-space-around"
-        width="1280"
+        class="mx-4 pa-8 d-flex flex-wrap justify-center"
+        max-width="1280"
         elevation="0"
         color="#FCFCFD"
       >
-        <v-card
-          v-for="n in 8"
-          :key="n"
-          class="mb-6 d-flex flex-column justify-center align-center"
-          width="596"
-          height="216"
-        >
-          <v-card
-            width="548"
-            height="84"
-            elevation="0"
-            class="d-flex flex-column"
-          >
+        <!-- list doctor -->
+        <v-row justify="center">
+          <v-col v-for="n in 8" :key="n" md="6">
+            <!-- in -->
             <v-card
-              width="100%"
-              class="d-flex flex-row justify-space-between"
-              elevation="0"
+              class="d-flex flex-column justify-center align-center"
+              width="596"
+              height="216"
             >
-              <div class="d-flex flex-row">
-                <v-avatar size="64" class="align-self-start">
-                  <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
-                </v-avatar>
-                <v-card class="d-flex flex-column ml-3" elevation="0">
-                  <p class="text-body-2 mb-2 font-weight-bold">Đỗ Hồng Việt</p>
-                  <p class="text-body-2 mb-3">Bệnh viện hữu nghị Việt Đức</p>
-                  <v-card class="text-body-2" color="#D0D5DD" outlined>
+              <v-card
+                width="548"
+                height="84"
+                elevation="0"
+                class="d-flex flex-column"
+              >
+                <v-card
+                  width="100%"
+                  class="d-flex flex-row justify-space-between"
+                  elevation="0"
+                >
+                  <div class="d-flex flex-row">
+                    <v-avatar size="64" class="align-self-start">
+                      <v-img
+                        src="@/assets/img/user/profile/avatar1.svg"
+                      ></v-img>
+                    </v-avatar>
+                    <v-card class="d-flex flex-column ml-3" elevation="0">
+                      <p class="text-body-2 mb-2 font-weight-bold">
+                        Đỗ Hồng Việt
+                      </p>
+                      <p class="text-body-2 mb-3">
+                        Bệnh viện hữu nghị Việt Đức
+                      </p>
+                      <v-card class="text-body-2" color="#D0D5DD" outlined>
+                        <v-card
+                          elevation="0"
+                          color="#F9FAFB"
+                          class="d-flex justify-center"
+                        >
+                          Chuyên khoa TT Nam học</v-card
+                        >
+                      </v-card>
+                    </v-card>
+                  </div>
+                  <div class="d-flex flex-row">
                     <v-card
+                      class="d-flex flex-row"
+                      height="24"
+                      width="56"
+                      color="#EEF2F6"
                       elevation="0"
+                    >
+                      <v-icon color="#537DA5" class="align-self-start"
+                        >mdi-calendar-month-outline</v-icon
+                      >
+                      <p style="color: #537da5">146</p>
+                    </v-card>
+                    <v-card
+                      class="d-flex flex-row ml-1"
+                      height="24"
+                      width="56"
                       color="#F9FAFB"
-                      class="d-flex justify-center"
+                      elevation="0"
                     >
-                      Chuyên khoa TT Nam học</v-card
+                      <v-icon color="#FFC107" class="align-self-start"
+                        >mdi-star</v-icon
+                      >
+                      <p style="color: #537da5">146</p>
+                    </v-card>
+                  </div>
+                </v-card>
+              </v-card>
+              <!-- price and booking -->
+              <v-card class="mt-2" width="548" height="40" elevation="0">
+                <v-divider
+                  class="mt-1"
+                  style="border-color: #f2f4f7 !important"
+                ></v-divider>
+                <div
+                  class="d-flex flex-row mt-4 align-center justify-space-between"
+                >
+                  <div class="d-flex flex-row align-center">
+                    <p>Giá khám:</p>
+                    <p
+                      class="ml-3 font-weight-bold"
+                      style="color: #537da5; font-size: 20px"
                     >
-                  </v-card>
-                </v-card>
-              </div>
-              <div class="d-flex flex-row">
-                <v-card
-                  class="d-flex flex-row"
-                  height="24"
-                  width="56"
-                  color="#EEF2F6"
-                  elevation="0"
-                >
-                  <v-icon color="#537DA5" class="align-self-start"
-                    >mdi-calendar-month-outline</v-icon
+                      100000VND
+                    </p>
+                  </div>
+                  <v-btn
+                    width="110"
+                    height="44"
+                    class="white--text btn text-body-2"
+                    elevation="0"
+                    color="#537DA5"
+                    @click="moveToInfo"
                   >
-                  <p style="color: #537DA5">146</p>
-                </v-card>
-                <v-card
-                  class="d-flex flex-row ml-1"
-                  height="24"
-                  width="56"
-                  color="#F9FAFB"
-                  elevation="0"
-                >
-                  <v-icon color="#FFC107" class="align-self-start"
-                    >mdi-star</v-icon
-                  >
-                  <p style="color: #537DA5">146</p>
-                </v-card>
-              </div>
-            </v-card>
-          </v-card>
+                    Đặt khám
+                  </v-btn>
+                </div>
+              </v-card>
+            </v-card></v-col
+          >
+        </v-row>
 
-          <v-card class="mt-2" width="548" height="24" elevation="0">
-            <v-divider
-              class="mt-1"
-              style="border-color: #f2f4f7 !important"
-            ></v-divider>
-            <div
-              class="d-flex flex-row mt-4 align-center justify-space-between"
-            >
-              <div class="d-flex flex-row">
-                <p>Giá khám:</p>
-                <p>$70</p>
-              </div>
-              <v-btn width="110" height="44" class="">
-                Đặt khám
-              </v-btn>
-            </div>
-          </v-card>
+        <!-- pagination -->
+        <v-card
+          width="100%"
+          elevation="0"
+          class="d-flex justify-center justify-lg-end mt-10"
+        >
+          <div class="text-center">
+            <v-pagination
+              color="#537DA5"
+              v-model="page"
+              :length="15"
+              :total-visible="7"
+            ></v-pagination>
+          </div>
         </v-card>
       </v-card>
     </v-card>
   </div>
 </template>
 
+<script>
+export default {
+  setup() {},
+  data() {
+    return {
+      page: 2,
+    };
+  },
+
+  methods: {
+    moveToInfo() {
+      this.$router.push({ name: "Thông tin đặt lịch bác sĩ" });
+    },
+  },
+};
+</script>
 <style scoped>
 .btn {
   text-transform: none;

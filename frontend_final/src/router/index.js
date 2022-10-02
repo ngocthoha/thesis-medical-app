@@ -20,7 +20,16 @@ const router = new Router({
     //Home Pages
     layout("Home", [
       route("Trang chủ", { default: "home/home" }, "/"),
-      route("Đặt lịch bác sĩ", { default: "home/appointment/doctor_appointment" }, "/doctor-appointment"),
+      route(
+        "Đặt lịch bác sĩ",
+        { default: "home/appointment/doctor_appointment" },
+        "/doctor-appointment"
+      ),
+      route(
+        "Thông tin đặt lịch bác sĩ",
+        { default: "home/appointment/doctor_appointment_detail" },
+        "/doctor-appointment-detail"
+      ),
       route("Dịch vụ", { default: "home/Service" }, "/service"),
       route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
       route(
@@ -62,7 +71,7 @@ const router = new Router({
         "Nhi khoa",
         { default: "home/Specialist/Pediatrics" },
         "/specialist-Pediatrics"
-      )
+      ),
     ]),
 
     //DashBoard Pages
@@ -138,7 +147,7 @@ const router = new Router({
         { default: "admin/AccountAdmin" },
         "/admin/account-admin"
       ),
-      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin")
+      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin"),
     ]),
 
     //Auth Pages
@@ -154,25 +163,25 @@ const router = new Router({
             route(
               "Hồ sơ cá nhân",
               {
-                default: "user/profile"
+                default: "user/profile",
               },
               "profile"
             ),
             route(
               "Lịch sử Đặt khám",
               {
-                default: "user/appointmentHistory"
+                default: "user/appointmentHistory",
               },
               "appointment-history"
-            )
+            ),
           ],
           "user"
-        )
+        ),
       ],
       "/home"
     ),
 
-    route("test", { default: "test/test" }, "/test")
+    route("test", { default: "test/test" }, "/test"),
     // {
     //   path: "/home",
     //   component: () =>
@@ -203,7 +212,7 @@ const router = new Router({
     //     }
     //   ]
     // }
-  ]
+  ],
 });
 
 router.beforeEach((to, from, next) => {
