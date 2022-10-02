@@ -39,5 +39,9 @@ public class Appointment extends AuditLog {
     @Fetch(value= FetchMode.SELECT)
     private Collection<MedicalFile> files;
     private Status status;
+    @Column(nullable = false)
     private ScheduleType type;
+    @Column(nullable = false)
+    private Boolean isPaid = false;
+    private String fee;
 }

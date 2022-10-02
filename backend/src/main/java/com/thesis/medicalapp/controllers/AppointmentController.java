@@ -32,7 +32,6 @@ public class AppointmentController {
     private final AppointmentService appointmentService;
     private final ProfileService profileService;
     private final DoctorService doctorService;
-    private final FileService fileService;
     private final RoomRepository roomRepository;
     private final MedicalFileRepository medicalFileRepository;
 
@@ -70,80 +69,76 @@ public class AppointmentController {
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         Long code = sequenceGenerator.nextId();
         appointment.setCode(code);
+        appointment.setFee(appointmentRequest.getFee());
+        appointment.setIsPaid(appointmentRequest.getIsPaid());
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(appointmentDTO)
         );
     }
+
     @GetMapping("/appointments")
-    public ResponseEntity<ApiResponse> getAppointmentByProfileId(@RequestParam("profileId") String profileId) {
+    public ResponseEntity<Object> getAppointmentByProfileId(@RequestParam("profileId") String profileId) {
         List<AppointmentDTO> appointmentDTOS = appointmentService.getAppointmentByProfileId(profileId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(appointmentDTOS)
         );
     }
+
     @PatchMapping("/appointments")
-    public ResponseEntity<ApiResponse> updateAppointment(
-            @RequestParam("id") String id,
-            @RequestParam(name = "room", required = false) Room room,
-            @RequestParam("profileId") String profileId,
-            @RequestParam("doctorId") String doctorId,
-            @RequestParam("date") Date date,
-            @RequestParam("time") String time,
-            @RequestParam(name = "symptom", required = false) String symptom,
-            @RequestParam(name = "files", required = false) MultipartFile[] files,
-            @RequestParam(name = "deleteFile", required = false) String fileId,
-            @RequestParam(name = "status", required = false) Status status
-    ) {
-        Appointment appointment = appointmentService.findAppointmentById(id);
-        Profile profile = profileService.findProfileById(profileId);
-        Doctor doctor = doctorService.findDoctorById(doctorId);
-        appointment.setRoom(room);
-        appointment.setDate(date);
-        appointment.setTime(time);
-        appointment.setProfile(profile);
-        appointment.setDoctor(doctor);
-        appointment.setSymptom(symptom);
-        appointment.setStatus(status);
-//        if (null != files) {
-//            Arrays.asList(files).stream().forEach(file -> {
-//                try {
-//                    File File = fileService.store(file);
-//                    appointment.getFiles().add(File);
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            });
-//        }
-//        if (null != fileId) {
-//            fileService.removeFile(fileId);
-//        }
+    public ResponseEntity<Object> partialUpdateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
+        Appointment appointment = appointmentService.findAppointmentById(appointmentRequest.getId());
+        if (appointment == null) throw new ApiRequestException("Could not find appointment!");
+        if (appointmentRequest.getProfileId() != null) {
+            Profile profile = profileService.findProfileById(appointmentRequest.getProfileId());
+            if (profile == null) throw new ApiRequestException("Could not find profile!");
+            appointment.setProfile(profile);
+        }
+        if (appointmentRequest.getDoctorId() != null) {
+            Doctor doctor = doctorService.findDoctorById(appointmentRequest.getDoctorId());
+            if (doctor == null) throw new ApiRequestException("Could not find doctor!");
+            appointment.setDoctor(doctor);
+        }
+        if (appointmentRequest.getRoomId() != null) {
+            Room room = roomRepository.findRoomById(appointmentRequest.getRoomId());
+            if (room == null) throw new ApiRequestException("Could not find room!");
+            appointment.setRoom(room);
+        }
+        if (appointmentRequest.getDate() != null) {
+            Date dateFormat = new Date();
+            try {
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentRequest.getDate());
+            } catch (Exception e) {
+                throw new ApiRequestException("Invalid date!");
+            }
+            appointment.setDate(dateFormat);
+        }
+        if (appointmentRequest.getTime() != null)  appointment.setTime(appointmentRequest.getTime());
+        if (appointmentRequest.getSymptom() != null)  appointment.setSymptom(appointmentRequest.getSymptom());
+        if (appointmentRequest.getFee() != null)  appointment.setFee(appointmentRequest.getFee());
+        if (appointmentRequest.getIsPaid() != null)  appointment.setIsPaid(appointmentRequest.getIsPaid());
         appointmentService.updateAppointment(appointment);
         return ResponseEntity.ok(
                 new ApiResponse(null)
         );
     }
+
     @DeleteMapping("/appointments/{id}")
     public ResponseEntity<ApiResponse> removeAppointment(@PathVariable String id) {
         int result = appointmentService.removeAppointment(id);
         return ResponseEntity.ok(
-                new ApiResponse(result, "", null)
+                new ApiResponse(null)
         );
     }
 
     @GetMapping("/appointments/doctor")
     public ResponseEntity<ApiResponse> getAppointmentsByDateAndDoctor(@RequestParam String date) {
-        try {
-            List<Object> list = appointmentService.getAppointmentsByDateAndDoctor(date);
-            return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", list)
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
-            );
-        }
+        List<Object> list = appointmentService.getAppointmentsByDateAndDoctor(date);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(list)
+        );
     }
+
     @GetMapping("/doctor/appointments/schedule")
     public ResponseEntity<ApiResponse> getAllByDateIsBetweenAndDoctor(@RequestParam("dateStart") String dateStart, @RequestParam("dateEnd") String dateEnd) {
         Date DateStart = new Date();
@@ -160,7 +155,7 @@ public class AppointmentController {
         }
         List<?> appointment = appointmentService.getAllByDateIsBetweenAndDoctor(DateStart, DateEnd);
         return ResponseEntity.ok(
-                new ApiResponse(1, "", appointment)
+                new ApiResponse(appointment)
         );
     }
 }

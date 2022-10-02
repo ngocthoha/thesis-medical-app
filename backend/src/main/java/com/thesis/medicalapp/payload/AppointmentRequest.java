@@ -16,23 +16,28 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AppointmentRequest {
+    private String id;
     @NotEmpty
     @NotBlank
     private String profileId;
     @NotEmpty
     @NotBlank
     private String doctorId;
-    @NotNull
+    @NotEmpty
     @NotBlank
     private String date;
     @NotEmpty
     @NotBlank
     private String roomId;
     private String symptom;
-    @NotNull
+    @NotEmpty
     @NotBlank
     private String time;
     @NotNull
     private ScheduleType type;
     private List<MedicalFile> files;
+    @NotEmpty
+    @NotBlank
+    private String fee;
+    private Boolean isPaid;
 }
