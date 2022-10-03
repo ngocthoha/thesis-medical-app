@@ -3,7 +3,13 @@
     <div
       class="d-flex flex-column flex-md-row mx-8 justify-center align-center"
     >
-      <v-card width="800" min-height="500" elevation="0" color="#FCFCFD">
+      <v-card
+        width="800"
+        min-height="500"
+        elevation="0"
+        color="#FCFCFD"
+        class="align-self-start"
+      >
         <!-- doctor detail -->
         <v-card class="d-flex flex-row pa-6" width="100%">
           <!-- avatar -->
@@ -166,7 +172,7 @@
           </v-card>
         </v-card>
       </v-card>
-      <v-card class="ml-8 align-self-start" width="448" height="500">
+      <v-card class="ml-8 align-self-start" width="448">
         <!-- header -->
         <v-card class="pa-6 rounded-b-0 d-flex flex-row" color="#537DA5">
           <v-card
@@ -236,9 +242,75 @@
             </v-card>
           </v-card>
         </v-card>
-
+        <v-divider></v-divider>
         <!-- date picker -->
-        <v-card></v-card>
+        <v-card class="d-flex flex-row justify-center pa-6" elevation="0">
+          <p class="mb-0 d-flex align-center font-weight-medium">
+            Ngày 21 tháng 8 năm 2022
+          </p>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>mdi-calendar-month-outline</v-icon>
+          </v-btn>
+        </v-card>
+        <v-divider
+          class="mt-1"
+          style="border-color: #f2f4f7 !important"
+        ></v-divider>
+        <v-card elevation="0">
+          <v-tabs
+            color="#537DA5"
+            slider-size="3"
+            v-model="calander_tab"
+            fixed-tabs
+            height="60"
+          >
+            <v-tab
+              style="text-transform: none"
+              class="font-weight-medium text-body-1"
+              :key="'online'"
+              >Trực truyến</v-tab
+            >
+            <v-tab
+              style="text-transform: none"
+              class="font-weight-medium text-body-1"
+              :key="'offline'"
+              >Trực tiếp tại viện</v-tab
+            >
+          </v-tabs>
+          <v-tabs-items v-model="calander_tab">
+            <!-- online tab -->
+            <v-tab-item :key="'online'">
+              <v-card class="pa-6 d-flex flex-column" elevation="0">
+                <p class="font-weight-medium">Sáng</p>
+                <div class="d-flex flex-wrap justify-start">
+                  <v-btn
+                    outlined
+                    color="#537DA5"
+                    v-for="n in 8"
+                    :key="n"
+                    class="mb-5 mx-3"
+                  >
+                    <p class="ma-0 font-weight-medium">
+                      09:00 - 09:30
+                    </p>
+                  </v-btn>
+
+                  <!-- <v-btn-toggle class="font-weight-medium">
+                    <v-btn outlined color="#537DA5">09:00 - 09:30</v-btn>
+                    <v-btn outlined color="#537DA5">09:00 - 09:30</v-btn>
+                    <v-btn outlined color="#537DA5">09:00 - 09:30</v-btn>
+                  </v-btn-toggle> -->
+                </div>
+              </v-card>
+            </v-tab-item>
+
+            <!-- offline tab -->
+            <v-tab-item :key="'offline'">
+              <v-card class="pa-6" elevation="0"> offline </v-card>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-card>
       </v-card>
     </div>
   </v-card>
@@ -250,8 +322,9 @@ export default {
   data() {
     return {
       tab: null,
+      calander_tab: null
     };
-  },
+  }
 };
 </script>
 
