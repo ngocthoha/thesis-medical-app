@@ -353,7 +353,7 @@
 
             <!-- offline tab -->
             <v-tab-item :key="'offline'">
-              <v-card class="pa-6" elevation="0">
+              <v-card class="pa-6 d-flex flex-column" elevation="0">
                 <!-- morning -->
                 <p class="font-weight-medium">Sáng</p>
                 <div class="d-flex flex-wrap justify-start">
@@ -409,8 +409,8 @@
                       </v-btn>
                     </v-item>
                   </v-item-group>
+                  <!-- booking -->
                 </div>
-                <!-- booking -->
                 <v-btn elevation="0" color="#D4DFE9" class="btn"
                   ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
                   <p
@@ -437,14 +437,9 @@ export default {
       tab: null,
       calander_tab: null,
       selected: null,
-      time: [
-        "09:00 - 09:30",
-        "10:00 - 10:30",
-        "11:00 - 11:30",
-        "12:00 - 12:30",
-      ],
+      time: ["09:00 - 09:30", "10:00 - 10:30", "11:00 - 11:30", "12:00 - 12:30"]
     };
-  },
+  }
 };
 </script>
 

@@ -30,6 +30,11 @@ const router = new Router({
         { default: "home/appointment/doctor_appointment_detail" },
         "/doctor-appointment-detail"
       ),
+      route(
+        "Điền thông tin đặt lịch bác sĩ",
+        { default: "home/appointment/doctor_appointment_fill_info" },
+        "/doctor-appointment-fill-info"
+      ),
       route("Dịch vụ", { default: "home/Service" }, "/service"),
       route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
       route(
