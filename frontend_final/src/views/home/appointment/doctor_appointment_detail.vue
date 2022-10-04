@@ -1,5 +1,5 @@
 <template>
-  <v-card color="#FCFCFD" width="100%" min height="1000" class="pa-12">
+  <v-card color="#FCFCFD" width="100%" class="pa-12">
     <div
       class="d-flex flex-column flex-md-row mx-8 justify-center align-center"
     >
@@ -139,7 +139,7 @@
                     </v-card>
                     <v-card class="d-flex flex-row" width="45%" elevation="0">
                       <v-icon class="align-self-start" size="24" color="#537da5"
-                        >mdi-map-marker-radius-outline</v-icon
+                        >mdi-clock-time-nine-outline</v-icon
                       >
                       <v-card class="ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-medium">
@@ -339,7 +339,11 @@
                   </v-item-group>
                 </div>
                 <!-- booking -->
-                <v-btn elevation="0" color="#D4DFE9" class="btn"
+                <v-btn
+                  elevation="0"
+                  color="#D4DFE9"
+                  class="btn"
+                  @click="submit_select_time"
                   ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
                   <p
                     class="ma-0 font-weight-bold text-body-1"
@@ -411,7 +415,11 @@
                   </v-item-group>
                   <!-- booking -->
                 </div>
-                <v-btn elevation="0" color="#D4DFE9" class="btn"
+                <v-btn
+                  elevation="0"
+                  color="#D4DFE9"
+                  class="btn"
+                  @click="submit_select_time"
                   ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
                   <p
                     class="ma-0 font-weight-bold text-body-1"
@@ -437,9 +445,19 @@ export default {
       tab: null,
       calander_tab: null,
       selected: null,
-      time: ["09:00 - 09:30", "10:00 - 10:30", "11:00 - 11:30", "12:00 - 12:30"]
+      time: [
+        "09:00 - 09:30",
+        "10:00 - 10:30",
+        "11:00 - 11:30",
+        "12:00 - 12:30",
+      ],
     };
-  }
+  },
+  methods: {
+    submit_select_time() {
+      this.$router.push({ name: "Điền thông tin đặt lịch bác sĩ" });
+    },
+  },
 };
 </script>
 
