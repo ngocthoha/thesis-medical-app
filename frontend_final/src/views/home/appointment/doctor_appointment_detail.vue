@@ -282,32 +282,145 @@
             <!-- online tab -->
             <v-tab-item :key="'online'">
               <v-card class="pa-6 d-flex flex-column" elevation="0">
+                <!-- morning -->
                 <p class="font-weight-medium">Sáng</p>
                 <div class="d-flex flex-wrap justify-start">
-                  <v-btn
-                    outlined
-                    color="#537DA5"
-                    v-for="n in 8"
-                    :key="n"
-                    class="mb-5 mx-3"
-                  >
-                    <p class="ma-0 font-weight-medium">
-                      09:00 - 09:30
-                    </p>
-                  </v-btn>
-
-                  <!-- <v-btn-toggle class="font-weight-medium">
-                    <v-btn outlined color="#537DA5">09:00 - 09:30</v-btn>
-                    <v-btn outlined color="#537DA5">09:00 - 09:30</v-btn>
-                    <v-btn outlined color="#537DA5">09:00 - 09:30</v-btn>
-                  </v-btn-toggle> -->
+                  <v-item-group v-model="selected">
+                    <v-item
+                      v-for="(item, idx) in time"
+                      :key="idx"
+                      v-slot="{ active, toggle }"
+                      :value="item"
+                    >
+                      <v-btn
+                        :outlined="active ? false : true"
+                        color="#537DA5"
+                        @click="toggle"
+                        class="mb-5 mx-3"
+                        active-class="white--text"
+                        elevation="0"
+                      >
+                        <p
+                          class="ma-0 font-weight-medium"
+                          :style="active ? 'color:white' : ''"
+                        >
+                          {{ item }}
+                        </p>
+                      </v-btn>
+                    </v-item>
+                  </v-item-group>
                 </div>
+                <!-- afternoon -->
+                <p class="font-weight-medium">Chiều</p>
+                <div class="d-flex flex-wrap justify-start">
+                  <v-item-group v-model="selected">
+                    <v-item
+                      v-for="(item, idx) in time"
+                      :key="idx"
+                      v-slot="{ active, toggle }"
+                      :value="item"
+                    >
+                      <v-btn
+                        :outlined="active ? false : true"
+                        color="#537DA5"
+                        @click="toggle"
+                        class="mb-5 mx-3"
+                        active-class="white--text"
+                        elevation="0"
+                      >
+                        <p
+                          class="ma-0 font-weight-medium"
+                          :style="active ? 'color:white' : ''"
+                        >
+                          {{ item }}
+                        </p>
+                      </v-btn>
+                    </v-item>
+                  </v-item-group>
+                </div>
+                <!-- booking -->
+                <v-btn elevation="0" color="#D4DFE9" class="btn"
+                  ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
+                  <p
+                    class="ma-0 font-weight-bold text-body-1"
+                    style="color: #537da5"
+                  >
+                    Đặt lịch
+                  </p>
+                </v-btn>
               </v-card>
             </v-tab-item>
 
             <!-- offline tab -->
             <v-tab-item :key="'offline'">
-              <v-card class="pa-6" elevation="0"> offline </v-card>
+              <v-card class="pa-6" elevation="0">
+                <!-- morning -->
+                <p class="font-weight-medium">Sáng</p>
+                <div class="d-flex flex-wrap justify-start">
+                  <v-item-group v-model="selected">
+                    <v-item
+                      v-for="(item, idx) in time"
+                      :key="idx"
+                      v-slot="{ active, toggle }"
+                      :value="item"
+                    >
+                      <v-btn
+                        :outlined="active ? false : true"
+                        color="#537DA5"
+                        @click="toggle"
+                        class="mb-5 mx-3"
+                        active-class="white--text"
+                        elevation="0"
+                      >
+                        <p
+                          class="ma-0 font-weight-medium"
+                          :style="active ? 'color:white' : ''"
+                        >
+                          {{ item }}
+                        </p>
+                      </v-btn>
+                    </v-item>
+                  </v-item-group>
+                </div>
+                <!-- afternoon -->
+                <p class="font-weight-medium">Chiều</p>
+                <div class="d-flex flex-wrap justify-start">
+                  <v-item-group v-model="selected">
+                    <v-item
+                      v-for="(item, idx) in time"
+                      :key="idx"
+                      v-slot="{ active, toggle }"
+                      :value="item"
+                    >
+                      <v-btn
+                        :outlined="active ? false : true"
+                        color="#537DA5"
+                        @click="toggle"
+                        class="mb-5 mx-3"
+                        active-class="white--text"
+                        elevation="0"
+                      >
+                        <p
+                          class="ma-0 font-weight-medium"
+                          :style="active ? 'color:white' : ''"
+                        >
+                          {{ item }}
+                        </p>
+                      </v-btn>
+                    </v-item>
+                  </v-item-group>
+                </div>
+                <!-- booking -->
+                <v-btn elevation="0" color="#D4DFE9" class="btn"
+                  ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
+                  <p
+                    class="ma-0 font-weight-bold text-body-1"
+                    style="color: #537da5"
+                  >
+                    Đặt lịch
+                  </p>
+                </v-btn>
+              </v-card>
             </v-tab-item>
           </v-tabs-items>
         </v-card>
@@ -322,9 +435,16 @@ export default {
   data() {
     return {
       tab: null,
-      calander_tab: null
+      calander_tab: null,
+      selected: null,
+      time: [
+        "09:00 - 09:30",
+        "10:00 - 10:30",
+        "11:00 - 11:30",
+        "12:00 - 12:30",
+      ],
     };
-  }
+  },
 };
 </script>
 
