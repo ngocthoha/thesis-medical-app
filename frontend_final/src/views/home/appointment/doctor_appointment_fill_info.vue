@@ -115,6 +115,7 @@
             <p class="font-weight-medium text-body-1">Triệu chứng</p>
             <v-card outlined class="mb-6">
               <v-textarea
+                spellcheck="false"
                 solo
                 height="148"
                 flat
@@ -123,11 +124,14 @@
               >
               </v-textarea>
             </v-card>
-            <!-- test results -->
-            <div class="d-flex flex-row justify-space-between">
-              <p class="font-weight-medium text-body-1">Kết quả xét nghiệm</p>
+            <!-- test results type -->
+            <div class="d-flex flex-row justify-space-between align-center">
+              <p class="font-weight-medium text-body-1 ma-0">
+                Kết quả xét nghiệm
+              </p>
               <v-card width="221" outlined>
                 <v-combobox
+                  spellcheck="false"
                   v-model="test_select"
                   :items="test_type"
                   solo
@@ -138,6 +142,116 @@
                   placeholder="Chọn loại xét nghiệm"
                   hide-details=""
                 ></v-combobox>
+              </v-card>
+            </div>
+            <!-- add test result  -->
+            <v-card outlined class="my-5 pa-2 d-flex flex-row">
+              <v-file-input
+                placeholder="Vui lòng chọn hình ảnh"
+                solo
+                dense
+                prepend-inner-icon="mdi-link-variant"
+                clear-icon=""
+                prepend-icon=""
+                hide-details=""
+                flat
+              ></v-file-input>
+              <v-btn
+                class="btn white--text font-weight-medium text-body-2"
+                color="#537DA5"
+                elevation="0"
+                >Tải lên</v-btn
+              >
+            </v-card>
+
+            <!-- list add test result -->
+            <div
+              class="d-flex flex-wrap justify-space-between align-center mb-5"
+              v-for="(image, index) in test_add_list"
+              :key="index"
+            >
+              <p
+                class="font-weight-medium text-body-1 ma-0"
+                style="color: #667085"
+              >
+                {{ image.type }}
+              </p>
+              <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
+                <v-icon class="mr-2">mdi-image-outline</v-icon>
+                <v-card min-width="50%" elevation="0">
+                  <p class="ma-0" style="">
+                    {{ image.file_name }}
+                  </p>
+                </v-card>
+
+                <v-spacer></v-spacer>
+                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
+              </v-card>
+            </div>
+            <!-- Image analysation type -->
+            <div
+              class="d-flex flex-row justify-space-between align-center mt-5"
+            >
+              <p class="font-weight-medium text-body-1 ma-0">
+                Chuẩn đoán hình ảnh
+              </p>
+              <v-card width="221" outlined>
+                <v-combobox
+                  spellcheck="false"
+                  v-model="image_select"
+                  :items="image_analyst_type"
+                  solo
+                  dense
+                  flat
+                  append-icon="mdi-chevron-down"
+                  item-color="light-blue darken-4"
+                  placeholder="Chọn loại hình ảnh"
+                  hide-details=""
+                ></v-combobox>
+              </v-card>
+            </div>
+            <!-- add test result  -->
+            <v-card outlined class="my-5 pa-2 d-flex flex-row">
+              <v-file-input
+                placeholder="Vui lòng chọn hình ảnh"
+                solo
+                dense
+                prepend-inner-icon="mdi-link-variant"
+                clear-icon=""
+                prepend-icon=""
+                hide-details=""
+                flat
+              ></v-file-input>
+              <v-btn
+                class="btn white--text font-weight-medium text-body-2"
+                color="#537DA5"
+                elevation="0"
+                >Tải lên</v-btn
+              >
+            </v-card>
+
+            <!-- list add test result -->
+            <div
+              class="d-flex flex-wrap justify-space-between align-center mb-5"
+              v-for="(image, index) in test_add_list"
+              :key="index"
+            >
+              <p
+                class="font-weight-medium text-body-1 ma-0"
+                style="color: #667085"
+              >
+                {{ image.type }}
+              </p>
+              <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
+                <v-icon class="mr-2">mdi-image-outline</v-icon>
+                <v-card min-width="50%" elevation="0">
+                  <p class="ma-0" style="">
+                    {{ image.file_name }}
+                  </p>
+                </v-card>
+
+                <v-spacer></v-spacer>
+                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
               </v-card>
             </div>
           </v-card>
@@ -154,9 +268,36 @@ export default {
   setup() {},
   data() {
     return {
-      test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Khác"],
+      test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
       test_select: "",
+      image_select: "",
+      test_add_list: [
+        {
+          type: "Xét nghiệm máu",
+          file_name: "ketquaxetnghiem.jpg"
+        },
+        {
+          type: "Xét nghiệm nước tiểu",
+          file_name: "ketquaxetnghiem.jpg"
+        },
+        {
+          type: "Xét nghiệm khác",
+          file_name: "ketquaxetnghiem.jpg"
+        }
+      ],
+      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"]
     };
   },
+  methods: {
+    removeTestFile(index) {
+      this.test_add_list.splice(index, 1);
+    }
+  }
 };
 </script>
+
+<style scoped>
+.btn {
+  text-transform: none;
+}
+</style>
