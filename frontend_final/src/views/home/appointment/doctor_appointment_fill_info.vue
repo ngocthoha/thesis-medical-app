@@ -39,7 +39,7 @@
             elevation="0"
             color="#FCFCFD"
           >
-            <v-avarta class="mr-5">
+            <v-avatar class="mr-5">
               <v-card
                 rounded="circle"
                 class="pa-3"
@@ -50,7 +50,7 @@
                   >mdi-clock-time-nine-outline</v-icon
                 ></v-card
               >
-            </v-avarta>
+            </v-avatar>
             <div class="d-flex flex-column">
               <p class="mb-3 font-weight-bold">09:00 - 09:30</p>
               <p class="ma-0 text-body-2" style="color: #667085">24/8/2022</p>
@@ -99,6 +99,7 @@
             </div>
           </v-card>
         </v-card>
+        <!-- fill patient profile -->
         <v-card width="700" min-height="500" class="mt-8 d-flex flex-column">
           <!-- header -->
           <v-card
@@ -256,8 +257,281 @@
             </div>
           </v-card>
         </v-card>
+        <!-- profile after select -->
+        <v-card width="700" class="mt-8">
+          <!-- header -->
+          <v-card
+            class="d-flex flex-column pa-6 font-weight-bold"
+            elevation="0"
+            tile
+            style="font-size: 24px"
+            >Hồ sơ khám bệnh</v-card
+          >
+          <v-divider style="border-color: #f2f4f7 !important"></v-divider>
+          <v-expansion-panels accordion tile flat>
+            <v-expansion-panel
+              v-for="profile in profile_list"
+              :key="profile.id"
+              class="mb-4"
+            >
+              <v-expansion-panel-header>
+                <v-card class="d-flex flex-row align-center" elevation="0">
+                  <v-avatar size="40">
+                    <img src="@/assets/img/home/appbar/avatar.png" />
+                  </v-avatar>
+                  <div class="d-flex flex-column ml-3">
+                    <p class="ma-0 font-weight-bold text-body-1">
+                      {{ profile.lastName }} {{ profile.firstName }}
+                    </p>
+                    <p
+                      class="ma-0 font-weight-normal text-body-2"
+                      style="color: #667085"
+                    >
+                      {{ profile.relationship }}
+                    </p>
+                  </div>
+                </v-card>
+
+                <template v-slot:actions>
+                  <v-card
+                    elevation="0"
+                    rounded="circle"
+                    color="#FCFCFD"
+                    width="32px"
+                    height="32px"
+                    class="d-flex justify-center"
+                  >
+                    <v-icon small> mdi-chevron-down </v-icon>
+                  </v-card>
+                </template>
+              </v-expansion-panel-header>
+
+              <v-expansion-panel-content class="pa-0">
+                <!-- user information -->
+                <div class="d-flex flex-column">
+                  <!-- email -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Email
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ profile.email }}
+                    </p>
+                  </v-card>
+                  <!-- phone -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Số điện thoại
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ profile.phone }}
+                    </p>
+                  </v-card>
+                  <!-- address -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Địa chỉ
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ getAddress(profile) }}
+                    </p>
+                  </v-card>
+                  <!-- gender -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Giới tính
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ getGender(profile.gender) }}
+                    </p>
+                  </v-card>
+                  <!-- birthday -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Ngày sinh
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ getDate(profile.dob) }}
+                    </p>
+                  </v-card>
+                  <!-- identify -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Số CMND/CCCD
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ profile.identityCard }}
+                    </p>
+                  </v-card>
+                  <!-- job -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Nghề nghiệp
+                    </p>
+                    <p class="ma-0 font-weight-medium">{{ profile.job }}</p>
+                  </v-card>
+                  <!-- country -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Quốc gia
+                    </p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ profile.address.country }}
+                    </p>
+                  </v-card>
+                  <!-- ethnic -->
+                  <v-divider
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <v-card
+                    class="d-flex flec-row justify-space-between align-center"
+                    elevation="0"
+                    height="72px"
+                  >
+                    <p class="ma-0 font-weight-medium" style="color: #667085">
+                      Dân tộc
+                    </p>
+                    <p class="ma-0 font-weight-medium">{{ profile.folk }}</p>
+                  </v-card>
+                </div>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
+        </v-card>
       </v-card>
-      <v-card class="ml-8 align-self-start" width="448" min-height="500">
+      <!-- select profile and make payment -->
+      <v-card
+        class="ml-8 align-self-start d-flex flex-column"
+        width="448"
+        color="#FCFCFD"
+        elevation="0"
+      >
+        <!-- select profile -->
+        <div v-show="hello">
+          <v-card class="d-flex flex-column">
+            <v-card
+              class="d-flex flex-column pa-6 font-weight-bold"
+              elevation="0"
+              tile
+              style="font-size: 24px"
+              >Hồ sơ khám bệnh</v-card
+            >
+            <v-divider style="border-color: #f2f4f7 !important"></v-divider>
+            <!-- price -->
+            <v-radio-group v-model="radioGroup" class="ma-0">
+              <v-card
+                v-for="n in 3"
+                :key="n"
+                class="pa-6 d-flex flex-row"
+                tile
+                elevation="0"
+              >
+                <v-avatar size="48" class="mr-5">
+                  <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+                </v-avatar>
+                <div class="d-flex flex-column justify-center">
+                  <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
+                  <p class="ma-0 text-body-2" style="color: #667085">
+                    Chủ tài khoản
+                  </p>
+                </div>
+                <v-spacer></v-spacer>
+                <v-radio :value="n" color="#537DA5"></v-radio>
+              </v-card>
+            </v-radio-group>
+          </v-card>
+          <v-btn
+            class="mt-8 btn white--text text-body-1"
+            color="#537DA5"
+            elevation="0"
+            width="100%"
+            >Tiến hành thanh toán
+          </v-btn>
+        </div>
+        <!-- make payment -->
+        <v-card class="d-flex flex-column">
+          <v-card
+            class="d-flex flex-column pa-6 font-weight-bold"
+            elevation="0"
+            tile
+            style="font-size: 24px"
+            >Thanh toán</v-card
+          >
+          <v-divider style="border-color: #f2f4f7 !important"></v-divider>
+          <!-- select payment method -->
+          <v-card elevation="0" class="pa-6 d-flex flex-column">
+            <v-card color="#FCFCFD" class="d-flex flex-row align-center pa-4">
+              <p class="ma-0 text-body-1">Mã ưu đãi</p>
+              <v-spacer></v-spacer>
+              <v-card class="text-body-2" color="#D0D5DD" outlined>
+                <v-card
+                  elevation="0"
+                  color="#F9FAFB"
+                  class="d-flex justify-center pa-2"
+                >
+                  Chọn mã ưu đãi</v-card
+                >
+              </v-card>
+              <v-icon>mdi-chevron-right</v-icon>
+            </v-card>
+          </v-card>
+        </v-card>
       </v-card>
     </div>
   </v-card>
@@ -268,9 +542,38 @@ export default {
   setup() {},
   data() {
     return {
+      hello: false,
       test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
       test_select: "",
       image_select: "",
+      radioGroup: 1,
+      profile_list: [
+        {
+          id: "1",
+          firstName: "Tho",
+          lastName: "Ha Ngoc",
+          address: {
+            country: "Viet Nam",
+            province: "Tinh",
+            district: "Huyen",
+            ward: "Xa",
+            address: "364 Do Bi"
+          },
+          phone: "phoneNumber",
+          email: "email@gmail.com",
+          dob: "2012-04-23T18:25:43.511Z",
+          job: "job",
+          identityCard: "identityCard",
+          healthInsurance: "healthInsurance",
+          folk: "folk",
+          gender: "MALE",
+          guardian: "guardian",
+          guardianPhone: "guardianPhone",
+          guardianIdentityCard: "guardianIdentityCard",
+          relationship: "relationship",
+          relationshipWithPatient: "relationshipWithPatient"
+        }
+      ],
       test_add_list: [
         {
           type: "Xét nghiệm máu",
@@ -291,6 +594,27 @@ export default {
   methods: {
     removeTestFile(index) {
       this.test_add_list.splice(index, 1);
+    },
+
+    getAddress(profile) {
+      return (
+        profile.address.province +
+        ", " +
+        profile.address.district +
+        ", " +
+        profile.address.ward +
+        ", " +
+        profile.address.address
+      );
+    },
+
+    getDate(date_string) {
+      let date = new Date(date_string);
+      return date.toLocaleDateString();
+    },
+
+    getGender(string_gender) {
+      return string_gender === "MALE" ? "Nam" : "Nữ";
     }
   }
 };
