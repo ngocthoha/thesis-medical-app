@@ -7,7 +7,7 @@
       color="#EEF2F6"
     >
       <p class="font-weight-bold mt-12" style="color: #537da5; font-size: 40px">
-        Tìm kiếm bác sĩ theo tên
+        Tìm kiếm bệnh viện theo tên
       </p>
       <v-card width="640px" color="#EEF2F6" elevation="0">
         <p>

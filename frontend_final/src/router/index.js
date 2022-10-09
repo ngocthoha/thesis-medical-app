@@ -25,6 +25,7 @@ const router = new Router({
         { default: "home/appointment/doctor_appointment" },
         "/doctor-appointment"
       ),
+      // doctor appointment
       route(
         "Thông tin đặt lịch bác sĩ",
         { default: "home/appointment/doctor_appointment_detail" },
@@ -34,6 +35,18 @@ const router = new Router({
         "Điền thông tin đặt lịch bác sĩ",
         { default: "home/appointment/doctor_appointment_fill_info" },
         "/doctor-appointment-fill-info"
+      ),
+      route(
+        "Đặt lịch bác sĩ thành công",
+        { default: "home/appointment/doctor_appointment_booking_success" },
+        "/doctor-appointment-booking-success"
+      ),
+
+      // hospital
+      route(
+        "Đặt lịch bệnh viện",
+        { default: "home/appointment/hospital_apppointment" },
+        "/hospital-appointment"
       ),
       route("Dịch vụ", { default: "home/Service" }, "/service"),
       route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),

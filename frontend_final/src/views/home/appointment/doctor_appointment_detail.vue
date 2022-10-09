@@ -287,7 +287,7 @@
                 <div class="d-flex flex-wrap justify-start">
                   <v-item-group v-model="selected">
                     <v-item
-                      v-for="(item, idx) in time"
+                      v-for="(item, idx) in morning_time"
                       :key="idx"
                       v-slot="{ active, toggle }"
                       :value="item"
@@ -315,7 +315,7 @@
                 <div class="d-flex flex-wrap justify-start">
                   <v-item-group v-model="selected">
                     <v-item
-                      v-for="(item, idx) in time"
+                      v-for="(item, idx) in affternoon_time"
                       :key="idx"
                       v-slot="{ active, toggle }"
                       :value="item"
@@ -363,7 +363,7 @@
                 <div class="d-flex flex-wrap justify-start">
                   <v-item-group v-model="selected">
                     <v-item
-                      v-for="(item, idx) in time"
+                      v-for="(item, idx) in morning_time"
                       :key="idx"
                       v-slot="{ active, toggle }"
                       :value="item"
@@ -391,7 +391,7 @@
                 <div class="d-flex flex-wrap justify-start">
                   <v-item-group v-model="selected">
                     <v-item
-                      v-for="(item, idx) in time"
+                      v-for="(item, idx) in affternoon_time"
                       :key="idx"
                       v-slot="{ active, toggle }"
                       :value="item"
@@ -445,17 +445,32 @@ export default {
       tab: null,
       calander_tab: null,
       selected: null,
-      time: [
+      morning_time: [
         "09:00 - 09:30",
         "10:00 - 10:30",
         "11:00 - 11:30",
         "12:00 - 12:30",
       ],
+      affternoon_time: [
+        "13:00 - 13:30",
+        "14:00 - 14:30",
+        "15:00 - 15:30",
+        "16:00 - 16:30",
+      ],
     };
   },
   methods: {
     submit_select_time() {
-      this.$router.push({ name: "Điền thông tin đặt lịch bác sĩ" });
+      this.$router
+        .push({ name: "Điền thông tin đặt lịch bác sĩ" })
+        .catch((error) => {
+          if (error == null) {
+            return;
+          }
+          if (error.name != "NavigationDuplicated") {
+            throw error;
+          }
+        });
     },
   },
 };

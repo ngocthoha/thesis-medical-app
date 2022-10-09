@@ -1,8 +1,15 @@
 <template>
-  <v-card color="#FCFCFD" width="100%" class="pa-12">
-    <div
-      class="d-flex flex-column flex-md-row mx-8 justify-center align-center"
-    >
+  <v-card color="#FCFCFD" width="100%" class="pa-12 d-flex justify-center">
+    <div class="d-flex flex-column mx-8 align-center">
+      <v-avatar size="316" color="#EEF2F6">
+        <v-img src="@/assets/img/payment/booking_success.png"></v-img>
+      </v-avatar>
+      <p
+        class="mt-3 mb-16 font-weight-bold"
+        style="color: #537da5; font-size: 32px"
+      >
+        Thanh toán thành công
+      </p>
       <v-card
         width="704"
         min-height="500"
@@ -100,7 +107,7 @@
           </v-card>
         </v-card>
         <!-- profile after select -->
-        <v-card width="700" class="mt-8" v-if="is_payment">
+        <v-card width="700" class="mt-8">
           <!-- header -->
           <v-card
             class="d-flex flex-column pa-6 font-weight-bold"
@@ -319,7 +326,7 @@
                 flat
                 hide-details
                 placeholder="Vui lòng mô tả triệu chứng của bạn..."
-                :readonly="!is_select_profile"
+                readonly
               >
               </v-textarea>
             </v-card>
@@ -328,44 +335,7 @@
               <p class="font-weight-medium text-body-1 ma-0">
                 Kết quả xét nghiệm
               </p>
-              <v-card width="221" outlined v-if="is_select_profile">
-                <v-combobox
-                  spellcheck="false"
-                  v-model="test_select"
-                  :items="test_type"
-                  solo
-                  dense
-                  flat
-                  append-icon="mdi-chevron-down"
-                  item-color="light-blue darken-4"
-                  placeholder="Chọn loại xét nghiệm"
-                  hide-details=""
-                ></v-combobox>
-              </v-card>
             </div>
-            <!-- add test result  -->
-            <v-card
-              outlined
-              class="my-5 pa-2 d-flex flex-row"
-              v-if="is_select_profile"
-            >
-              <v-file-input
-                placeholder="Vui lòng chọn hình ảnh"
-                solo
-                dense
-                prepend-inner-icon="mdi-link-variant"
-                clear-icon=""
-                prepend-icon=""
-                hide-details=""
-                flat
-              ></v-file-input>
-              <v-btn
-                class="btn white--text font-weight-medium text-body-2"
-                color="#537DA5"
-                elevation="0"
-                >Tải lên</v-btn
-              >
-            </v-card>
 
             <!-- list add test result -->
             <div
@@ -386,9 +356,6 @@
                     {{ image.file_name }}
                   </p>
                 </v-card>
-
-                <v-spacer></v-spacer>
-                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
               </v-card>
             </div>
             <!-- Image analysation type -->
@@ -398,44 +365,7 @@
               <p class="font-weight-medium text-body-1 ma-0">
                 Chuẩn đoán hình ảnh
               </p>
-              <v-card width="221" outlined v-if="is_select_profile">
-                <v-combobox
-                  spellcheck="false"
-                  v-model="image_select"
-                  :items="image_analyst_type"
-                  solo
-                  dense
-                  flat
-                  append-icon="mdi-chevron-down"
-                  item-color="light-blue darken-4"
-                  placeholder="Chọn loại hình ảnh"
-                  hide-details=""
-                ></v-combobox>
-              </v-card>
             </div>
-            <!-- add test result  -->
-            <v-card
-              outlined
-              class="my-5 pa-2 d-flex flex-row"
-              v-if="is_select_profile"
-            >
-              <v-file-input
-                placeholder="Vui lòng chọn hình ảnh"
-                solo
-                dense
-                prepend-inner-icon="mdi-link-variant"
-                clear-icon=""
-                prepend-icon=""
-                hide-details=""
-                flat
-              ></v-file-input>
-              <v-btn
-                class="btn white--text font-weight-medium text-body-2"
-                color="#537DA5"
-                elevation="0"
-                >Tải lên</v-btn
-              >
-            </v-card>
 
             <!-- list add test result -->
             <div
@@ -456,186 +386,10 @@
                     {{ image.file_name }}
                   </p>
                 </v-card>
-
-                <v-spacer></v-spacer>
-                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
               </v-card>
             </div>
           </v-card>
         </v-card>
-      </v-card>
-      <!-- select profile and make payment -->
-      <v-card
-        class="ml-8 align-self-start d-flex flex-column"
-        width="448"
-        color="#FCFCFD"
-        elevation="0"
-      >
-        <!-- select profile -->
-        <div v-if="is_select_profile">
-          <v-card class="d-flex flex-column">
-            <v-card
-              class="d-flex flex-column pa-6 font-weight-bold"
-              elevation="0"
-              tile
-              style="font-size: 24px"
-              >Hồ sơ khám bệnh</v-card
-            >
-            <v-divider style="border-color: #f2f4f7 !important"></v-divider>
-            <!-- price -->
-            <v-radio-group v-model="radioGroup" class="ma-0">
-              <v-card
-                v-for="n in 3"
-                :key="n"
-                class="pa-6 d-flex flex-row"
-                tile
-                elevation="0"
-              >
-                <v-avatar size="48" class="mr-5">
-                  <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
-                </v-avatar>
-                <div class="d-flex flex-column justify-center">
-                  <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
-                  <p class="ma-0 text-body-2" style="color: #667085">
-                    Chủ tài khoản
-                  </p>
-                </div>
-                <v-spacer></v-spacer>
-                <v-radio :value="n" color="#537DA5"></v-radio>
-              </v-card>
-            </v-radio-group>
-          </v-card>
-          <v-btn
-            class="mt-8 btn white--text text-body-1"
-            color="#537DA5"
-            elevation="0"
-            width="100%"
-            @click="select_profile_success"
-            >Tiến hành thanh toán
-          </v-btn>
-        </div>
-        <!-- make payment -->
-        <div v-if="is_payment">
-          <v-card class="d-flex flex-column">
-            <v-card
-              class="d-flex flex-column pa-6 font-weight-bold"
-              elevation="0"
-              tile
-              style="font-size: 24px"
-              >Thanh toán</v-card
-            >
-            <v-divider style="border-color: #f2f4f7 !important"></v-divider>
-            <!-- select payment method -->
-            <v-card elevation="0" class="pa-6 d-flex flex-column">
-              <v-card color="#FCFCFD" class="d-flex flex-row align-center pa-4">
-                <p class="ma-0 text-body-1">Mã ưu đãi</p>
-                <v-spacer></v-spacer>
-                <v-card class="text-body-2" color="#D0D5DD" outlined>
-                  <v-card
-                    elevation="0"
-                    color="#F9FAFB"
-                    class="d-flex v-row justify-center pa-1 align-center"
-                  >
-                    <v-img src="@/assets/img/payment/discount.svg"></v-img>
-                    <p class="ma-0 text-body-1" style="color: #667085">
-                      Chọn mã ưu đãi
-                    </p></v-card
-                  >
-                </v-card>
-                <v-icon class="ml-6">mdi-chevron-right</v-icon>
-              </v-card>
-              <!-- payment list -->
-              <v-card class="mt-6 d-flex flex-column" elevation="0">
-                <p class="ma-0 font-weight-bold" style="font-size: 20px">
-                  Phương thức thanh toán
-                </p>
-                <v-radio-group v-model="payment_selection" class="ma-0">
-                  <!-- Visa -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/visa.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ Visa
-                      </p>
-                      <p class="ma-0">
-                        Hỗ trợ thanh toán xuyên quốc gia qua thẻ
-                        Visa/Mastercard.
-                      </p>
-                    </v-card>
-                    <v-radio value="VISA" color="#537DA5"></v-radio>
-                  </v-card>
-                  <!-- ATM -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/atm_card.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ ATM nội địa
-                      </p>
-                      <p class="ma-0">
-                        Sử dụng tài khoản Internet Banking của ngân hàng bạn
-                        đang sử dụng để thanh toán.
-                      </p>
-                    </v-card>
-                    <v-radio value="ATM" color="#537DA5"></v-radio>
-                  </v-card>
-                  <!-- Momo -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/momo.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ Visa
-                      </p>
-                      <p class="ma-0">
-                        Quét mã QR trong ứng dụng ví điện tử Momo để thanh toán
-                        dịch vụ.
-                      </p>
-                    </v-card>
-                    <v-radio value="MOMO" color="#537DA5"></v-radio>
-                  </v-card>
-                </v-radio-group>
-                <v-card></v-card>
-              </v-card>
-            </v-card>
-          </v-card>
-          <v-btn
-            class="mt-8 btn white--text text-body-1"
-            color="#537DA5"
-            elevation="0"
-            width="100%"
-            @click="make_payment"
-            >Xác nhận thanh toán
-          </v-btn>
-        </div>
       </v-card>
     </div>
   </v-card>
@@ -643,7 +397,6 @@
 
 <script>
 export default {
-  setup() {},
   data() {
     return {
       is_select_profile: true,
@@ -728,18 +481,7 @@ export default {
       this.is_payment = true;
     },
 
-    make_payment() {
-      this.$router
-        .push({ name: "Đặt lịch bác sĩ thành công" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
-    },
+    make_pay_ment() {},
   },
 };
 </script>
