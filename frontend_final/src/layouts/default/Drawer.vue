@@ -2,17 +2,16 @@
   <v-navigation-drawer
     id="default-drawer"
     v-model="drawer"
-    :dark="dark"
     :right="$vuetify.rtl"
-    :src="drawerImage ? image : ''"
     :mini-variant.sync="mini"
     mini-variant-width="80"
     app
+    color="white"
     width="260"
   >
-    <template v-if="drawerImage" #img="props">
+    <!-- <template v-if="drawerImage" #img="props">
       <v-img :key="image" :gradient="gradient" v-bind="props" />
-    </template>
+    </template> -->
 
     <div class="px-2">
       <default-drawer-header />
@@ -43,7 +42,7 @@ export default {
       import(
         /* webpackChunkName: "default-list" */
         "./List"
-      ),
+      )
   },
   data() {
     return {
@@ -51,88 +50,95 @@ export default {
         {
           title: "Dashboard",
           icon: "mdi-view-dashboard",
-          to: "/",
+          to: "/"
         },
         {
           title: "User Profile",
           icon: "mdi-account",
-          to: "/components/profile/",
+          to: "/components/profile/"
         },
         {
           title: "Regular Tables",
           icon: "mdi-clipboard-outline",
-          to: "/tables/regular/",
+          to: "/tables/regular/"
         },
         {
           title: "Typography",
           icon: "mdi-format-font",
-          to: "/components/typography/",
+          to: "/components/typography/"
         },
         {
           title: "Icons",
           icon: "mdi-chart-bubble",
-          to: "/components/icons/",
+          to: "/components/icons/"
         },
         {
           title: "Google Maps",
           icon: "mdi-map-marker",
-          to: "/maps/google/",
+          to: "/maps/google/"
         },
         {
           title: "Notifications",
           icon: "mdi-bell",
-          to: "/components/notifications/",
+          to: "/components/notifications/"
         },
         {
           title: "Notifications",
           icon: "mdi-bell",
-          to: "/components/schedule",
-        },
+          to: "/components/schedule"
+        }
       ],
 
       itemDoctor: [
         {
+          items: [
+            {
+              title: "Lịch trình",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-schedule"
+            },
+            {
+              title: "Bệnh án",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-record"
+            },
+            {
+              title: "Gửi Thông báo",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-notification"
+            }
+          ],
           title: "Lịch trình",
           icon: "mdi-calendar",
-          to: "/doctor/doctor-schedule",
-        },
-        {
-          title: "Bệnh án",
-          icon: "mdi-clipboard-account",
-          to: "/doctor/doctor-record",
-        },
-        {
-          title: "Gửi Thông báo",
-          icon: "mdi-send",
-          to: "/doctor/doctor-notification",
-        },
+          to: "/doctor/doctor-schedule"
+        }
       ],
 
       itemAdmin: [
         {
           title: "Thống kê",
           icon: "mdi-bell",
-          to: "/admin/dashboard-admin",
+          to: "/admin/dashboard-admin"
         },
         {
           title: "Bác sĩ",
           icon: "mdi-bell",
-          to: "/admin/doctor-admin",
+          to: "/admin/doctor-admin"
         },
         {
           title: "Trạng thái cuộc hẹn",
           icon: "mdi-bell",
-          to: "/admin/appointment-status-admin",
+          to: "/admin/appointment-status-admin"
         },
         {
           title: "Tạo phòng",
           icon: "mdi-bell",
-          to: "/admin/room-admin",
+          to: "/admin/room-admin"
         },
         {
           title: "Lịch hẹn",
           icon: "mdi-bell",
-          to: "/admin/appointment-admin",
+          to: "/admin/appointment-admin"
         },
         // {
         //   title: "Bệnh nhân",
@@ -142,19 +148,19 @@ export default {
         {
           title: "Bệnh án",
           icon: "mdi-bell",
-          to: "/admin/record-admin",
+          to: "/admin/record-admin"
         },
         {
           title: "Lịch trình",
           icon: "mdi-bell",
-          to: "/admin/schedule-admin",
-        },
+          to: "/admin/schedule-admin"
+        }
         // {
         //   title: "Tài khoản",
         //   icon: "mdi-bell",
         //   to: "/admin/account-admin"
         // },
-      ],
+      ]
     };
   },
   computed: {
@@ -181,14 +187,14 @@ export default {
       //   return this.itemAdmin;
       // }
       // return [];
-      return this.itemAdmin;
+      return this.itemDoctor;
     },
     // ...get('app', [
     //   'items',
     //   'version',
     // ]),
-    ...sync("app", ["drawer", "drawerImage", "mini"]),
-  },
+    ...sync("app", ["drawer", "drawerImage", "mini"])
+  }
 };
 </script>
 
