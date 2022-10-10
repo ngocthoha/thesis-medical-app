@@ -550,6 +550,7 @@ export default {
         icon: require("@/assets/img/home/appbar/service.svg"),
         title: "Dịch vụ",
         content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
+        link_name: "Đặt lịch dịch vụ",
       },
     ],
 

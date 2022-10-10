@@ -20,12 +20,13 @@ const router = new Router({
     //Home Pages
     layout("Home", [
       route("Trang chủ", { default: "home/home" }, "/"),
+
+      // doctor appointment
       route(
         "Đặt lịch bác sĩ",
         { default: "home/appointment/doctor_appointment" },
         "/doctor-appointment"
       ),
-      // doctor appointment
       route(
         "Thông tin đặt lịch bác sĩ",
         { default: "home/appointment/doctor_appointment_detail" },
@@ -45,8 +46,30 @@ const router = new Router({
       // hospital
       route(
         "Đặt lịch bệnh viện",
-        { default: "home/appointment/hospital_apppointment" },
+        { default: "home/appointment/hospital_appointment" },
         "/hospital-appointment"
+      ),
+      route(
+        "Thông tin đặt lịch bệnh viện",
+        { default: "home/appointment/hospital_appointment_detail" },
+        "/hospital-appointment-detail"
+      ),
+
+      // service
+      route(
+        "Đặt lịch dịch vụ",
+        { default: "home/appointment/service_appointment" },
+        "/service-appointment"
+      ),
+      route(
+        "Thông tin đặt lịch dịch vụ",
+        { default: "home/appointment/service_appointment_detail" },
+        "/service-appointment-detail"
+      ),
+      route(
+        "Điền thông tin đặt lịch dịch vụ",
+        { default: "home/appointment/service_appointment_fill_info" },
+        "/service-appointment-fill-info"
       ),
       route("Dịch vụ", { default: "home/Service" }, "/service"),
       route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
