@@ -3,7 +3,7 @@
     <v-row
       v-if="
         schedules.length &&
-          Object.values(appointmentInSchedule || {}).some(prop => prop)
+        Object.values(appointmentInSchedule || {}).some((prop) => prop)
       "
       class="fill-height"
     >
@@ -19,14 +19,10 @@
               Hôm nay
             </v-btn>
             <v-btn fab text small color="grey darken-2" @click="prev">
-              <v-icon small>
-                mdi-chevron-left
-              </v-icon>
+              <v-icon small> mdi-chevron-left </v-icon>
             </v-btn>
             <v-btn fab text small color="grey darken-2" @click="next">
-              <v-icon small>
-                mdi-chevron-right
-              </v-icon>
+              <v-icon small> mdi-chevron-right </v-icon>
             </v-btn>
             <v-toolbar-title v-if="$refs.calendar">
               {{ $refs.calendar.title }}
@@ -82,11 +78,17 @@
       </v-col>
     </v-row>
     <v-row class="ma-3">
-      <v-btn color="primary" tile @click="openAllPanel()">Mở tất cả</v-btn>
-      <v-btn class="ml-2" color="primary" tile @click="closeAllPanel()"
+      <v-btn color="#537da5" class="white--text" tile @click="openAllPanel()"
+        >Mở tất cả</v-btn
+      >
+      <v-btn
+        class="ml-2 white--text"
+        color="#537da5"
+        tile
+        @click="closeAllPanel()"
         >Đóng tất cả</v-btn
       >
-      <v-btn class="ml-2" color="primary" tile>Chuyển lịch</v-btn>
+      <v-btn class="ml-2 white--text" color="#537da5" tile>Chuyển lịch</v-btn>
     </v-row>
     <v-row class="ma-3">
       <v-expansion-panels class="mt-3" v-model="panel" multiple>
@@ -711,12 +713,7 @@
 
                               <span
                                 v-else-if="index === 2"
-                                class="
-                                        text-overline
-                                        grey--text
-                                        text--darken-3
-                                        mx-2
-                                      "
+                                class="text-overline grey--text text--darken-3 mx-2"
                               >
                                 +{{ files.length - 2 }} File(s)
                               </span>
@@ -764,7 +761,7 @@
                                     label="Tên thuốc"
                                     placeholder="Chọn tên thuốc"
                                     :rules="[
-                                      v => !!v || 'Tên thuốc là bắt buộc!'
+                                      (v) => !!v || 'Tên thuốc là bắt buộc!',
                                     ]"
                                   ></v-select
                                 ></v-col>
@@ -889,7 +886,7 @@ export default {
       room: {
         id: undefined,
         name: undefined,
-        link: undefined
+        link: undefined,
       },
       profile: {
         id: undefined,
@@ -903,13 +900,13 @@ export default {
         healthInsurance: undefined,
         folk: undefined,
         gender: undefined,
-        protector: undefined
+        protector: undefined,
       },
       doctor: {
         id: undefined,
         name: undefined,
         specialty: undefined,
-        level: undefined
+        level: undefined,
       },
       date: undefined,
       time: undefined,
@@ -919,7 +916,7 @@ export default {
       selfTreatment: undefined,
       files: [],
       status: undefined,
-      createdDate: undefined
+      createdDate: undefined,
     },
     panel: [],
     panelMedicine: [],
@@ -943,13 +940,13 @@ export default {
       medicines: [],
       notes: undefined,
       reExaminationDate: undefined,
-      files: []
+      files: [],
     },
     medicine: {
       name: undefined,
       number: undefined,
       type: undefined,
-      use: undefined
+      use: undefined,
     },
     medicineList: [],
     specialties: [],
@@ -959,7 +956,7 @@ export default {
     loading: false,
     valid: true,
     menu2: false,
-    appointmentInSchedule: {}
+    appointmentInSchedule: {},
   }),
   created() {
     var date = new Date();
@@ -988,10 +985,10 @@ export default {
         .get(`${url}/api/doctor/schedules/date`, {
           params: {
             dateStart: dateStart,
-            dateEnd: dateEnd
-          }
+            dateEnd: dateEnd,
+          },
         })
-        .then(res => {
+        .then((res) => {
           this.schedules = res.data.results;
         });
     },
@@ -1002,10 +999,10 @@ export default {
         .get(`${url}/api/doctor/appointments/schedule`, {
           params: {
             dateStart: dateStart,
-            dateEnd: dateEnd
-          }
+            dateEnd: dateEnd,
+          },
         })
-        .then(res => {
+        .then((res) => {
           const results = res.data.results;
           this.appointmentInSchedule = this._.groupBy(
             results,
@@ -1052,7 +1049,7 @@ export default {
           end: this.schedules[i].date,
           color: "blue",
           timed: false,
-          link: this.schedules[i].room.link || "#"
+          link: this.schedules[i].room.link || "#",
         });
         events.push({
           name: `Thời gian`,
@@ -1060,7 +1057,7 @@ export default {
           end: this.schedules[i].date,
           color: "green",
           timed: false,
-          time: this.schedules[i].times
+          time: this.schedules[i].times,
         });
         // if (this.appointmentInSchedule[this.schedules[i].date].length) {
         //   let number = this.appointmentInSchedule[this.schedules[i].date]
@@ -1113,23 +1110,22 @@ export default {
       const params = {
         token: this.$store.getters["auth/access_token"],
         data: {
-          date: date
-        }
+          date: date,
+        },
       };
       await this.$store.dispatch(
         "appointment/getAppointment_byDate_Doctor",
         params
       );
-      this.appointmentList = this.$store.getters[
-        "appointment/doctor_appointment_list"
-      ];
+      this.appointmentList =
+        this.$store.getters["appointment/doctor_appointment_list"];
     },
     closeDialogDetail() {
       this.dialog = false;
       this.appointment = JSON.parse(JSON.stringify(this.initialAppointment));
     },
     async getSpecialties() {
-      axios.get(`${url}/api/specialties`).then(res => {
+      axios.get(`${url}/api/specialties`).then((res) => {
         this.specialties = res.data.results;
       });
     },
@@ -1177,13 +1173,13 @@ export default {
       formData.append("reExaminationDate", this.record.reExaminationDate);
       const medicineList = JSON.stringify(this.medicineList);
       formData.append("medicines", medicineList);
-      this.files.forEach(file => {
+      this.files.forEach((file) => {
         formData.append("files", file);
       });
       this.loading = true;
       const params = {
         token: this.$store.getters["auth/access_token"],
-        data: formData
+        data: formData,
       };
       await this.$store
         .dispatch("record/create_record", params)
@@ -1193,8 +1189,8 @@ export default {
         .finally(() => {
           this.loading = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>

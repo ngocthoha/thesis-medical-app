@@ -6,6 +6,7 @@
     color="#537da5"
     active-class="active_group"
     append-icon="mdi-chevron-down"
+    :prepend-icon="item.icon"
   >
     <template v-slot:activator>
       <v-list-item-icon
@@ -20,7 +21,7 @@
         <v-img :src="item.avatar" />
       </v-list-item-avatar>
 
-      <v-list-item-content v-if="item.title" class="font-weight-medium">
+      <v-list-item-content v-if="item.title" class="font-weight-bold">
         <v-list-item-title v-text="item.title" />
       </v-list-item-content>
     </template>
@@ -49,14 +50,14 @@ export default {
   name: "DefaultListGroup",
 
   components: {
-    DefaultListItem: () => import("./ListItem")
+    DefaultListItem: () => import("./ListItem"),
   },
 
   props: {
     item: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
 
   computed: {
@@ -68,7 +69,7 @@ export default {
       const matches = this.item.title.match(/\b(\w)/g);
 
       return matches.join("");
-    }
+    },
   },
 
   methods: {
@@ -82,8 +83,8 @@ export default {
           return acc;
         }, [])
         .join("|");
-    }
-  }
+    },
+  },
 };
 </script>
 
