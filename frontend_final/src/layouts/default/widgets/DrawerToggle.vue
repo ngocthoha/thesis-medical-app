@@ -21,7 +21,7 @@ export default {
   name: "DefaultDrawerToggle",
 
   computed: {
-    mini: sync("app/mini"),
-  },
+    mini: sync("app/mini")
+  }
 };
 </script>

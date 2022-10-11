@@ -20,7 +20,7 @@
 
     <!-- <default-search class="hidden-sm-and-down" /> -->
 
-    <default-go-home />
+    <!-- <default-go-home /> -->
 
     <default-notifications />
 
@@ -60,12 +60,12 @@ export default {
       import(
         /* webpackChunkName: "default-search" */
         "./widgets/Search"
-      ),
+      )
   },
 
   computed: {
     ...sync("app", ["drawer", "mini"]),
-    name: get("route/name"),
-  },
+    name: get("route/name")
+  }
 };
 </script>

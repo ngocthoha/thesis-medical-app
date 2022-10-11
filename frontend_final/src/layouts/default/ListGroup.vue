@@ -50,14 +50,14 @@ export default {
   name: "DefaultListGroup",
 
   components: {
-    DefaultListItem: () => import("./ListItem"),
+    DefaultListItem: () => import("./ListItem")
   },
 
   props: {
     item: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
 
   computed: {
@@ -69,7 +69,7 @@ export default {
       const matches = this.item.title.match(/\b(\w)/g);
 
       return matches.join("");
-    },
+    }
   },
 
   methods: {
@@ -83,13 +83,7 @@ export default {
           return acc;
         }, [])
         .join("|");
-    },
-  },
+    }
+  }
 };
 </script>
-
-<style scoped>
-.active_group {
-  background-color: blanchedalmond;
-}
-</style>
