@@ -1,9 +1,74 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
+  <v-card class="fill-height d-flex flex-column pa-8">
+    <!-- header -->
+    <v-card width="100%" class="mb-5" elevation="0">
+      <v-btn
+        class="mr-4 btn font-weight-medium"
+        color="#667085"
+        outlined
+        @click.stop="dialog = true"
+      >
+        <v-icon>mdi-calendar-plus-outline</v-icon>
+        Tạo lịch mới
+      </v-btn>
+      <v-btn class="mr-4 btn font-weight-medium" color="#537DA5" outlined>
+        <v-icon>mdi-calendar-edit-outline</v-icon>
+        Chỉnh sửa lịch
+      </v-btn>
+
+      <!-- add dialog -->
+      <v-dialog v-model="dialog" max-width="800">
+        <v-card class="d-flex flex-column">
+          <v-toolbar color="#667085" height="64" class="white--text"
+            >Tạo lịch làm việc</v-toolbar
+          >
+          <v-card height="500">
+            <!-- select date -->
+            <v-card class="d-flex flex-row">
+              <v-col cols="12" sm="6">
+                <v-menu
+                  ref="menu"
+                  v-model="menu"
+                  :close-on-content-click="false"
+                  :return-value.sync="dates"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="auto"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-combobox
+                      v-model="dates"
+                      multiple
+                      chips
+                      small-chips
+                      label="Multiple picker in menu"
+                      prepend-icon="mdi-calendar"
+                      readonly
+                      v-bind="attrs"
+                      v-on="on"
+                    ></v-combobox>
+                  </template>
+                  <v-date-picker v-model="dates" multiple no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn text color="primary" @click="menu = false">
+                      Cancel
+                    </v-btn>
+                    <v-btn text color="primary" @click="$refs.menu.save(dates)">
+                      OK
+                    </v-btn>
+                  </v-date-picker>
+                </v-menu>
+              </v-col>
+            </v-card>
+          </v-card>
+        </v-card>
+      </v-dialog>
+    </v-card>
+    <!-- calendar -->
+    <v-card width="100%">
       <v-sheet height="64">
         <v-toolbar flat color="#314E6A">
-          <v-btn outlined class="mr-4" color="white" @click="setToday" c>
+          <v-btn outlined class="mr-4 btn" color="white" @click="setToday" c>
             Hôm nay
           </v-btn>
           <v-btn fab text small color="white" @click="prev">
@@ -19,10 +84,17 @@
           <v-toolbar-title v-if="$refs.calendar" class="white--text">
             {{ $refs.calendar.title }}
           </v-toolbar-title>
+
           <v-spacer></v-spacer>
           <v-menu bottom right>
             <template v-slot:activator="{ on, attrs }">
-              <v-btn outlined color="white" v-bind="attrs" v-on="on">
+              <v-btn
+                outlined
+                color="white"
+                v-bind="attrs"
+                v-on="on"
+                class="btn"
+              >
                 <span>{{ typeToLabel[type] }}</span>
                 <v-icon right>
                   mdi-menu-down
@@ -45,7 +117,7 @@
       </v-sheet>
       <v-sheet height="600">
         <v-calendar
-          locale="vi"
+          locale="vi-sa"
           ref="calendar"
           v-model="focus"
           :events="events"
@@ -60,7 +132,6 @@
           @click:date="viewDay"
           :event-overlap-mode="'column'"
           @change="updateRange"
-          :event-margin-bottom="'2'"
           event-more-text="Nhiều hơn"
           :event-overlap-threshold="30"
         ></v-calendar>
@@ -89,13 +160,16 @@
           </v-card>
         </v-menu>
       </v-sheet>
-    </v-col>
-  </v-row>
+    </v-card>
+  </v-card>
 </template>
 
 <script>
 export default {
   data: () => ({
+    dialog: false,
+    menu: false,
+    dates: [],
     focus: "",
     type: "month",
     typeToLabel: {
@@ -140,17 +214,17 @@ export default {
           {
             type: "online",
             name: "Tư vấn online",
-            time: "12:30-13:30"
+            time: "12:00-13:00"
           },
           {
             type: "offline",
             name: "Khám tại viện",
-            time: "13:30-14:30"
+            time: "13:00-14:00"
           },
           {
             type: "online",
             name: "Tư vấn online",
-            time: "13:30-14:30"
+            time: "13:00-14:00"
           }
         ]
       }
@@ -224,7 +298,6 @@ export default {
       this.doctor_calendar.forEach(calendar => {
         const day = new Date(calendar.date);
         if (day >= min && day <= max) {
-          console.log(true);
           calendar.event_in_day.forEach(event => {
             const time_frame = event.time.split("-");
             const start_string = `${calendar.date}T${time_frame[0]}:00`;
@@ -260,3 +333,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.btn {
+  text-transform: none;
+}
+</style>
