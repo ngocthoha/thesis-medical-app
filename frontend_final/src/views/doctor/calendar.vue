@@ -6,7 +6,7 @@
         class="mr-4 btn font-weight-medium"
         color="#667085"
         outlined
-        @click.stop="dialog = true"
+        @click.stop="add_dialog = true"
       >
         <v-icon>mdi-calendar-plus-outline</v-icon>
         Tạo lịch mới
@@ -17,15 +17,19 @@
       </v-btn>
 
       <!-- add dialog -->
-      <v-dialog v-model="dialog" max-width="800">
-        <v-card class="d-flex flex-column">
-          <v-toolbar color="#667085" height="64" class="white--text"
-            >Tạo lịch làm việc</v-toolbar
-          >
-          <v-card height="500">
+      <v-dialog v-model="add_dialog" max-width="800">
+        <v-toolbar color="#475467" height="64" class="white--text"
+          >Tạo lịch làm việc</v-toolbar
+        >
+        <v-card class="d-flex flex-column" tile>
+          <v-card height="500" class="pa-6 d-flex flex-column">
             <!-- select date -->
-            <v-card class="d-flex flex-row">
-              <v-col cols="12" sm="6">
+            <p class="mb-2 font-weight-medium text-body-2">Chọn ngày:</p>
+            <v-card class="d-flex flex-row align-center" elevation="0">
+              <v-icon @click="menu = true" class="mr-3"
+                >mdi-calendar-outline</v-icon
+              >
+              <v-card outlined width="100%">
                 <v-menu
                   ref="menu"
                   v-model="menu"
@@ -37,18 +41,27 @@
                 >
                   <template v-slot:activator="{ on, attrs }">
                     <v-combobox
+                      flat
                       v-model="dates"
+                      hide-details=""
                       multiple
                       chips
                       small-chips
-                      label="Multiple picker in menu"
-                      prepend-icon="mdi-calendar"
                       readonly
                       v-bind="attrs"
                       v-on="on"
+                      solo
+                      append-icon=""
                     ></v-combobox>
                   </template>
-                  <v-date-picker v-model="dates" multiple no-title scrollable>
+                  <v-date-picker
+                    v-model="dates"
+                    multiple
+                    no-title
+                    scrollable
+                    locale="vi"
+                    color="#537DA5"
+                  >
                     <v-spacer></v-spacer>
                     <v-btn text color="primary" @click="menu = false">
                       Cancel
@@ -58,8 +71,74 @@
                     </v-btn>
                   </v-date-picker>
                 </v-menu>
-              </v-col>
+              </v-card>
             </v-card>
+            <!--seclect timeframe -->
+            <p class="mt-2 mb-2 font-weight-medium text-body-2">Chọn ca:</p>
+            <div class="d-flex flex-wrap justify-start">
+              <v-item-group v-model="selected" class="ma-0" multiple>
+                <v-item
+                  v-for="(item, idx) in affternoon_time"
+                  :key="idx"
+                  v-slot="{ active, toggle }"
+                  :value="item"
+                >
+                  <v-btn
+                    :outlined="active ? false : true"
+                    color="#667085"
+                    @click="toggle"
+                    class="mb-5 mx-3"
+                    active-class="white--text"
+                    elevation="0"
+                    :style="active ? 'border: 1px #667085 solid' : ''"
+                  >
+                    <p
+                      class="ma-0 font-weight-medium"
+                      :style="active ? 'color:white' : ''"
+                    >
+                      {{ item }}
+                    </p>
+                  </v-btn>
+                </v-item>
+              </v-item-group>
+            </div>
+            <!-- patient count  -->
+            <p class="mt-2 mb-2 font-weight-medium text-body-2">
+              Số lương bệnh nhân mỗi khung giờ:
+            </p>
+            <div class="d-flex flex-row align-center">
+              <p class="mt-2 mb-2 font-weight-medium text-body-2">
+                Chọn loại hình khám:
+              </p>
+              <v-card outlined class="ml-3">
+                <v-combobox
+                  :items="service_type"
+                  solo
+                  flat
+                  hide-details=""
+                  spellcheck="false"
+                  color="#667085"
+                  item-color="blue-grey darken-1"
+                ></v-combobox>
+              </v-card>
+            </div>
+            <v-spacer></v-spacer>
+            <div class="d-flex flex-row">
+              <v-btn
+                class="btn mr-5 white--text"
+                color="#98A2B3"
+                elevation="0"
+                @click="add_dialog = false"
+                >Hủy</v-btn
+              >
+              <v-btn
+                class="btn white--text"
+                color="#667085"
+                elevation="0"
+                @click="add_dialog = false"
+                >Tạo mới</v-btn
+              >
+            </div>
           </v-card>
         </v-card>
       </v-dialog>
@@ -102,15 +181,17 @@
               </v-btn>
             </template>
             <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Ngày</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Tuần</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Tháng</v-list-item-title>
-              </v-list-item>
+              <v-list-item-group v-model="type" color="#314E6A">
+                <v-list-item key="day" value="day">
+                  <v-list-item-title>Ngày</v-list-item-title>
+                </v-list-item>
+                <v-list-item key="week" value="week">
+                  <v-list-item-title>Tuần</v-list-item-title>
+                </v-list-item>
+                <v-list-item key="month" value="month">
+                  <v-list-item-title>Tháng</v-list-item-title>
+                </v-list-item>
+              </v-list-item-group>
             </v-list>
           </v-menu>
         </v-toolbar>
@@ -167,9 +248,22 @@
 <script>
 export default {
   data: () => ({
-    dialog: false,
+    add_dialog: false,
     menu: false,
     dates: [],
+    selected: null,
+    affternoon_time: [
+      "09:00 - 09:30",
+      "10:00 - 10:30",
+      "11:00 - 11:30",
+      "12:00 - 12:30",
+      "13:00 - 13:30",
+      "14:00 - 14:30",
+      "15:00 - 15:30",
+      "16:00 - 16:30"
+    ],
+    service_type: ["Tại phòng khám", "Trực tuyến"],
+    service_edit_selection: "Tại phòng khám",
     focus: "",
     type: "month",
     typeToLabel: {
