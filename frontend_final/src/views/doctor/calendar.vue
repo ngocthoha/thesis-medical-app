@@ -22,7 +22,7 @@
           >Tạo lịch làm việc</v-toolbar
         >
         <v-card class="d-flex flex-column" tile>
-          <v-card height="500" class="pa-6 d-flex flex-column">
+          <v-card height="600" class="pa-6 d-flex flex-column">
             <!-- select date -->
             <p class="mb-2 font-weight-medium text-body-2">Chọn ngày:</p>
             <v-card class="d-flex flex-row align-center" elevation="0">
@@ -103,16 +103,56 @@
               </v-item-group>
             </div>
             <!-- patient count  -->
-            <p class="mt-2 mb-2 font-weight-medium text-body-2">
-              Số lương bệnh nhân mỗi khung giờ:
-            </p>
             <div class="d-flex flex-row align-center">
-              <p class="mt-2 mb-2 font-weight-medium text-body-2">
+              <p
+                class=" d-flex ma-0 align-center font-weight-medium text-body-2"
+              >
+                Số lương bệnh nhân mỗi khung giờ:
+              </p>
+              <v-card outlined class="ml-3" width="60">
+                <v-combobox
+                  :items="patient_count"
+                  append-icon=""
+                  solo
+                  flat
+                  hide-details=""
+                  spellcheck="false"
+                  color="#667085"
+                  item-color="blue-grey darken-1"
+                ></v-combobox>
+              </v-card>
+            </div>
+            <div class="d-flex flex-row align-center mt-2">
+              <p
+                class="d-flex ma-0 align-center font-weight-medium text-body-2"
+              >
+                Chọn phòng:
+              </p>
+              <v-card outlined class="ml-3">
+                <v-combobox
+                  :items="patient_count"
+                  append-icon=""
+                  solo
+                  flat
+                  hide-details=""
+                  spellcheck="false"
+                  color="#667085"
+                  item-color="blue-grey darken-1"
+                ></v-combobox>
+              </v-card>
+            </div>
+
+            <!-- type  -->
+            <div class="d-flex flex-row align-center mt-2">
+              <p
+                class="d-flex ma-0 align-center font-weight-medium text-body-2"
+              >
                 Chọn loại hình khám:
               </p>
               <v-card outlined class="ml-3">
                 <v-combobox
                   :items="service_type"
+                  append-icon=""
                   solo
                   flat
                   hide-details=""
@@ -253,15 +293,19 @@ export default {
     dates: [],
     selected: null,
     affternoon_time: [
-      "09:00 - 09:30",
-      "10:00 - 10:30",
-      "11:00 - 11:30",
-      "12:00 - 12:30",
-      "13:00 - 13:30",
-      "14:00 - 14:30",
-      "15:00 - 15:30",
-      "16:00 - 16:30"
+      "07:00 - 08:00",
+      "08:00 - 09:00",
+      "09:00 - 10:00",
+      "10:00 - 11:00",
+      "11:00 - 12:00",
+      "13:00 - 14:00",
+      "14:00 - 15:00",
+      "15:00 - 16:00",
+      "16:00 - 17:00",
+      "17:00 - 18:00"
     ],
+    patient_count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    patient_select: 1,
     service_type: ["Tại phòng khám", "Trực tuyến"],
     service_edit_selection: "Tại phòng khám",
     focus: "",
