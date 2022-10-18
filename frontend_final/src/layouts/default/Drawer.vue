@@ -207,7 +207,8 @@ export default {
           icon: "mdi-stethoscope",
           items: [
             {
-              title: "Khám bệnh"
+              title: "Khám bệnh",
+              to: "/doctor/doctor-medical-examination"
             },
             {
               title: "Tư vấn Online"

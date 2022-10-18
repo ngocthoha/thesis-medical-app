@@ -139,6 +139,12 @@ const router = new Router({
         { default: "doctor/calendar" },
         "/doctor/doctor-calendar"
       ),
+      route(
+        "Khám bệnh",
+        { default: "doctor/medical_examination" },
+        "/doctor/doctor-medical-examination"
+      ),
+
 
       route(
         "Lịch trình",

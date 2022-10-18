@@ -245,6 +245,112 @@
               </v-menu>
             </v-card>
           </v-card>
+          <!--seclect timeframe -->
+          <p class="mt-2 mb-2 font-weight-medium text-body-2">Chọn ca:</p>
+          <div class="d-flex flex-wrap justify-start">
+            <v-item-group v-model="selected" class="ma-0" multiple>
+              <v-item
+                v-for="(item, idx) in affternoon_time"
+                :key="idx"
+                v-slot="{ active, toggle }"
+                :value="item"
+              >
+                <v-btn
+                  :outlined="active ? false : true"
+                  color="#6D91B3"
+                  @click="toggle"
+                  class="mb-5 mx-3"
+                  active-class="white--text"
+                  elevation="0"
+                  :style="active ? 'border: 1px #6D91B3 solid' : ''"
+                >
+                  <p
+                    class="ma-0 font-weight-medium"
+                    :style="active ? 'color:white' : ''"
+                  >
+                    {{ item }}
+                  </p>
+                </v-btn>
+              </v-item>
+            </v-item-group>
+          </div>
+          <!-- patient count  -->
+          <div class="d-flex flex-row align-center">
+            <p class="d-flex ma-0 align-center font-weight-medium text-body-2">
+              Số lương bệnh nhân mỗi khung giờ:
+            </p>
+            <v-card outlined class="ml-3" width="60">
+              <v-combobox
+                :items="patient_count"
+                append-icon=""
+                solo
+                flat
+                hide-details=""
+                spellcheck="false"
+                item-color="blue-grey darken-1"
+              ></v-combobox>
+            </v-card>
+          </div>
+          <div class="d-flex flex-column mt-2">
+            <p class="d-flex ma-0 align-center font-weight-medium text-body-2">
+              Chọn phòng:
+            </p>
+            <v-card outlined width="50%">
+              <v-combobox
+                :items="patient_count"
+                append-icon=""
+                solo
+                flat
+                hide-details=""
+                spellcheck="false"
+                item-color="blue-grey darken-1"
+              ></v-combobox>
+            </v-card>
+          </div>
+
+          <!-- type  -->
+          <div class="d-flex flex-column mt-2">
+            <p class="d-flex ma-0 align-center font-weight-medium text-body-2">
+              Chọn loại hình khám:
+            </p>
+            <v-card outlined width="50%">
+              <v-combobox
+                :items="service_type"
+                append-icon=""
+                solo
+                flat
+                hide-details=""
+                spellcheck="false"
+                item-color="blue-grey darken-1"
+              ></v-combobox>
+            </v-card>
+          </div>
+          <!-- operate -->
+          <v-spacer></v-spacer>
+          <div class="d-flex flex-row">
+            <v-btn
+              class="btn mr-5 white--text"
+              color="#98A2B3"
+              elevation="0"
+              @click="add_dialog = false"
+              >Hủy</v-btn
+            >
+            <v-spacer></v-spacer>
+            <v-btn
+              class="btn white--text mr-3"
+              color="#F04438"
+              elevation="0"
+              @click="add_dialog = false"
+              >Xóa lịch</v-btn
+            >
+            <v-btn
+              class="btn white--text"
+              color="#6D91B3"
+              elevation="0"
+              @click="add_dialog = false"
+              >Tạo mới</v-btn
+            >
+          </div>
         </v-card>
       </v-dialog>
     </v-card>
@@ -364,7 +470,7 @@ export default {
       "14:00 - 15:00",
       "15:00 - 16:00",
       "16:00 - 17:00",
-      "17:00 - 18:00",
+      "17:00 - 18:00"
     ],
     patient_count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     patient_select: 1,
@@ -375,7 +481,7 @@ export default {
     typeToLabel: {
       month: "Tháng",
       week: "Tuần",
-      day: "Ngày",
+      day: "Ngày"
     },
     selectedEvent: {},
     selectedElement: null,
@@ -383,7 +489,7 @@ export default {
     events: [],
     colors: [
       //   "#476D92"
-      "#475467",
+      "#475467"
       //   "indigo",
       //   "deep-purple",
       //   "cyan",
@@ -394,7 +500,7 @@ export default {
 
     colors: {
       online: { color: "#98A2B3", text: "white" },
-      offline_color: { color: "#6D91B3", text: "white" },
+      offline_color: { color: "#6D91B3", text: "white" }
     },
     names: [
       "Meeting",
@@ -404,7 +510,7 @@ export default {
       "Event",
       "Birthday",
       "Conference",
-      "Party",
+      "Party"
     ],
 
     doctor_calendar: [
@@ -414,21 +520,21 @@ export default {
           {
             type: "online",
             name: "Tư vấn online",
-            time: "12:00-13:00",
+            time: "12:00-13:00"
           },
           {
             type: "offline",
             name: "Khám tại viện",
-            time: "13:00-14:00",
+            time: "13:00-14:00"
           },
           {
             type: "online",
             name: "Tư vấn online",
-            time: "13:00-14:00",
-          },
-        ],
-      },
-    ],
+            time: "13:00-14:00"
+          }
+        ]
+      }
+    ]
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -495,10 +601,10 @@ export default {
       //       timed: true
       //     });
       //   }
-      this.doctor_calendar.forEach((calendar) => {
+      this.doctor_calendar.forEach(calendar => {
         const day = new Date(calendar.date);
         if (day >= min && day <= max) {
-          calendar.event_in_day.forEach((event) => {
+          calendar.event_in_day.forEach(event => {
             const time_frame = event.time.split("-");
             const start_string = `${calendar.date}T${time_frame[0]}:00`;
             const end_string = `${calendar.date}T${time_frame[1]}:00`;
@@ -515,8 +621,8 @@ export default {
               timed: true,
               details: {
                 max_count: 5,
-                current_count: 3,
-              },
+                current_count: 3
+              }
             });
           });
         }
@@ -529,8 +635,8 @@ export default {
     },
     intervalFormatter(locale, getOptions) {
       return locale.time;
-    },
-  },
+    }
+  }
 };
 </script>
 
