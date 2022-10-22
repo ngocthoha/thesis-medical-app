@@ -97,8 +97,14 @@
       </v-row>
     </v-footer>
   </div> -->
-  <footer>
-    <v-card height="392px" color="#314E6A" tile class="d-flex justify-center">
+  <v-footer absolute inset app class="ma-0 pa-0">
+    <v-card
+      height="392px"
+      color="#314E6A"
+      tile
+      class="d-flex justify-center"
+      width="100%"
+    >
       <v-card
         class="d-flex justify-space-around mt-12"
         min-width="1280px"
@@ -118,31 +124,29 @@
           <p class="white--text font-weight-regular">Quy chế hoạt động</p>
         </v-card>
         <v-card class="d-flex flex-column" color="#314E6A" elevation="0">
-          <p class="font-weight-regular" style="color: #D0D5DD">
+          <p class="font-weight-regular" style="color: #d0d5dd">
             Điều khoản sử dụng
           </p>
-          <p class="font-weight-regular" style="color: #D0D5DD">
+          <p class="font-weight-regular" style="color: #d0d5dd">
             Chính sách bảo mật
           </p>
-          <p class="font-weight-regular" style="color: #D0D5DD">
+          <p class="font-weight-regular" style="color: #d0d5dd">
             Trung tâm trợ giúp
           </p>
-          <p class="font-weight-regular" style="color: #D0D5DD">
+          <p class="font-weight-regular" style="color: #d0d5dd">
             Quy chế hoạt động
           </p>
         </v-card>
         <v-card class="d-flex flex-column" color="#314E6A" elevation="0">
-          <p class="font-weight-regular" style="color: #D0D5DD">
-            Trang chủ
-          </p>
-          <p class="font-weight-regular" style="color: #D0D5DD">Cộng đồng</p>
-          <p class="font-weight-regular" style="color: #D0D5DD">Cẩm nang</p>
-          <p class="font-weight-regular" style="color: #D0D5DD">
+          <p class="font-weight-regular" style="color: #d0d5dd">Trang chủ</p>
+          <p class="font-weight-regular" style="color: #d0d5dd">Cộng đồng</p>
+          <p class="font-weight-regular" style="color: #d0d5dd">Cẩm nang</p>
+          <p class="font-weight-regular" style="color: #d0d5dd">
             Quy chế hoạt động
           </p>
         </v-card>
         <v-card class="d-flex flex-column"></v-card>
       </v-card>
     </v-card>
-  </footer>
+  </v-footer>
 </template>

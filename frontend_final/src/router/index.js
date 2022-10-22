@@ -20,7 +20,57 @@ const router = new Router({
     //Home Pages
     layout("Home", [
       route("Trang chủ", { default: "home/home" }, "/"),
-      route("Đặt lịch bác sĩ", { default: "home/appointment/doctor_appointment" }, "/doctor-appointment"),
+
+      // doctor appointment
+      route(
+        "Đặt lịch bác sĩ",
+        { default: "home/appointment/doctor_appointment" },
+        "/doctor-appointment"
+      ),
+      route(
+        "Thông tin đặt lịch bác sĩ",
+        { default: "home/appointment/doctor_appointment_detail" },
+        "/doctor-appointment-detail"
+      ),
+      route(
+        "Điền thông tin đặt lịch bác sĩ",
+        { default: "home/appointment/doctor_appointment_fill_info" },
+        "/doctor-appointment-fill-info"
+      ),
+      route(
+        "Đặt lịch bác sĩ thành công",
+        { default: "home/appointment/doctor_appointment_booking_success" },
+        "/doctor-appointment-booking-success"
+      ),
+
+      // hospital
+      route(
+        "Đặt lịch bệnh viện",
+        { default: "home/appointment/hospital_appointment" },
+        "/hospital-appointment"
+      ),
+      route(
+        "Thông tin đặt lịch bệnh viện",
+        { default: "home/appointment/hospital_appointment_detail" },
+        "/hospital-appointment-detail"
+      ),
+
+      // service
+      route(
+        "Đặt lịch dịch vụ",
+        { default: "home/appointment/service_appointment" },
+        "/service-appointment"
+      ),
+      route(
+        "Thông tin đặt lịch dịch vụ",
+        { default: "home/appointment/service_appointment_detail" },
+        "/service-appointment-detail"
+      ),
+      route(
+        "Điền thông tin đặt lịch dịch vụ",
+        { default: "home/appointment/service_appointment_fill_info" },
+        "/service-appointment-fill-info"
+      ),
       route("Dịch vụ", { default: "home/Service" }, "/service"),
       route("Giới thiệu", { default: "home/Introduce" }, "/introduce"),
       route(
@@ -62,7 +112,7 @@ const router = new Router({
         "Nhi khoa",
         { default: "home/Specialist/Pediatrics" },
         "/specialist-Pediatrics"
-      )
+      ),
     ]),
 
     //DashBoard Pages
@@ -84,6 +134,18 @@ const router = new Router({
       route("Google Maps", null, "maps/google"),
 
       //doctor Pages
+      route(
+        "Lịch làm việc",
+        { default: "doctor/calendar" },
+        "/doctor/doctor-calendar"
+      ),
+      route(
+        "Khám bệnh",
+        { default: "doctor/medical_examination" },
+        "/doctor/doctor-medical-examination"
+      ),
+
+
       route(
         "Lịch trình",
         { default: "doctor/Schedule" },
@@ -138,7 +200,7 @@ const router = new Router({
         { default: "admin/AccountAdmin" },
         "/admin/account-admin"
       ),
-      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin")
+      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin"),
     ]),
 
     //Auth Pages
@@ -154,25 +216,25 @@ const router = new Router({
             route(
               "Hồ sơ cá nhân",
               {
-                default: "user/profile"
+                default: "user/profile",
               },
               "profile"
             ),
             route(
               "Lịch sử Đặt khám",
               {
-                default: "user/appointmentHistory"
+                default: "user/appointmentHistory",
               },
               "appointment-history"
-            )
+            ),
           ],
           "user"
-        )
+        ),
       ],
       "/home"
     ),
 
-    route("test", { default: "test/test" }, "/test")
+    route("test", { default: "test/test" }, "/test"),
     // {
     //   path: "/home",
     //   component: () =>
@@ -203,7 +265,7 @@ const router = new Router({
     //     }
     //   ]
     // }
-  ]
+  ],
 });
 
 router.beforeEach((to, from, next) => {

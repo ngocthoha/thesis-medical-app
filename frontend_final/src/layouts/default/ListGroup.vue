@@ -1,10 +1,12 @@
 <template>
   <v-list-group
-    :color="gradient !== 1 ? 'white' : undefined"
     :group="group"
-    :prepend-icon="item.icon"
     eager
     v-bind="$attrs"
+    color="#537da5"
+    active-class="active_group"
+    append-icon="mdi-chevron-down"
+    :prepend-icon="item.icon"
   >
     <template v-slot:activator>
       <v-list-item-icon
@@ -19,7 +21,7 @@
         <v-img :src="item.avatar" />
       </v-list-item-avatar>
 
-      <v-list-item-content v-if="item.title">
+      <v-list-item-content v-if="item.title" class="font-weight-bold">
         <v-list-item-title v-text="item.title" />
       </v-list-item-content>
     </template>
@@ -41,49 +43,47 @@
 </template>
 
 <script>
-  // Utilities
-  import { get } from 'vuex-pathify'
+// Utilities
+import { get } from "vuex-pathify";
 
-  export default {
-    name: 'DefaultListGroup',
+export default {
+  name: "DefaultListGroup",
 
-    components: {
-      DefaultListItem: () => import('./ListItem'),
+  components: {
+    DefaultListItem: () => import("./ListItem")
+  },
+
+  props: {
+    item: {
+      type: Object,
+      default: () => ({})
+    }
+  },
+
+  computed: {
+    gradient: get("user/drawer@gradient"),
+    group() {
+      return this.genGroup(this.item.items);
     },
+    title() {
+      const matches = this.item.title.match(/\b(\w)/g);
 
-    props: {
-      item: {
-        type: Object,
-        default: () => ({}),
-      },
-    },
+      return matches.join("");
+    }
+  },
 
-    computed: {
-      gradient: get('user/drawer@gradient'),
-      group () {
-        return this.genGroup(this.item.items)
-      },
-      title () {
-        const matches = this.item.title.match(/\b(\w)/g)
+  methods: {
+    genGroup(items) {
+      return items
+        .reduce((acc, cur) => {
+          if (!cur.to) return acc;
 
-        return matches.join('')
-      },
-    },
+          acc.push(cur.items ? this.genGroup(cur.items) : cur.to.slice(1, -1));
 
-    methods: {
-      genGroup (items) {
-        return items.reduce((acc, cur) => {
-          if (!cur.to) return acc
-
-          acc.push(
-            cur.items
-              ? this.genGroup(cur.items)
-              : cur.to.slice(1, -1),
-          )
-
-          return acc
-        }, []).join('|')
-      },
-    },
+          return acc;
+        }, [])
+        .join("|");
+    }
   }
+};
 </script>

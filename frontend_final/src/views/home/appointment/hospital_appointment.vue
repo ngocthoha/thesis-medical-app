@@ -7,7 +7,7 @@
       color="#EEF2F6"
     >
       <p class="font-weight-bold mt-12" style="color: #537da5; font-size: 40px">
-        Tìm kiếm bác sĩ theo tên
+        Tìm kiếm bệnh viện theo tên
       </p>
       <v-card width="640px" color="#EEF2F6" elevation="0">
         <p>
@@ -70,18 +70,18 @@
         elevation="0"
         color="#FCFCFD"
       >
-        <!-- list doctor -->
+        <!-- list hospital -->
         <v-row justify="center">
           <v-col v-for="n in 8" :key="n" md="6">
             <!-- in -->
             <v-card
-              class="d-flex flex-column justify-center align-center"
+              class="d-flex flex-column justify-center align-center px-5"
               width="596"
-              height="216"
+              height="244"
             >
               <v-card
                 width="548"
-                height="84"
+                height="112"
                 elevation="0"
                 class="d-flex flex-column"
               >
@@ -91,29 +91,50 @@
                   elevation="0"
                 >
                   <div class="d-flex flex-row">
-                    <v-avatar size="64" class="align-self-start">
-                      <v-img
-                        src="@/assets/img/user/profile/avatar1.svg"
-                      ></v-img>
-                    </v-avatar>
+                    <v-card width="126" height="84" class="align-self-start">
+                      <v-img src="@/assets/img/home/hospital_avt.png"></v-img>
+                    </v-card>
                     <v-card class="d-flex flex-column ml-3" elevation="0">
                       <p class="text-body-2 mb-2 font-weight-bold">
-                        Đỗ Hồng Việt
-                      </p>
-                      <p class="text-body-2 mb-3">
                         Bệnh viện hữu nghị Việt Đức
                       </p>
-                      <v-card class="text-body-2" color="#D0D5DD" outlined>
-                        <v-card
-                          elevation="0"
-                          color="#F9FAFB"
-                          class="d-flex justify-center"
+                      <div class="d-flex flex-row">
+                        <v-icon
+                          class="align-self-start mr-3"
+                          size="24"
+                          color="#537da5"
+                          >mdi-map-marker-radius-outline</v-icon
                         >
-                          Chuyên khoa TT Nam học</v-card
-                        >
-                      </v-card>
+                        <p class="text-body-2 mb-3">
+                          08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành
+                          phố Hồ Chí Minh
+                        </p>
+                      </div>
+
+                      <div class="d-flex flex-row">
+                        <v-card class="text-body-2" color="#D0D5DD" outlined>
+                          <v-card
+                            elevation="0"
+                            color="#F9FAFB"
+                            class="d-flex justify-center"
+                          >
+                            Chuyên khoa TT Nam học</v-card
+                          >
+                        </v-card>
+                      </div>
                     </v-card>
                   </div>
+                </v-card>
+              </v-card>
+              <!-- price and booking -->
+              <v-card class="mt-2" width="548" height="40" elevation="0">
+                <v-divider
+                  class="mt-1"
+                  style="border-color: #f2f4f7 !important"
+                ></v-divider>
+                <div
+                  class="d-flex flex-row mt-4 align-center justify-space-between"
+                >
                   <div class="d-flex flex-row">
                     <v-card
                       class="d-flex flex-row"
@@ -140,26 +161,6 @@
                       <p style="color: #537da5">146</p>
                     </v-card>
                   </div>
-                </v-card>
-              </v-card>
-              <!-- price and booking -->
-              <v-card class="mt-2" width="548" height="40" elevation="0">
-                <v-divider
-                  class="mt-1"
-                  style="border-color: #f2f4f7 !important"
-                ></v-divider>
-                <div
-                  class="d-flex flex-row mt-4 align-center justify-space-between"
-                >
-                  <div class="d-flex flex-row align-center">
-                    <p>Giá khám:</p>
-                    <p
-                      class="ml-3 font-weight-bold"
-                      style="color: #537da5; font-size: 20px"
-                    >
-                      100000VND
-                    </p>
-                  </div>
                   <v-btn
                     width="110"
                     height="44"
@@ -168,7 +169,7 @@
                     color="#537DA5"
                     @click="moveToInfo"
                   >
-                    Đặt khám
+                    Xem chi tiết
                   </v-btn>
                 </div>
               </v-card>
@@ -208,7 +209,7 @@ export default {
   methods: {
     moveToInfo() {
       this.$router
-        .push({ name: "Thông tin đặt lịch bác sĩ" })
+        .push({ name: "Thông tin đặt lịch bệnh viện" })
         .catch((error) => {
           if (error == null) {
             return;

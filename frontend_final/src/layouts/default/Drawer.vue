@@ -2,17 +2,16 @@
   <v-navigation-drawer
     id="default-drawer"
     v-model="drawer"
-    :dark="dark"
     :right="$vuetify.rtl"
-    :src="drawerImage ? image : ''"
     :mini-variant.sync="mini"
     mini-variant-width="80"
     app
-    width="260"
+    color="white"
+    width="320"
   >
-    <template v-if="drawerImage" #img="props">
+    <!-- <template v-if="drawerImage" #img="props">
       <v-img :key="image" :gradient="gradient" v-bind="props" />
-    </template>
+    </template> -->
 
     <div class="px-2">
       <default-drawer-header />
@@ -90,21 +89,66 @@ export default {
         }
       ],
 
-      itemDoctor: [
+      itemDoctor1: [
         {
-          title: "Lịch trình",
-          icon: "mdi-calendar",
-          to: "/doctor/doctor-schedule"
+          items: [
+            {
+              title: "Lịch trình",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-schedule"
+            },
+            {
+              title: "Bệnh án",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-record"
+            },
+            {
+              title: "Gửi Thông báo",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-notification"
+            }
+          ],
+          title: "Lịch trình"
         },
         {
-          title: "Bệnh án",
-          icon: "mdi-clipboard-account",
-          to: "/doctor/doctor-record"
+          items: [
+            {
+              title: "Lịch trình",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-schedule"
+            },
+            {
+              title: "Bệnh án",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-record"
+            },
+            {
+              title: "Gửi Thông báo",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-notification"
+            }
+          ],
+          title: "Lịch trình"
         },
         {
-          title: "Gửi Thông báo",
-          icon: "mdi-send",
-          to: "/doctor/doctor-notification"
+          items: [
+            {
+              title: "Lịch trình",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-schedule"
+            },
+            {
+              title: "Bệnh án",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-record"
+            },
+            {
+              title: "Gửi Thông báo",
+              icon: "mdi-map-marker",
+              to: "/doctor/doctor-notification"
+            }
+          ],
+          title: "Lịch trình"
         }
       ],
 
@@ -134,11 +178,7 @@ export default {
           icon: "mdi-bell",
           to: "/admin/appointment-admin"
         },
-        // {
-        //   title: "Bệnh nhân",
-        //   icon: "mdi-bell",
-        //   to: "/admin/patient-admin"
-        // },
+
         {
           title: "Bệnh án",
           icon: "mdi-bell",
@@ -149,11 +189,32 @@ export default {
           icon: "mdi-bell",
           to: "/admin/schedule-admin"
         }
-        // {
-        //   title: "Tài khoản",
-        //   icon: "mdi-bell",
-        //   to: "/admin/account-admin"
-        // },
+      ],
+
+      itemDoctor: [
+        {
+          title: "QUẢN LÝ LỊCH",
+          icon: "mdi-calendar-month-outline",
+          items: [
+            {
+              title: "Lịch làm việc",
+              to: "/doctor/doctor-calendar"
+            }
+          ]
+        },
+        {
+          title: "QUẢN LÝ KHÁM BỆNH",
+          icon: "mdi-stethoscope",
+          items: [
+            {
+              title: "Khám bệnh",
+              to: "/doctor/doctor-medical-examination"
+            },
+            {
+              title: "Tư vấn Online"
+            }
+          ]
+        }
       ]
     };
   },
@@ -162,25 +223,26 @@ export default {
 
     items() {
       //dev login
-      if (process.env.VUE_APP_LOGIN_DEV === "TRUE") {
-        var typedev = process.env.VUE_APP_ROLE_DEV;
-        if (typedev === "ROLE_DOCTOR") {
-          return this.itemDoctor;
-        }
-        if (typedev === "ROLE_ADMIN") {
-          return this.itemAdmin;
-        }
-        return;
-      }
+      // if (process.env.VUE_APP_LOGIN_DEV === "TRUE") {
+      //   var typedev = process.env.VUE_APP_ROLE_DEV;
+      //   if (typedev === "ROLE_DOCTOR") {
+      //     return this.itemDoctor;
+      //   }
+      //   if (typedev === "ROLE_ADMIN") {
+      //     return this.itemAdmin;
+      //   }
+      //   return;
+      // }
 
-      var type = this.$store.getters["auth/types"];
-      if (type[0].authority === "ROLE_DOCTOR") {
-        return this.itemDoctor;
-      }
-      if (type[0].authority === "ROLE_ADMIN") {
-        return this.itemAdmin;
-      }
-      return [];
+      // var type = this.$store.getters["auth/types"];
+      // if (type[0].authority === "ROLE_DOCTOR") {
+      //   return this.itemDoctor;
+      // }
+      // if (type[0].authority === "ROLE_ADMIN") {
+      //   return this.itemAdmin;
+      // }
+      // return [];
+      return this.itemDoctor;
     },
     // ...get('app', [
     //   'items',

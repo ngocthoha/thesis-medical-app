@@ -4,7 +4,7 @@
 
     <default-drawer />
 
-    <default-view style=""/>
+    <default-view />
 
     <default-footer />
   </v-app>
@@ -34,7 +34,7 @@ export default {
       import(
         /* webpackChunkName: "default-view" */
         "./View"
-      )
-  }
+      ),
+  },
 };
 </script>

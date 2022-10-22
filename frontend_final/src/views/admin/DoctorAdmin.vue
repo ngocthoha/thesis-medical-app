@@ -68,7 +68,7 @@
                         v-model="accountDoctor.username"
                         label="Tên đăng nhập*"
                         placeholder=""
-                        :rules="[v => !!v || 'Tên đăng nhập là bắt buộc!']"
+                        :rules="[(v) => !!v || 'Tên đăng nhập là bắt buộc!']"
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
@@ -84,7 +84,7 @@
                     :append-icon="isHidePassword ? 'mdi-eye-off' : 'mdi-eye'"
                     :type="isHidePassword ? 'password' : 'text'"
                     @click:append="() => (isHidePassword = !isHidePassword)"
-                    :rules="[v => !!v || 'Mật khẩu là bắt buộc!']"
+                    :rules="[(v) => !!v || 'Mật khẩu là bắt buộc!']"
                   ></v-text-field>
                 </div>
               </div>
@@ -96,7 +96,7 @@
                         v-model="accountDoctor.name"
                         label="Họ và tên*"
                         placeholder=""
-                        :rules="[v => !!v || 'Họ và tên là bắt buộc!']"
+                        :rules="[(v) => !!v || 'Họ và tên là bắt buộc!']"
                         v-bind="attrs"
                         v-on="on"
                       ></v-text-field>
@@ -112,7 +112,7 @@
                         label="Email"
                         placeholder=""
                         :rules="[
-                          v => /.+@.+\..+/.test(v) || 'E-mail không hợp lệ!'
+                          (v) => /.+@.+\..+/.test(v) || 'E-mail không hợp lệ!',
                         ]"
                         v-bind="attrs"
                         v-on="on"
@@ -199,7 +199,7 @@
                     v-model="accountDoctor.specialty"
                     :items="specialties"
                     label="Chuyên khoa*"
-                    :rules="[v => !!v || 'Chuyên khoa là bắt buộc!']"
+                    :rules="[(v) => !!v || 'Chuyên khoa là bắt buộc!']"
                     placeholder=""
                     clearable
                   ></v-select>
@@ -241,8 +241,6 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
-
-  
   </div>
 </template>
 
@@ -258,38 +256,38 @@ export default {
           align: "start",
           sortable: false,
           value: "name",
-          class: "font-weight-bold  green darken-2 white--text"
+          class: "font-weight-bold  green darken-2 white--text",
         },
         {
           text: "Giới tính",
           value: "gender",
           sortable: false,
-          class: "font-weight-bold  green darken-1 white--text"
+          class: "font-weight-bold  green darken-1 white--text",
         },
         {
           text: "Chuyên khoa",
           value: "specialty",
           sortable: false,
-          class: "font-weight-bold  green darken-2 white--text"
+          class: "font-weight-bold  green darken-2 white--text",
         },
         {
           text: "Học vị",
           value: "level",
           sortable: false,
-          class: "font-weight-bold  green darken-1 white--text"
+          class: "font-weight-bold  green darken-1 white--text",
         },
         {
           text: "Số điện thoại",
           value: "phoneNumber",
           sortable: false,
-          class: "font-weight-bold  green darken-2 white--text"
+          class: "font-weight-bold  green darken-2 white--text",
         },
         {
           text: "Email",
           value: "email",
           sortable: false,
-          class: "font-weight-bold  green darken-1 white--text"
-        }
+          class: "font-weight-bold  green darken-1 white--text",
+        },
       ],
       lstAccountDoctor: [
         {
@@ -304,7 +302,7 @@ export default {
           dob: "2000-04-20",
           specialty: "Khoa Nhi",
           level: "BS",
-          role: "ROLE_DOCTOR"
+          role: "ROLE_DOCTOR",
         },
         {
           name: "ABC",
@@ -317,8 +315,8 @@ export default {
           dob: "2000-04-20",
           specialty: "Khoa Nhi",
           level: "BS",
-          role: "ROLE_DOCTOR"
-        }
+          role: "ROLE_DOCTOR",
+        },
       ],
       accountDoctor: {},
       createAccDoctor: {
@@ -332,7 +330,7 @@ export default {
         dob: undefined,
         specialty: undefined,
         level: undefined,
-        role: "ROLE_DOCTOR"
+        role: "ROLE_DOCTOR",
       },
       isSelected: false,
       valid: false,
@@ -343,7 +341,7 @@ export default {
       menuDOB: false,
       onlyNumber: onlyNumber,
       dialogCreate: false,
-      search: ""
+      search: "",
     };
   },
   methods: {
@@ -359,7 +357,7 @@ export default {
       this.dialogCreate = false;
     },
     async getSpecialties() {
-      axios.get(`${url}/api/specialties`).then(res => {
+      axios.get(`${url}/api/specialties`).then((res) => {
         this.specialties = res.data.results;
       });
     },
@@ -367,12 +365,12 @@ export default {
       this.accountDoctor = row;
       this.isSelected = true;
       this.dialogCreate = true;
-    }
+    },
   },
   watch: {
     menu(val) {
       val && setTimeout(() => (this.activePicker = "YEAR"));
-    }
-  }
+    },
+  },
 };
 </script>
