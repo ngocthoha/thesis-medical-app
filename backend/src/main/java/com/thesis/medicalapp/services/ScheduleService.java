@@ -16,6 +16,6 @@ public interface ScheduleService {
     int removeSchedule(String id);
     List<ScheduleDTO> getSchedulesByDoctor();
     ScheduleDTO getScheduleByDateAndDoctor(Date data, Doctor doctor);
-    List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd);
+    List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd, String doctorId);
     List<ScheduleDTO> getSchedulesByDateAndDoctor(String date, String doctorId);
 }

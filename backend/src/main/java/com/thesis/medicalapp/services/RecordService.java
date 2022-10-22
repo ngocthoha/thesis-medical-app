@@ -8,4 +8,5 @@ import java.util.List;
 public interface RecordService {
     RecordDTO saveRecord(Record record);
     List<RecordDTO> getRecords();
+    List<RecordDTO> getRecordsByProfile(String profileId);
 }

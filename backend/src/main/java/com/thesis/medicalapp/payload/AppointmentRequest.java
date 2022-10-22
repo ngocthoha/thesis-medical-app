@@ -39,5 +39,6 @@ public class AppointmentRequest {
     @NotEmpty
     @NotBlank
     private String fee;
+    @NotNull
     private Boolean isPaid;
 }

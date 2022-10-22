@@ -38,4 +38,16 @@ public class RecordServiceImpl implements RecordService {
         RecordDTO recordResponse = RecordDTO.from(recordEntity);
         return recordResponse;
     }
+
+    @Override
+    public List<RecordDTO> getRecordsByProfile(String profileId) {
+        List<Record> records = recordRepository.findByAppointment_Profile_Id(profileId)
+                .stream()
+                .collect(Collectors.toList());
+        List<RecordDTO> recordDTOS = records.stream().map(p -> {
+            RecordDTO recordDTO = RecordDTO.from(p);
+            return recordDTO;
+        }).collect(Collectors.toList());
+        return recordDTOS;
+    }
 }

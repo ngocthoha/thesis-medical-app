@@ -34,6 +34,7 @@ public class FileStoreController {
         }
         //check if the file is an image
         if (!Arrays.asList(
+                IMAGE_PNG.getMimeType(),
                 IMAGE_BMP.getMimeType(),
                 IMAGE_GIF.getMimeType(),
                 IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {

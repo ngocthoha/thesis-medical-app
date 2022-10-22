@@ -23,4 +23,6 @@ public class RoomDate {
     private List<String> times;
     @NotNull
     private Room room;
+    @NotNull
+    private Integer numOfAppointmentPerHour;
 }

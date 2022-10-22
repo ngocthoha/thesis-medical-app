@@ -37,6 +37,8 @@ public class AppointmentDTO {
     private Status status;
     @NotNull
     private ScheduleType type;
+    private Boolean isPaid;
+    private String fee;
 
     public static AppointmentDTO from(Appointment appointment) {
         return AppointmentDTO.builder()
@@ -51,6 +53,8 @@ public class AppointmentDTO {
                 .files(appointment.getFiles())
                 .status(appointment.getStatus())
                 .type(appointment.getType())
+                .isPaid(appointment.getIsPaid())
+                .fee(appointment.getFee())
                 .build();
     }
 }

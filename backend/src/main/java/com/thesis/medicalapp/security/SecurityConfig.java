@@ -39,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**").permitAll()
                 .antMatchers(POST, "/api/auth/register/**").permitAll()
                 .antMatchers(GET, "/api/users/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers(GET, "/api/payment/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(PATCH, "/api/users/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/profiles/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
@@ -47,10 +48,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/api/files/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/appointments/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/doctor/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers(GET, "/api/doctor/schedules/date").hasAnyAuthority( "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/records/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/doctors/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers(GET, "/api/doctors/**").permitAll()
                 .antMatchers(POST, "/api/rooms/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
-                .antMatchers("/api/hospitals/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers(POST,"/api/hospitals/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
+                .antMatchers(GET,"/api/hospitals/**").permitAll()
                 .anyRequest().authenticated();
         http.addFilter(customAuthenticationFilter);
         http.addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class);

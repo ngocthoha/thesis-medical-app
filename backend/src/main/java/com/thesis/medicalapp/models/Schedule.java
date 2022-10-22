@@ -26,6 +26,7 @@ public class Schedule {
     private Room room;
     @ElementCollection
     private List<String> times;
+    private Integer numOfAppointmentPerHour = 2;
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;

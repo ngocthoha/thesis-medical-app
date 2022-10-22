@@ -23,6 +23,7 @@ public class ScheduleDTO {
     private Date date;
     private Room room;
     private List<String> times;
+    private Integer numOfAppointmentPerHour;
     private DoctorDTO doctor;
 
     public static ScheduleDTO from(Schedule schedule) {
@@ -32,6 +33,7 @@ public class ScheduleDTO {
                 .date(schedule.getDate())
                 .room(schedule.getRoom())
                 .times(schedule.getTimes())
+                .numOfAppointmentPerHour(schedule.getNumOfAppointmentPerHour())
                 .doctor(DoctorDTO.from(schedule.getDoctor()))
                 .build();
     }

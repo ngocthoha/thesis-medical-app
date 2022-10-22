@@ -2,6 +2,7 @@ package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Room;
+import com.thesis.medicalapp.models.Time;
 import com.thesis.medicalapp.payload.ListSchedule;
 import com.thesis.medicalapp.payload.RoomDate;
 import com.thesis.medicalapp.payload.response.ApiResponse;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -33,10 +35,14 @@ public class ScheduleController {
             ScheduleDTO schedule = new ScheduleDTO();
             schedule.setType(d.getType());
             schedule.setDate(d.getDate());
+            schedule.setNumOfAppointmentPerHour(d.getNumOfAppointmentPerHour());
             schedule.setDoctor(request.getDoctor());
             Room room = roomRepository.findRoomById(d.getRoom().getId());
             if (room == null) throw new ApiRequestException("Could not find room!");
             schedule.setRoom(room);
+            for (String time : d.getTimes()) {
+                if (!Arrays.asList(Time.times).contains(time)) throw new ApiRequestException("Invalid time!");
+            }
             schedule.setTimes(d.getTimes());
             ScheduleDTO scheduleDTO = scheduleService.saveSchedule(schedule);
             scheduleDTOS.add(scheduleDTO);
@@ -86,7 +92,7 @@ public class ScheduleController {
         );
     }
     @GetMapping("/doctor/schedules/date")
-    public ResponseEntity<ApiResponse> getAllByDateIsBetweenAndDoctor(@RequestParam("dateStart") String dateStart, @RequestParam("dateEnd") String dateEnd) {
+    public ResponseEntity<ApiResponse> getDoctorsByStartDateAndEndDate(@RequestParam("dateStart") String dateStart, @RequestParam("dateEnd") String dateEnd, @RequestParam("doctorId") String doctorId) {
         Date DateStart = new Date();
         try {
             DateStart = new SimpleDateFormat("yyyy-MM-dd").parse(dateStart);
@@ -99,7 +105,7 @@ public class ScheduleController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        List<ScheduleDTO> scheduleDTOS = scheduleService.getAllByDateIsBetweenAndDoctor(DateStart, DateEnd);
+        List<ScheduleDTO> scheduleDTOS = scheduleService.getAllByDateIsBetweenAndDoctor(DateStart, DateEnd, doctorId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(scheduleDTOS)
         );

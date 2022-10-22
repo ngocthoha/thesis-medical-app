@@ -66,7 +66,7 @@ public class ThesisMedicalAppApplication {
             userService.saveUser(doctor);
             Doctor doctorEntity = doctorRepository.findDoctorByUsername("doctor");
             Room room = roomRepository.save(new Room(null,"H2", null));
-            scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, doctorEntity));
+            scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, 2, doctorEntity));
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");

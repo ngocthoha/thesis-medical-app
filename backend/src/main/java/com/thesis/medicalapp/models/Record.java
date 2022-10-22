@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "records")
-public class Record {
+public class Record extends AuditLog {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -24,24 +24,12 @@ public class Record {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
     private Long recordId;
-    private String pathological;
-    private String personalMedicalHistory;
-    private String familyMedicalHistory;
-    private String bodyInspection;
-    private String bloodVessel;
-    private String temperature;
-    private String bloodPressure;
-    private String heartbeat;
-    private String summary;
-    private String partsInspection;
-    private Boolean hospitalize;
-    private String facultyTreatment;
+    private String diagnose;
+    private String prescribe;
     @OneToMany
     private Collection<Medicine> medicines;
-    private String notes;
     @ElementCollection
     private List<Date> reExaminationDate;
-    @OneToMany
-    private Collection<File> files;
-    private Date createdDate;
+    @ElementCollection
+    private List<String> clinicalResultImageUrl;
 }

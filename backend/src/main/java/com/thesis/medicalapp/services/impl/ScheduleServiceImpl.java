@@ -34,11 +34,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ScheduleDTO saveSchedule(@Valid ScheduleDTO scheduleDTO) {
         Schedule schedule = new Schedule();
-//        if (scheduleDTO.getType() == null) throw new ValidationHandler();
         schedule.setType(scheduleDTO.getType());
         schedule.setDate(scheduleDTO.getDate());
         schedule.setTimes(scheduleDTO.getTimes());
         schedule.setRoom(scheduleDTO.getRoom());
+        schedule.setNumOfAppointmentPerHour(scheduleDTO.getNumOfAppointmentPerHour());
         Doctor doctor = doctorRepository.findDoctorById(scheduleDTO.getDoctor().getId());
         schedule.setDoctor(doctor);
         log.info("Saving new schedule of {} to the database", doctor.getUsername());
@@ -133,8 +133,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleDTO;
     }
     @Override
-    public List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd) {
-        Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
+    public List<ScheduleDTO> getAllByDateIsBetweenAndDoctor(Date dateStart, Date dateEnd, String doctorId) {
+        Doctor doctor = doctorRepository.findDoctorById(doctorId);
+        if (doctor == null) throw new ApiRequestException("Could not find doctor!");
         List<Schedule> schedules = scheduleRepository.getAllByDateIsBetweenAndDoctor(dateStart, dateEnd, doctor);
         List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
             ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
