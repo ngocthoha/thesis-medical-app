@@ -470,7 +470,7 @@ export default {
       "14:00 - 15:00",
       "15:00 - 16:00",
       "16:00 - 17:00",
-      "17:00 - 18:00"
+      "17:00 - 18:00",
     ],
     patient_count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     patient_select: 1,
@@ -481,26 +481,16 @@ export default {
     typeToLabel: {
       month: "Tháng",
       week: "Tuần",
-      day: "Ngày"
+      day: "Ngày",
     },
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false,
     events: [],
-    colors: [
-      //   "#476D92"
-      "#475467"
-      //   "indigo",
-      //   "deep-purple",
-      //   "cyan",
-      //   "green",
-      //   "orange",
-      //   "grey darken-1"
-    ],
 
     colors: {
       online: { color: "#98A2B3", text: "white" },
-      offline_color: { color: "#6D91B3", text: "white" }
+      offline_color: { color: "#6D91B3", text: "white" },
     },
     names: [
       "Meeting",
@@ -510,7 +500,7 @@ export default {
       "Event",
       "Birthday",
       "Conference",
-      "Party"
+      "Party",
     ],
 
     doctor_calendar: [
@@ -520,21 +510,21 @@ export default {
           {
             type: "online",
             name: "Tư vấn online",
-            time: "12:00-13:00"
+            time: "12:00-13:00",
           },
           {
             type: "offline",
             name: "Khám tại viện",
-            time: "13:00-14:00"
+            time: "13:00-14:00",
           },
           {
             type: "online",
             name: "Tư vấn online",
-            time: "13:00-14:00"
-          }
-        ]
-      }
-    ]
+            time: "13:00-14:00",
+          },
+        ],
+      },
+    ],
   }),
   mounted() {
     this.$refs.calendar.checkChange();
@@ -601,10 +591,10 @@ export default {
       //       timed: true
       //     });
       //   }
-      this.doctor_calendar.forEach(calendar => {
+      this.doctor_calendar.forEach((calendar) => {
         const day = new Date(calendar.date);
         if (day >= min && day <= max) {
-          calendar.event_in_day.forEach(event => {
+          calendar.event_in_day.forEach((event) => {
             const time_frame = event.time.split("-");
             const start_string = `${calendar.date}T${time_frame[0]}:00`;
             const end_string = `${calendar.date}T${time_frame[1]}:00`;
@@ -621,8 +611,8 @@ export default {
               timed: true,
               details: {
                 max_count: 5,
-                current_count: 3
-              }
+                current_count: 3,
+              },
             });
           });
         }
@@ -635,8 +625,8 @@ export default {
     },
     intervalFormatter(locale, getOptions) {
       return locale.time;
-    }
-  }
+    },
+  },
 };
 </script>
 
