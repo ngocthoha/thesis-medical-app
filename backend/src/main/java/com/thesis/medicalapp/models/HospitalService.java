@@ -12,7 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "services")
-public class Service extends AuditLog{
+public class HospitalService extends AuditLog{
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -21,7 +21,7 @@ public class Service extends AuditLog{
     private String info;
     private Integer registrationNumber = 0;
     private String price;
-    private String specialty;
+    private SpecialtyType specialty;
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;

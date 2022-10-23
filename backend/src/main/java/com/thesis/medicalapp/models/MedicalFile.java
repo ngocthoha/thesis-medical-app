@@ -21,5 +21,5 @@ public class MedicalFile {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
     private String imageUrl;
-    private String type;
+    private MedicalFileType type;
 }

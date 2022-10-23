@@ -24,7 +24,7 @@ public class RecordDTO {
     private String prescribe;
     private Collection<Medicine> medicines;
     private List<Date> reExaminationDate;
-    private List<String> clinicalResultImageUrl;
+    private Collection<MedicalFile> files;
 
     public static RecordDTO from(Record record) {
         return RecordDTO.builder()
@@ -35,7 +35,7 @@ public class RecordDTO {
                 .prescribe(record.getPrescribe())
                 .medicines(record.getMedicines())
                 .reExaminationDate(record.getReExaminationDate())
-                .clinicalResultImageUrl(record.getClinicalResultImageUrl())
+                .files(record.getFiles())
                 .build();
     }
 }

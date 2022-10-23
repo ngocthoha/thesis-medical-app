@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.controllers;
 
+import com.thesis.medicalapp.models.SpecialtyType;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -9,27 +10,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class SpecialtyController {
-    private String[] specialties = {
-            "Chuẩn Đoán Hình Ảnh",
-            "Cơ - Xương - Khớp",
-            "Nhi Khoa",
-            "Sản - Phụ Khoa",
-            "Tai - Mũi - Họng",
-            "Tim Mạch",
-            "Hô Hấp và Miễn Dịch Dị Ứng Lâm Sàng",
-            "Nội Soi",
-            "Tiêu Hóa Gan Mật",
-            "Xét Nghiệm",
-            "Tâm Thần Kinh",
-            "Khoa Ngoại"
-    };
+    private List<String> specialties = new ArrayList<>();
     @GetMapping("/specialties")
     public ResponseEntity<ApiResponse> getSpecialty() {
+        for(SpecialtyType s : SpecialtyType.values()) {
+            this.specialties.add(s.getName());
+        }
         return ResponseEntity.ok(
                 new ApiResponse(this.specialties)
         );

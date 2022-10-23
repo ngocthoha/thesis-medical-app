@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.payload;
 
+import com.thesis.medicalapp.models.MedicalFile;
 import com.thesis.medicalapp.models.Medicine;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
 import lombok.AllArgsConstructor;
@@ -21,5 +22,5 @@ public class RecordRequest {
     private String prescribe;
     private Collection<Medicine> medicines;
     private String reExaminationDate;
-    private List<String> clinicalResultImageUrl;
+    private Collection<MedicalFile> files;
 }

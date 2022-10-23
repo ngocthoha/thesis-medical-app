@@ -19,14 +19,14 @@ public class HospitalController {
     public ResponseEntity<Object> saveHospital(@RequestBody HospitalDTO hospitalDTO) {
         HospitalDTO hospitalResponse = hospitalService.saveHospital(hospitalDTO);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", hospitalResponse)
+                new ApiResponse<>(hospitalResponse)
         );
     }
     @GetMapping("")
     public ResponseEntity<ApiResponse> getHospitals() {
         List<HospitalDTO> hospitals = hospitalService.getHospitals();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", hospitals)
+                new ApiResponse<>( hospitals)
         );
     }
     @GetMapping("/{id}")
@@ -34,7 +34,7 @@ public class HospitalController {
         try {
             HospitalDTO hospitalDTO = hospitalService.getHospitalById(id);
             return ResponseEntity.status(HttpStatus.OK).body(
-                    new ApiResponse<>(1, "Success", hospitalDTO)
+                    new ApiResponse<>(hospitalDTO)
             );
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

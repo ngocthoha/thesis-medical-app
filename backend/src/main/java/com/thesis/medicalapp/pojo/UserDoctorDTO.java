@@ -1,9 +1,6 @@
 package com.thesis.medicalapp.pojo;
 
-import com.thesis.medicalapp.models.Doctor;
-import com.thesis.medicalapp.models.Gender;
-import com.thesis.medicalapp.models.Hospital;
-import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,7 +35,7 @@ public class UserDoctorDTO {
                 .email(doctor.getEmail())
                 .phone(doctor.getPhone())
                 .dob(doctor.getDob())
-                .specialty(doctor.getSpecialty())
+                .specialty(doctor.getSpecialty().getName())
                 .level(doctor.getLevel())
                 .bio(doctor.getBio())
                 .registrationNumber(doctor.getRegistrationNumber())

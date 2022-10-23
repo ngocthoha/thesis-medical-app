@@ -21,7 +21,7 @@ public class Doctor extends User {
     private Gender gender;
     private Date dob;
     private String email;
-    private String specialty;
+    private SpecialtyType specialty;
     private String level;
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id")
@@ -30,7 +30,7 @@ public class Doctor extends User {
     private Integer registrationNumber = 0;
     private String price;
 
-    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  String specialty, String level, String bio, String price, Hospital hospital) {
+    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  SpecialtyType specialty, String level, String bio, String price, Hospital hospital) {
         super(id, username, phone, password, enabled, imageUrl, roles);
         this.name = name;
         this.gender = gender;

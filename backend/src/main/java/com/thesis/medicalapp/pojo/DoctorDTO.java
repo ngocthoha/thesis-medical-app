@@ -26,7 +26,7 @@ public class DoctorDTO {
                 .id(doctor.getId())
                 .name(doctor.getName())
                 .email(doctor.getEmail())
-                .specialty(doctor.getSpecialty())
+                .specialty(doctor.getSpecialty().getName())
                 .level(doctor.getLevel())
                 .bio(doctor.getBio())
                 .registrationNumber(doctor.getRegistrationNumber())

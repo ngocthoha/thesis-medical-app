@@ -1,6 +1,7 @@
 package com.thesis.medicalapp.pojo;
 
-import com.thesis.medicalapp.models.Service;
+import com.thesis.medicalapp.models.HospitalService;
+import com.thesis.medicalapp.models.SpecialtyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,16 +19,18 @@ public class ServiceDTO {
     private String price;
     private String specialty;
     private HospitalDTO hospital;
+    private String serviceImageUrl;
 
-    public static ServiceDTO from(Service service) {
+    public static ServiceDTO from(HospitalService hospitalService) {
         return ServiceDTO.builder()
-                .id(service.getId())
-                .name(service.getName())
-                .info(service.getInfo())
-                .registrationNumber(service.getRegistrationNumber())
-                .price(service.getPrice())
-                .specialty(service.getSpecialty())
-                .hospital(HospitalDTO.from(service.getHospital()))
+                .id(hospitalService.getId())
+                .name(hospitalService.getName())
+                .info(hospitalService.getInfo())
+                .registrationNumber(hospitalService.getRegistrationNumber())
+                .price(hospitalService.getPrice())
+                .specialty(hospitalService.getSpecialty().getName())
+                .hospital(HospitalDTO.from(hospitalService.getHospital()))
+                .serviceImageUrl(hospitalService.getServiceImageUrl())
                 .build();
     }
 }
