@@ -9,33 +9,47 @@
       v-model="selected"
       :headers="headers_appointment"
       :items="list_appointment"
-      :single-select="singleSelect"
+      :single-select="true"
       item-key="id"
       show-select
       class="elevation-1"
       checkbox-color="#3C5E7E"
     >
       <template v-slot:top>
-        <div class="pa-3">
-          <v-btn>Hủy</v-btn>
+        <div class="pa-6 d-flex flex-row">
+          <v-btn
+            elevation="0"
+            color="#537DA5"
+            outlined
+            class="btn font-weight-medium"
+            >Hôm nay</v-btn
+          >
+          <v-btn class="ml-3 btn font-weight-medium" color="#537DA5" outlined
+            >Tất cả</v-btn
+          >
+          <v-spacer></v-spacer>
+          <v-btn
+            class="mr-3 white--text font-weight-medium btn"
+            elevation="0"
+            color="#476D92"
+            @click.stop="examinate()"
+            >Khám</v-btn
+          >
+          <v-btn
+            class="mr-3 white--text font-weight-medium btn"
+            elevation="0"
+            color="#667085"
+            >Chuyển lịch</v-btn
+          >
         </div>
-        <v-switch
-          v-model="singleSelect"
-          label="Chọn một"
-          class="pa-3"
-          color="#537DA5"
-        ></v-switch>
       </template>
-      <template v-slot:[`item.actions`]="{ item }">
-        <v-btn
-          color="#537DA5"
-          elevation="0"
-          class="btn"
-          @click.stop="examinate(item)"
-          ><p class="ma-0 font-weight-medium" style="color: white">
-            Khám
-          </p></v-btn
-        >
+      <template v-slot:[`item.room`]="{ item }">
+        <div class="d-flex flex-row align-center">
+          <p class="ma-0">{{ item.room.name }}</p>
+          <v-icon v-if="item.room.type === 'online'" class="ml-2"
+            >mdi-video-outline</v-icon
+          >
+        </div>
       </template>
     </v-data-table>
 
@@ -59,7 +73,8 @@
           <v-tabs color="#314E6A">
             <v-tab> Thông tin khám </v-tab>
             <v-tab> Lịch sử khám </v-tab>
-            <v-tab> Khám và kê đơn </v-tab>
+            <v-tab> Khám bệnh</v-tab>
+            <v-tab>Kê đơn</v-tab>
             <!-- profile -->
             <v-tab-item>
               <v-card flat class="d-flex flex-column pa-6">
@@ -255,7 +270,11 @@
                     ></v-textarea>
                   </v-card>
                 </div>
-                <v-divider></v-divider>
+              </v-card>
+            </v-tab-item>
+            <!-- međicine -->
+            <v-tab-item>
+              <v-card flat class="pa-6 d-flex flex-column align-center">
                 <p class="d-flex mt-6 justify-center font-weight-bold">
                   KÊ ĐƠN
                 </p>
@@ -399,9 +418,7 @@
                     ></v-text-field>
                   </v-card>
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Liều:
-                    </p>
+                    <p class="text-body-2 ma-0 font-weight-medium">Liều:</p>
                     <v-text-field
                       solo
                       flat
@@ -409,9 +426,7 @@
                     ></v-text-field>
                   </v-card>
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Tổng số:
-                    </p>
+                    <p class="text-body-2 ma-0 font-weight-medium">Tổng số:</p>
                     <v-text-field
                       solo
                       flat
@@ -442,9 +457,7 @@
                     ></v-text-field>
                   </v-card>
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Tối uống:
-                    </p>
+                    <p class="text-body-2 ma-0 font-weight-medium">Tối uống:</p>
                     <v-text-field
                       solo
                       flat
@@ -487,21 +500,20 @@
 export default {
   data() {
     return {
-      singleSelect: false,
       selected: [],
       headers_appointment: [
         {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName"
+          value: "lastName",
         },
         { text: "Tên", value: "firstName" },
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
         { text: "Khung giờ khám", value: "time" },
-        { text: "Tác vụ", value: "actions", sortable: false }
+        { text: "Phòng", value: "room", sortable: false },
       ],
       list_appointment: [
         {
@@ -511,7 +523,12 @@ export default {
           dob: "03/03/2000",
           gender: "Nam",
           date_medical_examination: "20/10/2022",
-          time: "13:00-14:00"
+          time: "13:00-14:00",
+          room: {
+            type: "online",
+            name: "H1",
+            link: "https://www.google.com/",
+          },
         },
         {
           id: "2",
@@ -520,7 +537,12 @@ export default {
           dob: "03/03/2003",
           gender: "Nam",
           date_medical_examination: "20/10/2022",
-          time: "13:00-14:00"
+          time: "13:00-14:00",
+          room: {
+            type: "offline",
+            name: "H1",
+            link: "https://www.google.com/",
+          },
         },
         {
           id: "3",
@@ -529,8 +551,13 @@ export default {
           dob: "03/03/2004",
           gender: "Nữ",
           date_medical_examination: "20/10/2022",
-          time: "13:00-14:00"
-        }
+          time: "13:00-14:00",
+          room: {
+            type: "offline",
+            name: "H1",
+            link: "https://www.google.com/",
+          },
+        },
       ],
       exam_dialog: false,
       from_date_menu: false,
@@ -543,32 +570,32 @@ export default {
           text: "Tên",
           align: "start",
           sortable: false,
-          value: "name"
+          value: "name",
         },
         { text: "Số lượng", value: "mount", sortable: false },
         { text: "Liều", value: "fat", sortable: false },
-        { text: "Tác vụ", value: "actions", sortable: false }
+        { text: "Tác vụ", value: "actions", sortable: false },
       ],
       desserts: [
         {
           name: "Frozen Yogurt",
           mount: 159,
-          fat: 6.0
+          fat: 6.0,
         },
         {
           name: "Ice cream sandwich",
           mount: 237,
-          fat: 9.0
-        }
-      ]
+          fat: 9.0,
+        },
+      ],
     };
   },
   methods: {
-    examinate(item) {
+    examinate() {
       this.exam_dialog = true;
       console.log(item.firstName);
-    }
-  }
+    },
+  },
 };
 </script>
 
