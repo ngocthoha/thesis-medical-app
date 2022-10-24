@@ -7,7 +7,7 @@
     </v-footer>
     <v-data-table
       v-model="selected"
-      :headers="headers"
+      :headers="headers_appointment"
       :items="list_appointment"
       :single-select="singleSelect"
       item-key="id"
@@ -27,12 +27,12 @@
         ></v-switch>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
-        <v-btn color="#537DA5" elevation="0" class="btn"
-          ><p
-            class="ma-0 font-weight-medium"
-            style="color: white"
-            @click.stop="examinate(item)"
-          >
+        <v-btn
+          color="#537DA5"
+          elevation="0"
+          class="btn"
+          @click.stop="examinate(item)"
+          ><p class="ma-0 font-weight-medium" style="color: white">
             Khám
           </p></v-btn
         >
@@ -369,6 +369,111 @@
                   <!-- empty card -->
                   <v-card width="30%" elevation="0"></v-card>
                 </div>
+                <p class="mb-2 mt-5 font-weight-medium text-body-2">
+                  Danh sách thuốc:
+                </p>
+                <v-card class="pa-6" color="#EEF2F6" width="65%" elevation="0">
+                  <v-data-table
+                    :headers="headers"
+                    :items="desserts"
+                    class="elevation-1 font-weight-medium"
+                    hide-default-footer
+                  >
+                    <template v-slot:[`item.actions`]="{ item }">
+                      <v-icon small @click.stop="deleteItem(item)">
+                        mdi-delete
+                      </v-icon>
+                    </template>
+                  </v-data-table>
+                </v-card>
+
+                <div class="d-flex flex-row justify-space-between mt-5">
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Tên thuốc:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Liều:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Tổng số:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                </div>
+
+                <div class="d-flex flex-row justify-space-between">
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Sáng uống:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Chiều uống:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Tối uống:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                </div>
+
+                <div class="d-flex flex-row justify-space-between">
+                  <v-card width="30%" elevation="0" class="d-flex flex-column">
+                    <p class="text-body-2 ma-0 font-weight-medium">
+                      Đơn vị uống:
+                    </p>
+                    <v-text-field
+                      solo
+                      flat
+                      background-color="#EEF2F6"
+                    ></v-text-field>
+                  </v-card>
+                </div>
+                <div class="d-flex flex-row justify-center">
+                  <v-btn
+                    color="#537DA5"
+                    class="white--text btn font-weight-medium text-body-2"
+                    width="30%"
+                    elevation="0"
+                    >Thêm thuốc</v-btn
+                  >
+                </div>
               </v-card>
             </v-tab-item>
           </v-tabs>
@@ -384,18 +489,19 @@ export default {
     return {
       singleSelect: false,
       selected: [],
-      headers: [
+      headers_appointment: [
         {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName",
+          value: "lastName"
         },
         { text: "Tên", value: "firstName" },
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
-        { text: "Tác vụ", value: "actions", sortable: false },
+        { text: "Khung giờ khám", value: "time" },
+        { text: "Tác vụ", value: "actions", sortable: false }
       ],
       list_appointment: [
         {
@@ -405,6 +511,7 @@ export default {
           dob: "03/03/2000",
           gender: "Nam",
           date_medical_examination: "20/10/2022",
+          time: "13:00-14:00"
         },
         {
           id: "2",
@@ -413,6 +520,7 @@ export default {
           dob: "03/03/2003",
           gender: "Nam",
           date_medical_examination: "20/10/2022",
+          time: "13:00-14:00"
         },
         {
           id: "3",
@@ -421,26 +529,56 @@ export default {
           dob: "03/03/2004",
           gender: "Nữ",
           date_medical_examination: "20/10/2022",
-        },
+          time: "13:00-14:00"
+        }
       ],
       exam_dialog: false,
       from_date_menu: false,
       from_date: "",
       to_date_menu: false,
       to_date: "",
+
+      headers: [
+        {
+          text: "Tên",
+          align: "start",
+          sortable: false,
+          value: "name"
+        },
+        { text: "Số lượng", value: "mount", sortable: false },
+        { text: "Liều", value: "fat", sortable: false },
+        { text: "Tác vụ", value: "actions", sortable: false }
+      ],
+      desserts: [
+        {
+          name: "Frozen Yogurt",
+          mount: 159,
+          fat: 6.0
+        },
+        {
+          name: "Ice cream sandwich",
+          mount: 237,
+          fat: 9.0
+        }
+      ]
     };
   },
   methods: {
     examinate(item) {
       this.exam_dialog = true;
       console.log(item.firstName);
-    },
-  },
+    }
+  }
 };
 </script>
 
 <style scoped>
 .btn {
   text-transform: none;
+}
+.v-data-table > .v-data-table__wrapper > table > tbody > tr > th,
+.v-data-table > .v-data-table__wrapper > table > thead > tr > th,
+.v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
+  font-size: 20px !important;
 }
 </style>
