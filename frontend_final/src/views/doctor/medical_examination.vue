@@ -395,7 +395,7 @@ export default {
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
-        { text: "", value: "actions", sortable: false },
+        { text: "Tác vụ", value: "actions", sortable: false },
       ],
       list_appointment: [
         {
@@ -432,8 +432,8 @@ export default {
   },
   methods: {
     examinate(item) {
-      console.log(item.firstName);
       this.exam_dialog = true;
+      console.log(item.firstName);
     },
   },
 };
