@@ -274,11 +274,11 @@
             </v-tab-item>
             <!-- međicine -->
             <v-tab-item>
-              <v-card flat class="pa-6 d-flex flex-column align-center">
+              <v-card flat class="pa-6 d-flex flex-column">
                 <p class="d-flex mt-6 justify-center font-weight-bold">
                   KÊ ĐƠN
                 </p>
-                <div class="d-flex flex-row justify-space-between">
+                <div class="d-flex flex-row justify-space-around">
                   <!-- from date -->
                   <v-card class="d-flex flex-column" width="30%" elevation="0">
                     <p class="mb-2 font-weight-medium text-body-2">Từ ngày:</p>
@@ -385,28 +385,45 @@
                       </v-menu>
                     </v-card>
                   </v-card>
-                  <!-- empty card -->
-                  <v-card width="30%" elevation="0"></v-card>
                 </div>
-                <p class="mb-2 mt-5 font-weight-medium text-body-2">
-                  Danh sách thuốc:
-                </p>
-                <v-card class="pa-6" color="#EEF2F6" width="65%" elevation="0">
-                  <v-data-table
-                    :headers="headers"
-                    :items="desserts"
-                    class="elevation-1 font-weight-medium"
-                    hide-default-footer
-                  >
-                    <template v-slot:[`item.actions`]="{ item }">
-                      <v-icon small @click.stop="deleteItem(item)">
-                        mdi-delete
-                      </v-icon>
-                    </template>
-                  </v-data-table>
-                </v-card>
+                <div class="d-flex flex-column align-center">
+                  <v-card width="80%" elevation="0">
+                    <p class="mb-2 mt-5 font-weight-medium text-body-2">
+                      Danh sách thuốc:
+                    </p>
+                  </v-card>
 
-                <div class="d-flex flex-row justify-space-between mt-5">
+                  <v-card
+                    class="pa-6"
+                    color="#EEF2F6"
+                    width="80%"
+                    elevation="0"
+                  >
+                    <div class="d-flex flex-row pb-6">
+                      <v-btn class="btn mr-3">Thêm</v-btn>
+                      <v-btn class="btn mr-3">Chỉnh sửa</v-btn>
+                      <v-btn class="btn">Xóa</v-btn>
+                    </div>
+                    <v-data-table
+                      :headers="headers"
+                      :items="desserts"
+                      class="elevation-1"
+                      single-select
+                      show-select
+                      item-key="name"
+                      checkbox-color="#3C5E7E"
+                      hide-default-footer
+                    >
+                      <template v-slot:[`item.actions`]="{ item }">
+                        <v-icon small @click.stop="deleteItem(item)">
+                          mdi-delete
+                        </v-icon>
+                      </template>
+                    </v-data-table>
+                  </v-card>
+                </div>
+
+                <!-- <div class="d-flex flex-row justify-space-between mt-5">
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">
                       Tên thuốc:
@@ -477,16 +494,7 @@
                       background-color="#EEF2F6"
                     ></v-text-field>
                   </v-card>
-                </div>
-                <div class="d-flex flex-row justify-center">
-                  <v-btn
-                    color="#537DA5"
-                    class="white--text btn font-weight-medium text-body-2"
-                    width="30%"
-                    elevation="0"
-                    >Thêm thuốc</v-btn
-                  >
-                </div>
+                </div> -->
               </v-card>
             </v-tab-item>
           </v-tabs>
