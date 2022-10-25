@@ -400,99 +400,198 @@
                     elevation="0"
                   >
                     <div class="d-flex flex-row pb-6">
-                      <v-btn class="btn mr-3">Thêm</v-btn>
-                      <v-btn class="btn mr-3">Chỉnh sửa</v-btn>
-                      <v-btn class="btn">Xóa</v-btn>
+                      <v-btn
+                        class="btn mr-3 white--text"
+                        color="#537DA5"
+                        elevation="0"
+                        @click.stop="medicine_dialog = true"
+                        >Thêm</v-btn
+                      >
+                      <v-btn
+                        class="btn mr-3 white--text"
+                        color="#667085"
+                        elevation="0"
+                        @click.stop="medicine_dialog = true"
+                        >Chỉnh sửa</v-btn
+                      >
+                      <v-btn
+                        class="btn white--text"
+                        color="#F04438"
+                        elevation="0"
+                        @click="remove_medicine_to_prescriptions"
+                        >Xóa</v-btn
+                      >
                     </div>
                     <v-data-table
-                      :headers="headers"
-                      :items="desserts"
+                      :headers="prescriptions_header"
+                      :items="prescriptions"
                       class="elevation-1"
                       single-select
                       show-select
                       item-key="name"
                       checkbox-color="#3C5E7E"
                       hide-default-footer
+                      no-data-text="Đơn thuốc trống"
                     >
-                      <template v-slot:[`item.actions`]="{ item }">
-                        <v-icon small @click.stop="deleteItem(item)">
-                          mdi-delete
-                        </v-icon>
-                      </template>
                     </v-data-table>
                   </v-card>
                 </div>
 
-                <!-- <div class="d-flex flex-row justify-space-between mt-5">
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Tên thuốc:
-                    </p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
+                <v-dialog v-model="medicine_dialog" width="500">
+                  <v-card class="d-flex flex-column pa-8">
+                    <v-card elevation="0" class="d-flex flex-column">
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Tên thuốc:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card elevation="0" class="d-flex flex-column">
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Đơn vị uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card elevation="0" class="d-flex flex-column">
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Sáng uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card elevation="0" class="d-flex flex-column">
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Chiều uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card elevation="0" class="d-flex flex-column">
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Tối uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card class="d-flex" elevation="0">
+                      <v-btn
+                        class="btn white--text"
+                        color="#F04438"
+                        elevation="0"
+                        >Hủy</v-btn
+                      >
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        color="#6D91B3"
+                        class="white--text btn font-weight-medium"
+                        elevation="0"
+                        @click="add_medicine_to_prescriptions"
+                        >Thêm</v-btn
+                      >
+                    </v-card>
                   </v-card>
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">Liều:</p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
-                  </v-card>
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">Tổng số:</p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
+                </v-dialog>
+                <!-- <div class="d-flex justify-center mt-5">
+                  <v-card
+                    width="80%"
+                    class="d-flex flex-row justify-space-between"
+                    elevation="0"
+                  >
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Tên thuốc:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Đơn vị uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
                   </v-card>
                 </div>
 
-                <div class="d-flex flex-row justify-space-between">
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Sáng uống:
-                    </p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
-                  </v-card>
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Chiều uống:
-                    </p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
-                  </v-card>
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">Tối uống:</p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
-                  </v-card>
-                </div>
-
-                <div class="d-flex flex-row justify-space-between">
-                  <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <p class="text-body-2 ma-0 font-weight-medium">
-                      Đơn vị uống:
-                    </p>
-                    <v-text-field
-                      solo
-                      flat
-                      background-color="#EEF2F6"
-                    ></v-text-field>
+                <div class="d-flex justify-center">
+                  <v-card
+                    width="80%"
+                    elevation="0"
+                    class="d-flex flex-row justify-space-between"
+                  >
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Sáng uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Chiều uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Tối uống:
+                      </p>
+                      <v-text-field
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-text-field>
+                    </v-card>
                   </v-card>
                 </div> -->
               </v-card>
@@ -514,14 +613,14 @@ export default {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName",
+          value: "lastName"
         },
         { text: "Tên", value: "firstName" },
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
         { text: "Khung giờ khám", value: "time" },
-        { text: "Phòng", value: "room", sortable: false },
+        { text: "Phòng", value: "room", sortable: false }
       ],
       list_appointment: [
         {
@@ -535,8 +634,8 @@ export default {
           room: {
             type: "online",
             name: "H1",
-            link: "https://www.google.com/",
-          },
+            link: "https://www.google.com/"
+          }
         },
         {
           id: "2",
@@ -549,8 +648,8 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/",
-          },
+            link: "https://www.google.com/"
+          }
         },
         {
           id: "3",
@@ -563,9 +662,9 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/",
-          },
-        },
+            link: "https://www.google.com/"
+          }
+        }
       ],
       exam_dialog: false,
       from_date_menu: false,
@@ -573,37 +672,35 @@ export default {
       to_date_menu: false,
       to_date: "",
 
-      headers: [
+      prescriptions_header: [
         {
           text: "Tên",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         { text: "Số lượng", value: "mount", sortable: false },
-        { text: "Liều", value: "fat", sortable: false },
-        { text: "Tác vụ", value: "actions", sortable: false },
+        { text: "Liều", value: "fat", sortable: false }
       ],
-      desserts: [
-        {
-          name: "Frozen Yogurt",
-          mount: 159,
-          fat: 6.0,
-        },
-        {
-          name: "Ice cream sandwich",
-          mount: 237,
-          fat: 9.0,
-        },
-      ],
+      prescriptions: [],
+      medicine_dialog: false
     };
   },
   methods: {
     examinate() {
       this.exam_dialog = true;
-      console.log(item.firstName);
     },
-  },
+
+    add_medicine_to_prescriptions() {
+      this.prescriptions.push({ name: "a", mount: 162, fat: "Sáng 2 Tối 2" });
+      this.medicine_dialog = false;
+    },
+
+    remove_medicine_to_prescriptions() {
+      this.prescriptions = [];
+      this.medicine_dialog = false;
+    }
+  }
 };
 </script>
 
