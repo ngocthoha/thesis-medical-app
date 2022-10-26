@@ -447,6 +447,7 @@
                         solo
                         flat
                         background-color="#EEF2F6"
+                        v-model="medicine.name"
                       ></v-text-field>
                     </v-card>
                     <v-card elevation="0" class="d-flex flex-column">
@@ -457,6 +458,7 @@
                         solo
                         flat
                         background-color="#EEF2F6"
+                        v-model="medicine.unit"
                       ></v-text-field>
                     </v-card>
                     <v-card elevation="0" class="d-flex flex-column">
@@ -464,9 +466,23 @@
                         Sáng uống:
                       </p>
                       <v-text-field
+                        type="number"
                         solo
                         flat
                         background-color="#EEF2F6"
+                        v-model="medicine.morning"
+                      ></v-text-field>
+                    </v-card>
+                    <v-card elevation="0" class="d-flex flex-column">
+                      <p class="text-body-2 ma-0 font-weight-medium">
+                        Trưa uống:
+                      </p>
+                      <v-text-field
+                        type="number"
+                        solo
+                        flat
+                        background-color="#EEF2F6"
+                        v-model="medicine.noon"
                       ></v-text-field>
                     </v-card>
                     <v-card elevation="0" class="d-flex flex-column">
@@ -474,8 +490,10 @@
                         Chiều uống:
                       </p>
                       <v-text-field
+                        type="number"
                         solo
                         flat
+                        v-model="medicine.afternoon"
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -484,9 +502,11 @@
                         Tối uống:
                       </p>
                       <v-text-field
+                        type="number"
                         solo
                         flat
                         background-color="#EEF2F6"
+                        v-model="medicine.evening"
                       ></v-text-field>
                     </v-card>
                     <v-card class="d-flex" elevation="0">
@@ -613,14 +633,14 @@ export default {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName"
+          value: "lastName",
         },
         { text: "Tên", value: "firstName" },
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
         { text: "Khung giờ khám", value: "time" },
-        { text: "Phòng", value: "room", sortable: false }
+        { text: "Phòng", value: "room", sortable: false },
       ],
       list_appointment: [
         {
@@ -634,8 +654,8 @@ export default {
           room: {
             type: "online",
             name: "H1",
-            link: "https://www.google.com/"
-          }
+            link: "https://www.google.com/",
+          },
         },
         {
           id: "2",
@@ -648,8 +668,8 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/"
-          }
+            link: "https://www.google.com/",
+          },
         },
         {
           id: "3",
@@ -662,9 +682,9 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/"
-          }
-        }
+            link: "https://www.google.com/",
+          },
+        },
       ],
       exam_dialog: false,
       from_date_menu: false,
@@ -677,13 +697,24 @@ export default {
           text: "Tên",
           align: "start",
           sortable: false,
-          value: "name"
+          value: "name",
         },
         { text: "Số lượng", value: "mount", sortable: false },
-        { text: "Liều", value: "fat", sortable: false }
+        { text: "Liều", value: "use", sortable: false },
+        { text: "Đơn vị uống", value: "unit", sortable: false },
       ],
       prescriptions: [],
-      medicine_dialog: false
+      medicine_dialog: false,
+      medicine_dialog_type: 1,
+      medicine: {
+        name: "",
+        unit: "",
+        count: 0,
+        morning: 0,
+        noon: 0,
+        afternoon: 0,
+        evening: 0,
+      },
     };
   },
   methods: {
@@ -692,15 +723,57 @@ export default {
     },
 
     add_medicine_to_prescriptions() {
-      this.prescriptions.push({ name: "a", mount: 162, fat: "Sáng 2 Tối 2" });
+      let use = "";
+
+      if (this.medicine.morning != 0) {
+        if (use.length == 0) {
+          use = use + "Sáng: " + this.medicine.morning;
+        } else {
+          use = use + ", Sáng: " + this.medicine.morning;
+        }
+      }
+      if (this.medicine.noon != 0) {
+        if (use.length == 0) {
+          use = use + "Trưa: " + this.medicine.noon;
+        } else {
+          use = use + ", Trưa: " + this.medicine.noon;
+        }
+      }
+      if (this.medicine.afternoon != 0) {
+        if (use.length == 0) {
+          use = use + "Chiều: " + this.medicine.afternoon;
+        } else {
+          use = use + ", Chiều: " + this.medicine.afternoon;
+        }
+      }
+      if (this.medicine.evening != 0) {
+        if (use.length == 0) {
+          use = use + "Tối: " + this.medicine.evening;
+        } else {
+          use = use + ", Tối: " + this.medicine.evening;
+        }
+      }
+
+      let total =
+        parseInt(this.medicine.morning) +
+        parseInt(this.medicine.noon) +
+        parseInt(this.medicine.afternoon) +
+        parseInt(this.medicine.evening);
+
+      this.prescriptions.push({
+        name: this.medicine.name,
+        mount: total,
+        use: use,
+        unit: this.medicine.unit,
+      });
       this.medicine_dialog = false;
     },
 
     remove_medicine_to_prescriptions() {
       this.prescriptions = [];
       this.medicine_dialog = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
