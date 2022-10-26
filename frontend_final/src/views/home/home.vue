@@ -42,12 +42,12 @@
                 class="d-flex flex-column"
                 ><p
                   class="font-weight-medium text-center text-lg-start"
-                  style="color:#667085"
+                  style="color: #667085"
                 >
                   Người tiêu dùng thông thái, hãy khám bệnh thông minh. Bạn là
                   người tiêu dùng thông thái, bạn yêu gia đình hơn chính bản
-                  thân mình. Hãy cùng IVIE chăm sóc sức khỏe cho bản thân và gia
-                  đình để mỗi ngày bên nhau là một ngày ý nghĩa.
+                  thân mình. Hãy cùng BLOUSE CARE chăm sóc sức khỏe cho bản thân
+                  và gia đình để mỗi ngày bên nhau là một ngày ý nghĩa.
                 </p></v-card
               >
             </div>
@@ -61,7 +61,7 @@
                     width="155px"
                     color="#537DA5"
                     class="white--text text-body-1"
-                    style="text-transform: none;"
+                    style="text-transform: none"
                     v-on="on"
                     v-bind="attrs"
                     >Đặt khám ngay</v-btn
@@ -89,7 +89,7 @@
                   </v-card>
                   <p
                     class="d-flex justify-center font-weight-bold"
-                    style="font-size:32px"
+                    style="font-size: 32px"
                   >
                     Đặt khám nhanh
                   </p>
@@ -180,7 +180,7 @@
                             </p>
                             <p
                               class="ma-0 ml-2 font-weight-medium text-body-2"
-                              style="color: #537DA5"
+                              style="color: #537da5"
                             >
                               190017473
                             </p>
@@ -343,7 +343,7 @@
                 elevation="0"
                 color="#F9FAFB"
                 dark
-                style="border: 1px solid #D0D5DD; color:#667085"
+                style="border: 1px solid #d0d5dd; color: #667085"
                 >{{ item }}</v-card
               >
             </v-card>
@@ -398,13 +398,13 @@
                     </p>
                     <p
                       class="font-weight-medium text-body-2"
-                      style="color:#667085"
+                      style="color: #667085"
                     >
                       {{ item.place }}
                     </p>
                     <p
                       class="font-weight-bold text-body-2"
-                      style="color:#537DA5"
+                      style="color: #537da5"
                     >
                       {{ item.price }}
                     </p>
@@ -426,7 +426,7 @@
         >
           <p
             class="d-flex justify-center mt-16 text-body-1 font-weight-bold"
-            style="color:#537DA5"
+            style="color: #537da5"
           >
             Dịch vụ
           </p>
@@ -489,7 +489,7 @@
               </p>
               <p
                 class="d-flex justify-center text-center font-weight-regular"
-                style="color:#667085"
+                style="color: #667085"
               >
                 {{ item.content }}
               </p>
@@ -518,7 +518,7 @@
           <v-card elevation="0" color="#FCFCFD" class="d-flex flex-column">
             <p
               class="d-flex justify-center mt-16 font-weight-bold text-body-1"
-              style="color: #537DA5"
+              style="color: #537da5"
             >
               Chuyên khoa
             </p>
@@ -550,7 +550,7 @@
             <v-card
               width="183px"
               height="148px"
-              class="d-flex  justify-center align-center mr-6"
+              class="d-flex justify-center align-center mr-6"
               v-for="(item, i) in special_list"
               :key="i"
               elevation="0"
@@ -605,151 +605,151 @@ export default {
       {
         image: require("@/assets/img/home/home_icon1.png"),
         label: "Chẩn đoán hình ảnh",
-        name: "Chẩn đoán hình ảnh"
+        name: "Chẩn đoán hình ảnh",
       },
       {
         image: require("@/assets/img/home/home_icon2.png"),
         label: "Cơ - Xương - Khớp",
-        name: "Cơ - Xương - Khớp"
+        name: "Cơ - Xương - Khớp",
       },
       {
         image: require("@/assets/img/home/home_icon3.png"),
         label: "Nhi khoa",
-        name: "Nhi khoa"
+        name: "Nhi khoa",
       },
       {
         image: require("@/assets/img/home/home_icon4.png"),
         label: "Sản - Phụ Khoa",
-        name: "Sản - Phụ khoa"
+        name: "Sản - Phụ khoa",
       },
       {
         image: require("@/assets/img/home/home_icon5.png"),
         label: "Tai - Mũi - Họng",
-        name: "Tai - Mũi - Họng"
+        name: "Tai - Mũi - Họng",
       },
       {
         image: require("@/assets/img/home/home_icon6.png"),
         label: "Tim mạch",
-        name: "Tim mạch"
+        name: "Tim mạch",
       },
       {
         image: require("@/assets/img/home/home_icon7.png"),
         label: "Hô hấp",
-        name: "Hô hấp và miễn dịch dị ứng lâm sàng"
+        name: "Hô hấp và miễn dịch dị ứng lâm sàng",
       },
       {
         image: require("@/assets/img/home/home_icon8.png"),
         label: "Nội soi",
-        name: "Nội soi"
+        name: "Nội soi",
       },
       {
         image: require("@/assets/img/home/home_icon9.png"),
         label: "Tiêu hóa gan mật",
-        name: "Tiêu hóa gan mật"
+        name: "Tiêu hóa gan mật",
       },
       {
         image: require("@/assets/img/home/home_icon10.png"),
         label: "Xét nghiệm",
-        name: "Xét nghiệm"
+        name: "Xét nghiệm",
       },
       {
         image: require("@/assets/img/home/home_icon11.png"),
         label: "Khoa ngoại",
-        name: "Khoa ngoại"
+        name: "Khoa ngoại",
       },
       {
         image: require("@/assets/img/home/home_icon12.png"),
         label: "Khoa tâm thần",
-        name: "Tâm thần kinh"
-      }
+        name: "Tâm thần kinh",
+      },
     ],
 
     poular_search_list: [
       "Khám tai mũi họng",
       "Khám sản phụ khoa",
       "Nội soi tiêu hóa",
-      "Siêu âm 2D"
+      "Siêu âm 2D",
     ],
     service_list: [
       {
         img: require("@/assets/img/home/service1.svg"),
         title: "Gói Khám Gan nhiễm mỡ - Tổ hợp y tế MEDIPLUS",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
-        price: "2.480.000 đ"
+        price: "2.480.000 đ",
       },
       {
         img: require("@/assets/img/home/service2.svg"),
         title:
           "Gói khám tổng quát hệ tiêu hoá, gan mật tiêu chuẩn - Tổ hợp y tế MEDIPLUS",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
-        price: "2.220.000 đ"
+        price: "2.220.000 đ",
       },
       {
         img: require("@/assets/img/home/service3.svg"),
         title: "Gói Xét nghiệm tổng quát cho Nam - TTXN LABHOUSE",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
-        price: "1.335.000 đ"
+        price: "1.335.000 đ",
       },
       {
         img: require("@/assets/img/home/service4.svg"),
         title:
           "Test nhanh Cúm A,B cho người Nước ngoài tại Bệnh viện Đa khoa Bảo Sơn",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
-        price: "2.480.000 đ"
-      }
+        price: "2.480.000 đ",
+      },
     ],
     intro_list: [
       {
         img: require("@/assets/img/home/service_intro1.svg"),
         title: "Đặt khám từ xa",
         content:
-          "Bác sĩ của Blouse Care luôn sẵn sàng tư vấn và chăm sóc sức khỏe cho bạn mọi lúc mọi nơi qua video & chat."
+          "Bác sĩ của Blouse Care luôn sẵn sàng tư vấn và chăm sóc sức khỏe cho bạn mọi lúc mọi nơi qua video & chat.",
       },
       {
         img: require("@/assets/img/home/service_intro2.svg"),
         title: "Đội ngũ chuyên gia và cơ sở y tế hàng đầu",
         content:
-          "Dễ dàng kết nối với các bác sĩ ưu tú, tận tâm, có chuyên môn cao."
+          "Dễ dàng kết nối với các bác sĩ ưu tú, tận tâm, có chuyên môn cao.",
       },
       {
         img: require("@/assets/img/home/service_intro3.svg"),
         title: "Tiếp đón ưu tiên với nhiều quyền lợi đặc biệt",
         content:
-          "Đặt khám hẹn trước tại các bệnh viện trung ương, phòng khám hàng đầu."
+          "Đặt khám hẹn trước tại các bệnh viện trung ương, phòng khám hàng đầu.",
       },
       {
         img: require("@/assets/img/home/service_intro4.svg"),
         title: "Giá khám bằng với giá tại cơ sở y tế",
         content:
-          "Không những vậy còn giúp bạn tiết kiệm thời gian và các chi phí khác."
-      }
+          "Không những vậy còn giúp bạn tiết kiệm thời gian và các chi phí khác.",
+      },
     ],
     special_list: [
       {
         img: require("@/assets/img/home/ThanKinh.svg"),
-        title: "Thần kinh"
+        title: "Thần kinh",
       },
       {
         img: require("@/assets/img/home/Nhi.svg"),
-        title: "Nhi khoa"
+        title: "Nhi khoa",
       },
       {
         img: require("@/assets/img/home/CoXuongKhop.svg"),
-        title: "Cơ - Xương - Khớp"
+        title: "Cơ - Xương - Khớp",
       },
       {
         img: require("@/assets/img/home/San.svg"),
-        title: "Sản - Phụ khoa"
+        title: "Sản - Phụ khoa",
       },
       {
         img: require("@/assets/img/home/TaiMuiHong.svg"),
-        title: "Tai - Mũi - Họng"
+        title: "Tai - Mũi - Họng",
       },
       {
         img: require("@/assets/img/home/Tim.svg"),
-        title: "Tim mạch"
-      }
-    ]
+        title: "Tim mạch",
+      },
+    ],
   }),
 
   methods: {
@@ -764,7 +764,7 @@ export default {
     },
     getpage(name) {
       this.$router.push({ name: name });
-    }
+    },
   },
   computed: {
     columns() {
@@ -790,8 +790,8 @@ export default {
         return 24;
       }
       return 40;
-    }
-  }
+    },
+  },
 };
 </script>
 
