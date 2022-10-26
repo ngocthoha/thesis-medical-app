@@ -63,11 +63,23 @@
         >
           <p class="ma-0">Giao diện khám bệnh</p>
           <v-spacer></v-spacer>
-          <v-btn color="#314E6A" elevation="0" icon
-            ><v-icon color="white" @click.stop="exam_dialog = false"
-              >mdi-close</v-icon
-            ></v-btn
+          <v-btn
+            color="white"
+            class="mr-5"
+            elevation="0"
+            outlined
+            @click.stop="exam_dialog = false"
           >
+            Lưu
+          </v-btn>
+          <v-btn
+            color="white"
+            elevation="0"
+            outlined
+            @click.stop="exam_dialog = false"
+          >
+            Hủy
+          </v-btn>
         </v-footer>
         <v-card elevation="0">
           <v-tabs color="#314E6A">
@@ -268,6 +280,173 @@
                       flat
                       background-color="#EEF2F6"
                     ></v-textarea>
+                  </v-card>
+                </div>
+                <p class="d-flex justify-center font-weight-bold">
+                  THÊM KẾT QUẢ CẬN LÂM SÀNG
+                </p>
+                <div class="d-flex flex-row justify-space-between mt-5">
+                  <v-card width="45%" class="d-flex flex-column" elevation="0">
+                    <!-- test results type -->
+                    <div
+                      class="d-flex flex-row justify-space-between align-center"
+                    >
+                      <p class="font-weight-medium text-body-2 ma-0">
+                        Kết quả xét nghiệm
+                      </p>
+                      <v-card width="221" elevation="0">
+                        <v-combobox
+                          spellcheck="false"
+                          v-model="test_select"
+                          :items="test_type"
+                          solo
+                          dense
+                          flat
+                          append-icon="mdi-chevron-down"
+                          item-color="light-blue darken-4"
+                          placeholder="Chọn loại xét nghiệm"
+                          hide-details=""
+                          background-color="#EEF2F6"
+                        ></v-combobox>
+                      </v-card>
+                    </div>
+                    <!-- add test result  -->
+                    <v-card
+                      class="my-5 pa-2 d-flex flex-row"
+                      color="#EEF2F6"
+                      elevation="0"
+                    >
+                      <v-file-input
+                        placeholder="Vui lòng chọn hình ảnh"
+                        solo
+                        dense
+                        prepend-inner-icon="mdi-link-variant"
+                        clear-icon=""
+                        prepend-icon=""
+                        hide-details=""
+                        flat
+                        background-color="#EEF2F6"
+                        v-model="test_file"
+                      ></v-file-input>
+                      <v-btn
+                        class="btn white--text text-body-2"
+                        color="#537DA5"
+                        elevation="0"
+                        @click="addTestFile"
+                        >Tải lên</v-btn
+                      >
+                    </v-card>
+
+                    <!-- list add test result -->
+                    <div
+                      class="d-flex flex-wrap justify-space-between align-center mb-5"
+                      v-for="(image, index) in test_add_list"
+                      :key="index"
+                    >
+                      <p
+                        class="font-weight-medium text-body-2 ma-0"
+                        style="color: #667085"
+                      >
+                        {{ image.type }}
+                      </p>
+                      <v-card
+                        min-width="50%"
+                        outlined
+                        class="pa-3 d-flex flex-row"
+                      >
+                        <v-icon class="mr-2">mdi-image-outline</v-icon>
+                        <v-card min-width="50%" elevation="0">
+                          <p class="ma-0 text-body-2" style="">
+                            {{ image.file_name }}
+                          </p>
+                        </v-card>
+
+                        <v-spacer></v-spacer>
+                        <v-icon @click="removeTestFile(index)"
+                          >mdi-close</v-icon
+                        >
+                      </v-card>
+                    </div>
+                  </v-card>
+                  <v-card width="45%" class="d-flex flex-column" elevation="0">
+                    <!-- Image analysation type -->
+                    <div
+                      class="d-flex flex-row justify-space-between align-center"
+                    >
+                      <p class="font-weight-medium text-body-2 ma-0">
+                        Chuẩn đoán hình ảnh
+                      </p>
+                      <v-card width="221" elevation="0">
+                        <v-combobox
+                          spellcheck="false"
+                          v-model="image_select"
+                          :items="image_analyst_type"
+                          solo
+                          dense
+                          flat
+                          append-icon="mdi-chevron-down"
+                          item-color="light-blue darken-4"
+                          placeholder="Chọn loại hình ảnh"
+                          hide-details=""
+                          background-color="#EEF2F6"
+                        ></v-combobox>
+                      </v-card>
+                    </div>
+                    <!-- add test result  -->
+                    <v-card
+                      color="#EEF2F6"
+                      class="my-5 pa-2 d-flex flex-row"
+                      elevation="0"
+                    >
+                      <v-file-input
+                        placeholder="Vui lòng chọn hình ảnh"
+                        solo
+                        dense
+                        prepend-inner-icon="mdi-link-variant"
+                        clear-icon=""
+                        prepend-icon=""
+                        hide-details=""
+                        flat
+                        background-color="#EEF2F6"
+                      ></v-file-input>
+                      <v-btn
+                        class="btn white--text  text-body-2"
+                        color="#537DA5"
+                        elevation="0"
+                        >Tải lên</v-btn
+                      >
+                    </v-card>
+
+                    <!-- list add test result -->
+                    <div
+                      class="d-flex flex-wrap justify-space-between align-center mb-5"
+                      v-for="(image, index) in test_add_list"
+                      :key="index + 3"
+                    >
+                      <p
+                        class="font-weight-medium text-body-2 ma-0"
+                        style="color: #667085"
+                      >
+                        {{ image.type }}
+                      </p>
+                      <v-card
+                        min-width="50%"
+                        outlined
+                        class="pa-3 d-flex flex-row"
+                      >
+                        <v-icon class="mr-2">mdi-image-outline</v-icon>
+                        <v-card min-width="50%" elevation="0">
+                          <p class="ma-0 text-body-2" style="">
+                            {{ image.file_name }}
+                          </p>
+                        </v-card>
+
+                        <v-spacer></v-spacer>
+                        <v-icon @click="removeTestFile(index)"
+                          >mdi-close</v-icon
+                        >
+                      </v-card>
+                    </div>
                   </v-card>
                 </div>
               </v-card>
@@ -514,6 +693,7 @@
                         class="btn white--text"
                         color="#F04438"
                         elevation="0"
+                        @click.stop="medicine_dialog = close"
                         >Hủy</v-btn
                       >
                       <v-spacer></v-spacer>
@@ -527,93 +707,6 @@
                     </v-card>
                   </v-card>
                 </v-dialog>
-                <!-- <div class="d-flex justify-center mt-5">
-                  <v-card
-                    width="80%"
-                    class="d-flex flex-row justify-space-between"
-                    elevation="0"
-                  >
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <p class="text-body-2 ma-0 font-weight-medium">
-                        Tên thuốc:
-                      </p>
-                      <v-text-field
-                        solo
-                        flat
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <p class="text-body-2 ma-0 font-weight-medium">
-                        Đơn vị uống:
-                      </p>
-                      <v-text-field
-                        solo
-                        flat
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                  </v-card>
-                </div>
-
-                <div class="d-flex justify-center">
-                  <v-card
-                    width="80%"
-                    elevation="0"
-                    class="d-flex flex-row justify-space-between"
-                  >
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <p class="text-body-2 ma-0 font-weight-medium">
-                        Sáng uống:
-                      </p>
-                      <v-text-field
-                        solo
-                        flat
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <p class="text-body-2 ma-0 font-weight-medium">
-                        Chiều uống:
-                      </p>
-                      <v-text-field
-                        solo
-                        flat
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <p class="text-body-2 ma-0 font-weight-medium">
-                        Tối uống:
-                      </p>
-                      <v-text-field
-                        solo
-                        flat
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                  </v-card>
-                </div> -->
               </v-card>
             </v-tab-item>
           </v-tabs>
@@ -633,14 +726,14 @@ export default {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName",
+          value: "lastName"
         },
         { text: "Tên", value: "firstName" },
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
         { text: "Khung giờ khám", value: "time" },
-        { text: "Phòng", value: "room", sortable: false },
+        { text: "Phòng", value: "room", sortable: false }
       ],
       list_appointment: [
         {
@@ -654,8 +747,8 @@ export default {
           room: {
             type: "online",
             name: "H1",
-            link: "https://www.google.com/",
-          },
+            link: "https://www.google.com/"
+          }
         },
         {
           id: "2",
@@ -668,8 +761,8 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/",
-          },
+            link: "https://www.google.com/"
+          }
         },
         {
           id: "3",
@@ -682,9 +775,9 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/",
-          },
-        },
+            link: "https://www.google.com/"
+          }
+        }
       ],
       exam_dialog: false,
       from_date_menu: false,
@@ -697,11 +790,11 @@ export default {
           text: "Tên",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         { text: "Số lượng", value: "mount", sortable: false },
         { text: "Liều", value: "use", sortable: false },
-        { text: "Đơn vị uống", value: "unit", sortable: false },
+        { text: "Đơn vị uống", value: "unit", sortable: false }
       ],
       prescriptions: [],
       medicine_dialog: false,
@@ -713,8 +806,28 @@ export default {
         morning: 0,
         noon: 0,
         afternoon: 0,
-        evening: 0,
+        evening: 0
       },
+
+      test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
+      test_select: "",
+      test_file: {},
+      image_select: "",
+      test_add_list: [
+        {
+          type: "Xét nghiệm máu",
+          file_name: "ketquaxetnghiem.jpg"
+        },
+        {
+          type: "Xét nghiệm nước tiểu",
+          file_name: "ketquaxetnghiem.jpg"
+        },
+        {
+          type: "Xét nghiệm khác",
+          file_name: "ketquaxetnghiem.jpg"
+        }
+      ],
+      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"]
     };
   },
   methods: {
@@ -764,7 +877,7 @@ export default {
         name: this.medicine.name,
         mount: total,
         use: use,
-        unit: this.medicine.unit,
+        unit: this.medicine.unit
       });
       this.medicine_dialog = false;
     },
@@ -773,7 +886,19 @@ export default {
       this.prescriptions = [];
       this.medicine_dialog = false;
     },
-  },
+
+    removeTestFile(index) {
+      this.test_add_list.splice(index, 1);
+    },
+
+    addTestFile() {
+      this.test_add_list.push({
+        type: this.test_select,
+        file_name: this.test_file.name
+      });
+      console.log(this.test_file);
+    }
+  }
 };
 </script>
 
