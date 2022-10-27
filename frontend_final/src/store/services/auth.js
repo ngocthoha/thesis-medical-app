@@ -18,6 +18,32 @@ function login(params) {
     });
 }
 
+function signup(params){
+  return axios
+  .post(
+    `${url}/api/auth/register`,params.data
+  )
+  .then((response) => {
+    return {
+      data: response.data,
+    };
+  });
+}
+
+function verify_signup(params){
+  return axios
+  .post(
+    `${url}/api/auth/register/verify`,params.data
+  )
+  .then((response) => {
+    return {
+      data: response.data,
+    };
+  });
+}
+
+
 export default {
   login,
+  signup
 };
