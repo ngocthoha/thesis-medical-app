@@ -242,7 +242,10 @@
                   <p class="ma-0 font-weight-medium" style="color: #667085">
                     Quốc gia
                   </p>
-                  <p class="ma-0 font-weight-medium">
+                  <p
+                    class="ma-0 font-weight-medium"
+                    v-if="profile.address != null"
+                  >
                     {{ profile.address.country }}
                   </p>
                 </v-card>
@@ -290,6 +293,7 @@ export default {
       this.$emit("OpenEditProfile", profile);
     },
     getAddress(profile) {
+      if (profile.address == null) return "";
       return (
         profile.address.province +
         ", " +

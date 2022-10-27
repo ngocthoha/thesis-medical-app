@@ -10,10 +10,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  plugins: [pathify.plugin, createPersistedState()]
+  plugins: [pathify.plugin, createPersistedState({ paths: ["auth"] })],
 });
 
-store.subscribe(mutation => {
+store.subscribe((mutation) => {
   if (!mutation.type.startsWith("user/")) return;
 
   store.dispatch("user/update", mutation);

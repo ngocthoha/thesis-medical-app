@@ -3,14 +3,14 @@ import service from "@/store/services/scheduledoctor";
 // state la luu toan cuc
 // khoi tao schedule_list rong
 const state = {
-  schedule_list: []
+  schedule_list: [],
 };
 
 // luu cai data lay duoc trong cai action vao schedule_list rong tren state
 const mutations = {
   saveData: (state, data) => {
     state.schedule_list = data;
-  }
+  },
 };
 
 const actions = {
@@ -24,12 +24,12 @@ const actions = {
     return service.schedule_list(params).then(({ data }) => {
       commit("saveData", data);
     });
-  }
+  },
 };
 
 // Lay schedule list
 const getters = {
-  schedule_list: state => state.schedule_list
+  schedule_list: (state) => state.schedule_list,
 };
 
 export default {
@@ -37,5 +37,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };

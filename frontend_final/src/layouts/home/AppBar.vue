@@ -485,7 +485,7 @@
           </p>
           <p class="font-weight-bold text-body-2">0962530448</p>
           <v-card max-width="80%" elevation="0">
-            <v-otp-input length="6" type="number"></v-otp-input>
+            <v-otp-input length="6" type="number" v-model="otp"></v-otp-input>
           </v-card>
           <v-card width="245" elevation="0">
             <p class="text-center text-body-2" style="color: #667085">
@@ -508,6 +508,7 @@
             class="btn-not-transform btn-not-hover text-body-1 white--text"
             width="320"
             height="48"
+            @click="onOtpSubmit"
             >Xác nhận</v-btn
           >
         </v-card>
@@ -520,7 +521,7 @@
 // Utilities
 const ButtonFunctionType = {
   LOG_OUT: 0,
-  FUNCTION: 1
+  FUNCTION: 1,
 };
 export default {
   name: "HomeBar",
@@ -538,20 +539,20 @@ export default {
         title: "Bác sĩ",
         content:
           "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
-        link_name: "Đặt lịch bác sĩ"
+        link_name: "Đặt lịch bác sĩ",
       },
       {
         icon: require("@/assets/img/home/appbar/hospital.svg"),
         title: "Bệnh viện",
         content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
-        link_name: "Đặt lịch bệnh viện"
+        link_name: "Đặt lịch bệnh viện",
       },
       {
         icon: require("@/assets/img/home/appbar/service.svg"),
         title: "Dịch vụ",
         content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
-        link_name: "Đặt lịch dịch vụ"
-      }
+        link_name: "Đặt lịch dịch vụ",
+      },
     ],
 
     function_menu: [
@@ -560,52 +561,54 @@ export default {
         content: "Hồ sơ cá nhân",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION,
-        link: "/home/user/profile"
+        link: "/home/user/profile",
       },
       {
         icon: require("@/assets/img/home/appbar/clock_icon.svg"),
         content: "Lịch sử Đặt khám",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION,
-        link: "/home/user/appointment-history"
+        link: "/home/user/appointment-history",
       },
       {
         icon: require("@/assets/img/home/appbar/document_icon.svg"),
         content: "Hồ sơ sức khỏe",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
       },
       {
         icon: require("@/assets/img/home/appbar/connection_icon.svg"),
         content: "Lịch sử giao dịch",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
       },
       {
         icon: require("@/assets/img/home/appbar/help_icon.svg"),
         content: "Câu hỏi của bạn",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
       },
       {
         icon: require("@/assets/img/home/appbar/logout_icon.svg"),
         content: "Đăng xuất",
         color: "#F04438",
         type: ButtonFunctionType.LOG_OUT,
-        link: "/"
-      }
+        link: "/",
+      },
     ],
 
     user: {
       username: "",
-      password: ""
+      password: "",
     },
 
     sign_up_form: {
       username: "",
       password: "",
-      phone: ""
-    }
+      phone: "",
+    },
+
+    otp: "",
   }),
 
   created() {
@@ -621,7 +624,7 @@ export default {
       this.$router.push({ name: "Đăng ký" });
     },
     async getpage(link) {
-      this.$router.push({ name: link.name }).catch(error => {
+      this.$router.push({ name: link.name }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -636,7 +639,7 @@ export default {
         this.$store.dispatch("auth/logout", {});
         this.is_login = false;
       }
-      this.$router.push({ path: button.link }).catch(error => {
+      this.$router.push({ path: button.link }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -656,7 +659,7 @@ export default {
 
       const user = {
         username: this.user.username,
-        password: this.user.password
+        password: this.user.password,
       };
 
       await this.$store.dispatch("auth/login", user);
@@ -664,6 +667,10 @@ export default {
       if (this.$store.getters["auth/access_token"] != "") {
         this.login_dialog = false;
         this.is_login = true;
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Đăng nhập thành công",
+          type: "success",
+        });
       }
     },
 
@@ -672,22 +679,45 @@ export default {
         username: this.sign_up_form.username,
         password: this.sign_up_form.password,
         phone: "+84" + this.sign_up_form.phone.substring(1),
-        role: "ROLE_USER"
+        role: "ROLE_USER",
       };
 
-      await this.$store.dispatch("auth/login", user);
+      await this.$store.dispatch("auth/signup", form);
 
-      console.log(form);
-      this.sign_up_dialog = false;
-      this.opt_dialog = true;
+      if (this.$store.getters["auth/is_signup_submit_success"]) {
+        this.sign_up_dialog = false;
+        this.opt_dialog = true;
+      } else {
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Dăng ký không thành công",
+          type: "error",
+        });
+      }
     },
 
-    onOtpSubmit() {
-      this.opt_dialog = false;
+    async onOtpSubmit() {
+      const param = {
+        username: this.sign_up_form.username,
+        otp: this.otp,
+      };
+
+      await this.$store.dispatch("auth/verify_signup", param);
+      if (this.$store.getters["auth/is_verify_submit_success"]) {
+        this.opt_dialog = false;
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Dăng ký thành công",
+          type: "success",
+        });
+      } else {
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Dăng ký không thành công",
+          type: "error",
+        });
+      }
     },
 
     onHomeClick() {
-      this.$router.push({ name: "Trang chủ" }).catch(error => {
+      this.$router.push({ name: "Trang chủ" }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -698,7 +728,7 @@ export default {
     },
 
     onAppointmentServiceClick(item) {
-      this.$router.push({ name: item.link_name }).catch(error => {
+      this.$router.push({ name: item.link_name }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -706,8 +736,8 @@ export default {
           throw error;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
