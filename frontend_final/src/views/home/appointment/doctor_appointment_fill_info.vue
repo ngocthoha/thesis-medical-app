@@ -350,6 +350,7 @@
               v-if="is_select_profile"
             >
               <v-file-input
+                v-model="test_file"
                 placeholder="Vui lòng chọn hình ảnh"
                 solo
                 dense
@@ -363,6 +364,7 @@
                 class="btn white--text font-weight-medium text-body-2"
                 color="#537DA5"
                 elevation="0"
+                @click="addTestFile"
                 >Tải lên</v-btn
               >
             </v-card>
@@ -388,7 +390,9 @@
                 </v-card>
 
                 <v-spacer></v-spacer>
-                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
+                <v-icon @click="removeTestFile(index)" v-if="is_select_profile"
+                  >mdi-close</v-icon
+                >
               </v-card>
             </div>
             <!-- Image analysation type -->
@@ -428,11 +432,13 @@
                 prepend-icon=""
                 hide-details=""
                 flat
+                v-model="image_file"
               ></v-file-input>
               <v-btn
                 class="btn white--text font-weight-medium text-body-2"
                 color="#537DA5"
                 elevation="0"
+                @click="addImageAnalystFile"
                 >Tải lên</v-btn
               >
             </v-card>
@@ -440,7 +446,7 @@
             <!-- list add test result -->
             <div
               class="d-flex flex-wrap justify-space-between align-center mb-5"
-              v-for="(image, index) in test_add_list"
+              v-for="(image, index) in image_analyst_list"
               :key="index + 3"
             >
               <p
@@ -458,7 +464,9 @@
                 </v-card>
 
                 <v-spacer></v-spacer>
-                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
+                <v-icon @click="removeImageFile(index)" v-if="is_select_profile"
+                  >mdi-close</v-icon
+                >
               </v-card>
             </div>
           </v-card>
@@ -680,26 +688,22 @@ export default {
           relationshipWithPatient: "relationshipWithPatient",
         },
       ],
-      test_add_list: [
-        {
-          type: "Xét nghiệm máu",
-          file_name: "ketquaxetnghiem.jpg",
-        },
-        {
-          type: "Xét nghiệm nước tiểu",
-          file_name: "ketquaxetnghiem.jpg",
-        },
-        {
-          type: "Xét nghiệm khác",
-          file_name: "ketquaxetnghiem.jpg",
-        },
-      ],
+      test_add_list: [],
+
+      test_file: {},
       image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
+
+      image_analyst_list: [],
+      image_file: {},
     };
   },
   methods: {
     removeTestFile(index) {
       this.test_add_list.splice(index, 1);
+    },
+
+    removeImageFile(index) {
+      this.image_analyst_list.splice(index, 1);
     },
 
     getAddress(profile) {
@@ -739,6 +743,20 @@ export default {
             throw error;
           }
         });
+    },
+
+    addTestFile() {
+      this.test_add_list.push({
+        type: this.test_select,
+        file_name: this.test_file.name,
+      });
+    },
+
+    addImageAnalystFile() {
+      this.image_analyst_list.push({
+        type: this.image_select,
+        file_name: this.image_file.name,
+      });
     },
   },
 };

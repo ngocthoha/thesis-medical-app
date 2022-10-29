@@ -18,20 +18,23 @@
           </v-avatar>
           <!-- detail -->
           <v-card class="d-flex flex-column ml-3" elevation="0">
-            <p class="text-body-2 mb-2 font-weight-bold">Đỗ Hồng Việt</p>
-            <p class="text-body-2 mb-3">Bệnh viện hữu nghị Việt Đức</p>
+            <p class="text-body-2 mb-2 font-weight-bold">
+              {{ this.doctor_info.name }}
+            </p>
+            <p class="text-body-2 mb-3">{{ this.doctor_info.hospital.name }}</p>
             <div class="d-flex flex-row mb-3">
               <v-card
                 class="d-flex flex-row"
                 height="24"
-                width="56"
                 color="#EEF2F6"
                 elevation="0"
               >
-                <v-icon color="#537DA5" class="align-self-start"
+                <v-icon color="#537DA5" class="align-self-start mr-3"
                   >mdi-calendar-month-outline</v-icon
                 >
-                <p style="color: #537da5">146</p>
+                <p style="color: #537da5">
+                  {{ this.doctor_info.registrationNumber }}
+                </p>
               </v-card>
               <v-card
                 class="d-flex flex-row ml-1"
@@ -43,39 +46,21 @@
                 <v-icon color="#FFC107" class="align-self-start"
                   >mdi-star</v-icon
                 >
-                <p style="color: #537da5">146</p>
+                <p style="color: #537da5">4.8</p>
               </v-card>
             </div>
             <v-card max-width="422" class="d-flex flex-wrap" elevation="0">
-              <v-card
-                v-for="n in 3"
-                :key="n"
-                class="text-body-2 mr-3 mb-3"
-                color="#D0D5DD"
-                outlined
-              >
+              <v-card class="text-body-2 mr-3 mb-3" color="#D0D5DD" outlined>
                 <v-card
                   elevation="0"
                   color="#F9FAFB"
-                  class="d-flex justify-center"
+                  class="d-flex justify-center pa-1"
                 >
-                  Chuyên khoa TT Nam học</v-card
+                  {{ this.doctor_info.specialty }}</v-card
                 >
               </v-card>
             </v-card>
           </v-card>
-          <!-- online booking -->
-          <v-spacer></v-spacer>
-          <v-btn
-            color="#537DA5"
-            elevation="0"
-            class="white--text btn font-weight-medium text-body-1 align-self-start"
-            width="222"
-            height="44"
-          >
-            <v-icon left size="20">mdi-video-outline</v-icon>
-            Đặt tư vấn qua video
-          </v-btn>
         </v-card>
 
         <!-- description -->
@@ -115,9 +100,7 @@
               <v-tab-item :key="'tab-1'">
                 <v-card class="d-flex flex-column">
                   <p class="text-body-1 mb-6">
-                    Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều
-                    năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh
-                    vực dịch vụ y tế tại nhà trong khu vực.
+                    {{ this.doctor_info.bio }}
                   </p>
                   <div class="d-flex flex-row justify-space-between">
                     <v-card class="d-flex flex-row" width="45%" elevation="0">
@@ -126,32 +109,15 @@
                       >
                       <v-card class="ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-medium">
-                          08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành
-                          phố Hồ Chí Minh
+                          {{
+                            this.get_hospital_address(this.doctor_info.hospital)
+                          }}
                         </p>
                         <p
                           class="text-body-2 font-weight-medium"
                           style="color: #537da5"
                         >
                           Hiện chỉ đường
-                        </p>
-                      </v-card>
-                    </v-card>
-                    <v-card class="d-flex flex-row" width="45%" elevation="0">
-                      <v-icon class="align-self-start" size="24" color="#537da5"
-                        >mdi-clock-time-nine-outline</v-icon
-                      >
-                      <v-card class="ml-3" elevation="0">
-                        <p class="text-body-2 mb-2 font-weight-medium">
-                          Thứ 2 đến Thứ 7
-                        </p>
-                        <p
-                          v-for="n in 3"
-                          :key="n"
-                          class="text-body-2 mb-0"
-                          style="color: #667085"
-                        >
-                          10:15 AM - 02:30 PM
                         </p>
                       </v-card>
                     </v-card>
@@ -206,14 +172,15 @@
             <v-card
               class="d-flex flex-row"
               height="24"
-              width="56"
               color="#EEF2F6"
               elevation="0"
             >
-              <v-icon color="#537DA5" class="align-self-start"
+              <v-icon color="#537DA5" class="align-self-start mr-3"
                 >mdi-calendar-month-outline</v-icon
               >
-              <p style="color: #537da5">146</p>
+              <p style="color: #537da5">
+                {{ this.doctor_info.registrationNumber }}
+              </p>
             </v-card>
             <v-card
               class="d-flex flex-row ml-1"
@@ -223,7 +190,7 @@
               elevation="0"
             >
               <v-icon color="#FFC107" class="align-self-start">mdi-star</v-icon>
-              <p style="color: #537da5">146</p>
+              <p style="color: #537da5">4.8</p>
             </v-card>
           </div>
           <!-- location -->
@@ -236,8 +203,7 @@
                 class="text-body-2 mb-2 font-weight-medium"
                 style="color: #667085"
               >
-                08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành phố Hồ Chí
-                Minh
+                {{ this.get_hospital_address(this.doctor_info.hospital) }}
               </p>
             </v-card>
           </v-card>
@@ -249,9 +215,38 @@
             Ngày 21 tháng 8 năm 2022
           </p>
           <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>mdi-calendar-month-outline</v-icon>
-          </v-btn>
+          <v-menu
+            ref="edit_menu"
+            v-model="edit_menu"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            min-width="auto"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon v-bind="attrs" v-on="on"
+                >mdi-calendar-month-outline</v-icon
+              >
+            </template>
+            <v-date-picker
+              v-model="date_pick"
+              no-title
+              scrollable
+              locale="vi"
+              color="#537DA5"
+            >
+              <v-spacer></v-spacer>
+              <v-btn text color="primary" @click="edit_menu = false">
+                Cancel
+              </v-btn>
+              <v-btn
+                text
+                color="primary"
+                @click="$refs.edit_menu.save(edit_date)"
+              >
+                OK
+              </v-btn>
+            </v-date-picker>
+          </v-menu>
         </v-card>
         <v-divider
           class="mt-1"
@@ -439,7 +434,10 @@
 
 <script>
 export default {
-  setup() {},
+  created() {
+    this.get_doctor_select();
+    this.get_doctor_schedule();
+  },
   data() {
     return {
       tab: null,
@@ -457,6 +455,9 @@ export default {
         "15:00 - 15:30",
         "16:00 - 16:30",
       ],
+
+      doctor_info: {},
+      date_pick: "",
     };
   },
   methods: {
@@ -472,6 +473,48 @@ export default {
           }
         });
     },
+    get_doctor_select() {
+      this.doctor_info =
+        this.$store.getters["appointment/make_appointment_doctor_select"];
+      console.log(this.doctor_info.name);
+    },
+
+    get_hospital_address(hospital) {
+      let address_str = "";
+      if (hospital.address.address != null) {
+        if (address_str.length == 0) {
+          address_str = hospital.address.address;
+        }
+      }
+      if (hospital.address.ward != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.ward
+            : address_str + ", " + hospital.address.ward;
+      }
+      if (hospital.address.district != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.district
+            : address_str + ", " + hospital.address.district;
+      }
+      if (hospital.address.province != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.province
+            : address_str + ", " + hospital.address.province;
+      }
+
+      if (hospital.address.country != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.country
+            : address_str + ", " + hospital.address.country;
+      }
+      return address_str;
+    },
+
+    get_doctor_schedule() {},
   },
 };
 </script>

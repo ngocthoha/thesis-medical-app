@@ -410,7 +410,7 @@
                         background-color="#EEF2F6"
                       ></v-file-input>
                       <v-btn
-                        class="btn white--text  text-body-2"
+                        class="btn white--text text-body-2"
                         color="#537DA5"
                         elevation="0"
                         >Tải lên</v-btn
@@ -726,14 +726,14 @@ export default {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName"
+          value: "lastName",
         },
         { text: "Tên", value: "firstName" },
         { text: "Ngày sinh", value: "dob" },
         { text: "Giới tính", value: "gender" },
         { text: "Ngày khám", value: "date_medical_examination" },
         { text: "Khung giờ khám", value: "time" },
-        { text: "Phòng", value: "room", sortable: false }
+        { text: "Phòng", value: "room", sortable: false },
       ],
       list_appointment: [
         {
@@ -747,8 +747,8 @@ export default {
           room: {
             type: "online",
             name: "H1",
-            link: "https://www.google.com/"
-          }
+            link: "https://www.google.com/",
+          },
         },
         {
           id: "2",
@@ -761,8 +761,8 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/"
-          }
+            link: "https://www.google.com/",
+          },
         },
         {
           id: "3",
@@ -775,9 +775,9 @@ export default {
           room: {
             type: "offline",
             name: "H1",
-            link: "https://www.google.com/"
-          }
-        }
+            link: "https://www.google.com/",
+          },
+        },
       ],
       exam_dialog: false,
       from_date_menu: false,
@@ -790,11 +790,11 @@ export default {
           text: "Tên",
           align: "start",
           sortable: false,
-          value: "name"
+          value: "name",
         },
         { text: "Số lượng", value: "mount", sortable: false },
         { text: "Liều", value: "use", sortable: false },
-        { text: "Đơn vị uống", value: "unit", sortable: false }
+        { text: "Đơn vị uống", value: "unit", sortable: false },
       ],
       prescriptions: [],
       medicine_dialog: false,
@@ -806,28 +806,15 @@ export default {
         morning: 0,
         noon: 0,
         afternoon: 0,
-        evening: 0
+        evening: 0,
       },
 
       test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
       test_select: "",
       test_file: {},
       image_select: "",
-      test_add_list: [
-        {
-          type: "Xét nghiệm máu",
-          file_name: "ketquaxetnghiem.jpg"
-        },
-        {
-          type: "Xét nghiệm nước tiểu",
-          file_name: "ketquaxetnghiem.jpg"
-        },
-        {
-          type: "Xét nghiệm khác",
-          file_name: "ketquaxetnghiem.jpg"
-        }
-      ],
-      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"]
+      test_add_list: [],
+      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
     };
   },
   methods: {
@@ -877,7 +864,7 @@ export default {
         name: this.medicine.name,
         mount: total,
         use: use,
-        unit: this.medicine.unit
+        unit: this.medicine.unit,
       });
       this.medicine_dialog = false;
     },
@@ -894,11 +881,10 @@ export default {
     addTestFile() {
       this.test_add_list.push({
         type: this.test_select,
-        file_name: this.test_file.name
+        file_name: this.test_file.name,
       });
-      console.log(this.test_file);
-    }
-  }
+    },
+  },
 };
 </script>
 
