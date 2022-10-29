@@ -44,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/api/profiles/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/schedules/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(GET, "/api/specialties/**").permitAll()
+                .antMatchers(GET, "/api/schedules/**").permitAll()
                 .antMatchers(POST, "/api/upload/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/files/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")
                 .antMatchers(POST, "/api/appointments/**").hasAnyAuthority("ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN")

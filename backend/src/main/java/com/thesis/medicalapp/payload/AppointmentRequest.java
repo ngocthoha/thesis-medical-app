@@ -25,8 +25,6 @@ public class AppointmentRequest {
     @NotEmpty
     @NotBlank
     private String date;
-    @NotEmpty
-    @NotBlank
     private String roomId;
     private String symptom;
     @NotEmpty
