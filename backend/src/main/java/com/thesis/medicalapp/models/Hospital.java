@@ -8,6 +8,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 @Entity
@@ -23,6 +24,7 @@ public class Hospital extends AuditLog {
     private String name;
     @OneToOne
     private Address address;
+    @Lob
     private String info;
     private Integer registrationNumber;
     private String mapImageUrl;
