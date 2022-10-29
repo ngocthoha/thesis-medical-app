@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
@@ -21,6 +22,7 @@ public class HospitalDTO {
     @NotEmpty
     private String name;
     private Address address;
+    @Lob
     private String info;
     private Integer registrationNumber;
     private String mapImageUrl;
