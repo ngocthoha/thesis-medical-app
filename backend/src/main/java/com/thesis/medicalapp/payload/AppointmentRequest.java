@@ -20,9 +20,8 @@ public class AppointmentRequest {
     @NotEmpty
     @NotBlank
     private String profileId;
-    @NotEmpty
-    @NotBlank
     private String doctorId;
+    private String serviceId;
     @NotEmpty
     @NotBlank
     private String date;

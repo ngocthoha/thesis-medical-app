@@ -2,6 +2,7 @@ package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
+import com.thesis.medicalapp.models.HospitalService;
 import com.thesis.medicalapp.payload.AppointmentRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.payload.response.MessageResponse;
@@ -19,10 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api")
@@ -34,16 +32,25 @@ public class AppointmentController {
     private final DoctorService doctorService;
     private final RoomRepository roomRepository;
     private final MedicalFileRepository medicalFileRepository;
+    private final ServiceRepository serviceRepository;
 
     @PostMapping("/appointments")
     public ResponseEntity<Object> saveAppointment(@RequestBody @Valid AppointmentRequest appointmentRequest) {
         Appointment appointment = new Appointment();
         Profile profile = profileService.findProfileById(appointmentRequest.getProfileId());
-        if (profile == null) throw new ApiRequestException("Could not find profile!");
+        if (profile == null) throw new ApiRequestException("Không tìm thấy hồ sơ!");
         appointment.setProfile(profile);
-        Doctor doctor = doctorService.findDoctorById(appointmentRequest.getDoctorId());
-        if (doctor == null) throw new ApiRequestException("Could not find doctor!");
-        appointment.setDoctor(doctor);
+        if (appointmentRequest.getDoctorId()  == null || appointmentRequest.getServiceId() == null)
+            throw new ApiRequestException("doctor or service must not be blank");
+        if (appointmentRequest.getDoctorId() != null) {
+            Doctor doctor = doctorService.findDoctorById(appointmentRequest.getDoctorId());
+            if (doctor == null) throw new ApiRequestException("Không tìm thấy bác sĩ!");
+            appointment.setDoctor(doctor);
+        } else {
+            Optional<HospitalService> service = serviceRepository.findById(appointmentRequest.getServiceId());
+            if (!service.isPresent()) throw new ApiRequestException("Không tìm thấy dịch vụ!");
+            appointment.setService(service.get());
+        }
 
         Date dateFormat = new Date();
         try {
@@ -53,7 +60,7 @@ public class AppointmentController {
         }
         appointment.setDate(dateFormat);
         Room room = roomRepository.findRoomById(appointmentRequest.getRoomId());
-        if (room == null) throw new ApiRequestException("Could not find room!");
+        if (room == null) throw new ApiRequestException("Không tìm thấy phòng!");
         appointment.setRoom(room);
         appointment.setTime(appointmentRequest.getTime());
         appointment.setSymptom(appointmentRequest.getSymptom());
@@ -88,20 +95,20 @@ public class AppointmentController {
     @PatchMapping("/appointments")
     public ResponseEntity<Object> partialUpdateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentService.findAppointmentById(appointmentRequest.getId());
-        if (appointment == null) throw new ApiRequestException("Could not find appointment!");
+        if (appointment == null) throw new ApiRequestException("Không tìm thấy lịch hẹn!");
         if (appointmentRequest.getProfileId() != null) {
             Profile profile = profileService.findProfileById(appointmentRequest.getProfileId());
-            if (profile == null) throw new ApiRequestException("Could not find profile!");
+            if (profile == null) throw new ApiRequestException("Không tìm thấy hồ sơ khám!");
             appointment.setProfile(profile);
         }
         if (appointmentRequest.getDoctorId() != null) {
             Doctor doctor = doctorService.findDoctorById(appointmentRequest.getDoctorId());
-            if (doctor == null) throw new ApiRequestException("Could not find doctor!");
+            if (doctor == null) throw new ApiRequestException("Không tìm thấy bác sĩ!");
             appointment.setDoctor(doctor);
         }
         if (appointmentRequest.getRoomId() != null) {
             Room room = roomRepository.findRoomById(appointmentRequest.getRoomId());
-            if (room == null) throw new ApiRequestException("Could not find room!");
+            if (room == null) throw new ApiRequestException("Không tìm thấy phòng!");
             appointment.setRoom(room);
         }
         if (appointmentRequest.getDate() != null) {

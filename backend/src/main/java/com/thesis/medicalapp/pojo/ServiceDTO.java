@@ -1,6 +1,7 @@
 package com.thesis.medicalapp.pojo;
 
 import com.thesis.medicalapp.models.HospitalService;
+import com.thesis.medicalapp.models.ScheduleType;
 import com.thesis.medicalapp.models.SpecialtyType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,8 @@ public class ServiceDTO {
     private String specialty;
     private HospitalDTO hospital;
     private String serviceImageUrl;
+    private Integer numOfServicePerHour;
+    private ScheduleType type;
 
     public static ServiceDTO from(HospitalService hospitalService) {
         return ServiceDTO.builder()
@@ -31,6 +34,8 @@ public class ServiceDTO {
                 .specialty(hospitalService.getSpecialty().getName())
                 .hospital(HospitalDTO.from(hospitalService.getHospital()))
                 .serviceImageUrl(hospitalService.getServiceImageUrl())
+                .numOfServicePerHour(hospitalService.getNumOfServicePerHour())
+                .type(hospitalService.getType())
                 .build();
     }
 }

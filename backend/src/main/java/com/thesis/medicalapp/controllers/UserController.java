@@ -50,7 +50,7 @@ public class UserController {
     public ResponseEntity<Object>getAllUser() {
         List<UserDTO> userDTOS = userService.getUsers();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", userDTOS)
+                new ApiResponse<>(userDTOS)
         );
     }
 
@@ -58,7 +58,7 @@ public class UserController {
     public ResponseEntity<Object> getUsers() {
         List<UserDTO> userDTOS = userService.findAllByRoles_Name("ROLE_USER");
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", userDTOS)
+                new ApiResponse<>(userDTOS)
         );
     }
     @PostMapping("/auth/register")
@@ -67,14 +67,14 @@ public class UserController {
         if (userService.existsByUsername(username)) {
                 User user_request = userService.getUser(username);
                 if (user_request.getEnabled())
-                    throw new ApiRequestException("Username already exists!");
+                    throw new ApiRequestException("Tên đăng nhập đã tồn tại!");
         }
         User userDB;
         String phone_request = signupRequest.getPhone();
         if (userService.existsByPhone(phone_request)) {
             userDB = userRepository.findByPhone(phone_request).get();
             if (userDB.getEnabled())
-                throw new ApiRequestException("Phone already exists!");
+                throw new ApiRequestException("Số điện thoại đã tồn tại!");
         } else {
             User user = new User(
                     null,
@@ -94,13 +94,13 @@ public class UserController {
         OTP otp = new OTP();
         otp.setToken(OTP.generateOTP());
         OTP otpDB = otpService.generateOTP(userDB);
-        if (otpDB == null) throw new ApiRequestException("OTP not found!", HttpStatus.NOT_FOUND);
+        if (otpDB == null) throw new ApiRequestException("Không tìm thấy OTP!", HttpStatus.NOT_FOUND);
         Sms sms = new Sms();
         sms.setTo(signupRequest.getPhone());
         sms.setMessage(otpDB.getToken());
         smsService.sendSMS(sms);
-        return ResponseEntity.status(HttpStatus.CREATED).body(
-                new ApiResponse<>(HttpStatus.CREATED.value(), "User registered successfully!")
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(HttpStatus.OK.value(), "Đăng ký thành công!")
         );
     }
     @PostMapping("/auth/register/verify")
@@ -108,7 +108,7 @@ public class UserController {
         String token = verificationRequest.getOtp();
         otpService.verifyUser(verificationRequest.getUsername(), token);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse(HttpStatus.OK.value(), "Verify Successfully!")
+                new ApiResponse(HttpStatus.OK.value(), "Xác nhận thành công!")
         );
     }
 
@@ -116,7 +116,7 @@ public class UserController {
     public ResponseEntity<Object> partialUpdateUser(@PathVariable String id, @RequestBody UserDTO userDTO) {
         UserDTO userRes = userService.partialUpdateUser(id, userDTO);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(1, "User updated successfully!", userRes)
+                new ApiResponse<>(userRes)
         );
     }
 

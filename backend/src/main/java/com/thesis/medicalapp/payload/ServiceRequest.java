@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.payload;
 
+import com.thesis.medicalapp.models.ScheduleType;
 import com.thesis.medicalapp.models.SpecialtyType;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import lombok.AllArgsConstructor;
@@ -19,11 +20,14 @@ public class ServiceRequest {
     private String info;
     private Integer registrationNumber;
     private String price;
-    @NotEmpty
     @NotNull
     private SpecialtyType specialty;
     @NotEmpty
     @NotNull
     private String hospitalId;
     private String serviceImageUrl;
+    @NotNull
+    private Integer numOfServicePerHour;
+    @NotNull
+    private ScheduleType type;
 }

@@ -9,4 +9,5 @@ import java.util.List;
 public interface ServiceService {
     ServiceDTO saveService(ServiceRequest serviceRequest);
     List<ServiceDTO> getServices();
+    List<ServiceDTO> getServicesByHospital(String hospitalId);
 }

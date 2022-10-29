@@ -35,6 +35,9 @@ public class Appointment extends AuditLog {
     @ManyToOne
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+    @ManyToOne
+    @JoinColumn(name = "service_id")
+    private HospitalService service;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value= FetchMode.SELECT)
     private Collection<MedicalFile> files;

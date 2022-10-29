@@ -28,12 +28,14 @@ public class ServiceServiceImpl implements ServiceService {
     public ServiceDTO saveService(ServiceRequest serviceRequest) {
         HospitalService hospitalService = new HospitalService();
         Optional<Hospital> hospital = hospitalRepository.findById(serviceRequest.getHospitalId());
-        if (!hospital.isPresent()) throw new ApiRequestException("Could not find hospital!");
+        if (!hospital.isPresent()) throw new ApiRequestException("Không tìm thấy bệnh viện!");
         hospitalService.setHospital(hospital.get());
         hospitalService.setInfo(serviceRequest.getInfo());
         hospitalService.setName(serviceRequest.getName());
         hospitalService.setPrice(serviceRequest.getPrice());
         hospitalService.setRegistrationNumber(0);
+        hospitalService.setNumOfServicePerHour(serviceRequest.getNumOfServicePerHour());
+        hospitalService.setType(serviceRequest.getType());
         hospitalService.setSpecialty(serviceRequest.getSpecialty());
         hospitalService.setServiceImageUrl(serviceRequest.getServiceImageUrl());
         HospitalService hospitalServiceDB = serviceRepository.save(hospitalService);
@@ -44,6 +46,17 @@ public class ServiceServiceImpl implements ServiceService {
     @Override
     public List<ServiceDTO> getServices() {
         List<HospitalService> hospitalServices = serviceRepository.findAll()
+                .stream().collect(Collectors.toList());
+        List<ServiceDTO> serviceDTOS = hospitalServices.stream().map(d -> {
+            ServiceDTO serviceDTO = ServiceDTO.from(d);
+            return serviceDTO;
+        }).collect(Collectors.toList());
+        return serviceDTOS;
+    }
+
+    @Override
+    public List<ServiceDTO> getServicesByHospital(String hospitalId) {
+        List<HospitalService> hospitalServices = serviceRepository.findByHospitalId(hospitalId)
                 .stream().collect(Collectors.toList());
         List<ServiceDTO> serviceDTOS = hospitalServices.stream().map(d -> {
             ServiceDTO serviceDTO = ServiceDTO.from(d);

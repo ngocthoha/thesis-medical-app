@@ -26,7 +26,7 @@ public class ServiceController {
                 new ApiResponse<>(serviceResponse)
         );
     }
-    @GetMapping("")
+    @GetMapping("/all")
     public ResponseEntity<Object> getHospitalServices() {
         List<ServiceDTO> services = serviceService.getServices();
         return ResponseEntity.status(HttpStatus.OK).body(
@@ -34,4 +34,11 @@ public class ServiceController {
         );
     }
 
+    @GetMapping("")
+    public ResponseEntity<Object> getServicesByHospital(@RequestParam String hospitalId) {
+        List<ServiceDTO> services = serviceService.getServicesByHospital(hospitalId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(services)
+        );
+    }
 }

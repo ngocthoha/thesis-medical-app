@@ -26,5 +26,6 @@ public class HospitalService extends AuditLog{
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
     private String serviceImageUrl;
-    private String numOfServicePerHour;
+    private Integer numOfServicePerHour;
+    private ScheduleType type;
 }
