@@ -650,6 +650,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   setup() {},
   data() {
@@ -732,7 +733,33 @@ export default {
       this.is_payment = true;
     },
 
-    make_payment() {
+    async make_payment() {
+      let token = this.$store.getters["auth/access_token"];
+
+      const params = {
+        token: token,
+        data: {
+          ipnUrl: "https://sangle.free.beeceptor.com",
+          redirectUrl: "https://sangle.free.beeceptor.com",
+          amount: "100000",
+          orderInfo: "Khám theo yêu cầu tại đại học y dược",
+          extraData: "",
+          requestType: "captureWallet",
+        },
+      };
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${params.token}`,
+      };
+      let responseData = await axios
+        .post(`http://127.0.0.1:8080/api/payment/momo`, params.data)
+        .then((response) => {
+          return {
+            data: response.data,
+          };
+        });
+
+      window.open(responseData.data.results.payUrl);
       this.$router
         .push({ name: "Đặt lịch bác sĩ thành công" })
         .catch((error) => {

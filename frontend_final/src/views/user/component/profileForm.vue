@@ -739,11 +739,15 @@ export default {
         this.profile.id = this.edit_profile.id;
         this.profile.lastName = this.edit_profile.lastName;
         this.profile.firstName = this.edit_profile.firstName;
-        this.profile.country = this.edit_profile.address.country;
-        this.profile.province = this.edit_profile.address.province;
-        this.profile.district = this.edit_profile.address.district;
-        this.profile.ward = this.edit_profile.address.ward;
-        this.profile.address = this.edit_profile.address.address;
+
+        if (this.edit_profile.address != null) {
+          this.profile.country = this.edit_profile.address.country;
+          this.profile.province = this.edit_profile.address.province;
+          this.profile.district = this.edit_profile.address.district;
+          this.profile.ward = this.edit_profile.address.ward;
+          this.profile.address = this.edit_profile.address.address;
+        }
+
         this.profile.phone = this.edit_profile.phone;
         this.profile.email = this.edit_profile.email;
         this.profile.job = this.edit_profile.job;

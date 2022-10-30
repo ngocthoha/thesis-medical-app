@@ -212,7 +212,7 @@
         <!-- date picker -->
         <v-card class="d-flex flex-row justify-center pa-6" elevation="0">
           <p class="mb-0 d-flex align-center font-weight-medium">
-            Ngày 21 tháng 8 năm 2022
+            Ngày 29 tháng 10 năm 2022
           </p>
           <v-spacer></v-spacer>
           <v-menu
