@@ -10,11 +10,11 @@
         Tìm kiếm bệnh viện theo tên
       </p>
       <v-card width="640px" color="#EEF2F6" elevation="0">
-        <p>
+        <!-- <p>
           Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
           sint. Velit officia consequat duis enim velit mollit. Exercitation
           veniam consequat sunt nostrud amet.
-        </p>
+        </p> -->
       </v-card>
       <v-card
         elevation="0"
@@ -72,7 +72,7 @@
       >
         <!-- list hospital -->
         <v-row justify="center">
-          <v-col v-for="n in 8" :key="n" md="6">
+          <v-col v-for="hospital in hospital_list" :key="hospital.id" md="6">
             <!-- in -->
             <v-card
               class="d-flex flex-column justify-center align-center px-5"
@@ -92,11 +92,11 @@
                 >
                   <div class="d-flex flex-row">
                     <v-card width="126" height="84" class="align-self-start">
-                      <v-img src="@/assets/img/home/hospital_avt.png"></v-img>
+                      <v-img :src="getImgOfHospital(hospital)"></v-img>
                     </v-card>
                     <v-card class="d-flex flex-column ml-3" elevation="0">
                       <p class="text-body-2 mb-2 font-weight-bold">
-                        Bệnh viện hữu nghị Việt Đức
+                        {{ hospital.name }}
                       </p>
                       <div class="d-flex flex-row">
                         <v-icon
@@ -106,20 +106,33 @@
                           >mdi-map-marker-radius-outline</v-icon
                         >
                         <p class="text-body-2 mb-3">
-                          08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành
-                          phố Hồ Chí Minh
+                          {{ get_hospital_address(hospital) }}
                         </p>
                       </div>
-
                       <div class="d-flex flex-row">
-                        <v-card class="text-body-2" color="#D0D5DD" outlined>
-                          <v-card
-                            elevation="0"
-                            color="#F9FAFB"
-                            class="d-flex justify-center"
+                        <v-card
+                          class="d-flex flex-row"
+                          height="24"
+                          width="56"
+                          color="#EEF2F6"
+                          elevation="0"
+                        >
+                          <v-icon color="#537DA5" class="align-self-start"
+                            >mdi-calendar-month-outline</v-icon
                           >
-                            Chuyên khoa TT Nam học</v-card
+                          <p style="color: #537da5">146</p>
+                        </v-card>
+                        <v-card
+                          class="d-flex flex-row ml-1"
+                          height="24"
+                          width="56"
+                          color="#F9FAFB"
+                          elevation="0"
+                        >
+                          <v-icon color="#FFC107" class="align-self-start"
+                            >mdi-star</v-icon
                           >
+                          <p style="color: #537da5">146</p>
                         </v-card>
                       </div>
                     </v-card>
@@ -135,39 +148,13 @@
                 <div
                   class="d-flex flex-row mt-4 align-center justify-space-between"
                 >
-                  <div class="d-flex flex-row">
-                    <v-card
-                      class="d-flex flex-row"
-                      height="24"
-                      width="56"
-                      color="#EEF2F6"
-                      elevation="0"
-                    >
-                      <v-icon color="#537DA5" class="align-self-start"
-                        >mdi-calendar-month-outline</v-icon
-                      >
-                      <p style="color: #537da5">146</p>
-                    </v-card>
-                    <v-card
-                      class="d-flex flex-row ml-1"
-                      height="24"
-                      width="56"
-                      color="#F9FAFB"
-                      elevation="0"
-                    >
-                      <v-icon color="#FFC107" class="align-self-start"
-                        >mdi-star</v-icon
-                      >
-                      <p style="color: #537da5">146</p>
-                    </v-card>
-                  </div>
                   <v-btn
                     width="110"
                     height="44"
                     class="white--text btn text-body-2"
                     elevation="0"
                     color="#537DA5"
-                    @click="moveToInfo"
+                    @click="moveToInfo(hospital)"
                   >
                     Xem chi tiết
                   </v-btn>
@@ -178,11 +165,7 @@
         </v-row>
 
         <!-- pagination -->
-        <v-card
-          width="100%"
-          elevation="0"
-          class="d-flex justify-center justify-lg-end mt-10"
-        >
+        <v-card width="100%" elevation="0" class="d-flex justify-center mt-10">
           <div class="text-center">
             <v-pagination
               color="#537DA5"
@@ -199,15 +182,20 @@
 
 <script>
 export default {
-  setup() {},
+  created() {
+    this.get_hospital_list();
+  },
+
   data() {
     return {
       page: 2,
+      hospital_list: [],
     };
   },
 
   methods: {
-    moveToInfo() {
+    async moveToInfo(hospital) {
+      await this.$store.dispatch("hospital/set_hospital_select_info", hospital);
       this.$router
         .push({ name: "Thông tin đặt lịch bệnh viện" })
         .catch((error) => {
@@ -218,6 +206,55 @@ export default {
             throw error;
           }
         });
+    },
+
+    async get_hospital_list() {
+      await this.$store.dispatch("hospital/read_all_hospital");
+      let hospital_all_data = this.$store.getters["hospital/hospital_all_data"];
+      this.hospital_list = hospital_all_data;
+    },
+
+    get_hospital_address(hospital) {
+      let address_str = "";
+      if (hospital.address.address != null) {
+        if (address_str.length == 0) {
+          address_str = hospital.address.address;
+        }
+      }
+      if (hospital.address.ward != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.ward
+            : address_str + ", " + hospital.address.ward;
+      }
+      if (hospital.address.district != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.district
+            : address_str + ", " + hospital.address.district;
+      }
+      if (hospital.address.province != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.province
+            : address_str + ", " + hospital.address.province;
+      }
+
+      if (hospital.address.country != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.country
+            : address_str + ", " + hospital.address.country;
+      }
+      return address_str;
+    },
+
+    getImgOfHospital(hospital) {
+      if (hospital.hospitalImageUrl != null) {
+        return hospital.hospitalImageUrl;
+      } else {
+        return require("@/assets/img/home/hospital_avt.png");
+      }
     },
   },
 };

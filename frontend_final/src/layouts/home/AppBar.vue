@@ -797,7 +797,16 @@ export default {
         role: "ROLE_USER"
       };
 
-      await this.$store.dispatch("auth/signup", form);
+      try {
+        await this.$store.dispatch("auth/signup", form);
+      } catch (error) {
+        console.log(error.response); // this is the main part. Use the response property from the error object
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Dăng ký không thành công",
+          type: "error",
+        });
+        return;
+      }
 
       if (this.$store.getters["auth/is_signup_submit_success"]) {
         this.sign_up_dialog = false;

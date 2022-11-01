@@ -43,7 +43,7 @@ export default {
       import(
         /* webpackChunkName: "default-list" */
         "./List"
-      )
+      ),
   },
   data() {
     return {
@@ -51,113 +51,112 @@ export default {
         {
           title: "Dashboard",
           icon: "mdi-view-dashboard",
-          to: "/"
+          to: "/",
         },
         {
           title: "User Profile",
           icon: "mdi-account",
-          to: "/components/profile/"
+          to: "/components/profile/",
         },
         {
           title: "Regular Tables",
           icon: "mdi-clipboard-outline",
-          to: "/tables/regular/"
+          to: "/tables/regular/",
         },
         {
           title: "Typography",
           icon: "mdi-format-font",
-          to: "/components/typography/"
+          to: "/components/typography/",
         },
         {
           title: "Icons",
           icon: "mdi-chart-bubble",
-          to: "/components/icons/"
+          to: "/components/icons/",
         },
         {
           title: "Google Maps",
           icon: "mdi-map-marker",
-          to: "/maps/google/"
+          to: "/maps/google/",
         },
         {
           title: "Notifications",
           icon: "mdi-bell",
-          to: "/components/notifications/"
+          to: "/components/notifications/",
         },
         {
           title: "Notifications",
           icon: "mdi-bell",
-          to: "/components/schedule"
-        }
+          to: "/components/schedule",
+        },
       ],
 
       itemDoctor: [
         {
           title: "Lịch trình",
           icon: "mdi-bell",
-          to: "/doctor/doctor-schedule"
+          to: "/doctor/doctor-schedule",
         },
         {
           title: "Bệnh án",
           icon: "mdi-bell",
-          to: "/doctor/doctor-record"
+          to: "/doctor/doctor-record",
         },
         {
           title: "Thông báo",
           icon: "mdi-bell",
-          to: "/doctor/doctor-notification"
+          to: "/doctor/doctor-notification",
         },
         {
           title: "Quá trình chữa bệnh",
           icon: "mdi-bell",
-          to: "/doctor/doctor-healingprocess"
-        }
+          to: "/doctor/doctor-healingprocess",
+        },
       ],
 
       itemAdmin: [
         {
           title: "Bác sĩ",
           icon: "mdi-bell",
-          to: "/admin/doctor-admin"
+          to: "/admin/doctor-admin",
         },
         {
           title: "Lịch hẹn",
           icon: "mdi-bell",
-          to: "/admin/appointment-admin"
+          to: "/admin/appointment-admin",
         },
         {
           title: "Bệnh nhân",
           icon: "mdi-bell",
-          to: "/admin/patient-admin"
+          to: "/admin/patient-admin",
         },
         {
           title: "Bệnh án",
           icon: "mdi-bell",
-          to: "/admin/record-admin"
+          to: "/admin/record-admin",
         },
         {
           title: "Lịch trình",
           icon: "mdi-bell",
-          to: "/admin/schedule-admin"
+          to: "/admin/schedule-admin",
         },
         {
           title: "Tài khoản",
           icon: "mdi-bell",
-          to: "/admin/account-admin"
+          to: "/admin/account-admin",
         },
         {
           title: "Tạo phòng",
           icon: "mdi-bell",
-          to: "/admin/room-admin"
-        }
-      ]
+          to: "/admin/room-admin",
+        },
+      ],
     };
   },
   computed: {
     ...get("user", ["dark", "gradient", "image"]),
 
     items() {
-      //return this.itemDoctor;
-      var type = this.$store.getters["auth/types"];
+      let type = this.$store.getters["auth/types"];
       if (type[0].authority === "ROLE_DOCTOR") {
         return this.itemDoctor;
       }
@@ -170,8 +169,8 @@ export default {
     //   'items',
     //   'version',
     // ]),
-    ...sync("app", ["drawer", "drawerImage", "mini"])
-  }
+    ...sync("app", ["drawer", "drawerImage", "mini"]),
+  },
 };
 </script>
 

@@ -10,7 +10,10 @@ Vue.use(Vuex);
 
 const store = new Vuex.Store({
   modules,
-  plugins: [pathify.plugin, createPersistedState({ paths: ["auth"] })],
+  plugins: [
+    pathify.plugin,
+    createPersistedState({ paths: ["auth", "hospital", "appointment"] }),
+  ],
 });
 
 store.subscribe((mutation) => {

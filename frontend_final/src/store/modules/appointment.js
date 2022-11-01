@@ -4,7 +4,9 @@ const state = {
   speciality_list: [],
   doctors_list: [],
   doctor_appointment_list: [],
-  user_appointment_list: []
+  user_appointment_list: [],
+  make_appointment_doctor_select: {},
+  make_appointment_doctor_schedule: [],
 };
 
 const mutations = {
@@ -22,7 +24,14 @@ const mutations = {
 
   SET_USER_APPOINTMENT_LIST: (state, list) => {
     state.user_appointment_list = list;
-  }
+  },
+
+  SET_MAKE_APPOINTMENT_DOCTOR_SELECT: (
+    state,
+    make_appointment_doctor_select
+  ) => {
+    state.make_appointment_doctor_select = make_appointment_doctor_select;
+  },
 };
 
 const actions = {
@@ -72,14 +81,30 @@ const actions = {
         console.log("error");
       }
     });
-  }
+  },
+
+  set_doctor_select_to_make_appointment({ commit }, params) {
+    commit("SET_MAKE_APPOINTMENT_DOCTOR_SELECT", params);
+  },
+
+  get_doctor_schedule({ commit }, params) {
+    return service.getAppointment_byProfileId(params).then(({ data }) => {
+      if (data.code == 1) {
+        commit("SET_USER_APPOINTMENT_LIST", data.results);
+      } else {
+        console.log("error");
+      }
+    });
+  },
 };
 
 const getters = {
-  speciality_list: state => state.speciality_list,
-  doctors_list: state => state.doctors_list,
-  doctor_appointment_list: state => state.doctor_appointment_list,
-  user_appointment_list: state => state.user_appointment_list
+  speciality_list: (state) => state.speciality_list,
+  doctors_list: (state) => state.doctors_list,
+  doctor_appointment_list: (state) => state.doctor_appointment_list,
+  user_appointment_list: (state) => state.user_appointment_list,
+  make_appointment_doctor_select: (state) =>
+    state.make_appointment_doctor_select,
 };
 
 export default {
@@ -87,5 +112,5 @@ export default {
   state,
   mutations,
   actions,
-  getters
+  getters,
 };
