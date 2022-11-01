@@ -416,9 +416,7 @@
                         color="red"
                         overlap
                       >
-                        <v-icon>
-                          mdi-bell-outline
-                        </v-icon>
+                        <v-icon> mdi-bell-outline </v-icon>
                       </v-badge>
                     </v-btn>
                   </template>
@@ -436,15 +434,13 @@
                             </p>
                             <p
                               class="d-flex align-end pa-0 ma-0 text-body-2"
-                              style="color: grey; font-size: 75% !important;"
+                              style="color: grey; font-size: 75% !important"
                             >
                               {{ timeSince(item.time) }}
                             </p>
                           </v-list-item-content>
                           <div class="d-flex align-center" v-if="!item.read">
-                            <v-icon color="blue">
-                              mdi-circle-medium
-                            </v-icon>
+                            <v-icon color="blue"> mdi-circle-medium </v-icon>
                           </div>
                         </div>
                       </v-list-item>
@@ -571,7 +567,7 @@ import Stomp from "webstomp-client";
 // Utilities
 const ButtonFunctionType = {
   LOG_OUT: 0,
-  FUNCTION: 1
+  FUNCTION: 1,
 };
 export default {
   name: "HomeBar",
@@ -589,20 +585,20 @@ export default {
         title: "Bác sĩ",
         content:
           "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
-        link_name: "Đặt lịch bác sĩ"
+        link_name: "Đặt lịch bác sĩ",
       },
       {
         icon: require("@/assets/img/home/appbar/hospital.svg"),
         title: "Bệnh viện",
         content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
-        link_name: "Đặt lịch bệnh viện"
+        link_name: "Đặt lịch bệnh viện",
       },
       {
         icon: require("@/assets/img/home/appbar/service.svg"),
         title: "Dịch vụ",
         content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
-        link_name: "Đặt lịch dịch vụ"
-      }
+        link_name: "Đặt lịch dịch vụ",
+      },
     ],
 
     function_menu: [
@@ -611,51 +607,51 @@ export default {
         content: "Hồ sơ cá nhân",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION,
-        link: "/home/user/profile"
+        link: "/home/user/profile",
       },
       {
         icon: require("@/assets/img/home/appbar/clock_icon.svg"),
         content: "Lịch sử Đặt khám",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION,
-        link: "/home/user/appointment-history"
+        link: "/home/user/appointment-history",
       },
       {
         icon: require("@/assets/img/home/appbar/document_icon.svg"),
         content: "Hồ sơ sức khỏe",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
       },
       {
         icon: require("@/assets/img/home/appbar/connection_icon.svg"),
         content: "Lịch sử giao dịch",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
       },
       {
         icon: require("@/assets/img/home/appbar/help_icon.svg"),
         content: "Câu hỏi của bạn",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
       },
       {
         icon: require("@/assets/img/home/appbar/logout_icon.svg"),
         content: "Đăng xuất",
         color: "#F04438",
         type: ButtonFunctionType.LOG_OUT,
-        link: "/"
-      }
+        link: "/",
+      },
     ],
 
     user: {
       username: "",
-      password: ""
+      password: "",
     },
 
     sign_up_form: {
       username: "",
       password: "",
-      phone: ""
+      phone: "",
     },
 
     otp: "",
@@ -665,17 +661,17 @@ export default {
         text: "Thanh toán thành công!",
         to: "",
         time: new Date(),
-        read: true
+        read: true,
       },
       {
         text: "Thanh toán thành công!",
         to: "",
         time: new Date(),
-        read: false
-      }
+        read: false,
+      },
     ],
     socket: null,
-    username: null
+    username: null,
   }),
 
   created() {
@@ -688,16 +684,16 @@ export default {
         if (value) this.connect();
         else this.disconnect();
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   computed: {
     notificationValue() {
-      return (this.messages || []).filter(m => !m.read).length;
+      return (this.messages || []).filter((m) => !m.read).length;
     },
     messages() {
       return this.receivedMessages.slice(-5).reverse();
-    }
+    },
   },
   methods: {
     connect() {
@@ -709,17 +705,17 @@ export default {
           this.connected = true;
           this.stompClient.subscribe(
             `/user/${this.username}/queue/notification`,
-            tick => {
+            (tick) => {
               var res = JSON.parse(tick.body);
               res = {
                 ...res,
-                read: false
+                read: false,
               };
               this.receivedMessages.push(res);
             }
           );
         },
-        error => {
+        (error) => {
           console.log(error);
           this.connected = false;
         }
@@ -739,7 +735,7 @@ export default {
       this.$router.push({ name: "Đăng ký" });
     },
     async getpage(link) {
-      this.$router.push({ name: link.name }).catch(error => {
+      this.$router.push({ name: link.name }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -754,7 +750,7 @@ export default {
         this.$store.dispatch("auth/logout", {});
         this.is_login = false;
       }
-      this.$router.push({ path: button.link }).catch(error => {
+      this.$router.push({ path: button.link }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -774,7 +770,7 @@ export default {
 
       const user = {
         username: this.user.username,
-        password: this.user.password
+        password: this.user.password,
       };
 
       await this.$store.dispatch("auth/login", user);
@@ -782,10 +778,16 @@ export default {
       if (this.$store.getters["auth/access_token"] != "") {
         this.login_dialog = false;
         this.is_login = true;
-        this.$store.dispatch("snackbar/set_snackbar", {
-          text: "Đăng nhập thành công",
-          type: "success"
-        });
+        let type = this.$store.getters["auth/types"];
+        if (type[0].authority === "ROLE_USER") {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Đăng nhập thành công",
+            type: "success",
+          });
+        }
+        if (type[0].authority === "ROLE_DOCTOR") {
+          this.$router.push({ name: "Lịch làm việc" });
+        }
       }
     },
 
@@ -794,7 +796,7 @@ export default {
         username: this.sign_up_form.username,
         password: this.sign_up_form.password,
         phone: "+84" + this.sign_up_form.phone.substring(1),
-        role: "ROLE_USER"
+        role: "ROLE_USER",
       };
 
       try {
@@ -814,7 +816,7 @@ export default {
       } else {
         this.$store.dispatch("snackbar/set_snackbar", {
           text: "Dăng ký không thành công",
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -822,7 +824,7 @@ export default {
     async onOtpSubmit() {
       const param = {
         username: this.sign_up_form.username,
-        otp: this.otp
+        otp: this.otp,
       };
 
       await this.$store.dispatch("auth/verify_signup", param);
@@ -830,18 +832,18 @@ export default {
         this.opt_dialog = false;
         this.$store.dispatch("snackbar/set_snackbar", {
           text: "Dăng ký thành công",
-          type: "success"
+          type: "success",
         });
       } else {
         this.$store.dispatch("snackbar/set_snackbar", {
           text: "Dăng ký không thành công",
-          type: "error"
+          type: "error",
         });
       }
     },
 
     onHomeClick() {
-      this.$router.push({ name: "Trang chủ" }).catch(error => {
+      this.$router.push({ name: "Trang chủ" }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -852,7 +854,7 @@ export default {
     },
 
     onAppointmentServiceClick(item) {
-      this.$router.push({ name: item.link_name }).catch(error => {
+      this.$router.push({ name: item.link_name }).catch((error) => {
         if (error == null) {
           return;
         }
@@ -889,8 +891,8 @@ export default {
         return Math.floor(interval) + " phút trước";
       }
       return Math.floor(seconds) + " giây trước";
-    }
-  }
+    },
+  },
 };
 </script>
 
