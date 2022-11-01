@@ -68,6 +68,10 @@ function get_doctor_schedule_by_date(params) {
     });
 }
 
+
+
+
+
 export default {
   speciality_list,
   getDoctorList_byDateAndSpeciality,
