@@ -29,6 +29,7 @@ public class QADTO {
 
     public static QADTO from(QuestionAnswer questionAnswer) {
         return QADTO.builder()
+                .id(questionAnswer.getId())
                 .name(questionAnswer.getName())
                 .phone(questionAnswer.getPhone())
                 .demand(questionAnswer.getDemand())
