@@ -17,9 +17,8 @@ public class NotificationTask {
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 600000)
     public void pushNotification() throws Exception {
-        System.out.println("================Push Notification================");
         Notification notification = new Notification();
         notification.setText("Hello from Server!");
         notification.setTime(new Date());

@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.pojo;
 
+import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.Medicine;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,17 +14,21 @@ import lombok.experimental.SuperBuilder;
 public class MedicineDTO {
     private Integer id;
     private String name;
-    private Integer number;
-    private String type;
-    private String use;
+    private String imageUrl;
+    private String price;
+    private String info;
+    private Integer registrationNumber;
+    private HospitalDTO hospital;
 
     public static MedicineDTO from(Medicine medicine) {
         return MedicineDTO.builder()
                 .id(medicine.getId())
                 .name(medicine.getName())
-                .number(medicine.getNumber())
-                .type(medicine.getType())
-                .use(medicine.getType())
+                .imageUrl(medicine.getImageUrl())
+                .price(medicine.getPrice())
+                .info(medicine.getInfo())
+                .registrationNumber(medicine.getRegistrationNumber())
+                .hospital(HospitalDTO.from(medicine.getHospital()))
                 .build();
     }
 }
