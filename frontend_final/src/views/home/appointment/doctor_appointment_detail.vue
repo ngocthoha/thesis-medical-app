@@ -212,7 +212,8 @@
         <!-- date picker -->
         <v-card class="d-flex flex-row justify-center pa-6" elevation="0">
           <p class="mb-0 d-flex align-center font-weight-medium">
-            Ngày 29 tháng 10 năm 2022
+            Ngày {{ this.show_date.date }} tháng {{ this.show_date.month }} năm
+            {{ this.show_date.year }}
           </p>
           <v-spacer></v-spacer>
           <v-menu
@@ -260,7 +261,7 @@
             :width="7"
           ></v-progress-circular>
         </v-card>
-        <v-card elevation="0" v-if="!is_loading_schedule" min-height="500">
+        <v-card elevation="0" v-if="!is_loading_schedule">
           <v-tabs
             color="#537DA5"
             slider-size="3"
@@ -286,7 +287,7 @@
             <v-tab-item :key="'online'">
               <v-card
                 v-if="!online.has_schedule"
-                min-height="300"
+                min-height="450"
                 class="d-flex align-center justify-center"
               >
                 Không có lịch khám
@@ -295,6 +296,7 @@
                 class="pa-6 d-flex flex-column"
                 elevation="0"
                 v-if="online.has_schedule"
+                min-height="450"
               >
                 <!-- morning -->
                 <p class="font-weight-medium">Sáng</p>
@@ -313,6 +315,9 @@
                         class="mb-5 mx-3"
                         active-class="white--text"
                         elevation="0"
+                        height="41"
+                        width="102"
+                        :style="active ? 'border: 1px #537DA5 solid' : ''"
                       >
                         <p
                           class="ma-0 font-weight-medium"
@@ -341,6 +346,9 @@
                         class="mb-5 mx-3"
                         active-class="white--text"
                         elevation="0"
+                        height="41"
+                        width="102"
+                        :style="active ? 'border: 1px #537DA5 solid' : ''"
                       >
                         <p
                           class="ma-0 font-weight-medium"
@@ -373,74 +381,95 @@
             <v-tab-item :key="'offline'">
               <v-card
                 v-if="!offline.has_schedule"
-                min-height="300"
+                min-height="450"
                 class="d-flex align-center justify-center"
               >
                 Không có lịch khám
               </v-card>
               <v-card
-                class="pa-6 d-flex flex-column"
+                class="pa-6 d-flex flex-column justify-space-between"
                 elevation="0"
                 v-if="offline.has_schedule"
+                min-height="450"
               >
                 <!-- morning -->
-                <p class="font-weight-medium">Sáng</p>
-                <div class="d-flex flex-wrap justify-start">
-                  <v-item-group v-model="selected">
-                    <v-item
-                      v-for="(item, idx) in offline.morning"
-                      :key="idx"
-                      v-slot="{ active, toggle }"
-                      :value="item"
-                    >
-                      <v-btn
-                        :outlined="active ? false : true"
-                        color="#537DA5"
-                        @click="toggle"
-                        class="mb-5 mx-3"
-                        active-class="white--text"
-                        elevation="0"
+                <div class="d-flex flex-column">
+                  <p
+                    class="font-weight-medium"
+                    v-if="offline.morning.length > 0"
+                  >
+                    Sáng
+                  </p>
+                  <div class="d-flex flex-wrap justify-start">
+                    <v-item-group v-model="selected">
+                      <v-item
+                        v-for="(item, idx) in offline.morning"
+                        :key="idx"
+                        v-slot="{ active, toggle }"
+                        :value="item"
                       >
-                        <p
-                          class="ma-0 font-weight-medium"
-                          :style="active ? 'color:white' : ''"
+                        <v-btn
+                          :outlined="active ? false : true"
+                          color="#537DA5"
+                          @click="toggle"
+                          height="41"
+                          width="102"
+                          class="mb-5 mx-3"
+                          active-class="white--text"
+                          elevation="0"
+                          :style="active ? 'border: 1px #537DA5 solid' : ''"
                         >
-                          {{ item }}
-                        </p>
-                      </v-btn>
-                    </v-item>
-                  </v-item-group>
+                          <p
+                            class="ma-0 font-weight-medium"
+                            :style="active ? 'color:white' : ''"
+                          >
+                            {{ item }}
+                          </p>
+                        </v-btn>
+                      </v-item>
+                    </v-item-group>
+                  </div>
                 </div>
+
                 <!-- afternoon -->
-                <p class="font-weight-medium">Chiều</p>
-                <div class="d-flex flex-wrap justify-start">
-                  <v-item-group v-model="selected">
-                    <v-item
-                      v-for="(item, idx) in offline.afternoon"
-                      :key="idx"
-                      v-slot="{ active, toggle }"
-                      :value="item"
-                    >
-                      <v-btn
-                        :outlined="active ? false : true"
-                        color="#537DA5"
-                        @click="toggle"
-                        class="mb-5 mx-3"
-                        active-class="white--text"
-                        elevation="0"
+                <div class="d-flex flex-column">
+                  <p
+                    class="font-weight-medium"
+                    v-if="offline.afternoon.length > 0"
+                  >
+                    Chiều
+                  </p>
+                  <div class="d-flex flex-wrap justify-start">
+                    <v-item-group v-model="selected">
+                      <v-item
+                        v-for="(item, idx) in offline.afternoon"
+                        :key="idx"
+                        v-slot="{ active, toggle }"
+                        :value="item"
                       >
-                        <p
-                          class="ma-0 font-weight-medium"
-                          :style="active ? 'color:white' : ''"
+                        <v-btn
+                          :outlined="active ? false : true"
+                          color="#537DA5"
+                          @click="toggle"
+                          class="mb-5 mx-3"
+                          active-class="white--text"
+                          elevation="0"
+                          height="41"
+                          width="102"
+                          :style="active ? 'border: 1px #537DA5 solid' : ''"
                         >
-                          {{ item }}
-                        </p>
-                      </v-btn>
-                    </v-item>
-                  </v-item-group>
-                  <!-- booking -->
+                          <p
+                            class="ma-0 font-weight-medium"
+                            :style="active ? 'color:white' : ''"
+                          >
+                            {{ item }}
+                          </p>
+                        </v-btn>
+                      </v-item>
+                    </v-item-group>
+                    <!-- booking -->
+                  </div>
                 </div>
-                <v-spacer></v-spacer>
                 <v-btn
                   elevation="0"
                   color="#D4DFE9"
@@ -467,8 +496,8 @@
 export default {
   created() {
     this.get_doctor_select();
-    let date = moment();
-    let currentDate = date.format("YYYY-MM-DD");
+
+    let currentDate = new Date().toJSON().slice(0, 10);
     this.date_pick = currentDate;
     this.get_doctor_schedule();
   },
@@ -482,13 +511,13 @@ export default {
         "09:00 - 09:30",
         "10:00 - 10:30",
         "11:00 - 11:30",
-        "12:00 - 12:30",
+        "12:00 - 12:30"
       ],
       affternoon_time: [
         "13:00 - 13:30",
         "14:00 - 14:30",
         "15:00 - 15:30",
-        "16:00 - 16:30",
+        "16:00 - 16:30"
       ],
       select_time_menu: false,
       doctor_info: {},
@@ -502,7 +531,7 @@ export default {
           room: {
             id: "62f70d77-a614-4ed5-940b-45a99cfd807b",
             name: "H2",
-            link: null,
+            link: null
           },
           times: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
           numOfAppointmentPerHour: 2,
@@ -512,31 +541,37 @@ export default {
             email: "doctor@gmail.com",
             specialty: "Chuẩn Đoán Hình Ảnh",
             level: "CKI",
-            bio: "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
+            bio:
+              "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
             registrationNumber: 0,
             price: "100.000",
-            imageUrl: null,
-          },
-        },
+            imageUrl: null
+          }
+        }
       ],
       online: {
         morning: [],
         afternoon: [],
-        has_schedule: false,
+        has_schedule: false
       },
 
       offline: {
         morning: [],
         afternoon: [],
-        has_schedule: false,
+        has_schedule: false
       },
+      show_date: {
+        date: "",
+        month: "",
+        year: ""
+      }
     };
   },
   methods: {
     submit_select_time() {
       this.$router
         .push({ name: "Điền thông tin đặt lịch bác sĩ" })
-        .catch((error) => {
+        .catch(error => {
           if (error == null) {
             return;
           }
@@ -546,8 +581,9 @@ export default {
         });
     },
     get_doctor_select() {
-      this.doctor_info =
-        this.$store.getters["appointment/make_appointment_doctor_select"];
+      this.doctor_info = this.$store.getters[
+        "appointment/make_appointment_doctor_select"
+      ];
       console.log(this.doctor_info.name);
     },
 
@@ -588,21 +624,27 @@ export default {
 
     async get_doctor_schedule() {
       this.select_time_menu = false;
+      this.refresh_schedule();
+      let date_array = this.date_pick.split("-");
+      this.show_date.year = date_array[0];
+      this.show_date.month = date_array[1];
+      this.show_date.date = date_array[2];
       const params = {
         date: this.date_pick,
-        doctorId: this.doctor_info.id,
+        doctorId: this.doctor_info.id
       };
       this.is_loading_schedule = true;
       try {
         await this.$store.dispatch("appointment/get_doctor_schedule", params);
-        let data_result =
-          this.$store.getters["appointment/make_appointment_doctor_schedule"];
-        data_result.forEach((schedule) => {
+        let data_result = this.$store.getters[
+          "appointment/make_appointment_doctor_schedule"
+        ];
+        data_result.forEach(schedule => {
           if (schedule.type === "OFFLINE") {
             if (schedule.times != []) {
               this.offline.has_schedule = true;
             }
-            schedule.times.forEach((time_frame) => {
+            schedule.times.forEach(time_frame => {
               if (this.check_is_morning(time_frame)) {
                 this.offline.morning.push(time_frame);
               } else {
@@ -611,7 +653,7 @@ export default {
             });
           }
           if (schedule.type === "ONLINE") {
-            schedule.times.forEach((time_frame) => {
+            schedule.times.forEach(time_frame => {
               if (schedule.times != []) {
                 this.online.has_schedule = true;
               }
@@ -634,7 +676,16 @@ export default {
       let hour = end_frame_time.split(":")[0];
       return parseInt(hour) <= 12;
     },
-  },
+
+    refresh_schedule() {
+      (this.online.morning = []),
+        (this.online.afternoon = []),
+        (this.online.has_schedule = false);
+      (this.offline.morning = []),
+        (this.offline.afternoon = []),
+        (this.offline.has_schedule = false);
+    }
+  }
 };
 </script>
 
