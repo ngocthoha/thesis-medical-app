@@ -17,13 +17,13 @@ public class MessageController {
 
     @MessageMapping("/application")
     @SendTo("/all/messages")
-    public Notification send(final Notification notification) throws Exception {
+    public Notification send(Notification notification) throws Exception {
         System.out.println(notification);
         return notification;
     }
 
     @MessageMapping("/private")
-    public void sendToSpecificUser(@Payload Notification notification, Principal user) {
-        simpMessagingTemplate.convertAndSendToUser(notification.getTo(), "/user/queue/notification", notification);
+    public void sendToSpecificUser(@Payload Notification notification) {
+        simpMessagingTemplate.convertAndSendToUser(notification.getToUser(), "/user/queue/notification", notification);
     }
 }

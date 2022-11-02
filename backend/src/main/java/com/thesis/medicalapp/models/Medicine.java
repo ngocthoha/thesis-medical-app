@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -21,7 +18,11 @@ public class Medicine {
     @GeneratedValue
     private Integer id;
     private String name;
-    private Integer number;
-    private String type;
-    private String use;
+    private String imageUrl;
+    private String price;
+    private String info;
+    private Integer registrationNumber = 0;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }
