@@ -216,8 +216,8 @@
           </p>
           <v-spacer></v-spacer>
           <v-menu
-            ref="edit_menu"
-            v-model="edit_menu"
+            ref="select_time_menu"
+            v-model="select_time_menu"
             :close-on-content-click="false"
             transition="scale-transition"
             min-width="auto"
@@ -235,15 +235,11 @@
               color="#537DA5"
             >
               <v-spacer></v-spacer>
-              <v-btn text color="primary" @click="edit_menu = false">
-                Cancel
+              <v-btn text color="primary" @click="select_time_menu = false">
+                Hủy
               </v-btn>
-              <v-btn
-                text
-                color="primary"
-                @click="$refs.edit_menu.save(edit_date)"
-              >
-                OK
+              <v-btn text color="primary" @click="get_doctor_schedule">
+                Chọn
               </v-btn>
             </v-date-picker>
           </v-menu>
@@ -253,9 +249,9 @@
           style="border-color: #f2f4f7 !important"
         ></v-divider>
         <v-card
-          min-height="300"
+          min-height="500"
           class="d-flex justify-center align-center"
-          v-if="false"
+          v-if="is_loading_schedule"
         >
           <v-progress-circular
             indeterminate
@@ -264,7 +260,7 @@
             :width="7"
           ></v-progress-circular>
         </v-card>
-        <v-card elevation="0" v-if="true">
+        <v-card elevation="0" v-if="!is_loading_schedule" min-height="500">
           <v-tabs
             color="#537DA5"
             slider-size="3"
@@ -289,7 +285,7 @@
             <!-- online tab -->
             <v-tab-item :key="'online'">
               <v-card
-                v-if="true"
+                v-if="!online.has_schedule"
                 min-height="300"
                 class="d-flex align-center justify-center"
               >
@@ -298,7 +294,7 @@
               <v-card
                 class="pa-6 d-flex flex-column"
                 elevation="0"
-                v-if="false"
+                v-if="online.has_schedule"
               >
                 <!-- morning -->
                 <p class="font-weight-medium">Sáng</p>
@@ -376,19 +372,23 @@
             <!-- offline tab -->
             <v-tab-item :key="'offline'">
               <v-card
-                v-if="false"
+                v-if="!offline.has_schedule"
                 min-height="300"
                 class="d-flex align-center justify-center"
               >
                 Không có lịch khám
               </v-card>
-              <v-card class="pa-6 d-flex flex-column" elevation="0" v-if="true">
+              <v-card
+                class="pa-6 d-flex flex-column"
+                elevation="0"
+                v-if="offline.has_schedule"
+              >
                 <!-- morning -->
                 <p class="font-weight-medium">Sáng</p>
                 <div class="d-flex flex-wrap justify-start">
                   <v-item-group v-model="selected">
                     <v-item
-                      v-for="(item, idx) in offline.times"
+                      v-for="(item, idx) in offline.morning"
                       :key="idx"
                       v-slot="{ active, toggle }"
                       :value="item"
@@ -416,7 +416,7 @@
                 <div class="d-flex flex-wrap justify-start">
                   <v-item-group v-model="selected">
                     <v-item
-                      v-for="(item, idx) in offline.times"
+                      v-for="(item, idx) in offline.afternoon"
                       :key="idx"
                       v-slot="{ active, toggle }"
                       :value="item"
@@ -440,6 +440,7 @@
                   </v-item-group>
                   <!-- booking -->
                 </div>
+                <v-spacer></v-spacer>
                 <v-btn
                   elevation="0"
                   color="#D4DFE9"
@@ -466,88 +467,33 @@
 export default {
   created() {
     this.get_doctor_select();
+    let date = moment();
+    let currentDate = date.format("YYYY-MM-DD");
+    this.date_pick = currentDate;
     this.get_doctor_schedule();
-    let a = [
-      "09:00 - 09:30",
-      "10:00 - 10:30",
-      "11:00 - 11:30",
-      "12:00 - 12:30",
-      "13:00 - 13:30",
-      "14:00 - 14:30",
-      "15:00 - 15:30",
-      "16:00 - 16:30"
-    ];
-
-    a.forEach(time_frame => {});
   },
   data() {
     return {
       tab: null,
       calander_tab: null,
       selected: null,
+      is_loading_schedule: false,
       morning_time: [
         "09:00 - 09:30",
         "10:00 - 10:30",
         "11:00 - 11:30",
-        "12:00 - 12:30"
+        "12:00 - 12:30",
       ],
       affternoon_time: [
         "13:00 - 13:30",
         "14:00 - 14:30",
         "15:00 - 15:30",
-        "16:00 - 16:30"
+        "16:00 - 16:30",
       ],
-      edit_menu: false,
+      select_time_menu: false,
       doctor_info: {},
       date_pick: "",
-      online: {
-        id: "0a7d8154-39ef-454d-90de-e00af9c48549",
-        type: "OFFLINE",
-        date: "2022-07-12",
-        room: {
-          id: "62f70d77-a614-4ed5-940b-45a99cfd807b",
-          name: "H2",
-          link: null
-        },
-        times: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
-        numOfAppointmentPerHour: 2,
-        doctor: {
-          id: "5a6acc34-3319-458b-b723-adfc227705bc",
-          name: "Doctor Name",
-          email: "doctor@gmail.com",
-          specialty: "Chuẩn Đoán Hình Ảnh",
-          level: "CKI",
-          bio:
-            "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
-          registrationNumber: 0,
-          price: "100.000",
-          imageUrl: null
-        }
-      },
-      offline: {
-        id: "0a7d8154-39ef-454d-90de-e00af9c48549",
-        type: "OFFLINE",
-        date: "2022-07-12",
-        room: {
-          id: "62f70d77-a614-4ed5-940b-45a99cfd807b",
-          name: "H2",
-          link: null
-        },
-        times: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
-        numOfAppointmentPerHour: 2,
-        doctor: {
-          id: "5a6acc34-3319-458b-b723-adfc227705bc",
-          name: "Doctor Name",
-          email: "doctor@gmail.com",
-          specialty: "Chuẩn Đoán Hình Ảnh",
-          level: "CKI",
-          bio:
-            "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
-          registrationNumber: 0,
-          price: "100.000",
-          imageUrl: null
-        }
-      },
+
       results: [
         {
           id: "0a7d8154-39ef-454d-90de-e00af9c48549",
@@ -556,7 +502,7 @@ export default {
           room: {
             id: "62f70d77-a614-4ed5-940b-45a99cfd807b",
             name: "H2",
-            link: null
+            link: null,
           },
           times: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
           numOfAppointmentPerHour: 2,
@@ -566,30 +512,31 @@ export default {
             email: "doctor@gmail.com",
             specialty: "Chuẩn Đoán Hình Ảnh",
             level: "CKI",
-            bio:
-              "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
+            bio: "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
             registrationNumber: 0,
             price: "100.000",
-            imageUrl: null
-          }
-        }
+            imageUrl: null,
+          },
+        },
       ],
-      morning: {
+      online: {
         morning: [],
-        afternoon: []
+        afternoon: [],
+        has_schedule: false,
       },
 
       offline: {
         morning: [],
-        afternoon: []
-      }
+        afternoon: [],
+        has_schedule: false,
+      },
     };
   },
   methods: {
     submit_select_time() {
       this.$router
         .push({ name: "Điền thông tin đặt lịch bác sĩ" })
-        .catch(error => {
+        .catch((error) => {
           if (error == null) {
             return;
           }
@@ -599,9 +546,8 @@ export default {
         });
     },
     get_doctor_select() {
-      this.doctor_info = this.$store.getters[
-        "appointment/make_appointment_doctor_select"
-      ];
+      this.doctor_info =
+        this.$store.getters["appointment/make_appointment_doctor_select"];
       console.log(this.doctor_info.name);
     },
 
@@ -640,16 +586,55 @@ export default {
       return address_str;
     },
 
-    get_doctor_schedule() {},
+    async get_doctor_schedule() {
+      this.select_time_menu = false;
+      const params = {
+        date: this.date_pick,
+        doctorId: this.doctor_info.id,
+      };
+      this.is_loading_schedule = true;
+      try {
+        await this.$store.dispatch("appointment/get_doctor_schedule", params);
+        let data_result =
+          this.$store.getters["appointment/make_appointment_doctor_schedule"];
+        data_result.forEach((schedule) => {
+          if (schedule.type === "OFFLINE") {
+            if (schedule.times != []) {
+              this.offline.has_schedule = true;
+            }
+            schedule.times.forEach((time_frame) => {
+              if (this.check_is_morning(time_frame)) {
+                this.offline.morning.push(time_frame);
+              } else {
+                this.offline.afternoon.push(time_frame);
+              }
+            });
+          }
+          if (schedule.type === "ONLINE") {
+            schedule.times.forEach((time_frame) => {
+              if (schedule.times != []) {
+                this.online.has_schedule = true;
+              }
+              if (this.check_is_morning(time_frame)) {
+                this.online.morning.push(time_frame);
+              } else {
+                this.online.afternoon.push(time_frame);
+              }
+            });
+          }
+        });
+      } catch (error) {}
+
+      this.select_time_menu = false;
+      this.is_loading_schedule = false;
+    },
 
     check_is_morning(time) {
       let end_frame_time = time.split(" - ")[1];
       let hour = end_frame_time.split(":")[0];
-      if (parseInt(hour) <= 12) return true;
-
-      return false;
-    }
-  }
+      return parseInt(hour) <= 12;
+    },
+  },
 };
 </script>
 
