@@ -28,7 +28,7 @@
             <p class="ma-0 font-weight-bold">Khám theo yêu cầu</p>
             <v-spacer></v-spacer>
             <p class="ma-0 font-weight-bold" style="color: #537da5">
-              100.000VND
+              {{ this.doctor_info.price }} VND
             </p>
           </v-card>
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -52,8 +52,10 @@
               >
             </v-avatar>
             <div class="d-flex flex-column">
-              <p class="mb-3 font-weight-bold">09:00 - 09:30</p>
-              <p class="ma-0 text-body-2" style="color: #667085">24/8/2022</p>
+              <p class="mb-3 font-weight-bold">{{ this.book_time.time }}</p>
+              <p class="ma-0 text-body-2" style="color: #667085">
+                {{ this.book_time.date }}
+              </p>
             </div>
           </v-card>
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -68,9 +70,9 @@
               <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
             </v-avatar>
             <div class="d-flex flex-column justify-center">
-              <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
+              <p class="mb-2 font-weight-bold">{{ this.doctor_info.name }}</p>
               <p class="ma-0 text-body-2" style="color: #667085">
-                Phòng khám Vinmec Central Park
+                {{ this.doctor_info.hospital.name }}
               </p>
             </div>
           </v-card>
@@ -87,11 +89,10 @@
             </v-avatar>
             <div class="d-flex flex-column justify-center">
               <p class="mb-2 font-weight-bold">
-                Phòng khám Vinmec Central Park
+                {{ this.doctor_info.hospital.name }}
               </p>
               <p class="text-body-2" style="color: #667085">
-                08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành phố Hồ Chí
-                Minh
+                {{ this.get_hospital_address(this.doctor_info.hospital) }}
               </p>
               <p class="text-body-2 font-weight-medium" style="color: #537da5">
                 Hiện chỉ đường
@@ -111,11 +112,7 @@
           >
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
           <v-expansion-panels accordion tile flat>
-            <v-expansion-panel
-              v-for="profile in profile_list"
-              :key="profile.id"
-              class="mb-4"
-            >
+            <v-expansion-panel v-model="selected_profile" class="mb-4">
               <v-expansion-panel-header>
                 <v-card class="d-flex flex-row align-center" elevation="0">
                   <v-avatar size="40">
@@ -123,13 +120,14 @@
                   </v-avatar>
                   <div class="d-flex flex-column ml-3">
                     <p class="ma-0 font-weight-bold text-body-1">
-                      {{ profile.lastName }} {{ profile.firstName }}
+                      {{ selected_profile.lastName }}
+                      {{ selected_profile.firstName }}
                     </p>
                     <p
                       class="ma-0 font-weight-normal text-body-2"
                       style="color: #667085"
                     >
-                      {{ profile.relationship }}
+                      {{ selected_profile.relationship }}
                     </p>
                   </div>
                 </v-card>
@@ -164,7 +162,7 @@
                       Email
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.email }}
+                      {{ selected_profile.email }}
                     </p>
                   </v-card>
                   <!-- phone -->
@@ -180,7 +178,7 @@
                       Số điện thoại
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.phone }}
+                      {{ selected_profile.phone }}
                     </p>
                   </v-card>
                   <!-- address -->
@@ -196,7 +194,7 @@
                       Địa chỉ
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ getAddress(profile) }}
+                      {{ getAddress(selected_profile) }}
                     </p>
                   </v-card>
                   <!-- gender -->
@@ -212,7 +210,7 @@
                       Giới tính
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ getGender(profile.gender) }}
+                      {{ getGender(selected_profile.gender) }}
                     </p>
                   </v-card>
                   <!-- birthday -->
@@ -228,7 +226,7 @@
                       Ngày sinh
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ getDate(profile.dob) }}
+                      {{ getDate(selected_profile.dob) }}
                     </p>
                   </v-card>
                   <!-- identify -->
@@ -244,7 +242,7 @@
                       Số CMND/CCCD
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.identityCard }}
+                      {{ selected_profile.identityCard }}
                     </p>
                   </v-card>
                   <!-- job -->
@@ -259,7 +257,9 @@
                     <p class="ma-0 font-weight-medium" style="color: #667085">
                       Nghề nghiệp
                     </p>
-                    <p class="ma-0 font-weight-medium">{{ profile.job }}</p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ selected_profile.job }}
+                    </p>
                   </v-card>
                   <!-- country -->
                   <v-divider
@@ -274,7 +274,7 @@
                       Quốc gia
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.address.country }}
+                      {{ selected_profile.address.country }}
                     </p>
                   </v-card>
                   <!-- ethnic -->
@@ -289,7 +289,9 @@
                     <p class="ma-0 font-weight-medium" style="color: #667085">
                       Dân tộc
                     </p>
-                    <p class="ma-0 font-weight-medium">{{ profile.folk }}</p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ selected_profile.folk }}
+                    </p>
                   </v-card>
                 </div>
               </v-expansion-panel-content>
@@ -313,6 +315,7 @@
             <p class="font-weight-medium text-body-1">Triệu chứng</p>
             <v-card outlined class="mb-6">
               <v-textarea
+                v-model="symptom"
                 spellcheck="false"
                 solo
                 height="148"
@@ -491,10 +494,10 @@
             >
             <v-divider style="border-color: #f2f4f7 !important"></v-divider>
             <!-- price -->
-            <v-radio-group v-model="radioGroup" class="ma-0">
+            <v-radio-group v-model="selected_profile" class="ma-0">
               <v-card
-                v-for="n in 3"
-                :key="n"
+                v-for="(profile, index) in profile_list"
+                :key="index"
                 class="pa-6 d-flex flex-row"
                 tile
                 elevation="0"
@@ -503,13 +506,15 @@
                   <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
                 </v-avatar>
                 <div class="d-flex flex-column justify-center">
-                  <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
+                  <p class="mb-2 font-weight-bold">
+                    {{ profile.lastName }} {{ profile.firstName }}
+                  </p>
                   <p class="ma-0 text-body-2" style="color: #667085">
-                    Chủ tài khoản
+                    {{ profile.relationship }}
                   </p>
                 </div>
                 <v-spacer></v-spacer>
-                <v-radio :value="n" color="#537DA5"></v-radio>
+                <v-radio :value="profile" color="#537DA5"></v-radio>
               </v-card>
             </v-radio-group>
           </v-card>
@@ -652,9 +657,30 @@
 <script>
 import axios from "axios";
 export default {
-  setup() {},
+  created() {
+    let time_data = this.$store.getters[
+      "appointment/make_appointment_set_time_doctor"
+    ];
+    if (time_data != null) {
+      this.book_time.time = time_data.time;
+      this.book_time.date = time_data.date;
+      this.book_time.type = time_data.type;
+      this.book_time.room = time_data.room;
+    }
+    this.get_doctor_select();
+    this.getProfileList();
+  },
   data() {
     return {
+      book_time: {
+        time: "",
+        date: "",
+        type: "",
+        room: {}
+      },
+      doctor_info: {},
+      symptom: "",
+      profile_list: [],
       is_select_profile: true,
       is_payment: false,
       test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
@@ -662,40 +688,14 @@ export default {
       image_select: "",
       radioGroup: 1,
       payment_selection: "",
-      profile_list: [
-        {
-          id: "1",
-          firstName: "Tho",
-          lastName: "Ha Ngoc",
-          address: {
-            country: "Viet Nam",
-            province: "Tinh",
-            district: "Huyen",
-            ward: "Xa",
-            address: "364 Do Bi",
-          },
-          phone: "phoneNumber",
-          email: "email@gmail.com",
-          dob: "2012-04-23T18:25:43.511Z",
-          job: "job",
-          identityCard: "identityCard",
-          healthInsurance: "healthInsurance",
-          folk: "folk",
-          gender: "MALE",
-          guardian: "guardian",
-          guardianPhone: "guardianPhone",
-          guardianIdentityCard: "guardianIdentityCard",
-          relationship: "relationship",
-          relationshipWithPatient: "relationshipWithPatient",
-        },
-      ],
+      selected_profile: {},
       test_add_list: [],
 
       test_file: {},
       image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
 
       image_analyst_list: [],
-      image_file: {},
+      image_file: {}
     };
   },
   methods: {
@@ -744,48 +744,118 @@ export default {
           amount: "100000",
           orderInfo: "Khám theo yêu cầu tại đại học y dược",
           extraData: "",
-          requestType: "captureWallet",
-        },
+          requestType: "captureWallet"
+        }
       };
 
       axios.defaults.headers.common = {
-        Authorization: `Bearer ${params.token}`,
+        Authorization: `Bearer ${params.token}`
       };
       let responseData = await axios
         .post(`http://127.0.0.1:8080/api/payment/momo`, params.data)
-        .then((response) => {
+        .then(response => {
           return {
-            data: response.data,
+            data: response.data
           };
         });
 
       window.open(responseData.data.results.payUrl);
-      this.$router
-        .push({ name: "Đặt lịch bác sĩ thành công" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
+      this.$router.push({ name: "Đặt lịch bác sĩ thành công" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
+
+      this.createAppointment();
     },
 
     addTestFile() {
       this.test_add_list.push({
         type: this.test_select,
-        file_name: this.test_file.name,
+        file_name: this.test_file.name
       });
     },
 
     addImageAnalystFile() {
       this.image_analyst_list.push({
         type: this.image_select,
-        file_name: this.image_file.name,
+        file_name: this.image_file.name
       });
     },
-  },
+
+    get_doctor_select() {
+      this.doctor_info = this.$store.getters[
+        "appointment/make_appointment_doctor_select"
+      ];
+    },
+
+    get_hospital_address(hospital) {
+      let address_str = "";
+      if (hospital.address.address != null) {
+        if (address_str.length == 0) {
+          address_str = hospital.address.address;
+        }
+      }
+      if (hospital.address.ward != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.ward
+            : address_str + ", " + hospital.address.ward;
+      }
+      if (hospital.address.district != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.district
+            : address_str + ", " + hospital.address.district;
+      }
+      if (hospital.address.province != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.province
+            : address_str + ", " + hospital.address.province;
+      }
+
+      if (hospital.address.country != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.country
+            : address_str + ", " + hospital.address.country;
+      }
+      return address_str;
+    },
+
+    async getProfileList() {
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token
+      };
+      await this.$store.dispatch("profile/profile_list", param);
+      this.profile_list = this.$store.getters["profile/profile_list"];
+    },
+
+    async createAppointment() {
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token,
+        data: {
+          profileId: this.selected_profile.id,
+          doctorId: this.doctor_info.id,
+          roomId: this.book_time.room.id,
+          date: "2022-07-12",
+          time: "11:00 - 12:00",
+          symptom: this.symptom,
+          type: this.book_time.type,
+          files: [],
+          fee: this.doctor_info.price,
+          isPaid: true
+        }
+      };
+      await this.$store.dispatch("appointment/createAppointment", param);
+    }
+  }
 };
 </script>
 

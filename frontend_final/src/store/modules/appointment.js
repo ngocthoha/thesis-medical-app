@@ -7,6 +7,7 @@ const state = {
   user_appointment_list: [],
   make_appointment_doctor_select: {},
   make_appointment_doctor_schedule: [],
+  make_appointment_set_time_doctor: null
 };
 
 const mutations = {
@@ -39,6 +40,13 @@ const mutations = {
   ) => {
     state.make_appointment_doctor_schedule = make_appointment_doctor_schedule;
   },
+
+  SET_MAKE_APPOINTMENT_SET_TIME_DOCTOR: (
+    state,
+    make_appointment_set_time_doctor
+  ) => {
+    state.make_appointment_set_time_doctor = make_appointment_set_time_doctor;
+  }
 };
 
 const actions = {
@@ -103,17 +111,22 @@ const actions = {
       }
     });
   },
+
+  set_time_to_make_appointment_doctor({ commit }, params) {
+    commit("SET_MAKE_APPOINTMENT_SET_TIME_DOCTOR", params);
+  }
 };
 
 const getters = {
-  speciality_list: (state) => state.speciality_list,
-  doctors_list: (state) => state.doctors_list,
-  doctor_appointment_list: (state) => state.doctor_appointment_list,
-  user_appointment_list: (state) => state.user_appointment_list,
-  make_appointment_doctor_select: (state) =>
-    state.make_appointment_doctor_select,
-  make_appointment_doctor_schedule: (state) =>
+  speciality_list: state => state.speciality_list,
+  doctors_list: state => state.doctors_list,
+  doctor_appointment_list: state => state.doctor_appointment_list,
+  user_appointment_list: state => state.user_appointment_list,
+  make_appointment_doctor_select: state => state.make_appointment_doctor_select,
+  make_appointment_doctor_schedule: state =>
     state.make_appointment_doctor_schedule,
+  make_appointment_set_time_doctor: state =>
+    state.make_appointment_set_time_doctor
 };
 
 export default {
@@ -121,5 +134,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };
