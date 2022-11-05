@@ -37,7 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
         hospitalService.setNumOfServicePerHour(serviceRequest.getNumOfServicePerHour());
         hospitalService.setType(serviceRequest.getType());
         hospitalService.setSpecialty(serviceRequest.getSpecialty());
-        hospitalService.setServiceImageUrl(serviceRequest.getServiceImageUrl());
+        hospitalService.setImageUrl(serviceRequest.getServiceImageUrl());
         HospitalService hospitalServiceDB = serviceRepository.save(hospitalService);
         ServiceDTO service_response = ServiceDTO.from(hospitalServiceDB);
         return service_response;

@@ -24,7 +24,7 @@ public class AppointmentDTO {
     @NotNull
     private ProfileDTO profile;
     private DoctorDTO doctor;
-    private ServiceDTO service;
+    private HospitalService service;
     @NotNull
     private Date date;
     @NotEmpty
@@ -47,7 +47,7 @@ public class AppointmentDTO {
                 .room(appointment.getRoom())
                 .profile(ProfileDTO.from(appointment.getProfile()))
                 .doctor(DoctorDTO.from(appointment.getDoctor()))
-                .service(ServiceDTO.from(appointment.getService()))
+                .service(appointment.getService())
                 .date(appointment.getDate())
                 .time(appointment.getTime())
                 .symptom(appointment.getSymptom())

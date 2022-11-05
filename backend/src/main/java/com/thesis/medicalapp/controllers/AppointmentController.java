@@ -40,9 +40,10 @@ public class AppointmentController {
         Profile profile = profileService.findProfileById(appointmentRequest.getProfileId());
         if (profile == null) throw new ApiRequestException("Không tìm thấy hồ sơ!");
         appointment.setProfile(profile);
-        if (appointmentRequest.getDoctorId()  == null || appointmentRequest.getServiceId() == null)
+        if (appointmentRequest.getDoctorId()  == null && appointmentRequest.getServiceId() == null)
             throw new ApiRequestException("doctor or service must not be blank");
         if (appointmentRequest.getDoctorId() != null) {
+            System.out.println("create doctor appointment");
             Doctor doctor = doctorService.findDoctorById(appointmentRequest.getDoctorId());
             if (doctor == null) throw new ApiRequestException("Không tìm thấy bác sĩ!");
             appointment.setDoctor(doctor);
@@ -51,7 +52,6 @@ public class AppointmentController {
             if (!service.isPresent()) throw new ApiRequestException("Không tìm thấy dịch vụ!");
             appointment.setService(service.get());
         }
-
         Date dateFormat = new Date();
         try {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(appointmentRequest.getDate());

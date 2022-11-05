@@ -1,22 +1,24 @@
 package com.thesis.medicalapp.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "store_medicines")
-public class StoreMedicine {
+@ToString
+public class StoreMedicine extends AbstractProduct implements Serializable {
     @Id
-    @GeneratedValue
-    private Integer id;
-    private String name;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    @ManyToOne(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "hospital_id")
+    private Hospital hospital;
 }

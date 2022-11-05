@@ -33,7 +33,7 @@ public class ServiceDTO {
                 .price(hospitalService.getPrice())
                 .specialty(hospitalService.getSpecialty().getName())
                 .hospital(HospitalDTO.from(hospitalService.getHospital()))
-                .serviceImageUrl(hospitalService.getServiceImageUrl())
+                .serviceImageUrl(hospitalService.getImageUrl())
                 .numOfServicePerHour(hospitalService.getNumOfServicePerHour())
                 .type(hospitalService.getType())
                 .build();

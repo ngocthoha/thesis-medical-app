@@ -12,20 +12,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "services")
-public class HospitalService extends AuditLog{
+public class HospitalService extends AbstractProduct {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private String name;
-    private String info;
-    private Integer registrationNumber = 0;
-    private String price;
     private SpecialtyType specialty;
     @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
-    private String serviceImageUrl;
     private Integer numOfServicePerHour;
     private ScheduleType type;
 }

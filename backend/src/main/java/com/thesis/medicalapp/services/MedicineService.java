@@ -3,6 +3,9 @@ package com.thesis.medicalapp.services;
 import com.thesis.medicalapp.models.Medicine;
 import com.thesis.medicalapp.pojo.MedicineDTO;
 
+import java.util.List;
+
 public interface MedicineService {
-    Medicine saveMedicine(Medicine medicine);
+    Medicine save(Medicine medicine);
+    List<Medicine> getAll();
 }

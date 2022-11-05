@@ -1,31 +1,24 @@
 package com.thesis.medicalapp.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.models.Record;
 import com.thesis.medicalapp.payload.RecordRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
-import com.thesis.medicalapp.payload.response.MessageResponse;
 import com.thesis.medicalapp.pojo.RecordDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.MedicalFileRepository;
-import com.thesis.medicalapp.services.FileService;
 import com.thesis.medicalapp.services.MedicineService;
 import com.thesis.medicalapp.services.RecordService;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -34,7 +27,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecordController {
     private final RecordService recordService;
-    private final MedicineService medicineService;
+    private final MedicineService prescribedMedicineService;
     private final AppointmentRepository appointmentRepository;
     private final MedicalFileRepository medicalFileRepository;
     @PostMapping(value = "/records")

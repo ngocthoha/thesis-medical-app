@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -16,10 +18,11 @@ import javax.transaction.Transactional;
 @Slf4j
 public class MedicineServiceImpl implements MedicineService {
     private final MedicineRepository medicineRepository;
-
     @Override
-    public Medicine saveMedicine(Medicine medicine){
-        Medicine medicineEntity = medicineRepository.save(medicine);
-        return medicineEntity;
+    public Medicine save(Medicine medicine) {
+        return medicineRepository.save(medicine);
+    }
+    public List<Medicine> getAll() {
+        return medicineRepository.findAll();
     }
 }

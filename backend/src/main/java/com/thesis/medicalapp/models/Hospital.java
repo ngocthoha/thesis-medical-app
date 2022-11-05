@@ -32,4 +32,8 @@ public class Hospital extends AuditLog {
     private Boolean isActive;
     @OneToOne
     private HospitalHour hospitalHour;
+
+    public Hospital(String id) {
+        this.id = id;
+    }
 }

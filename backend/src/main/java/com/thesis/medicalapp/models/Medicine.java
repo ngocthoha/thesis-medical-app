@@ -3,7 +3,7 @@ package com.thesis.medicalapp.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -12,17 +12,18 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "medicines")
-@ToString
-public class Medicine {
+public class Medicine extends AuditLog {
     @Id
-    @GeneratedValue
-    private Integer id;
-    private String name;
-    private String imageUrl;
-    private String price;
-    private String info;
-    private Integer registrationNumber = 0;
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "hospital_id")
-    private Hospital hospital;
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
+    @ManyToOne
+    @JoinColumn(name = "medicine_id", nullable = false)
+    private StoreMedicine storeMedicine;
+    private String unit;
+    private String numMedicineInMorning;
+    private String numMedicineInAfternoon;
+    private String numMedicineInEvening;
+    private String dateStart;
+    private String dateEnd;
 }

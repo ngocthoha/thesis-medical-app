@@ -62,4 +62,9 @@ public class HospitalServiceImpl implements HospitalService {
         Hospital hospital = hospitalOp.get();
         return HospitalDTO.from(hospital);
     }
+
+    @Override
+    public Boolean existsById(String id) {
+        return hospitalRepository.existsById(id);
+    }
 }

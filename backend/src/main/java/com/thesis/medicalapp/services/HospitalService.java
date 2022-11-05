@@ -8,4 +8,5 @@ public interface HospitalService {
     HospitalDTO saveHospital(HospitalDTO hospitalDTO);
     List<HospitalDTO> getHospitals();
     HospitalDTO getHospitalById(String id);
+    Boolean existsById(String id);
 }
