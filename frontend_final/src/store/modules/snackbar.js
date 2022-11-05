@@ -1,5 +1,5 @@
 const state = {
-  snackbar: { showing: false, text: "", color: "" },
+  snackbar: { showing: false, text: "", color: "" }
 };
 
 const mutations = {
@@ -7,7 +7,7 @@ const mutations = {
     state.snackbar.showing = data.showing;
     state.snackbar.text = data.text;
     state.snackbar.color = data.color;
-  },
+  }
 };
 
 const actions = {
@@ -23,24 +23,31 @@ const actions = {
         commit("setSnackbar", {
           showing: true,
           text: params.text,
-          color: "green",
+          color: "green"
+        });
+        break;
+      case "warn":
+        commit("setSnackbar", {
+          showing: true,
+          text: params.text,
+          color: "#F79009"
         });
         break;
       case "error":
         commit("setSnackbar", {
           showing: true,
           text: params.text,
-          color: "#F04438",
+          color: "#F04438"
         });
         break;
       default:
         break;
     }
-  },
+  }
 };
 export default {
   namespaced: true,
   state,
   mutations,
-  actions,
+  actions
 };

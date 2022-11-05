@@ -164,7 +164,7 @@
           <div class="d-flex flex-row align-center justify-space-between">
             <p class="text-body-1 font-weight-medium">Khám theo yêu cầu</p>
             <p class="ml-3 font-weight-bold" style="color: #537da5">
-              100000 VND
+              {{ this.doctor_info.price }} VND
             </p>
           </div>
           <!--  -->
@@ -301,7 +301,7 @@
                 <!-- morning -->
                 <p class="font-weight-medium">Sáng</p>
                 <div class="d-flex flex-wrap justify-start">
-                  <v-item-group v-model="selected">
+                  <v-item-group v-model="online_selected">
                     <v-item
                       v-for="(item, idx) in online.times"
                       :key="idx"
@@ -332,7 +332,7 @@
                 <!-- afternoon -->
                 <p class="font-weight-medium">Chiều</p>
                 <div class="d-flex flex-wrap justify-start">
-                  <v-item-group v-model="selected">
+                  <v-item-group v-model="online_selected">
                     <v-item
                       v-for="(item, idx) in online.times"
                       :key="idx"
@@ -365,7 +365,7 @@
                   elevation="0"
                   color="#D4DFE9"
                   class="btn"
-                  @click="submit_select_time"
+                  @click="submit_online_select_time"
                   ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
                   <p
                     class="ma-0 font-weight-bold text-body-1"
@@ -401,7 +401,7 @@
                     Sáng
                   </p>
                   <div class="d-flex flex-wrap justify-start">
-                    <v-item-group v-model="selected">
+                    <v-item-group v-model="offline_selected">
                       <v-item
                         v-for="(item, idx) in offline.morning"
                         :key="idx"
@@ -440,7 +440,7 @@
                     Chiều
                   </p>
                   <div class="d-flex flex-wrap justify-start">
-                    <v-item-group v-model="selected">
+                    <v-item-group v-model="offline_selected">
                       <v-item
                         v-for="(item, idx) in offline.afternoon"
                         :key="idx"
@@ -470,11 +470,12 @@
                     <!-- booking -->
                   </div>
                 </div>
+
                 <v-btn
                   elevation="0"
                   color="#D4DFE9"
                   class="btn"
-                  @click="submit_select_time"
+                  @click="submit_offline_select_time"
                   ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
                   <p
                     class="ma-0 font-weight-bold text-body-1"
@@ -505,60 +506,28 @@ export default {
     return {
       tab: null,
       calander_tab: null,
-      selected: null,
+      online_selected: null,
+      offline_selected: null,
       is_loading_schedule: false,
-      morning_time: [
-        "09:00 - 09:30",
-        "10:00 - 10:30",
-        "11:00 - 11:30",
-        "12:00 - 12:30"
-      ],
-      affternoon_time: [
-        "13:00 - 13:30",
-        "14:00 - 14:30",
-        "15:00 - 15:30",
-        "16:00 - 16:30"
-      ],
       select_time_menu: false,
       doctor_info: {},
       date_pick: "",
-
-      results: [
-        {
-          id: "0a7d8154-39ef-454d-90de-e00af9c48549",
-          type: "OFFLINE",
-          date: "2022-07-12",
-          room: {
-            id: "62f70d77-a614-4ed5-940b-45a99cfd807b",
-            name: "H2",
-            link: null
-          },
-          times: ["9:00 - 10:00", "10:00 - 11:00", "11:00 - 12:00"],
-          numOfAppointmentPerHour: 2,
-          doctor: {
-            id: "5a6acc34-3319-458b-b723-adfc227705bc",
-            name: "Doctor Name",
-            email: "doctor@gmail.com",
-            specialty: "Chuẩn Đoán Hình Ảnh",
-            level: "CKI",
-            bio:
-              "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.",
-            registrationNumber: 0,
-            price: "100.000",
-            imageUrl: null
-          }
-        }
-      ],
       online: {
         morning: [],
         afternoon: [],
-        has_schedule: false
+        has_schedule: false,
+        room_id: ""
       },
 
       offline: {
         morning: [],
         afternoon: [],
-        has_schedule: false
+        has_schedule: false,
+        room: {
+          id: "",
+          name: "",
+          link: null
+        }
       },
       show_date: {
         date: "",
@@ -568,23 +537,84 @@ export default {
     };
   },
   methods: {
-    submit_select_time() {
-      this.$router
-        .push({ name: "Điền thông tin đặt lịch bác sĩ" })
-        .catch(error => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
+    submit_offline_select_time() {
+      let is_login = this.$store.getters["auth/isLogin"];
+      if (is_login) {
+        if (this.offline_selected != null) {
+          this.$store.dispatch(
+            "appointment/set_time_to_make_appointment_doctor",
+            {
+              time: this.offline_selected,
+              type: "OFFLINE",
+              date: this.date_pick,
+              room: this.offline.room
+            }
+          );
+          this.$router
+            .push({ name: "Điền thông tin đặt lịch bác sĩ" })
+            .catch(error => {
+              if (error == null) {
+                return;
+              }
+              if (error.name != "NavigationDuplicated") {
+                throw error;
+              }
+            });
+        } else {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Vui lòng chọn lịch khám",
+            type: "warn"
+          });
+        }
+      } else {
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Vui lòng đăng nhập trước khi đặt lịch hẹn",
+          type: "warn"
         });
+      }
     },
+
+    submit_online_select_time() {
+      let is_login = this.$store.getters["auth/isLogin"];
+      if (is_login) {
+        if (this.offline_selected != null) {
+          this.$store.dispatch(
+            "appointment/set_time_to_make_appointment_doctor",
+            {
+              time: this.online_selected,
+              type: "ONLINE",
+              date: this.date_pick,
+              room: this.online.room
+            }
+          );
+          this.$router
+            .push({ name: "Điền thông tin đặt lịch bác sĩ" })
+            .catch(error => {
+              if (error == null) {
+                return;
+              }
+              if (error.name != "NavigationDuplicated") {
+                throw error;
+              }
+            });
+        } else {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Vui lòng chọn lịch khám",
+            type: "warn"
+          });
+        }
+      } else {
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Vui lòng đăng nhập trước khi đặt lịch hẹn",
+          type: "warn"
+        });
+      }
+    },
+
     get_doctor_select() {
       this.doctor_info = this.$store.getters[
         "appointment/make_appointment_doctor_select"
       ];
-      console.log(this.doctor_info.name);
     },
 
     get_hospital_address(hospital) {
@@ -643,6 +673,7 @@ export default {
           if (schedule.type === "OFFLINE") {
             if (schedule.times != []) {
               this.offline.has_schedule = true;
+              this.offline.room = schedule.room;
             }
             schedule.times.forEach(time_frame => {
               if (this.check_is_morning(time_frame)) {
@@ -656,6 +687,7 @@ export default {
             schedule.times.forEach(time_frame => {
               if (schedule.times != []) {
                 this.online.has_schedule = true;
+                this.offline.room = schedule.room;
               }
               if (this.check_is_morning(time_frame)) {
                 this.online.morning.push(time_frame);
