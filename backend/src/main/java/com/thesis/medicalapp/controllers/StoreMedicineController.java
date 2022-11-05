@@ -38,6 +38,12 @@ class StoreMedicineCreateDTO {
     private String hospitalId;
 }
 
+@Data
+class StoreMedicineSelect {
+    private String id;
+    private String name;
+}
+
 @RestController
 @RequestMapping("/api/store-medicines")
 @RequiredArgsConstructor
@@ -85,6 +91,17 @@ public class StoreMedicineController {
         Page<StoreMedicine> page = storeMedicineService.search(request);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(page.getContent(), page.getPageable())
+        );
+    }
+
+    @GetMapping("/hospital")
+    public ResponseEntity<Object> getByHospital(@RequestParam String hospitalId) {
+        List<StoreMedicineSelect> storeMedicines = storeMedicineService.getByHospital(hospitalId)
+                .stream()
+                .map(storeMedicine -> modelMapper.map(storeMedicine, StoreMedicineSelect.class))
+                .collect(Collectors.toList());
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(storeMedicines)
         );
     }
 }
