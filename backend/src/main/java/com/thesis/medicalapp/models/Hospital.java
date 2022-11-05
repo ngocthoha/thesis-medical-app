@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "hospitals")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Hospital extends AuditLog {
     @Id
     @GeneratedValue(generator = "uuid")

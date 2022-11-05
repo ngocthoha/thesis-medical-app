@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
@@ -20,7 +21,7 @@ public class RecordRequest {
     private String appointmentId;
     private String diagnose;
     private String prescribe;
-    private Collection<Medicine> medicines;
+    private Collection<@Valid MedicineRequest> medicines;
     private String reExaminationDate;
     private Collection<MedicalFile> files;
 }

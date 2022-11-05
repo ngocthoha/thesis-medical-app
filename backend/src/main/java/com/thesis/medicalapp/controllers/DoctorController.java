@@ -21,14 +21,14 @@ public class DoctorController {
     public ResponseEntity<Object> getDoctors() {
         List<UserDoctorDTO> doctors = doctorService.getDoctors();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", doctors)
+                new ApiResponse<>(doctors)
         );
     }
     @GetMapping("/doctors/specialty")
     public ResponseEntity<Object> getDoctorsBySpecialty(@RequestParam String specialty) {
         List<UserDoctorDTO> doctors = doctorService.getDoctorsBySpecialty(specialty);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", doctors)
+                new ApiResponse<>(doctors)
         );
     }
 
@@ -36,7 +36,7 @@ public class DoctorController {
     public ResponseEntity<Object> getDoctorsByHospital(@RequestParam String hospitalId) {
         List<UserDoctorDTO> doctors = doctorService.getDoctorsByHospital(hospitalId);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", doctors)
+                new ApiResponse<>(doctors)
         );
     }
 }

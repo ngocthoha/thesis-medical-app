@@ -38,7 +38,7 @@ public class HospitalController {
             );
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(0, e.getMessage(), null)
+                    new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage())
             );
         }
     }

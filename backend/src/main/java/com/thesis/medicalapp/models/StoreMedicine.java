@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Table(name = "store_medicines")
 @ToString
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class StoreMedicine extends AbstractProduct implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")

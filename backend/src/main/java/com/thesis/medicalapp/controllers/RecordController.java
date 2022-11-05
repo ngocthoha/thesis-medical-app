@@ -3,11 +3,13 @@ package com.thesis.medicalapp.controllers;
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.models.Record;
+import com.thesis.medicalapp.payload.MedicineRequest;
 import com.thesis.medicalapp.payload.RecordRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.RecordDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.MedicalFileRepository;
+import com.thesis.medicalapp.repository.MedicineRepository;
 import com.thesis.medicalapp.services.MedicineService;
 import com.thesis.medicalapp.services.RecordService;
 import com.thesis.medicalapp.utils.SequenceGenerator;
@@ -30,11 +32,13 @@ public class RecordController {
     private final MedicineService prescribedMedicineService;
     private final AppointmentRepository appointmentRepository;
     private final MedicalFileRepository medicalFileRepository;
+    private final MedicineService medicineService;
+
     @PostMapping(value = "/records")
     public ResponseEntity<ApiResponse> saveRecord(@RequestBody @Valid RecordRequest recordRequest) {
         Record record = new Record();
         Appointment appointment = appointmentRepository.findAppointmentById(recordRequest.getAppointmentId());
-        if (appointment == null) throw new ApiRequestException("Could not find appointment!");
+        if (appointment == null) throw new ApiRequestException("Không tìm thấy lịch hẹn!");
         record.setAppointment(appointment);
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         Long recordId = sequenceGenerator.nextId();
@@ -42,13 +46,22 @@ public class RecordController {
         record.setDiagnose(recordRequest.getDiagnose());
         record.setPrescribe(recordRequest.getPrescribe());
         record.setMedicines(new ArrayList<>());
-        record.setReExaminationDate(new ArrayList<>());
+        if (null != recordRequest.getMedicines()) {
+            System.out.println("save medicine!");
+            for (MedicineRequest medicineRequest: recordRequest.getMedicines()) {
+                Medicine m = medicineService.save(medicineRequest);
+                record.getMedicines().add(m);
+            }
+        }
+        record.setFiles(new ArrayList<>());
         if (null != recordRequest.getFiles()) {
             for (MedicalFile file : recordRequest.getFiles()) {
                 MedicalFile File = medicalFileRepository.save(file);
-                appointment.getFiles().add(File);
+                record.getFiles().add(File);
             }
         }
+
+        record.setReExaminationDate(new ArrayList<>());
         if (null != recordRequest.getReExaminationDate()) {
             Date dateFormat = new Date();
             try {
@@ -59,6 +72,7 @@ public class RecordController {
                 System.out.println(e.getMessage());
             }
         }
+
         RecordDTO recordDTO = recordService.saveRecord(record);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(recordDTO)

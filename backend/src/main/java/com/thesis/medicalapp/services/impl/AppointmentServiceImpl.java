@@ -1,11 +1,13 @@
 package com.thesis.medicalapp.services.impl;
 
 import com.amazonaws.services.dynamodbv2.xspec.S;
+import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.AppointmentsByDateAndDoctor;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.DoctorRepository;
+import com.thesis.medicalapp.repository.ProfileRepository;
 import com.thesis.medicalapp.services.AppointmentService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 public class AppointmentServiceImpl implements AppointmentService {
     private final AppointmentRepository appointmentRepository;
     private final DoctorRepository doctorRepository;
+    private final ProfileRepository profileRepository;
 
     @Override
     public AppointmentDTO saveAppointment(Appointment appointment) {
@@ -36,11 +39,13 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
     @Override
     public List<AppointmentDTO> getAppointmentByProfileId(String profileId) {
+        if (!profileRepository.existsById(profileId)) {
+            throw new ApiRequestException("Không tìm thấy profile!");
+        }
         List<Appointment> appointments = appointmentRepository.findAllByProfileId(profileId)
                 .stream()
                 .collect(Collectors.toList());
         List<AppointmentDTO> appointmentDTOS = appointments.stream().map(a -> {
-            System.out.println(a);
             AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
             return appointmentDTO;
         }).collect(Collectors.toList());

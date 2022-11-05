@@ -33,11 +33,11 @@ public class SmsController {
             twilioConfig.send(sms);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    new ApiResponse<>(1, e.getMessage(), null)
+                    new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage())
             );
         }
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(1, "Success", null)
+                new ApiResponse<>(HttpStatus.OK.value(), HttpStatus.OK.toString())
         );
     }
 }

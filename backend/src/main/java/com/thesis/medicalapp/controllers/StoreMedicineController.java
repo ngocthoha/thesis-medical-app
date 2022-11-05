@@ -81,7 +81,10 @@ public class StoreMedicineController {
     }
 
     @PostMapping("/search")
-    public Page<StoreMedicine> search(@RequestBody SearchRequest request) {
-        return storeMedicineService.search(request);
+    public ResponseEntity<Object> search(@RequestBody SearchRequest request) {
+        Page<StoreMedicine> page = storeMedicineService.search(request);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(page.getContent(), page.getPageable())
+        );
     }
 }

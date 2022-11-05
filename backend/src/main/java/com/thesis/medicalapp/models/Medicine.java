@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
@@ -21,9 +22,9 @@ public class Medicine extends AuditLog {
     @JoinColumn(name = "medicine_id", nullable = false)
     private StoreMedicine storeMedicine;
     private String unit;
-    private String numMedicineInMorning;
-    private String numMedicineInAfternoon;
-    private String numMedicineInEvening;
-    private String dateStart;
-    private String dateEnd;
+    private Integer numMedicineInMorning;
+    private Integer numMedicineInAfternoon;
+    private Integer numMedicineInEvening;
+    private Date dateStart;
+    private Date dateEnd;
 }

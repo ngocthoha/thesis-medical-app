@@ -24,7 +24,7 @@ public class ProfileController {
             throw new ApiRequestException("Identity card already exists!");
         ProfileDTO profileResponse = profileService.saveProfile(profileDTO);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", profileResponse)
+                new ApiResponse<>(profileResponse)
         );
     }
 
@@ -32,7 +32,7 @@ public class ProfileController {
     public ResponseEntity<ApiResponse> getProfilesByUser() {
         List<ProfileDTO> profileDTOS = profileService.getProfilesByUser();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(1, "Success", profileDTOS)
+                new ApiResponse<>(profileDTOS)
         );
     }
 
@@ -40,7 +40,7 @@ public class ProfileController {
     public ResponseEntity<ApiResponse> getProfilesByPhone(@RequestParam("phone") String phone) {
         ProfileSearch profileSearch = profileService.searchProfile(phone);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", profileSearch)
+                new ApiResponse<>(profileSearch)
         );
     }
 
@@ -48,7 +48,7 @@ public class ProfileController {
     public ResponseEntity<ApiResponse> getProfiles() {
         List<ProfileDTO> profileDTOS = profileService.getProfiles();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", profileDTOS)
+                new ApiResponse<>(profileDTOS)
         );
     }
 

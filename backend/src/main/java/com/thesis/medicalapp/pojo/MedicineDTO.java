@@ -20,17 +20,4 @@ public class MedicineDTO {
     private String numMedicineInEvening;
     private String dateStart;
     private String dateEnd;
-
-    public static MedicineDTO from(Medicine medicine) {
-        return MedicineDTO.builder()
-                .id(medicine.getId())
-                .storeMedicine(medicine.getStoreMedicine())
-                .unit(medicine.getUnit())
-                .numMedicineInMorning(medicine.getNumMedicineInMorning())
-                .numMedicineInAfternoon(medicine.getNumMedicineInAfternoon())
-                .numMedicineInEvening(medicine.getNumMedicineInEvening())
-                .dateStart(medicine.getDateStart())
-                .dateEnd(medicine.getDateEnd())
-                .build();
-    }
 }
