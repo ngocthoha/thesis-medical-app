@@ -24,8 +24,9 @@ import java.util.stream.Collectors;
 public class ServiceServiceImpl implements ServiceService {
     private final ServiceRepository serviceRepository;
     private final HospitalRepository hospitalRepository;
+
     @Override
-    public ServiceDTO saveService(ServiceRequest serviceRequest) {
+    public HospitalService save(ServiceRequest serviceRequest) {
         HospitalService hospitalService = new HospitalService();
         Optional<Hospital> hospital = hospitalRepository.findById(serviceRequest.getHospitalId());
         if (!hospital.isPresent()) throw new ApiRequestException("Không tìm thấy bệnh viện!");
@@ -38,20 +39,13 @@ public class ServiceServiceImpl implements ServiceService {
         hospitalService.setType(serviceRequest.getType());
         hospitalService.setSpecialty(serviceRequest.getSpecialty());
         hospitalService.setImageUrl(serviceRequest.getServiceImageUrl());
-        HospitalService hospitalServiceDB = serviceRepository.save(hospitalService);
-        ServiceDTO service_response = ServiceDTO.from(hospitalServiceDB);
-        return service_response;
+        HospitalService hospitalServiceRes = serviceRepository.save(hospitalService);
+        return hospitalServiceRes;
     }
 
     @Override
-    public List<ServiceDTO> getServices() {
-        List<HospitalService> hospitalServices = serviceRepository.findAll()
-                .stream().collect(Collectors.toList());
-        List<ServiceDTO> serviceDTOS = hospitalServices.stream().map(d -> {
-            ServiceDTO serviceDTO = ServiceDTO.from(d);
-            return serviceDTO;
-        }).collect(Collectors.toList());
-        return serviceDTOS;
+    public Iterable<HospitalService> getAll() {
+        return serviceRepository.findAll();
     }
 
     @Override

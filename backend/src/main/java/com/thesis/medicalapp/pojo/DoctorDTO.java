@@ -15,6 +15,7 @@ public class DoctorDTO {
     private String name;
     private String email;
     private String specialty;
+    private HospitalDTO hospital;
     private String level;
     private String bio;
     private Integer registrationNumber;
@@ -27,6 +28,7 @@ public class DoctorDTO {
                 .name(doctor.getName())
                 .email(doctor.getEmail())
                 .specialty(doctor.getSpecialty().getName())
+                .hospital(HospitalDTO.from(doctor.getHospital()))
                 .level(doctor.getLevel())
                 .bio(doctor.getBio())
                 .registrationNumber(doctor.getRegistrationNumber())

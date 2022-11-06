@@ -5,9 +5,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Type;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 
@@ -15,7 +18,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @Table(name = "doctors")
-public class Doctor extends User {
+public class Doctor extends User implements Serializable {
     @Column(nullable = false)
     private String name;
     private Gender gender;
@@ -26,6 +29,7 @@ public class Doctor extends User {
     @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
+    @Type(type="text")
     private String bio;
     private Integer registrationNumber = 0;
     private String price;

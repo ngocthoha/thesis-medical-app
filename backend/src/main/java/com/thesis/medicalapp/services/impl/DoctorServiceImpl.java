@@ -3,13 +3,18 @@ package com.thesis.medicalapp.services.impl;
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Hospital;
+import com.thesis.medicalapp.models.StoreMedicine;
 import com.thesis.medicalapp.pojo.DoctorDTO;
 import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.repository.DoctorRepository;
 import com.thesis.medicalapp.repository.HospitalRepository;
+import com.thesis.medicalapp.search.SearchRequest;
+import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.DoctorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -61,5 +66,12 @@ public class DoctorServiceImpl implements DoctorService {
             return doctorDTO;
         }).collect(Collectors.toList());
         return doctorDTOS;
+    }
+
+    @Override
+    public Page<Doctor> search(SearchRequest request) {
+        SearchSpecification<Doctor> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        return doctorRepository.findAll(specification, pageable);
     }
 }

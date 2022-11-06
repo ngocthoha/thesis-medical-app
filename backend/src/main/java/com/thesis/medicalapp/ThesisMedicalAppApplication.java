@@ -3,11 +3,13 @@ package com.thesis.medicalapp;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +26,7 @@ import java.util.UUID;
 @RestController
 @EnableJpaAuditing
 @EnableScheduling
+@EnableJpaRepositories("com.thesis.medicalapp.repository")
 public class ThesisMedicalAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(ThesisMedicalAppApplication.class, args);
@@ -31,6 +34,10 @@ public class ThesisMedicalAppApplication {
     @Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
     }
     @Bean
     CommandLineRunner run(UserService userService, ProfileRepository profileRepository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, RoomRepository roomRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository, HospitalHourRepository hospitalHourRepository, UserRepository userRepository) {
@@ -55,7 +62,7 @@ public class ThesisMedicalAppApplication {
 
             Date dateFormat = new Date();
             try {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse("2022-07-12");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-06");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -63,6 +70,8 @@ public class ThesisMedicalAppApplication {
             times.add("9:00 - 10:00");
             times.add("10:00 - 11:00");
             times.add("11:00 - 12:00");
+            times.add("13:00 - 14:00");
+            times.add("14:00 - 15:00");
             userService.saveUser(doctor);
             Doctor doctorEntity = doctorRepository.findDoctorByUsername("doctor");
             Room room = roomRepository.save(new Room(null,"H2", null));

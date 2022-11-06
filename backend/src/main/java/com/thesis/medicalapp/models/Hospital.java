@@ -7,9 +7,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
@@ -18,7 +20,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @Table(name = "hospitals")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Hospital extends AuditLog {
+public class Hospital extends AuditLog implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
@@ -26,7 +28,7 @@ public class Hospital extends AuditLog {
     private String name;
     @OneToOne
     private Address address;
-    @Lob
+    @Type(type="text")
     private String info;
     private Integer registrationNumber;
     private String mapImageUrl;

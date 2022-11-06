@@ -1,5 +1,7 @@
 package com.thesis.medicalapp.search;
 
+import com.thesis.medicalapp.exception.ApiRequestException;
+import com.thesis.medicalapp.models.SpecialtyType;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -52,8 +54,17 @@ public enum FieldType {
     },
 
     STRING {
+        public Object parse(String value) { return value; }
+    },
+
+    SPECIALTYTYPE {
         public Object parse(String value) {
-            return value;
+            for (SpecialtyType type : SpecialtyType.values()) {
+                if (value.equals(type.toString())) {
+                    return type;
+                }
+            }
+            throw new ApiRequestException("Không tìm thấy chuyên khoa!");
         }
     };
 

@@ -47,7 +47,7 @@ public class AppointmentDTO {
                 .room(appointment.getRoom())
                 .profile(ProfileDTO.from(appointment.getProfile()))
                 .doctor(DoctorDTO.from(appointment.getDoctor()))
-                .service(appointment.getService())
+               .service(appointment.getService())
                 .date(appointment.getDate())
                 .time(appointment.getTime())
                 .symptom(appointment.getSymptom())

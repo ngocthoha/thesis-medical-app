@@ -12,6 +12,7 @@ import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.*;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,9 +49,9 @@ public class AppointmentController {
             if (doctor == null) throw new ApiRequestException("Không tìm thấy bác sĩ!");
             appointment.setDoctor(doctor);
         } else {
-            Optional<HospitalService> service = serviceRepository.findById(appointmentRequest.getServiceId());
-            if (!service.isPresent()) throw new ApiRequestException("Không tìm thấy dịch vụ!");
-            appointment.setService(service.get());
+           Optional<HospitalService> service = serviceRepository.findById(appointmentRequest.getServiceId());
+           if (!service.isPresent()) throw new ApiRequestException("Không tìm thấy dịch vụ!");
+           appointment.setService(service.get());
         }
         Date dateFormat = new Date();
         try {
