@@ -1,11 +1,13 @@
 <template>
   <div>
     <v-card width="922px" elevation="4" class="pb-8">
-      <profile-list
-        v-if="visible_profile_list"
-        v-on:OpenCreateProfile="createProfile"
-        v-on:OpenEditProfile="editProfile"
-      ></profile-list>
+      <v-expand-transition>
+        <profile-list
+          v-if="visible_profile_list"
+          v-on:OpenCreateProfile="createProfile"
+          v-on:OpenEditProfile="editProfile"
+        ></profile-list>
+      </v-expand-transition>
       <add-profile
         v-if="visible_add_profile"
         v-on:addProfileClose="closeAddProfile"
@@ -27,14 +29,14 @@ export default {
   components: {
     ProfileList,
     AddProfile,
-    EditProfile,
+    EditProfile
   },
   data() {
     return {
       visible_profile_list: true,
       visible_add_profile: false,
       visible_edit_profile: false,
-      edit_profile: null,
+      edit_profile: null
     };
   },
 
@@ -58,7 +60,7 @@ export default {
     closeEditProfile() {
       this.visible_profile_list = true;
       this.visible_edit_profile = false;
-    },
-  },
+    }
+  }
 };
 </script>

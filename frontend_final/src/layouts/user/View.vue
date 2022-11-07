@@ -35,7 +35,9 @@
             </v-list>
           </v-card>
         </div>
-        <router-view :key="$route.path" />
+        <v-scroll-y-transition appear>
+          <router-view :key="$route.path"
+        /></v-scroll-y-transition>
       </v-card>
     </div>
   </v-container>
@@ -58,7 +60,11 @@ export default {
           icon: "mdi-clock-time-nine-outline",
           link: "/home/user/appointment-history"
         },
-        { text: "Hồ sơ sức khỏe", icon: "mdi-file-document-multiple-outline" },
+        {
+          text: "Hồ sơ sức khỏe",
+          icon: "mdi-file-document-multiple-outline",
+          link: "/home/user/health-records"
+        },
         { text: "Lịch sử giao dịch", icon: "mdi-swap-horizontal" }
       ]
     };

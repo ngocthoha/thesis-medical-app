@@ -83,6 +83,7 @@
               elevation="0"
               color="#537DA5"
               class="white--text btn-not-transform font-weight-bold"
+              @click="view_appointment_detail({})"
               >Chi tiết</v-btn
             >
 
@@ -103,8 +104,8 @@
 <script>
 export default {
   methods: {
-    view_detail_pointment() {
-      this;
+    view_appointment_detail(appointment) {
+      this.$emit("viewDetail", appointment);
     }
   }
 };

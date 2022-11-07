@@ -225,6 +225,13 @@ const router = new Router({
                 default: "user/appointment_history"
               },
               "appointment-history"
+            ),
+            route(
+              "Hồ sơ sức khỏe",
+              {
+                default: "user/health_records"
+              },
+              "health-records"
             )
           ],
           "user"

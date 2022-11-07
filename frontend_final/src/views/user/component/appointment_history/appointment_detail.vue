@@ -17,6 +17,7 @@
         outlined
         color="#667085"
         text
+        @click="close_view_appointment_detail"
         >Hủy xem</v-btn
       >
     </v-card>
@@ -244,6 +245,19 @@
     </v-card>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    appointment: Object
+  },
+  methods: {
+    close_view_appointment_detail() {
+      this.$emit("appointmentDetailClose");
+    }
+  }
+};
+</script>
 <style scoped>
 .btn-not-transform {
   text-transform: none;
