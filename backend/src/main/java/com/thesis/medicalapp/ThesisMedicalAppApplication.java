@@ -1,5 +1,7 @@
 package com.thesis.medicalapp;
 
+import com.thesis.medicalapp.config.ESConfig;
+import com.thesis.medicalapp.indices.Indices;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.UserService;
@@ -8,6 +10,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -40,8 +44,17 @@ public class ThesisMedicalAppApplication {
         return new ModelMapper();
     }
     @Bean
-    CommandLineRunner run(UserService userService, ProfileRepository profileRepository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, RoomRepository roomRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository, HospitalHourRepository hospitalHourRepository, UserRepository userRepository) {
+    CommandLineRunner run(UserService userService, ProfileRepository profileRepository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, RoomRepository roomRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository, HospitalHourRepository hospitalHourRepository, ESConfig esConfig) {
         return args -> {
+            // Remove all data in ES
+            esConfig.elasticsearchTemplate().indexOps(IndexCoordinates.of(Indices.HOSPITAL_SERVICE_INDEX)).delete();
+            esConfig.elasticsearchTemplate().indexOps(IndexCoordinates.of(Indices.HOSPITAL_INDEX)).delete();
+            esConfig.elasticsearchTemplate().indexOps(IndexCoordinates.of(Indices.DOCTOR_INDEX)).delete();
+
+            esConfig.elasticsearchTemplate().indexOps(HospitalES.class).create();
+            esConfig.elasticsearchTemplate().indexOps(DoctorES.class).create();
+            esConfig.elasticsearchTemplate().indexOps(HospitalServiceES.class).create();
+            // Init data
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
             userService.saveRole(new Role(null, "ROLE_DOCTOR"));
@@ -51,7 +64,7 @@ public class ThesisMedicalAppApplication {
             String hospitalBreak = "12:00 - 13:00";
             HospitalHour hospitalHour = new HospitalHour(null, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak);
             HospitalHour hospitalHour1 = hospitalHourRepository.save(hospitalHour);
-            Hospital hospital = new Hospital(null, "BV Dai Hoc Y Duoc", address1, "info", 0, null, null, true, hospitalHour1);
+            Hospital hospital = new Hospital(null, "Bệnh Viện Đại Học Y Dược HCM", address1, "info", 0, null, null, true, hospitalHour1);
             hospitalRepository.save(hospital);
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
