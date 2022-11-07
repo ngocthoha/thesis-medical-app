@@ -112,7 +112,7 @@ const router = new Router({
         "Nhi khoa",
         { default: "home/Specialist/Pediatrics" },
         "/specialist-Pediatrics"
-      ),
+      )
     ]),
 
     //DashBoard Pages
@@ -144,7 +144,6 @@ const router = new Router({
         { default: "doctor/medical_examination" },
         "/doctor/doctor-medical-examination"
       ),
-
 
       route(
         "Lịch trình",
@@ -200,7 +199,7 @@ const router = new Router({
         { default: "admin/AccountAdmin" },
         "/admin/account-admin"
       ),
-      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin"),
+      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin")
     ]),
 
     //Auth Pages
@@ -216,25 +215,25 @@ const router = new Router({
             route(
               "Hồ sơ cá nhân",
               {
-                default: "user/profile",
+                default: "user/profile"
               },
               "profile"
             ),
             route(
               "Lịch sử Đặt khám",
               {
-                default: "user/appointmentHistory",
+                default: "user/appointment_history"
               },
               "appointment-history"
-            ),
+            )
           ],
           "user"
-        ),
+        )
       ],
       "/home"
     ),
 
-    route("test", { default: "test/test" }, "/test"),
+    route("test", { default: "test/test" }, "/test")
     // {
     //   path: "/home",
     //   component: () =>
@@ -265,7 +264,7 @@ const router = new Router({
     //     }
     //   ]
     // }
-  ],
+  ]
 });
 
 router.beforeEach((to, from, next) => {
