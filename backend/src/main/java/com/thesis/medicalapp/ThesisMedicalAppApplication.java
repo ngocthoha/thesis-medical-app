@@ -4,6 +4,8 @@ import com.thesis.medicalapp.config.ESConfig;
 import com.thesis.medicalapp.indices.Indices;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.repository.*;
+import com.thesis.medicalapp.services.DoctorESService;
+import com.thesis.medicalapp.services.HospitalESService;
 import com.thesis.medicalapp.services.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
@@ -44,7 +46,19 @@ public class ThesisMedicalAppApplication {
         return new ModelMapper();
     }
     @Bean
-    CommandLineRunner run(UserService userService, ProfileRepository profileRepository, ScheduleRepository scheduleRepository, DoctorRepository doctorRepository, RoomRepository roomRepository, HospitalRepository hospitalRepository, AddressRepository addressRepository, HospitalHourRepository hospitalHourRepository, ESConfig esConfig) {
+    CommandLineRunner run(
+            UserService userService,
+            ProfileRepository profileRepository,
+            ScheduleRepository scheduleRepository,
+            DoctorRepository doctorRepository,
+            RoomRepository roomRepository,
+            HospitalRepository hospitalRepository,
+            AddressRepository addressRepository,
+            HospitalHourRepository hospitalHourRepository,
+            ESConfig esConfig,
+            HospitalESService hospitalESService,
+            DoctorESService doctorESService
+    ) {
         return args -> {
             // Remove all data in ES
             esConfig.elasticsearchTemplate().indexOps(IndexCoordinates.of(Indices.HOSPITAL_SERVICE_INDEX)).delete();
@@ -64,8 +78,9 @@ public class ThesisMedicalAppApplication {
             String hospitalBreak = "12:00 - 13:00";
             HospitalHour hospitalHour = new HospitalHour(null, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak);
             HospitalHour hospitalHour1 = hospitalHourRepository.save(hospitalHour);
-            Hospital hospital = new Hospital(null, "Bệnh Viện Đại Học Y Dược HCM", address1, "info", 0, null, null, true, hospitalHour1);
-            hospitalRepository.save(hospital);
+            Hospital hospital = new Hospital(null, "Bệnh Viện Đại Học Y Dược HCM", address1, "info", 0, null, "https://ump.edu.vn/img/image-default.png", true, hospitalHour1);
+            Hospital hospital1 = hospitalRepository.save(hospital);
+            hospitalESService.save(hospital1);
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
@@ -87,6 +102,7 @@ public class ThesisMedicalAppApplication {
             times.add("14:00 - 15:00");
             userService.saveUser(doctor);
             Doctor doctorEntity = doctorRepository.findDoctorByUsername("doctor");
+            doctorESService.save(doctorEntity);
             Room room = roomRepository.save(new Room(null,"H2", null));
             scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, 2, doctorEntity));
             userService.addRoleToUser("user", "ROLE_USER");
