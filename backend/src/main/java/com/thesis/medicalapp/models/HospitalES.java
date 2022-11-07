@@ -8,17 +8,16 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = Indices.HOSPITAL_SERVICE_INDEX)
-public class HospitalServiceES {
+@Document(indexName = Indices.HOSPITAL_INDEX)
+public class HospitalES {
     @Id
     private String id;
     private String name;
-    private String info;
-    private String price;
-    private String imageUrl;
-    private Hospital hospital;
+    private Address address;
+    private String hospitalImageUrl;
 }

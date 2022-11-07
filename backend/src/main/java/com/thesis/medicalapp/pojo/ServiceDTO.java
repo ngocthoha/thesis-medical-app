@@ -32,7 +32,7 @@ public class ServiceDTO {
                 .registrationNumber(hospitalService.getRegistrationNumber())
                 .price(hospitalService.getPrice())
                 .specialty(hospitalService.getSpecialty().getName())
-               .hospital(HospitalDTO.from(hospitalService.getHospital()))
+                .hospital(HospitalDTO.from(hospitalService.getHospital()))
                 .serviceImageUrl(hospitalService.getImageUrl())
                 .numOfServicePerHour(hospitalService.getNumOfServicePerHour())
                 .type(hospitalService.getType())

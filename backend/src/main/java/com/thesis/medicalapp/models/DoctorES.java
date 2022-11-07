@@ -12,13 +12,14 @@ import javax.persistence.Id;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(indexName = Indices.HOSPITAL_SERVICE_INDEX)
-public class HospitalServiceES {
+@Document(indexName = Indices.DOCTOR_INDEX)
+public class DoctorES {
     @Id
     private String id;
     private String name;
-    private String info;
-    private String price;
     private String imageUrl;
+    private String level;
+    private String price;
+    private SpecialtyType specialty;
     private Hospital hospital;
 }
