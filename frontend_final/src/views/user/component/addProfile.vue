@@ -185,15 +185,14 @@
 import ProfileForm from "./profileForm.vue";
 export default {
   components: {
-    ProfileForm,
+    ProfileForm
   },
   data() {
     return {
-      items: ["web", "shopping", "videos", "images", "news"],
       tab: null,
       hasLookingResult: false,
       notFound: true,
-      phoneInputData: "",
+      phoneInputData: ""
     };
   },
   methods: {
@@ -216,8 +215,8 @@ export default {
     async AddProfile() {
       await this.$options.childInterface.addNewProfile();
       this.$emit("addProfileClose");
-    },
-  },
+    }
+  }
 };
 </script>
 
