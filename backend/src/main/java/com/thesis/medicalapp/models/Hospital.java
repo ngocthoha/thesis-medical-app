@@ -20,19 +20,15 @@ import java.util.Collection;
 @AllArgsConstructor
 @Table(name = "hospitals")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Hospital extends AuditLog implements Serializable {
+public class Hospital extends AbstractFavorite implements Serializable {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private String name;
     @OneToOne
     private Address address;
     @Type(type="text")
-    private String info;
-    private Integer registrationNumber;
     private String mapImageUrl;
-    private String hospitalImageUrl;
     private Boolean isActive;
     @OneToOne
     private HospitalHour hospitalHour;

@@ -8,12 +8,6 @@ import javax.persistence.MappedSuperclass;
 
 @Data
 @MappedSuperclass
-public abstract class AbstractProduct extends AuditLog {
-    private String name;
-    private Integer registrationNumber;
+public abstract class AbstractProduct extends AbstractFavorite {
     private String price;
-    private Double favorite;
-    @Type(type="text")
-    private String info;
-    private String imageUrl;
 }

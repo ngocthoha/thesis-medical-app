@@ -22,11 +22,11 @@ public class HospitalDTO {
     @NotEmpty
     private String name;
     private Address address;
-    @Lob
     private String info;
     private Integer registrationNumber;
+    private Double favorite;
     private String mapImageUrl;
-    private String hospitalImageUrl;
+    private String imageUrl;
     private Boolean isActive;
     private HospitalHour hospitalHour;
 
@@ -37,8 +37,9 @@ public class HospitalDTO {
                 .address(hospital.getAddress())
                 .info(hospital.getInfo())
                 .registrationNumber(hospital.getRegistrationNumber())
+                .favorite(hospital.getFavorite())
                 .mapImageUrl(hospital.getMapImageUrl())
-                .hospitalImageUrl(hospital.getHospitalImageUrl())
+                .imageUrl(hospital.getImageUrl())
                 .isActive(hospital.getIsActive())
                 .hospitalHour(hospital.getHospitalHour())
                 .build();

@@ -3,12 +3,12 @@ package com.thesis.medicalapp.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Collection;
@@ -26,15 +26,17 @@ public class Doctor extends User implements Serializable {
     private String email;
     private SpecialtyType specialty;
     private String level;
-    @ManyToOne(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "hospital_id")
     private Hospital hospital;
     @Type(type="text")
     private String bio;
     private Integer registrationNumber = 0;
+    private Double favorite = 0.0;
     private String price;
 
-    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  SpecialtyType specialty, String level, String bio, String price, Hospital hospital) {
+    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  SpecialtyType specialty, String level, String bio, String price, Hospital hospital, Double favorite) {
         super(id, username, phone, password, enabled, imageUrl, roles);
         this.name = name;
         this.gender = gender;
@@ -45,5 +47,6 @@ public class Doctor extends User implements Serializable {
         this.bio = bio;
         this.price = price;
         this.hospital = hospital;
+        this.favorite = favorite;
     }
 }

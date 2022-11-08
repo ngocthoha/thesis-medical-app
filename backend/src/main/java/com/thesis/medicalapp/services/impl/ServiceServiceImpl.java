@@ -38,9 +38,21 @@ public class ServiceServiceImpl implements ServiceService {
         hospitalService.setNumOfServicePerHour(serviceRequest.getNumOfServicePerHour());
         hospitalService.setType(serviceRequest.getType());
         hospitalService.setSpecialty(serviceRequest.getSpecialty());
-        hospitalService.setImageUrl(serviceRequest.getServiceImageUrl());
+        hospitalService.setImageUrl(serviceRequest.getImageUrl());
         HospitalService hospitalServiceRes = serviceRepository.save(hospitalService);
         return hospitalServiceRes;
+    }
+
+    @Override
+    public void delete(String id) {
+        serviceRepository.deleteById(id);
+    }
+
+    @Override
+    public HospitalService update(HospitalService hospitalService) {
+        if (!serviceRepository.existsById(hospitalService.getId()))
+            throw new ApiRequestException("Không tìm thấy dịch vụ!");
+        return serviceRepository.save(hospitalService);
     }
 
     @Override

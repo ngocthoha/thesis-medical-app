@@ -21,6 +21,7 @@ public class DoctorDTO {
     private Integer registrationNumber;
     private String price;
     private String imageUrl;
+    private Double favorite;
 
     public static DoctorDTO from(Doctor doctor){
         return DoctorDTO.builder()
@@ -34,6 +35,7 @@ public class DoctorDTO {
                 .registrationNumber(doctor.getRegistrationNumber())
                 .price(doctor.getPrice())
                 .imageUrl(doctor.getImageUrl())
+                .favorite(doctor.getFavorite())
                 .build();
     }
 }

@@ -6,8 +6,10 @@ import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.HospitalHour;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.repository.AddressRepository;
+import com.thesis.medicalapp.repository.DoctorESRepository;
 import com.thesis.medicalapp.repository.HospitalHourRepository;
 import com.thesis.medicalapp.repository.HospitalRepository;
+import com.thesis.medicalapp.services.DoctorESService;
 import com.thesis.medicalapp.services.HospitalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,26 +28,42 @@ public class HospitalServiceImpl implements HospitalService {
     private final HospitalRepository hospitalRepository;
     private final AddressRepository addressRepository;
     private final HospitalHourRepository hospitalHourRepository;
+
     @Override
-    public HospitalDTO saveHospital(HospitalDTO hospitalDTO) {
+    public Hospital saveHospital(HospitalDTO hospitalDTO) {
         log.info("Saving new hospital {} to the database", hospitalDTO.getName());
         Hospital hospital = new Hospital();
         hospital.setName(hospitalDTO.getName());
-        if (hospitalDTO.getAddress() == null) throw new ApiRequestException("Can not save address!");
+        if (hospitalDTO.getAddress() == null) throw new ApiRequestException("Địa chỉ không hợp lệ!");
         Address address = addressRepository.save(hospitalDTO.getAddress());
         hospital.setAddress(address);
         hospital.setInfo(hospitalDTO.getInfo());
         hospital.setRegistrationNumber(0);
+        hospital.setFavorite(0.0);
         hospital.setMapImageUrl(hospitalDTO.getMapImageUrl());
-        hospital.setHospitalImageUrl(hospitalDTO.getHospitalImageUrl());
+        hospital.setImageUrl(hospitalDTO.getImageUrl());
         hospital.setIsActive(true);
-        if (hospitalDTO.getHospitalHour() == null) throw new ApiRequestException("Can not save hospital hour!");
+        if (hospitalDTO.getHospitalHour() == null) throw new ApiRequestException("Giờ làm việc không hợp lệ!");
         HospitalHour hospitalHour = hospitalHourRepository.save(hospitalDTO.getHospitalHour());
         hospital.setHospitalHour(hospitalHour);
-        Hospital hospital_db = hospitalRepository.save(hospital);
-        HospitalDTO hospital_response = HospitalDTO.from(hospital_db);
-        return hospital_response;
+        Hospital hospitalRes = hospitalRepository.save(hospital);
+        return hospitalRes;
     }
+
+    @Override
+    public Hospital update(Hospital hospital) {
+        if (!hospitalRepository.existsById(hospital.getId()))
+            throw new ApiRequestException("Không tìm thấy bệnh viện!");
+        return hospitalRepository.save(hospital);
+    }
+
+    @Override
+    public void delete(String id) {
+        if (!hospitalRepository.existsById(id))
+            throw new ApiRequestException("Không tìm thấy bệnh viện!");
+        hospitalRepository.deleteById(id);
+    }
+
     @Override
     public List<HospitalDTO> getHospitals() {
         List<Hospital> hospitals = hospitalRepository.findAll()

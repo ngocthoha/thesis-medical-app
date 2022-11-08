@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
 
 @Data
 @NoArgsConstructor
@@ -19,5 +17,5 @@ public class HospitalES {
     private String id;
     private String name;
     private Address address;
-    private String hospitalImageUrl;
+    private String imageUrl;
 }

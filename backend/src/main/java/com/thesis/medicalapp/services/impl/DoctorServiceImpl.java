@@ -3,14 +3,17 @@ package com.thesis.medicalapp.services.impl;
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Hospital;
+import com.thesis.medicalapp.models.HospitalService;
 import com.thesis.medicalapp.models.StoreMedicine;
 import com.thesis.medicalapp.pojo.DoctorDTO;
 import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.repository.DoctorRepository;
 import com.thesis.medicalapp.repository.HospitalRepository;
+import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.search.SearchRequest;
 import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.DoctorService;
+import com.thesis.medicalapp.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -29,6 +32,7 @@ import java.util.stream.Collectors;
 public class DoctorServiceImpl implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final HospitalRepository hospitalRepository;
+
     @Override
     public List<UserDoctorDTO> getDoctors() {
         List<Doctor> doctors = doctorRepository.findAll()

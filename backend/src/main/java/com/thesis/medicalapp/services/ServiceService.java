@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface ServiceService {
     HospitalService save(ServiceRequest serviceRequest);
+    HospitalService update(HospitalService hospitalService);
     Iterable<HospitalService> getAll();
+    void delete(String id);
     List<ServiceDTO> getServicesByHospital(String hospitalId);
 }

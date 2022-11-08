@@ -16,6 +16,7 @@ import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+@EnableAsync
 @SpringBootApplication
 @RestController
 @EnableJpaAuditing
@@ -78,13 +80,22 @@ public class ThesisMedicalAppApplication {
             String hospitalBreak = "12:00 - 13:00";
             HospitalHour hospitalHour = new HospitalHour(null, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak, hospitalTime, hospitalBreak);
             HospitalHour hospitalHour1 = hospitalHourRepository.save(hospitalHour);
-            Hospital hospital = new Hospital(null, "Bệnh Viện Đại Học Y Dược HCM", address1, "info", 0, null, "https://ump.edu.vn/img/image-default.png", true, hospitalHour1);
+            Hospital hospital = new Hospital();
+            hospital.setName("Bệnh Viện Đại Học Y Dược HCM");
+            hospital.setAddress(address1);
+            hospital.setInfo("info");
+            hospital.setFavorite(0.0);
+            hospital.setRegistrationNumber(0);
+            hospital.setIsActive(Boolean.TRUE);
+            hospital.setMapImageUrl(null);
+            hospital.setHospitalHour(hospitalHour1);
+            hospital.setImageUrl("https://ump.edu.vn/img/image-default.png");
             Hospital hospital1 = hospitalRepository.save(hospital);
             hospitalESService.save(hospital1);
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
-            User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, null, new ArrayList<>(), "Doctor Name", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "CKI", bio, "100.000", hospital);
+            User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, null, new ArrayList<>(), "Doctor Name", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "CKI", bio, "100.000", hospital, 0.0);
             User userEntity = userService.saveUser(user);
             userService.saveUser(admin);
 
