@@ -70,7 +70,10 @@
             </v-btn>
           </v-card>
         </v-dialog>
-
+        <!--  -->
+        <v-dialog v-model="record_detail_dialog" width="500">
+          <v-card height="500"></v-card>
+        </v-dialog>
         <!-- profile -->
         <v-card class="pa-6 d-flex flex-row" tile elevation="0" width="100%">
           <v-avatar size="48" class="mr-5">
@@ -125,6 +128,7 @@
                       :color="year.color"
                       outlined
                       class="btn-not-transform"
+                      @click="record_detail_dialog = true"
                     >
                       Xem chi tiết
                     </v-btn>
@@ -142,12 +146,14 @@
 export default {
   data: () => ({
     profile_list_dialog: false,
+    record_detail_dialog: false,
     list_record_show: false,
     years: []
   }),
 
   methods: {
     view_health_record() {
+      this.years = [];
       this.profile_list_dialog = false;
       for (let i = 0; i < 6; i++) {
         this.years.push({
