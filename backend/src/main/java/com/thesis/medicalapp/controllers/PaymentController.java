@@ -41,19 +41,23 @@ public class PaymentController {
         try {
             String requestId = String.valueOf(System.currentTimeMillis());
             String orderId = String.valueOf(System.currentTimeMillis());
-            String storeId = env.getProperty("momo.partner_code");
-            String partnerCode = env.getProperty("momo.partner_code");
+//            String storeId = env.getProperty("momo.partner_code");
+//            String partnerCode = env.getProperty("momo.partner_code");
+            String storeId = "MOMOBKUN20180529";
+            String partnerCode = "MOMOBKUN20180529";
             String partnerName = "Blouse Care";
             String amount = momoRequest.getAmount();
             String orderInfo = momoRequest.getOrderInfo();
             String inputUrl = momoRequest.getIpnUrl();
             String redirectUrl = momoRequest.getRedirectUrl();
-            Boolean autoCapture = true;
+            Boolean autoCapture = true; //captureMomo
             String lang = "vi";
             String extraData = momoRequest.getExtraData();
             String requestType = momoRequest.getRequestType();
-            String accessKey = env.getProperty("momo.access_key");
-            String secretKey = env.getProperty("momo.secret_key");
+//            String accessKey = env.getProperty("momo.access_key");
+//            String secretKey = env.getProperty("momo.secret_key");
+            String accessKey = "klm05TvNBzhg7h7j";
+            String secretKey = "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa";
 
             String signature = "accessKey="+ accessKey +"&amount=" + amount+"&extraData=" + extraData+"&ipnUrl=" + inputUrl+"&orderId=" + orderId+"&orderInfo=" + orderInfo + "&partnerCode=" + partnerCode +"&redirectUrl=" + redirectUrl+"&requestId=" + requestId+"&requestType=" + requestType;
             String url = "https://test-payment.momo.vn/v2/gateway/api/create";
@@ -69,7 +73,7 @@ public class PaymentController {
             request.put("orderInfo", orderInfo);
             request.put("ipnUrl", inputUrl);
             request.put("redirectUrl", redirectUrl);
-            if (requestType == "captureWallet")
+            if (requestType.equals("captureWallet"))
                 request.put("autoCapture", autoCapture);
             request.put("lang", lang);
             request.put("extraData", extraData);
@@ -93,5 +97,11 @@ public class PaymentController {
                     new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage())
             );
         }
+    }
+
+    @PostMapping("/momo/verify")
+    public void verifyPayment(@RequestBody MomoRequest momoRequest) {
+        System.out.println(momoRequest);
+        System.out.println("aaaaaaaaaaaaa");
     }
 }
