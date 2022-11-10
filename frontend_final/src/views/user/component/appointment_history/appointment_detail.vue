@@ -24,6 +24,16 @@
     <v-divider
       style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
+    <v-dialog v-model="medical_record_dialog" width="500">
+      <v-card height="800" class="d-flex flex-column pa-5">
+        <p>Chuẩn đoán</p>
+        <v-card outlined class="mb-6 pa-3">
+          <p style="color: #667085" class="ma-0">Bệnh thống phong</p>
+        </v-card>
+        <p>Ghi chú</p>
+        <p>Đơn thuốc</p>
+      </v-card></v-dialog
+    >
     <!-- body -->
     <v-card class="mt-8 px-8" elevation="0">
       <!-- appointment info -->
@@ -44,7 +54,7 @@
           >
           <p class="ma-0 font-weight-medium">Nguyễn Duy Thanh</p>
         </v-card>
-        <v-card class="d-flex flex-row mb-3" elevation="0">
+        <v-card class="d-flex flex-row mb-3 align-center" elevation="0">
           <!-- label -->
           <v-card width="30%" elevation="0">
             <p
@@ -54,21 +64,37 @@
               Tình trạng
             </p></v-card
           >
-          <p
+          <!-- <p
             class="ma-0 font-weight-medium text-body-1 d-flex align-center"
             style="color: #667085"
           >
             Chưa tiến hành
-          </p>
+          </p> -->
+          <div class="d-flex flex-row align-center">
+            <p
+              class="ma-0 font-weight-medium text-body-1"
+              style="color: #12B76A"
+            >
+              Đã hoàn tất
+            </p>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  color="#537DA5"
+                  class="ml-3"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="medical_record_dialog = true"
+                >
+                  mdi-account-eye
+                </v-icon>
+              </template>
+              <span>Bấm để xem kết quả khám</span>
+            </v-tooltip>
+          </div>
 
           <!-- <p
-            class="ma-0 font-weight-medium text-body-1"
-            style="color: #12B76A"
-            v-if="n == 2"
-          >
-            Đã hoàn tất
-          </p>
-          <p
             class="ma-0 font-weight-medium text-body-1"
             style="color: red"
             v-if="n == 3"
@@ -251,6 +277,12 @@ export default {
   props: {
     appointment: Object
   },
+  data() {
+    return {
+      medical_record_dialog: false
+    };
+  },
+
   methods: {
     close_view_appointment_detail() {
       this.$emit("appointmentDetailClose");
