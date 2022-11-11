@@ -71,8 +71,46 @@
           </v-card>
         </v-dialog>
         <!--  -->
-        <v-dialog v-model="record_detail_dialog" width="500">
-          <v-card height="500"></v-card>
+        <!-- medical record dialog -->
+        <v-dialog v-model="medical_record_dialog" width="800">
+          <v-card
+            tile
+            class="pa-3 d-flex flex-row justify-space-between align-center"
+            elevation="0"
+            color="#EEF2F6"
+            ><p
+              class="ma-0 font-weight-bold"
+              style="color: #537DA5; font-size:20px"
+            >
+              Kết quả khám
+            </p>
+            <v-btn icon @click="medical_record_dialog = false"
+              ><v-icon color="#537DA5"> mdi-close</v-icon>
+            </v-btn>
+          </v-card>
+          <v-card class="d-flex flex-column pa-5" tile>
+            <p class="font-weight-bold">Chuẩn đoán</p>
+            <v-card outlined class="mb-6 pa-3">
+              <p style="color: #667085" class="ma-0">Bệnh thống phong</p>
+            </v-card>
+            <p class="font-weight-bold">Ghi chú</p>
+            <v-card outlined class="mb-6 pa-3">
+              <p style="color: #667085" class="ma-0">Tránh ăn thức ăn đạm</p>
+            </v-card>
+            <p class="font-weight-bold">Đơn thuốc</p>
+            <v-card class="d-flex flex-column mb-6" outlined>
+              <!-- medicine list -->
+              <v-data-table
+                :headers="prescriptions_header"
+                :items="prescriptions"
+                checkbox-color="#3C5E7E"
+                hide-default-footer
+                no-data-text="Đơn thuốc trống"
+              >
+              </v-data-table>
+            </v-card>
+            <p class="font-weight-bold">Kết quả cận lâm sàn</p>
+          </v-card>
         </v-dialog>
         <!-- profile -->
         <v-card class="pa-6 d-flex flex-row" tile elevation="0" width="100%">
@@ -119,16 +157,22 @@
                       <p class="ma-0 mr-3 font-weight-bold">Dịch vụ:</p>
                       <p class="ma-0">Khám theo nhu cầu</p>
                     </div>
-                    <div class="d-flex flex-row mb-8">
+                    <div class="d-flex flex-row">
                       <p class="ma-0 mr-3 font-weight-bold">Bác sĩ:</p>
                       <p class="ma-0">Nguyễn Xuân Đức</p>
+                    </div>
+                    <div class="d-flex flex-row mb-8">
+                      <p class="ma-0 mr-3 font-weight-bold">
+                        Chuẩn đoán:
+                      </p>
+                      <p class="ma-0">Bệnh thống phong</p>
                     </div>
 
                     <v-btn
                       :color="year.color"
                       outlined
                       class="btn-not-transform"
-                      @click="record_detail_dialog = true"
+                      @click="medical_record_dialog = true"
                     >
                       Xem chi tiết
                     </v-btn>
@@ -146,9 +190,56 @@
 export default {
   data: () => ({
     profile_list_dialog: false,
-    record_detail_dialog: false,
+    medical_record_dialog: false,
     list_record_show: false,
-    years: []
+    years: [],
+    prescriptions_header: [
+      {
+        text: "Tên",
+        align: "start",
+        sortable: false,
+        value: "name",
+        class: "text-body-2 font-weight-medium"
+      },
+      {
+        text: "Số lượng",
+        value: "mount",
+        sortable: false,
+        class: "text-body-2 font-weight-medium"
+      },
+      {
+        text: "Liều",
+        value: "use",
+        sortable: false,
+        class: "text-body-2 font-weight-medium"
+      },
+      {
+        text: "Đơn vị uống",
+        value: "unit",
+        sortable: false,
+        class: "text-body-2 font-weight-medium"
+      }
+    ],
+    prescriptions: [
+      {
+        name: "abc",
+        mount: 120,
+        use: "Sáng: 1, Chiều: 1, Tối: 1",
+        unit: "Viên"
+      },
+      {
+        name: "abc",
+        mount: 120,
+        use: "Sáng: 1, Chiều: 1, Tối: 1",
+        unit: "Viên"
+      },
+      {
+        name: "abc",
+        mount: 120,
+        use: "Sáng: 1, Chiều: 1, Tối: 1",
+        unit: "Viên"
+      }
+    ]
   }),
 
   methods: {

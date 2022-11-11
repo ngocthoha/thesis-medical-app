@@ -24,6 +24,47 @@
     <v-divider
       style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
+    <!-- medical record dialog -->
+    <v-dialog v-model="medical_record_dialog" width="800">
+      <v-card
+        tile
+        class="pa-3 d-flex flex-row justify-space-between align-center"
+        elevation="0"
+        color="#EEF2F6"
+        ><p
+          class="ma-0 font-weight-bold"
+          style="color: #537DA5; font-size:20px"
+        >
+          Kết quả khám
+        </p>
+        <v-btn icon @click="medical_record_dialog = false"
+          ><v-icon color="#537DA5"> mdi-close</v-icon>
+        </v-btn>
+      </v-card>
+      <v-card class="d-flex flex-column pa-5" tile>
+        <p class="font-weight-bold">Chuẩn đoán</p>
+        <v-card outlined class="mb-6 pa-3">
+          <p style="color: #667085" class="ma-0">Bệnh thống phong</p>
+        </v-card>
+        <p class="font-weight-bold">Ghi chú</p>
+        <v-card outlined class="mb-6 pa-3">
+          <p style="color: #667085" class="ma-0">Tránh ăn thức ăn đạm</p>
+        </v-card>
+        <p class="font-weight-bold">Đơn thuốc</p>
+        <v-card class="d-flex flex-column mb-6" outlined>
+          <!-- medicine list -->
+          <v-data-table
+            :headers="prescriptions_header"
+            :items="prescriptions"
+            checkbox-color="#3C5E7E"
+            hide-default-footer
+            no-data-text="Đơn thuốc trống"
+          >
+          </v-data-table>
+        </v-card>
+        <p class="font-weight-bold">Kết quả cận lâm sàn</p>
+      </v-card>
+    </v-dialog>
     <!-- body -->
     <v-card class="mt-8 px-8" elevation="0">
       <!-- appointment info -->
@@ -44,7 +85,7 @@
           >
           <p class="ma-0 font-weight-medium">Nguyễn Duy Thanh</p>
         </v-card>
-        <v-card class="d-flex flex-row mb-3" elevation="0">
+        <v-card class="d-flex flex-row mb-3 align-center" elevation="0">
           <!-- label -->
           <v-card width="30%" elevation="0">
             <p
@@ -54,21 +95,37 @@
               Tình trạng
             </p></v-card
           >
-          <p
+          <!-- <p
             class="ma-0 font-weight-medium text-body-1 d-flex align-center"
             style="color: #667085"
           >
             Chưa tiến hành
-          </p>
+          </p> -->
+          <div class="d-flex flex-row align-center">
+            <p
+              class="ma-0 font-weight-medium text-body-1"
+              style="color: #12B76A"
+            >
+              Đã hoàn tất
+            </p>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon
+                  color="#537DA5"
+                  class="ml-3"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                  @click="medical_record_dialog = true"
+                >
+                  mdi-account-eye
+                </v-icon>
+              </template>
+              <span>Bấm để xem kết quả khám</span>
+            </v-tooltip>
+          </div>
 
           <!-- <p
-            class="ma-0 font-weight-medium text-body-1"
-            style="color: #12B76A"
-            v-if="n == 2"
-          >
-            Đã hoàn tất
-          </p>
-          <p
             class="ma-0 font-weight-medium text-body-1"
             style="color: red"
             v-if="n == 3"
@@ -251,6 +308,59 @@ export default {
   props: {
     appointment: Object
   },
+  data() {
+    return {
+      medical_record_dialog: false,
+      prescriptions_header: [
+        {
+          text: "Tên",
+          align: "start",
+          sortable: false,
+          value: "name",
+          class: "text-body-2 font-weight-medium"
+        },
+        {
+          text: "Số lượng",
+          value: "mount",
+          sortable: false,
+          class: "text-body-2 font-weight-medium"
+        },
+        {
+          text: "Liều",
+          value: "use",
+          sortable: false,
+          class: "text-body-2 font-weight-medium"
+        },
+        {
+          text: "Đơn vị uống",
+          value: "unit",
+          sortable: false,
+          class: "text-body-2 font-weight-medium"
+        }
+      ],
+      prescriptions: [
+        {
+          name: "abc",
+          mount: 120,
+          use: "Sáng: 1, Chiều: 1, Tối: 1",
+          unit: "Viên"
+        },
+        {
+          name: "abc",
+          mount: 120,
+          use: "Sáng: 1, Chiều: 1, Tối: 1",
+          unit: "Viên"
+        },
+        {
+          name: "abc",
+          mount: 120,
+          use: "Sáng: 1, Chiều: 1, Tối: 1",
+          unit: "Viên"
+        }
+      ]
+    };
+  },
+
   methods: {
     close_view_appointment_detail() {
       this.$emit("appointmentDetailClose");
