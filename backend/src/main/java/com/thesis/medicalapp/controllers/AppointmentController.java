@@ -72,8 +72,9 @@ public class AppointmentController {
                 appointment.getFiles().add(File);
             }
         }
-        appointment.setStatus(Status.ACTIVE);
+        appointment.setStatus(Status.PENDING);
         appointment.setType(appointmentRequest.getType());
+        appointment.setCategory(appointmentRequest.getCategory());
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         Long code = sequenceGenerator.nextId();
         appointment.setCode(code);

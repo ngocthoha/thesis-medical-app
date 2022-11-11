@@ -39,6 +39,7 @@ public class AppointmentDTO {
     private ScheduleType type;
     private Boolean isPaid;
     private String fee;
+    private CategoryType category;
 
     public static AppointmentDTO from(Appointment appointment) {
         return AppointmentDTO.builder()
@@ -56,6 +57,7 @@ public class AppointmentDTO {
                 .type(appointment.getType())
                 .isPaid(appointment.getIsPaid())
                 .fee(appointment.getFee())
+                .category(appointment.getCategory())
                 .build();
     }
 }

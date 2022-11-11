@@ -4,15 +4,20 @@ import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.HospitalHour;
+import com.thesis.medicalapp.models.StoreMedicine;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.repository.AddressRepository;
 import com.thesis.medicalapp.repository.DoctorESRepository;
 import com.thesis.medicalapp.repository.HospitalHourRepository;
 import com.thesis.medicalapp.repository.HospitalRepository;
+import com.thesis.medicalapp.search.SearchRequest;
+import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.DoctorESService;
 import com.thesis.medicalapp.services.HospitalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -84,5 +89,12 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public Boolean existsById(String id) {
         return hospitalRepository.existsById(id);
+    }
+
+    @Override
+    public Page<Hospital> search(SearchRequest request) {
+        SearchSpecification<Hospital> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        return hospitalRepository.findAll(specification, pageable);
     }
 }

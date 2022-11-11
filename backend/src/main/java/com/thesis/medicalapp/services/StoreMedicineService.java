@@ -12,5 +12,4 @@ public interface StoreMedicineService {
     List<StoreMedicine> getByHospital(String hospitalId);
     Boolean existsById(String id);
     Page<StoreMedicine> search(SearchRequest request);
-
 }

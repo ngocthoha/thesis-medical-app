@@ -1,13 +1,16 @@
 package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.models.Hospital;
+import com.thesis.medicalapp.models.StoreMedicine;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.HospitalDTO;
+import com.thesis.medicalapp.search.SearchRequest;
 import com.thesis.medicalapp.services.DoctorESService;
 import com.thesis.medicalapp.services.HospitalESService;
 import com.thesis.medicalapp.services.HospitalService;
 import com.thesis.medicalapp.services.ServiceESService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,6 +71,15 @@ public class HospitalController {
                 new ApiResponse<>( hospitals)
         );
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse> search(@RequestBody SearchRequest request) {
+        Page<Hospital> page = hospitalService.search(request);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(page.getContent(), page.getPageable())
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse> getHospitalById(@PathVariable("id") String id) {
         try {

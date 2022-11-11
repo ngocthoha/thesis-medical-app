@@ -1,5 +1,6 @@
 package com.thesis.medicalapp.payload;
 
+import com.thesis.medicalapp.models.CategoryType;
 import com.thesis.medicalapp.models.MedicalFile;
 import com.thesis.medicalapp.models.ScheduleType;
 import lombok.AllArgsConstructor;
@@ -38,4 +39,6 @@ public class AppointmentRequest {
     private String fee;
     @NotNull
     private Boolean isPaid;
+    @NotNull
+    private CategoryType category;
 }

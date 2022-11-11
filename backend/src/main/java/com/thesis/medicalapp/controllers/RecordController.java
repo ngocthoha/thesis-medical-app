@@ -29,7 +29,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class RecordController {
     private final RecordService recordService;
-    private final MedicineService prescribedMedicineService;
     private final AppointmentRepository appointmentRepository;
     private final MedicalFileRepository medicalFileRepository;
     private final MedicineService medicineService;
@@ -74,6 +73,8 @@ public class RecordController {
         }
 
         RecordDTO recordDTO = recordService.saveRecord(record);
+        appointment.setStatus(Status.COMPLETE);
+        appointmentRepository.save(appointment);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(recordDTO)
         );
