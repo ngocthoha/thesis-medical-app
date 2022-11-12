@@ -220,8 +220,9 @@
             ref="select_time_menu"
             v-model="select_time_menu"
             :close-on-content-click="false"
-            transition="scale-transition"
             min-width="auto"
+            offset-y
+            left
           >
             <template v-slot:activator="{ on, attrs }">
               <v-icon v-bind="attrs" v-on="on"
