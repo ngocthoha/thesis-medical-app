@@ -336,6 +336,7 @@
                   spellcheck="false"
                   v-model="test_select"
                   :items="test_type"
+                  item-text="name"
                   solo
                   dense
                   flat
@@ -382,7 +383,7 @@
                 class="font-weight-medium text-body-1 ma-0"
                 style="color: #667085"
               >
-                {{ image.type }}
+                {{ image.type_name }}
               </p>
               <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
                 <v-icon class="mr-2">mdi-image-outline</v-icon>
@@ -410,6 +411,8 @@
                   spellcheck="false"
                   v-model="image_select"
                   :items="image_analyst_type"
+                  item-text="name"
+                  item-value="key"
                   solo
                   dense
                   flat
@@ -456,7 +459,7 @@
                 class="font-weight-medium text-body-1 ma-0"
                 style="color: #667085"
               >
-                {{ image.type }}
+                {{ image.type_name }}
               </p>
               <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
                 <v-icon class="mr-2">mdi-image-outline</v-icon>
@@ -684,7 +687,11 @@ export default {
       profile_list: [],
       is_select_profile: true,
       is_payment: false,
-      test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
+      test_type: [
+        { name: "Xét nghiệm máu", key: "BLOOD_TEST" },
+        { name: "Xét nghiệm nước tiểu", key: "URINE_TEST" },
+        { name: "Xét nghiệm khác", key: "DIFFERENT_TEST" }
+      ],
       test_select: "",
       image_select: "",
       radioGroup: 1,
@@ -693,7 +700,14 @@ export default {
       test_add_list: [],
 
       test_file: {},
-      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
+      image_analyst_type: [
+        { name: "CT", key: "CT_SCAN" },
+        { name: "X-quang", key: "X_RAY " },
+        { name: "PET", key: "PET_SCAN" },
+        { name: "Siêu âm", key: "SUPERSONIC" },
+        { name: "MRI", key: "MRI" },
+        { name: "Hình ảnh khác", key: "DIFFERENT_IMAGE" }
+      ],
 
       image_analyst_list: [],
       image_file: {},
@@ -788,7 +802,8 @@ export default {
 
     addTestFile() {
       this.test_add_list.push({
-        type: this.test_select,
+        type: this.test_select.key,
+        type_name: this.test_select.name,
         file_name: this.test_file.name,
         data: this.test_file
       });
@@ -796,7 +811,8 @@ export default {
 
     addImageAnalystFile() {
       this.image_analyst_list.push({
-        type: this.image_select,
+        type: this.image_select.key,
+        type_name: this.image_select.name,
         file_name: this.image_file.name,
         data: this.image_file
       });
@@ -856,12 +872,11 @@ export default {
       console.log("submit file add create appointment");
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
 
-      let response = await Promise.all(
+      await Promise.all(
         post_file_list.map(async file => {
-          this.post_file(file.data, file.type);
+          await this.post_file(file.data, file.type);
         })
       );
-      console.log(response);
 
       let b = this.submit_file_list;
       let token = this.$store.getters["auth/access_token"];
@@ -887,7 +902,7 @@ export default {
           category: "DOCTOR"
         }
       };
-      this.$store.dispatch("appointment/createAppointment", param);
+      await this.$store.dispatch("appointment/createAppointment", param);
     },
 
     async post_file(file, type) {
