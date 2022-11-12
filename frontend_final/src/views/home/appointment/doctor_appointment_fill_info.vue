@@ -656,6 +656,7 @@
 
 <script>
 import axios from "axios";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   created() {
     let time_data = this.$store.getters[
@@ -695,7 +696,8 @@ export default {
       image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
 
       image_analyst_list: [],
-      image_file: {}
+      image_file: {},
+      submit_file_list: []
     };
   },
   methods: {
@@ -760,29 +762,43 @@ export default {
         });
 
       window.open(responseData.data.results.payUrl);
-      this.$router.push({ name: "Đặt lịch bác sĩ thành công" }).catch(error => {
-        if (error == null) {
-          return;
-        }
-        if (error.name != "NavigationDuplicated") {
-          throw error;
-        }
-      });
-
       this.createAppointment();
+      // let post_file_list = this.test_add_list.concat(this.image_analyst_list);
+
+      // await Promise.all(
+      //   post_file_list.map(async file => {
+      //     this.post_file(file.data, file.type);
+      //   })
+      // ).then(this.createAppointment());
+
+      // if (response) {
+      //   this.createAppointment();
+      //   this.$router
+      //     .push({ name: "Đặt lịch bác sĩ thành công" })
+      //     .catch(error => {
+      //       if (error == null) {
+      //         return;
+      //       }
+      //       if (error.name != "NavigationDuplicated") {
+      //         throw error;
+      //       }
+      //     });
+      // }
     },
 
     addTestFile() {
       this.test_add_list.push({
         type: this.test_select,
-        file_name: this.test_file.name
+        file_name: this.test_file.name,
+        data: this.test_file
       });
     },
 
     addImageAnalystFile() {
       this.image_analyst_list.push({
         type: this.image_select,
-        file_name: this.image_file.name
+        file_name: this.image_file.name,
+        data: this.image_file
       });
     },
 
@@ -837,23 +853,65 @@ export default {
     },
 
     async createAppointment() {
+      console.log("submit file add create appointment");
+      let post_file_list = this.test_add_list.concat(this.image_analyst_list);
+
+      let response = await Promise.all(
+        post_file_list.map(async file => {
+          this.post_file(file.data, file.type);
+        })
+      );
+      console.log(response);
+
+      let b = this.submit_file_list;
       let token = this.$store.getters["auth/access_token"];
-      const param = {
+      let param = {
         token: token,
         data: {
           profileId: this.selected_profile.id,
           doctorId: this.doctor_info.id,
           roomId: this.book_time.room.id,
-          date: "2022-07-12",
-          time: "11:00 - 12:00",
+          date: this.book_time.date,
+          time: this.book_time.time,
           symptom: this.symptom,
           type: this.book_time.type,
-          files: [],
+          // files: [
+          //   {
+          //     imageUrl: "aaa",
+          //     type: "X_RAY"
+          //   }
+          // ],
+          files: b,
           fee: this.doctor_info.price,
-          isPaid: true
+          isPaid: true,
+          category: "DOCTOR"
         }
       };
-      await this.$store.dispatch("appointment/createAppointment", param);
+      this.$store.dispatch("appointment/createAppointment", param);
+    },
+
+    async post_file(file, type) {
+      let form_data = new FormData();
+      form_data.append("file", file);
+      let token = this.$store.getters["auth/access_token"];
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      await axios
+        .post(`${url}/api/files/upload`, form_data, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(response => {
+          if (response.data.code === 200) {
+            this.submit_file_list.push({
+              imageUrl: response.data.results,
+              type: type
+            });
+          }
+        });
     }
   }
 };
