@@ -246,7 +246,12 @@
               height="76px"
               outlined
             >
-              <v-menu bottom :offset-y="true" v-model="show_search_menu">
+              <v-menu
+                bottom
+                :offset-y="true"
+                v-model="show_search_menu"
+                allow-overflow
+              >
                 <template v-slot:activator="{}">
                   <v-card
                     class="d-flex flex-row align-center"
@@ -294,12 +299,36 @@
                 <!-- search result -->
                 <v-card class="d-flex flex-column pa-3" width="100%">
                   <!-- hospital -->
-
                   <v-card class="d-flex flex-column" elevation="0" width="100%">
-                    <p class="font-weight-bold">Cơ sở y tế</p>
+                    <v-card
+                      class="d-flex flex-row justify-center align-center"
+                      elevation="0"
+                    >
+                      <v-card width="500" elevation="0">
+                        <p
+                          class="font-weight-bold justify-center ma-0"
+                          style="font-size:20px"
+                        >
+                          Cơ sở y tế
+                        </p>
+                      </v-card>
+                      <v-card
+                        width="500"
+                        elevation="0"
+                        class="d-flex justify-end"
+                      >
+                        <v-btn text class="btn text-body-2" color="#537DA5"
+                          >Xem thêm</v-btn
+                        >
+                      </v-card>
+                    </v-card>
                     <!-- <p class="font-weight-bold">Cơ sở y tế</p> -->
                     <div class="d-flex justify-center">
-                      <v-card width="1000" class="d-flex flex-wrap">
+                      <v-card
+                        width="1000"
+                        class="d-flex flex-wrap"
+                        elevation="0"
+                      >
                         <v-card
                           v-for="n in 4"
                           :key="n"
@@ -316,10 +345,10 @@
                             ></v-img>
                           </v-card>
                           <div class="ml-2">
-                            <p class="ma-0">
+                            <p class="ma-0 font-weight-medium">
                               Bệnh viện đại học y dược
                             </p>
-                            <p class="ma-0">
+                            <p class="ma-0 text-body-2" style="color: #667085">
                               08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh,
                               Thành phố Hồ Chí Minh
                             </p>
@@ -328,53 +357,107 @@
                       </v-card>
                     </div>
                   </v-card>
-                  <!-- <v-card class="d-flex flex-row" elevation="0">
+                  <v-card class="d-flex flex-row justify-center" elevation="0">
                     <v-card
                       class="d-flex flex-column"
-                      width="50%"
+                      width="500"
                       elevation="0"
                     >
-                      <p class="font-weight-bold">Bác sĩ</p>
+                      <div
+                        class="d-flex flex-row justify-space-between align-center"
+                      >
+                        <p class="font-weight-bold ma-0" style="font-size:20px">
+                          Bác sĩ
+                        </p>
+                        <v-btn text class="btn text-body-2" color="#537DA5"
+                          >Xem thêm</v-btn
+                        >
+                      </div>
 
                       <v-card
                         v-for="n in 4"
                         :key="n"
-                        class="pa-3 mb-3"
+                        class="pa-3 mb-3 d-flex flex-row align-center"
                         width="100%"
                         elevation="0"
                       >
-                        <v-img
-                          height="80"
-                          width="80"
-                          src="@/assets/img/home/hospital_avt.png"
-                        ></v-img>
+                        <v-card>
+                          <v-img
+                            height="80"
+                            width="80"
+                            src="@/assets/img/home/hospital_avt.png"
+                          ></v-img>
+                        </v-card>
+                        <div class="ml-2">
+                          <p class="ma-0 font-weight-medium">
+                            Nguyên Hồng Xuân
+                          </p>
+                          <p class="ma-0  text-body-2" style="color: #667085">
+                            Bệnh viện đại học y dược
+                          </p>
+                          <p class="ma-0  text-body-2" style="color: #537DA5">
+                            Chuẩn đoán hình ảnh
+                          </p>
+                        </div>
                       </v-card>
                     </v-card>
                     <v-card
-                      class="d-flex flex-column pr-8"
-                      width="50%"
+                      class="d-flex flex-column"
+                      width="500"
                       elevation="0"
                     >
-                      <p class="font-weight-bold">Dịch vụ</p>
+                      <div
+                        class="d-flex flex-row justify-space-between align-center"
+                      >
+                        <p class="font-weight-bold ma-0" style="font-size:20px">
+                          Dịch vụ
+                        </p>
+                        <v-btn text class="btn text-body-2" color="#537DA5"
+                          >Xem thêm</v-btn
+                        >
+                      </div>
                       <v-card
                         v-for="n in 4"
                         :key="n"
-                        class="pa-3 mb-3"
+                        class="pa-3 mb-3 d-flex flex-row align-center"
                         width="100%"
                         elevation="0"
                       >
-                        <v-img
-                          height="80"
-                          width="80"
-                          src="@/assets/img/home/hospital_avt.png"
-                        ></v-img>
+                        <v-card>
+                          <v-img
+                            height="80"
+                            width="80"
+                            src="@/assets/img/home/hospital_avt.png"
+                          ></v-img>
+                        </v-card>
+                        <div class="ml-2">
+                          <p class="ma-0 font-weight-medium">
+                            Xét nghiệm gan
+                          </p>
+                          <p class="ma-0  text-body-2" style="color: #667085">
+                            Bệnh viện đại học y dược
+                          </p>
+                          <p class="ma-0  text-body-2" style="color: #537DA5">
+                            100.000VND
+                          </p>
+                        </div>
                       </v-card>
                     </v-card>
-                  </v-card> -->
+                  </v-card>
                 </v-card>
               </v-menu>
             </v-card>
           </v-card>
+          <!-- search loading -->
+          <v-card width="100%" class="d-flex justify-center" elevation="0">
+            <v-card
+              :loading="false"
+              width="60%"
+              height="3"
+              elevation="0"
+            ></v-card>
+          </v-card>
+
           <!---->
           <v-card elevation="0" class="d-flex justify-center">
             <v-card
