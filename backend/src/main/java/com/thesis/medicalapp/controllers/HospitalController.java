@@ -72,8 +72,8 @@ public class HospitalController {
         );
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse> search(@RequestBody SearchRequest request) {
+    @PostMapping("/search")
+    public ResponseEntity<Object> search(@RequestBody SearchRequest request) {
         Page<Hospital> page = hospitalService.search(request);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(page.getContent(), page)

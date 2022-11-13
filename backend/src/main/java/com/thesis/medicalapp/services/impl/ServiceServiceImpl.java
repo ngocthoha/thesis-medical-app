@@ -10,6 +10,8 @@ import com.thesis.medicalapp.repository.ServiceRepository;
 import com.thesis.medicalapp.services.ServiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -35,6 +37,7 @@ public class ServiceServiceImpl implements ServiceService {
         hospitalService.setName(serviceRequest.getName());
         hospitalService.setPrice(serviceRequest.getPrice());
         hospitalService.setRegistrationNumber(0);
+        hospitalService.setFavorite(0.0);
         hospitalService.setNumOfServicePerHour(serviceRequest.getNumOfServicePerHour());
         hospitalService.setType(serviceRequest.getType());
         hospitalService.setSpecialty(serviceRequest.getSpecialty());
@@ -69,5 +72,10 @@ public class ServiceServiceImpl implements ServiceService {
             return serviceDTO;
         }).collect(Collectors.toList());
         return serviceDTOS;
+    }
+
+    @Override
+    public Page<HospitalService> findAllByHospitalId(String hospitalId, Pageable pageable) {
+        return serviceRepository.findAllByHospitalId(hospitalId, pageable);
     }
 }

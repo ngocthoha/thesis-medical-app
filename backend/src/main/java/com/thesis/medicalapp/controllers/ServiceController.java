@@ -1,16 +1,20 @@
 package com.thesis.medicalapp.controllers;
 
+import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.HospitalService;
 import com.thesis.medicalapp.payload.ServiceRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.pojo.ServiceDTO;
+import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.services.ServiceESService;
 import com.thesis.medicalapp.services.ServiceService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -68,10 +72,15 @@ public class ServiceController {
     }
 
     @GetMapping("/hospital")
-    public ResponseEntity<Object> getServicesByHospital(@RequestParam String hospitalId) {
-        List<ServiceDTO> services = serviceService.getServicesByHospital(hospitalId);
+    public ResponseEntity<Object> getServicesByHospital(
+            @RequestParam String hospitalId,
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<HospitalService> services = serviceService.findAllByHospitalId(hospitalId, pageable);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(services)
+                new ApiResponse<>(services.getContent(), services)
         );
     }
 }

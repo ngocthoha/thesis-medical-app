@@ -46,7 +46,9 @@
                   <v-icon color="#FFC107" class="align-self-start mr-3"
                     >mdi-star</v-icon
                   >
-                  <p style="color: #537da5">4.8</p>
+                  <p style="color: #537da5">
+                    {{ this.hospital_info.favorite }}
+                  </p>
                 </v-card>
               </div>
               <div class="d-flex flex-row">
@@ -240,7 +242,11 @@
             </v-card>
             <!-- list service -->
             <v-row justify="center">
-              <v-col v-for="n in 10" :key="n" md="5">
+              <v-col
+                v-for="(service, iService) in listService"
+                :key="iService"
+                md="5"
+              >
                 <!-- in -->
                 <v-card
                   class="d-flex flex-column pa-6"
@@ -254,22 +260,23 @@
                         class="align-self-start"
                         elevation="0"
                       >
-                        <v-img src="@/assets/img/home/service_avt.png"></v-img>
+                        <!-- <v-img src="@/assets/img/home/service_avt.png"></v-img> -->
+                        <v-img :src="getImgOfService(service)"></v-img>
                       </v-card>
                       <v-card class="d-flex flex-column ml-3" elevation="0">
                         <!-- service name -->
                         <p class="text-body-2 mb-2 font-weight-bold">
-                          Khám Cơ - Xương -Khớp và điều trị ngoại trú
+                          {{ service.name }}
                         </p>
 
                         <p class="text-body-2 mb-3">
-                          Bệnh viện đa khoa Việt Đức
+                          {{ hospital_info.name }}
                         </p>
 
                         <div
                           class="d-flex flex-row align-center justify-space-between"
                         >
-                          <p style="color: #537da5" class="ma-0">100.000 VND</p>
+                          <p style="color: #537da5" class="ma-0">{{service.price}} đ</p>
 
                           <v-icon small color="#537da5">mdi-arrow-right</v-icon>
                         </div>
@@ -290,8 +297,8 @@
               <div class="text-center">
                 <v-pagination
                   color="#537DA5"
-                  v-model="page"
-                  :length="15"
+                  v-model="pageService"
+                  :length="totalPageServices"
                   :total-visible="7"
                 ></v-pagination>
               </div>
@@ -357,7 +364,7 @@
                       </v-avatar>
                       <v-card class="d-flex flex-column ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-bold">
-                          {{doctor.level}}. {{ doctor.name }}
+                          {{ doctor.level }}. {{ doctor.name }}
                         </p>
                         <p class="text-body-2 mb-3">
                           {{ doctor.hospital.name }}
@@ -471,9 +478,12 @@ export default {
     this.hospital_info = this.$store.getters["hospital/hospital_selected"];
     this.username = this.$store.getters["auth/username"];
     this.get_doctor_by_hospital();
+    this.getServiceByHospital();
   },
   data() {
     return {
+      pageService: 1,
+      totalPageServices: 0,
       page: 1,
       totalPages: 0,
       tab: null,
@@ -487,13 +497,19 @@ export default {
       keyFavorite: 0,
       keyQuestion: 0,
       numFavorite: 0,
-      numQuestion: 0
+      numQuestion: 0,
+      listService: []
     };
   },
   watch: {
     page: {
       handler() {
         this.get_doctor_by_hospital();
+      }
+    },
+    pageService: {
+      handler() {
+        this.getServiceByHospital();
       }
     }
   },
@@ -573,10 +589,22 @@ export default {
       }
       return address_str;
     },
-
+    async getServiceByHospital() {
+      const url = process.env.VUE_APP_ROOT_API;
+      const params = {
+        hospitalId: this.hospital_info?.id,
+        page: this.pageService - 1,
+        size: 8
+      };
+      const res = await this.axios.get(`${url}/api/services/hospital`, {
+        params: params
+      });
+      this.listService = res.data.results;
+      this.totalPageServices = res.data?.meta?.totalPages;
+    },
     async get_doctor_by_hospital() {
       const param = {
-        hospitalId: this.hospital_info.id,
+        hospitalId: this.hospital_info?.id,
         page: this.page - 1,
         size: 8
       };
@@ -589,10 +617,17 @@ export default {
     },
 
     getImgOfHospital(hospital) {
-      if (hospital.hospitalImageUrl != null) {
-        return hospital.hospitalImageUrl;
+      if (hospital.imageUrl != null) {
+        return hospital.imageUrl;
       } else {
         return require("@/assets/img/home/hospital_avt.png");
+      }
+    },
+    getImgOfService(service) {
+      if (service.imageUrl != null) {
+        return service.imageUrl;
+      } else {
+        return require("@/assets/img/home/service_avt.png");
       }
     }
   }

@@ -72,7 +72,11 @@
       >
         <!-- list hospital -->
         <v-row justify="center">
-          <v-col v-for="hospital in hospital_list" :key="hospital.id" md="6">
+          <v-col
+            v-for="(hospital, iHospital) in hospital_list"
+            :key="iHospital"
+            md="6"
+          >
             <!-- in -->
             <v-card
               class="d-flex flex-column justify-center align-center px-5"
@@ -120,7 +124,9 @@
                           <v-icon color="#537DA5" class="align-self-start"
                             >mdi-calendar-month-outline</v-icon
                           >
-                          <p style="color: #537da5">146</p>
+                          <p style="color: #537da5">
+                            {{ hospital.registrationNumber }}
+                          </p>
                         </v-card>
                         <v-card
                           class="d-flex flex-row ml-1"
@@ -132,7 +138,7 @@
                           <v-icon color="#FFC107" class="align-self-start"
                             >mdi-star</v-icon
                           >
-                          <p style="color: #537da5">146</p>
+                          <p style="color: #537da5">{{ hospital.favorite }}</p>
                         </v-card>
                       </div>
                     </v-card>
@@ -170,7 +176,7 @@
             <v-pagination
               color="#537DA5"
               v-model="page"
-              :length="15"
+              :length="totalPages"
               :total-visible="7"
             ></v-pagination>
           </div>
@@ -190,15 +196,29 @@ export default {
     return {
       page: 2,
       hospital_list: [],
+      params: {
+        filters: [],
+        sorts: [],
+        page: 0,
+        size: 8
+      },
+      page: 1,
+      totalPages: 0
     };
   },
-
+  watch: {
+    page: {
+      handler() {
+        this.get_hospital_list();
+      }
+    }
+  },
   methods: {
     async moveToInfo(hospital) {
       await this.$store.dispatch("hospital/set_hospital_select_info", hospital);
       this.$router
         .push({ name: "Thông tin đặt lịch bệnh viện" })
-        .catch((error) => {
+        .catch(error => {
           if (error == null) {
             return;
           }
@@ -209,7 +229,12 @@ export default {
     },
 
     async get_hospital_list() {
-      await this.$store.dispatch("hospital/read_all_hospital");
+      const params = this._.cloneDeep(this.params);
+      let res = await this.$store.dispatch(
+        "hospital/read_all_hospital",
+        params
+      );
+      this.totalPages = res.meta?.totalPages;
       let hospital_all_data = this.$store.getters["hospital/hospital_all_data"];
       this.hospital_list = hospital_all_data;
     },
@@ -250,13 +275,13 @@ export default {
     },
 
     getImgOfHospital(hospital) {
-      if (hospital.hospitalImageUrl != null) {
-        return hospital.hospitalImageUrl;
+      if (hospital.imageUrl != null) {
+        return hospital.imageUrl;
       } else {
         return require("@/assets/img/home/hospital_avt.png");
       }
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

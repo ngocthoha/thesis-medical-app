@@ -19,11 +19,12 @@ const mutations = {
 };
 
 const actions = {
-  read_all_hospital({ commit }) {
-    return service.read_all_hospital().then(({ data }) => {
+  read_all_hospital({ commit }, params) {
+    return service.read_all_hospital(params).then(({ data }) => {
       if (data.results != null) {
         commit("SET_HOSPITAL_ALL_DATA", data.results);
       }
+      return data;
     });
   },
 
