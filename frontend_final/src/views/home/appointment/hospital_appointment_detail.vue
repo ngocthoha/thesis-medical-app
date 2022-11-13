@@ -312,20 +312,20 @@
         </v-card>
       </div>
     </v-card>
-    <v-card color="#EEF2F6" width="100%">
+    <v-card color="#EEF2F6" width="100%" class="pa-12">
       <!-- doctor of hospital -->
       <v-card
         width="100%"
         min-height="500px"
         color="#EEF2F6"
-        class="py-12 px-16"
+        class="py-12 px-16 d-flex justify-center"
         elevation="0"
       >
         <v-card
-          class="mx-4 pa-8 d-flex flex-column align-center"
+          class="mx-4 pa-8 d-flex flex-wrap justify-center"
+          max-width="1280"
           elevation="0"
           color="#EEF2F6"
-          width="100%"
         >
           <v-card
             height="180"
@@ -341,116 +341,115 @@
               Đặt khám theo bác sĩ
             </p>
           </v-card>
-
-          <v-card
-            class="mx-4 pa-8 d-flex flex-wrap justify-space-around"
-            width="1280"
-            elevation="0"
-            color="#EEF2F6"
-          >
-            <v-card
-              v-for="doctor in doctor_list"
-              :key="doctor.id"
-              class="d-flex flex-column justify-center align-center pa-3 mb-5"
-              min-width="596"
-              min-height="216"
-            >
+          <!-- list doctor -->
+          <v-row justify="center">
+            <v-col v-for="doctor in doctor_list" :key="doctor.id" md="6">
+              <!-- in -->
               <v-card
-                width="548"
-                min-height="84"
-                elevation="0"
-                class="d-flex flex-column"
+                class="d-flex flex-column justify-center align-center pa-3"
+                width="596"
+                height="216"
               >
                 <v-card
-                  width="100%"
-                  class="d-flex flex-row justify-space-between"
+                  width="548"
+                  height="84"
                   elevation="0"
+                  class="d-flex flex-column"
                 >
-                  <div class="d-flex flex-row">
-                    <v-avatar size="64" class="align-self-start">
-                      <v-img
-                        src="@/assets/img/user/profile/avatar1.svg"
-                      ></v-img>
-                    </v-avatar>
-                    <v-card class="d-flex flex-column ml-3" elevation="0">
-                      <p class="text-body-2 mb-2 font-weight-bold">
-                        {{ doctor.level }}. {{ doctor.name }}
-                      </p>
-                      <p class="text-body-2 mb-3">
-                        {{ doctor.hospital.name }}
-                      </p>
+                  <v-card
+                    width="100%"
+                    class="d-flex flex-row justify-space-between"
+                    elevation="0"
+                  >
+                    <div class="d-flex flex-row">
+                      <v-avatar size="64" class="align-self-start">
+                        <v-img
+                          src="@/assets/img/user/profile/avatar1.svg"
+                        ></v-img>
+                      </v-avatar>
+                      <v-card class="d-flex flex-column ml-3" elevation="0">
+                        <p class="text-body-2 mb-2 font-weight-bold">
+                          {{ doctor.level }}. {{ doctor.name }}
+                        </p>
+                        <p class="text-body-2 mb-3">
+                          {{ doctor.hospital.name }}
+                        </p>
+                        <v-card
+                          class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+                          elevation="0"
+                          color="#F9FAFB"
+                          dark
+                          style="border: 1px solid #d0d5dd; color: #667085; width: fit-content;"
+                        >
+                          {{ doctor.specialty }}</v-card
+                        >
+                      </v-card>
+                    </div>
+                    <div class="d-flex flex-row">
                       <v-card
-                        class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+                        class="d-flex flex-row"
+                        height="24"
+                        width="56"
+                        color="#EEF2F6"
                         elevation="0"
+                      >
+                        <v-icon color="#537DA5" class="align-self-start mr-2"
+                          >mdi-calendar-month-outline</v-icon
+                        >
+                        <p style="color: #537da5">
+                          {{ doctor.registrationNumber }}
+                        </p>
+                      </v-card>
+                      <v-card
+                        class="d-flex flex-row ml-1"
+                        height="24"
+                        width="56"
                         color="#F9FAFB"
-                        dark
-                        style="border: 1px solid #d0d5dd; color: #667085"
+                        elevation="0"
                       >
-                        {{ doctor.specialty }}</v-card
-                      >
-                    </v-card>
-                  </div>
-                  <div class="d-flex flex-row">
-                    <v-card
-                      class="d-flex flex-row"
-                      height="24"
-                      color="#EEF2F6"
-                      elevation="0"
-                    >
-                      <v-icon color="#537DA5" class="align-self-start mr-3"
-                        >mdi-calendar-month-outline</v-icon
-                      >
-                      <p style="color: #537da5">
-                        {{ doctor.registrationNumber }}
+                        <v-icon color="#FFC107" class="align-self-start mr-2"
+                          >mdi-star</v-icon
+                        >
+                        <p style="color: #537da5">{{ doctor.favorite }}</p>
+                      </v-card>
+                    </div>
+                  </v-card>
+                </v-card>
+                <!-- price and booking -->
+                <v-card class="mt-2" width="548" height="40" elevation="0">
+                  <v-divider
+                    class="mt-1"
+                    style="border-color: #f2f4f7 !important"
+                  ></v-divider>
+                  <div
+                    class="d-flex flex-row mt-4 align-center justify-space-between"
+                  >
+                    <div class="d-flex flex-row align-center">
+                      <p style="font-size: 90%">
+                        Giá khám:
                       </p>
-                    </v-card>
-                    <v-card
-                      class="d-flex flex-row ml-1"
-                      height="24"
-                      width="56"
-                      color="#F9FAFB"
-                      elevation="0"
-                    >
-                      <v-icon color="#FFC107" class="align-self-start"
-                        >mdi-star</v-icon
+                      <p
+                        class="font-weight-bold text-body-2 ml-3"
+                        style="color: #537da5"
                       >
-                      <p style="color: #537da5">{{ doctor.favorite }}</p>
-                    </v-card>
+                        {{ doctor.price }} đ
+                      </p>
+                    </div>
+                    <v-btn
+                      width="110"
+                      height="44"
+                      class="white--text btn text-body-2"
+                      elevation="0"
+                      color="#537DA5"
+                      @click="move_to_doctor_info(doctor)"
+                    >
+                      Đặt khám
+                    </v-btn>
                   </div>
                 </v-card>
-              </v-card>
-              <!-- price and booking -->
-              <v-card class="mt-2" width="100%" min-height="40" elevation="0">
-                <v-divider
-                  class="mt-1"
-                  style="border-color: #f2f4f7 !important"
-                ></v-divider>
-                <div
-                  class="d-flex flex-row mt-4 align-center justify-space-between"
-                >
-                  <div class="d-flex flex-row align-center">
-                    <p>Giá khám:</p>
-                    <p
-                      class="ml-3 font-weight-bold"
-                      style="color: #537da5; font-size: 20px"
-                    >
-                      {{ doctor.price }} đ
-                    </p>
-                  </div>
-                  <v-btn
-                    width="110"
-                    height="44"
-                    class="white--text btn text-body-2"
-                    elevation="0"
-                    color="#537DA5"
-                    @click="move_to_doctor_info(doctor)"
-                  >
-                    Đặt khám
-                  </v-btn>
-                </div>
-              </v-card>
-            </v-card>
-          </v-card>
+              </v-card></v-col
+            >
+          </v-row>
 
           <!-- pagination -->
           <v-card
