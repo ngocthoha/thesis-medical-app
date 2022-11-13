@@ -69,7 +69,7 @@
       >
         <!-- list doctor -->
         <v-row justify="center">
-          <v-col v-for="n in 8" :key="n" md="6">
+          <v-col v-for="(doctor, i) in listDoctor" :key="i" md="6">
             <!-- in -->
             <v-card
               class="d-flex flex-column justify-center align-center pa-3"
@@ -95,20 +95,20 @@
                     </v-avatar>
                     <v-card class="d-flex flex-column ml-3" elevation="0">
                       <p class="text-body-2 mb-2 font-weight-bold">
-                        Đỗ Hồng Việt
+                        {{ doctor.level }}. {{ doctor.name }}
                       </p>
                       <p class="text-body-2 mb-3">
-                        Bệnh viện hữu nghị Việt Đức
+                        {{ doctor.hospital.name }}
                       </p>
-                      <v-card class="text-body-2" color="#D0D5DD" outlined>
-                        <v-card
-                          elevation="0"
-                          color="#F9FAFB"
-                          class="d-flex justify-center"
-                        >
-                          Chuyên khoa TT Nam học</v-card
-                        >
-                      </v-card>
+                      <v-card
+                        class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+                        elevation="0"
+                        color="#F9FAFB"
+                        dark
+                        style="border: 1px solid #d0d5dd; color: #667085"
+                      >
+                        {{ doctor.specialty }}</v-card
+                      >
                     </v-card>
                   </div>
                   <div class="d-flex flex-row">
@@ -119,10 +119,12 @@
                       color="#EEF2F6"
                       elevation="0"
                     >
-                      <v-icon color="#537DA5" class="align-self-start"
+                      <v-icon color="#537DA5" class="align-self-start mr-2"
                         >mdi-calendar-month-outline</v-icon
                       >
-                      <p style="color: #537da5">146</p>
+                      <p style="color: #537da5">
+                        {{ doctor.registrationNumber }}
+                      </p>
                     </v-card>
                     <v-card
                       class="d-flex flex-row ml-1"
@@ -131,10 +133,10 @@
                       color="#F9FAFB"
                       elevation="0"
                     >
-                      <v-icon color="#FFC107" class="align-self-start"
+                      <v-icon color="#FFC107" class="align-self-start mr-2"
                         >mdi-star</v-icon
                       >
-                      <p style="color: #537da5">146</p>
+                      <p style="color: #537da5">{{ doctor.favorite }}</p>
                     </v-card>
                   </div>
                 </v-card>
@@ -154,7 +156,7 @@
                       class="ml-3 font-weight-bold"
                       style="color: #537da5; font-size: 20px"
                     >
-                      100000VND
+                      {{ doctor.price }} đ
                     </p>
                   </div>
                   <v-btn
@@ -163,7 +165,7 @@
                     class="white--text btn text-body-2"
                     elevation="0"
                     color="#537DA5"
-                    @click="moveToInfo"
+                    @click="move_to_doctor_info(doctor)"
                   >
                     Đặt khám
                   </v-btn>
@@ -174,11 +176,7 @@
         </v-row>
 
         <!-- pagination -->
-        <v-card
-          width="100%"
-          elevation="0"
-          class="d-flex justify-center justify-lg-end mt-10"
-        >
+        <v-card width="100%" elevation="0" class="d-flex justify-center mt-10">
           <div class="text-center">
             <v-pagination
               color="#537DA5"
@@ -210,7 +208,7 @@ export default {
     };
   },
   async created() {
-    await this.getListDoctor;
+    await this.getListDoctor();
   },
   methods: {
     moveToInfo() {

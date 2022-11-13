@@ -376,7 +376,7 @@
                           elevation="0"
                           color="#F9FAFB"
                           dark
-                          style="border: 1px solid #d0d5dd; color: #667085"
+                          style="border: 1px solid #d0d5dd; color: #667085; width: fit-content;"
                         >
                           {{ doctor.specialty }}</v-card
                         >
@@ -386,10 +386,11 @@
                       <v-card
                         class="d-flex flex-row"
                         height="24"
+                        width="56"
                         color="#EEF2F6"
                         elevation="0"
                       >
-                        <v-icon color="#537DA5" class="align-self-start mr-3"
+                        <v-icon color="#537DA5" class="align-self-start mr-2"
                           >mdi-calendar-month-outline</v-icon
                         >
                         <p style="color: #537da5">
@@ -403,7 +404,7 @@
                         color="#F9FAFB"
                         elevation="0"
                       >
-                        <v-icon color="#FFC107" class="align-self-start"
+                        <v-icon color="#FFC107" class="align-self-start mr-2"
                           >mdi-star</v-icon
                         >
                         <p style="color: #537da5">{{ doctor.favorite }}</p>
