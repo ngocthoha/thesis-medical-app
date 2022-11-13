@@ -69,110 +69,104 @@
       class="py-12 px-16 d-flex justify-center"
     >
       <v-card
-        class="mx-4 pa-8 d-flex flex-wrap justify-center"
+        class="mx-4 pa-8 d-flex flex-wrap justify-space-around"
         max-width="1280"
         elevation="0"
         color="#FCFCFD"
       >
         <!-- list hospital -->
-        <v-row justify="center">
-          <v-col
-            v-for="(hospital, iHospital) in hospital_list"
-            :key="iHospital"
-            md="6"
+
+        <v-card
+          v-for="(hospital, iHospital) in hospital_list"
+          :key="iHospital"
+          class="d-flex flex-column justify-center align-center px-3 mb-5"
+          min-width="596"
+          min-height="244"
+        >
+          <v-card
+            width="548"
+            height="112"
+            elevation="0"
+            class="d-flex flex-column"
           >
-            <!-- in -->
             <v-card
-              class="d-flex flex-column justify-center align-center px-5"
-              width="596"
-              height="244"
+              width="100%"
+              class="d-flex flex-row justify-space-between"
+              elevation="0"
             >
-              <v-card
-                width="548"
-                height="112"
-                elevation="0"
-                class="d-flex flex-column"
-              >
-                <v-card
-                  width="100%"
-                  class="d-flex flex-row justify-space-between"
-                  elevation="0"
-                >
+              <div class="d-flex flex-row">
+                <v-card width="126" height="84" class="align-self-start">
+                  <v-img :src="getImgOfHospital(hospital)"></v-img>
+                </v-card>
+                <v-card class="d-flex flex-column ml-3" elevation="0">
+                  <p class="text-body-2 mb-2 font-weight-bold">
+                    {{ hospital.name }}
+                  </p>
                   <div class="d-flex flex-row">
-                    <v-card width="126" height="84" class="align-self-start">
-                      <v-img :src="getImgOfHospital(hospital)"></v-img>
-                    </v-card>
-                    <v-card class="d-flex flex-column ml-3" elevation="0">
-                      <p class="text-body-2 mb-2 font-weight-bold">
-                        {{ hospital.name }}
+                    <v-icon
+                      class="align-self-start mr-3"
+                      size="24"
+                      color="#537da5"
+                      >mdi-map-marker-radius-outline</v-icon
+                    >
+                    <p class="text-body-2 mb-3">
+                      {{ get_hospital_address(hospital) }}
+                    </p>
+                  </div>
+                  <div class="d-flex flex-row">
+                    <v-card
+                      class="d-flex flex-row"
+                      height="24"
+                      width="56"
+                      color="#EEF2F6"
+                      elevation="0"
+                    >
+                      <v-icon color="#537DA5" class="align-self-start"
+                        >mdi-calendar-month-outline</v-icon
+                      >
+                      <p style="color: #537da5">
+                        {{ hospital.registrationNumber }}
                       </p>
-                      <div class="d-flex flex-row">
-                        <v-icon
-                          class="align-self-start mr-3"
-                          size="24"
-                          color="#537da5"
-                          >mdi-map-marker-radius-outline</v-icon
-                        >
-                        <p class="text-body-2 mb-3">
-                          {{ get_hospital_address(hospital) }}
-                        </p>
-                      </div>
-                      <div class="d-flex flex-row">
-                        <v-card
-                          class="d-flex flex-row"
-                          height="24"
-                          width="56"
-                          color="#EEF2F6"
-                          elevation="0"
-                        >
-                          <v-icon color="#537DA5" class="align-self-start"
-                            >mdi-calendar-month-outline</v-icon
-                          >
-                          <p style="color: #537da5">
-                            {{ hospital.registrationNumber }}
-                          </p>
-                        </v-card>
-                        <v-card
-                          class="d-flex flex-row ml-1"
-                          height="24"
-                          width="56"
-                          color="#F9FAFB"
-                          elevation="0"
-                        >
-                          <v-icon color="#FFC107" class="align-self-start"
-                            >mdi-star</v-icon
-                          >
-                          <p style="color: #537da5">{{ hospital.favorite }}</p>
-                        </v-card>
-                      </div>
+                    </v-card>
+                    <v-card
+                      class="d-flex flex-row ml-1"
+                      height="24"
+                      width="56"
+                      color="#F9FAFB"
+                      elevation="0"
+                    >
+                      <v-icon color="#FFC107" class="align-self-start"
+                        >mdi-star</v-icon
+                      >
+                      <p style="color: #537da5">{{ hospital.favorite }}</p>
                     </v-card>
                   </div>
                 </v-card>
-              </v-card>
-              <!-- price and booking -->
-              <v-card class="mt-2" width="548" height="40" elevation="0">
-                <v-divider
-                  class="mt-1"
-                  style="border-color: #f2f4f7 !important"
-                ></v-divider>
-                <div
-                  class="d-flex flex-row mt-4 align-center justify-space-between"
-                >
-                  <v-btn
-                    width="110"
-                    height="44"
-                    class="white--text btn text-body-2"
-                    elevation="0"
-                    color="#537DA5"
-                    @click="moveToInfo(hospital)"
-                  >
-                    Xem chi tiết
-                  </v-btn>
-                </div>
-              </v-card>
-            </v-card></v-col
-          >
-        </v-row>
+              </div>
+            </v-card>
+          </v-card>
+          <!-- price and booking -->
+          <v-card class="mt-2" width="548" height="40" elevation="0">
+            <v-divider
+              class="mt-1"
+              style="border-color: #f2f4f7 !important"
+            ></v-divider>
+            <div
+              class="d-flex flex-row mt-4 align-center justify-space-between"
+            >
+              <v-btn
+                width="110"
+                height="44"
+                class="white--text btn text-body-2"
+                elevation="0"
+                color="#537DA5"
+                @click="moveToInfo(hospital)"
+              >
+                Xem chi tiết
+              </v-btn>
+            </div>
+          </v-card>
+        </v-card>
 
         <!-- pagination -->
         <v-card width="100%" elevation="0" class="d-flex justify-center mt-10">
