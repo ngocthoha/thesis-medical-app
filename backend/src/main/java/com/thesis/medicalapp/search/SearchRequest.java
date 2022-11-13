@@ -41,4 +41,23 @@ public class SearchRequest implements Serializable {
         return this.sorts;
     }
 
+    public SearchRequest(String objectId, Integer page, Integer size) {
+        //filter
+        this.filters = new ArrayList<>();
+        FilterRequest filterRequest = new FilterRequest();
+        filterRequest.setKey("objectId");
+        filterRequest.setOperator(Operator.EQUAL);
+        filterRequest.setFieldType(FieldType.STRING);
+        filterRequest.setValue(objectId);
+        this.filters.add(filterRequest);
+        //sort
+        this.sorts = new ArrayList<>();
+        SortRequest sortRequest = new SortRequest();
+        sortRequest.setKey("date");
+        sortRequest.setDirection(SortDirection.DESC);
+        this.sorts.add(sortRequest);
+        this.page = page;
+        this.size = size;
+    }
+
 }

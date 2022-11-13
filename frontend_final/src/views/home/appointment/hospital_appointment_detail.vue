@@ -141,13 +141,13 @@
                   style="text-transform: none"
                   class="font-weight-medium text-body-1"
                   :key="'tab-2'"
-                  >Đánh giá</v-tab
+                  >{{ titleFavorite }}</v-tab
                 >
                 <v-tab
                   style="text-transform: none"
                   class="font-weight-medium text-body-1"
                   :key="'tab-3'"
-                  >Câu hỏi</v-tab
+                  >{{ titleQuestion }}</v-tab
                 >
               </v-tabs>
             </v-card>
@@ -186,12 +186,26 @@
 
                 <!-- evaluate tab -->
                 <v-tab-item :key="'tab-2'">
-                  <v-card> evaluate tab </v-card>
+                  <favorite
+                    v-if="hospital_info && username"
+                    :username="username"
+                    :object="hospital_info"
+                    @reloadFavorite="reloadFavorite"
+                    @setNumFavorite="numFavorite = $event"
+                    :key="keyFavorite"
+                  ></favorite>
                 </v-tab-item>
 
                 <!-- question tab -->
                 <v-tab-item :key="'tab-3'">
-                  <v-card> question tab </v-card>
+                  <question
+                    v-if="hospital_info && username"
+                    :username="username"
+                    :object="hospital_info"
+                    @reloadQuestion="reloadQuestion"
+                    @setNumQuestion="numQuestion = $event"
+                    :key="keyQuestion"
+                  ></question>
                 </v-tab-item>
               </v-tabs-items>
             </v-card>
@@ -343,7 +357,7 @@
                       </v-avatar>
                       <v-card class="d-flex flex-column ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-bold">
-                          {{ doctor.name }}
+                          {{doctor.level}}. {{ doctor.name }}
                         </p>
                         <p class="text-body-2 mb-3">
                           {{ doctor.hospital.name }}
@@ -383,7 +397,7 @@
                         <v-icon color="#FFC107" class="align-self-start"
                           >mdi-star</v-icon
                         >
-                        <p style="color: #537da5">146</p>
+                        <p style="color: #537da5">{{ doctor.favorite }}</p>
                       </v-card>
                     </div>
                   </v-card>
@@ -403,7 +417,7 @@
                         class="ml-3 font-weight-bold"
                         style="color: #537da5; font-size: 20px"
                       >
-                        {{ doctor.price }}VND
+                        {{ doctor.price }} đ
                       </p>
                     </div>
                     <v-btn
@@ -433,7 +447,7 @@
               <v-pagination
                 color="#537DA5"
                 v-model="page"
-                :length="15"
+                :length="totalPages"
                 :total-visible="7"
               ></v-pagination>
             </div>
@@ -445,64 +459,84 @@
 </template>
 
 <script>
+import Favorite from "../Component/favorite.vue";
+import Question from "../Component/question.vue";
+
 export default {
+  components: {
+    Favorite,
+    Question
+  },
   created() {
     this.hospital_info = this.$store.getters["hospital/hospital_selected"];
+    this.username = this.$store.getters["auth/username"];
     this.get_doctor_by_hospital();
   },
   data() {
     return {
-      page: 2,
+      page: 1,
+      totalPages: 0,
       tab: null,
       calander_tab: null,
       selected: null,
       hospital_hour_dialog: false,
-      morning_time: [
-        "09:00 - 09:30",
-        "10:00 - 10:30",
-        "11:00 - 11:30",
-        "12:00 - 12:30",
-      ],
-      affternoon_time: [
-        "13:00 - 13:30",
-        "14:00 - 14:30",
-        "15:00 - 15:30",
-        "16:00 - 16:30",
-      ],
-
       hospital_info: {},
       doctor_list: [],
+      rating: 0,
+      username: null,
+      keyFavorite: 0,
+      keyQuestion: 0,
+      numFavorite: 0,
+      numQuestion: 0
     };
+  },
+  watch: {
+    page: {
+      handler() {
+        this.get_doctor_by_hospital();
+      }
+    }
+  },
+  computed: {
+    titleFavorite() {
+      if (this.tab !== 1) return "Đánh giá";
+      return `Đánh giá (${this.numFavorite})`;
+    },
+    titleQuestion() {
+      if (this.tab !== 2) return "Câu hỏi";
+      return `Câu hỏi (${this.numQuestion})`;
+    }
   },
   methods: {
     move_to_service_info() {
-      this.$router
-        .push({ name: "Thông tin đặt lịch dịch vụ" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
+      this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     },
-
+    reloadFavorite() {
+      this.keyFavorite++;
+    },
+    reloadQuestion() {
+      this.keyQuestion++;
+    },
     async move_to_doctor_info(doctor) {
       await this.$store.dispatch(
         "appointment/set_doctor_select_to_make_appointment",
         doctor
       );
-      this.$router
-        .push({ name: "Thông tin đặt lịch bác sĩ" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
+      this.$router.push({ name: "Thông tin đặt lịch bác sĩ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     },
 
     get_hospital_address(hospital) {
@@ -543,8 +577,14 @@ export default {
     async get_doctor_by_hospital() {
       const param = {
         hospitalId: this.hospital_info.id,
+        page: this.page - 1,
+        size: 8
       };
-      await this.$store.dispatch("hospital/get_doctor_by_hospital", param);
+      let res = await this.$store.dispatch(
+        "hospital/get_doctor_by_hospital",
+        param
+      );
+      this.totalPages = res.meta?.totalPages;
       this.doctor_list = this.$store.getters["hospital/doctor_by_hospital"];
     },
 
@@ -554,8 +594,8 @@ export default {
       } else {
         return require("@/assets/img/home/hospital_avt.png");
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

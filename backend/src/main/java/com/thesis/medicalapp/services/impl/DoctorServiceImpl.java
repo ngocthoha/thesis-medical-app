@@ -78,4 +78,9 @@ public class DoctorServiceImpl implements DoctorService {
         Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
         return doctorRepository.findAll(specification, pageable);
     }
+
+    @Override
+    public Page<Doctor> findAllByHospitalId(String hospitalId, Pageable pageable) {
+        return doctorRepository.findAllByHospitalId(hospitalId, pageable);
+    }
 }

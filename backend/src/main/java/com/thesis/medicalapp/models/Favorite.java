@@ -18,10 +18,10 @@ public class Favorite {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private Double favorite;
+    private Integer favorite;
     private String comment;
     private Date date;
     @OneToOne
-    private User user;
+    private Profile profile;
     private String objectId;
 }

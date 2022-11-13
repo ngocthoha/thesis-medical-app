@@ -3,6 +3,8 @@ package com.thesis.medicalapp.repository;
 import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.StoreMedicine;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
@@ -15,4 +17,5 @@ public interface DoctorRepository extends JpaRepository<Doctor, String>, JpaSpec
     Doctor findDoctorByUsername(String username);
     List<Doctor> findAllBySpecialty(String specialty);
     List<Doctor> findAllByHospital(Hospital hospital);
+    Page<Doctor> findAllByHospitalId(String hospitalId, Pageable pageable);
 }

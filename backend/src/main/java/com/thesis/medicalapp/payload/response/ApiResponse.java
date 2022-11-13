@@ -1,8 +1,11 @@
 package com.thesis.medicalapp.payload.response;
 
+import com.thesis.medicalapp.models.Meta;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 
 @Data
@@ -12,7 +15,9 @@ public class ApiResponse<T> {
     private Integer code;
     private String message;
     private T results;
-    private T meta;
+    private Meta meta;
+    @Autowired
+    private static final ModelMapper modelMapper = new ModelMapper();
 
     public ApiResponse(Integer code, String message) {
         this.code = code;
@@ -39,7 +44,8 @@ public class ApiResponse<T> {
         this.code = HttpStatus.OK.value();
         this.message = HttpStatus.OK.name();
         this.results = results;
-        this.meta = meta;
+        Meta metaResponse = modelMapper.map(meta, Meta.class);
+        this.meta = metaResponse;
     }
 
     public ApiResponse(HttpStatus httpStatus, T results) {

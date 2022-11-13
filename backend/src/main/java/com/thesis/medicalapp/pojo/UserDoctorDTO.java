@@ -23,6 +23,7 @@ public class UserDoctorDTO {
     private String level;
     private String bio;
     private Integer registrationNumber;
+    private Double favorite;
     private String price;
     private String imageUrl;
     private HospitalDTO hospital;
@@ -39,6 +40,7 @@ public class UserDoctorDTO {
                 .level(doctor.getLevel())
                 .bio(doctor.getBio())
                 .registrationNumber(doctor.getRegistrationNumber())
+                .favorite(doctor.getFavorite())
                 .price(doctor.getPrice())
                 .hospital(HospitalDTO.from(doctor.getHospital()))
                 .imageUrl(doctor.getImageUrl())

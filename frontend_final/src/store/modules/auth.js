@@ -7,7 +7,9 @@ const state = {
   isLogin: false,
   is_signup_submit_success: false,
   is_verify_submit_success: false,
-  username: null
+  username: null,
+  isDoctor: false,
+  isUser: false
 };
 
 const mutations = {
@@ -30,6 +32,14 @@ const mutations = {
 
   SET_USERNAME: (state, username) => {
     state.username = username;
+  },
+
+  SET_IS_DOCTOR: (state, isDoctor) => {
+    state.isDoctor = isDoctor;
+  },
+
+  SET_IS_USER: (state, isUser) => {
+    state.isUser = isUser;
   }
 };
 
@@ -39,7 +49,11 @@ const actions = {
       if (data.access_token != null && data.access_token != "") {
         var decoded = jwt_decode(data.access_token);
         localStorage.setItem("username", decoded.sub);
+        let isDoctor = (decoded.roles || []).some(r => r === "ROLE_DOCTOR");
+        let isUser = (decoded.roles || []).some(r => r === "ROLE_USER");
         commit("SET_USERNAME", decoded.sub);
+        commit("SET_IS_DOCTOR", isDoctor);
+        commit("SET_IS_USER", isUser);
         commit("SET_TOKEN", data.access_token);
         commit("SET_TYPE", data.type);
         commit("SET_IS_LOGIN", true);
@@ -88,7 +102,9 @@ const getters = {
   isLogin: state => state.isLogin,
   is_signup_submit_success: state => state.is_signup_submit_success,
   is_verify_submit_success: state => state.is_verify_submit_success,
-  username: state => state.username
+  username: state => state.username,
+  isDoctor: state => state.isDoctor,
+  isUser: state => state.isUser
 };
 
 export default {

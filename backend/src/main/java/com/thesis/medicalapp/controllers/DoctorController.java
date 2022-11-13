@@ -17,6 +17,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -101,10 +103,21 @@ public class DoctorController {
     }
 
     @GetMapping("/hospital")
-    public ResponseEntity<Object> getDoctorsByHospital(@RequestParam String hospitalId) {
-        List<UserDoctorDTO> doctors = doctorService.getDoctorsByHospital(hospitalId);
+    public ResponseEntity<Object> getDoctorsByHospital(
+            @RequestParam String hospitalId,
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Doctor> doctors = doctorService.findAllByHospitalId(hospitalId, pageable);
+        Page<UserDoctorDTO> doctorDTOS = doctors.map(
+                doctor -> {
+                    UserDoctorDTO doctorDTO = UserDoctorDTO.from(doctor);
+                    return doctorDTO;
+                }
+        );
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(doctors)
+                new ApiResponse<>(doctorDTOS.getContent(), doctorDTOS)
         );
     }
 
@@ -112,7 +125,7 @@ public class DoctorController {
     public ResponseEntity<Object> search(@RequestBody SearchRequest request) {
         Page<Doctor> page = doctorService.search(request);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(page.getContent(), page.getPageable())
+                new ApiResponse<>(page.getContent(), page)
         );
     }
 

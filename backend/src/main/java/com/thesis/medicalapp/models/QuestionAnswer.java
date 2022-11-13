@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "question_answers")
+@Table(name = "qa")
 public class QuestionAnswer extends AuditLog {
     @Id
     @GeneratedValue(generator = "uuid")

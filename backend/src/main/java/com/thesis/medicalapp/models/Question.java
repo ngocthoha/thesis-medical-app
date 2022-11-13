@@ -25,6 +25,8 @@ public class Question {
     private Date date;
     private String question;
     private String name;
+    @OneToOne
+    private User user;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value= FetchMode.SELECT)
     Collection<Answer> answers;

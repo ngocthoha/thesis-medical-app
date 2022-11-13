@@ -3,7 +3,7 @@ import service from "@/store/services/hospital";
 const state = {
   hospital_all_data: [],
   hospital_selected: {},
-  doctor_by_hospital: [],
+  doctor_by_hospital: []
 };
 
 const mutations = {
@@ -15,7 +15,7 @@ const mutations = {
   },
   SET_DOCTOR_BY_HOSPITAL: (state, doctor_by_hospital) => {
     state.doctor_by_hospital = doctor_by_hospital;
-  },
+  }
 };
 
 const actions = {
@@ -36,14 +36,15 @@ const actions = {
       if (data.results != null) {
         commit("SET_DOCTOR_BY_HOSPITAL", data.results);
       }
+      return data;
     });
-  },
+  }
 };
 
 const getters = {
-  hospital_all_data: (state) => state.hospital_all_data,
-  hospital_selected: (state) => state.hospital_selected,
-  doctor_by_hospital: (state) => state.doctor_by_hospital,
+  hospital_all_data: state => state.hospital_all_data,
+  hospital_selected: state => state.hospital_selected,
+  doctor_by_hospital: state => state.doctor_by_hospital
 };
 
 export default {
@@ -51,5 +52,5 @@ export default {
   state,
   mutations,
   actions,
-  getters,
+  getters
 };

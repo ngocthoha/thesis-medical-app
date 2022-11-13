@@ -95,7 +95,7 @@ public class ThesisMedicalAppApplication {
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
-            User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, null, new ArrayList<>(), "Doctor Name", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "CKI", bio, "100.000", hospital, 0.0);
+            User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, null, new ArrayList<>(), "Đinh Ngọc Sơn", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS", bio, "100.000", hospital, 0.0);
             User userEntity = userService.saveUser(user);
             userService.saveUser(admin);
 
@@ -119,7 +119,7 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
-            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc", address1, "0326185289", "email@gmail.com", new Date(), "Developer", "038200008299", "032288997", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "relationship", "relation ship with patient", null, userEntity));
+            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc", address1, "0326185289", "email@gmail.com", new Date(), "Developer", "038200008299", "032288997", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "relation ship with patient", null, userEntity));
         };
     }
     @GetMapping

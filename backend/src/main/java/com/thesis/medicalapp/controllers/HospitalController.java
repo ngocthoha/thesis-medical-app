@@ -68,7 +68,7 @@ public class HospitalController {
     public ResponseEntity<ApiResponse> getHospitals() {
         List<HospitalDTO> hospitals = hospitalService.getHospitals();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>( hospitals)
+                new ApiResponse<>(hospitals)
         );
     }
 
@@ -76,7 +76,7 @@ public class HospitalController {
     public ResponseEntity<ApiResponse> search(@RequestBody SearchRequest request) {
         Page<Hospital> page = hospitalService.search(request);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(page.getContent(), page.getPageable())
+                new ApiResponse<>(page.getContent(), page)
         );
     }
 

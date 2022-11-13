@@ -35,8 +35,9 @@ public class QuestionController {
     public static class QuestionRequest {
         @NotNull
         private String question;
-        @NotNull
         private String name;
+        @NotNull
+        private String username;
         @NotNull
         private String objectId;
     }
@@ -53,6 +54,11 @@ public class QuestionController {
     @PostMapping("")
     public ResponseEntity<Object> saveFavorite(@RequestBody @Valid QuestionRequest questionRequest) {
         Question question = new Question();
+        String username = questionRequest.getUsername();
+        if (!userService.existsByUsername(username))
+            throw new ApiRequestException("Không tìm thấy user!");
+        User user = userService.findByUsername(username);
+        question.setUser(user);
         question.setName(questionRequest.getName());
         question.setDate(new Date());
         question.setQuestion(questionRequest.getQuestion());
@@ -66,14 +72,13 @@ public class QuestionController {
 
     @PostMapping("/reply")
     public ResponseEntity<Object> setAnswer(@RequestBody AnswerRequest answerRequest) {
+        System.out.println("reply");
         Answer answer = new Answer();
         String username = answerRequest.getUsername();
-        if (username != null) {
-            if ( !userService.existsByUsername(username))
-                throw new ApiRequestException("Không tìm thấy user!");
-            User user = userService.findByUsername(username);
-            answer.setUser(user);
-        }
+        if ( !userService.existsByUsername(username))
+            throw new ApiRequestException("Không tìm thấy user!");
+        User user = userService.findByUsername(username);
+        answer.setUser(user);
         answer.setAnswer(answerRequest.getAnswer());
         answer.setDate(new Date());
         Optional<Question> questionOp = questionService.findById(answerRequest.getQuestionId());
@@ -82,16 +87,22 @@ public class QuestionController {
         Question question = questionOp.get();
         Answer answerRes = answerRepository.save(answer);
         question.getAnswers().add(answerRes);
+        questionService.save(question);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(answerRes)
         );
     }
 
     @GetMapping("")
-    public ResponseEntity<Object> getQuestions(@RequestBody SearchRequest request ) {
-        Page<Question> page = questionService.getAll(request);
+    public ResponseEntity<Object> getQuestions(
+            @RequestParam String objectId,
+            @RequestParam Integer page,
+            @RequestParam Integer size
+    ) {
+        SearchRequest request = new SearchRequest(objectId, page, size);
+        Page<Question> pageResponse = questionService.getAll(request);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(page.getContent(), page.getPageable())
+                new ApiResponse<>(pageResponse.getContent(), pageResponse)
         );
     }
 }

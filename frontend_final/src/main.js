@@ -6,8 +6,11 @@ import "./plugins";
 import store from "./store";
 import { sync } from "vuex-router-sync";
 import lodash from "lodash";
+import axios from "axios";
+
 Vue.config.productionTip = false;
 Vue.prototype._ = lodash;
+Vue.prototype.axios = axios;
 sync(store, router);
 
 new Vue({
