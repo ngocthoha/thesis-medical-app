@@ -165,7 +165,7 @@
                     class="white--text btn text-body-2"
                     elevation="0"
                     color="#537DA5"
-                    @click="move_to_doctor_info(doctor)"
+                    @click="moveToInfo()"
                   >
                     Đặt khám
                   </v-btn>
@@ -176,7 +176,12 @@
         </v-row>
 
         <!-- pagination -->
-        <v-card width="100%" elevation="0" class="d-flex justify-center mt-10">
+        <v-card
+          style="background: none"
+          width="100%"
+          elevation="0"
+          class="d-flex justify-center mt-10"
+        >
           <div class="text-center">
             <v-pagination
               color="#537DA5"

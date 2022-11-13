@@ -175,7 +175,12 @@
         </v-row>
 
         <!-- pagination -->
-        <v-card width="100%" elevation="0" class="d-flex justify-center mt-10">
+        <v-card
+          width="100%"
+          elevation="0"
+          class="d-flex justify-center mt-10"
+          style="background: none"
+        >
           <div class="text-center">
             <v-pagination
               color="#537DA5"
