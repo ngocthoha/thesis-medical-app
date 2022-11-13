@@ -334,7 +334,7 @@
             <v-col v-for="doctor in doctor_list" :key="doctor.id" md="6">
               <!-- in -->
               <v-card
-                class="d-flex flex-column justify-center align-center"
+                class="d-flex flex-column justify-center align-center pa-3"
                 width="596"
                 height="216"
               >
@@ -357,7 +357,7 @@
                       </v-avatar>
                       <v-card class="d-flex flex-column ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-bold">
-                          {{doctor.level}}. {{ doctor.name }}
+                          {{ doctor.level }}. {{ doctor.name }}
                         </p>
                         <p class="text-body-2 mb-3">
                           {{ doctor.hospital.name }}

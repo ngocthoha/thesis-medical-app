@@ -75,7 +75,7 @@
           <v-col v-for="n in 8" :key="n" md="6">
             <!-- in -->
             <v-card
-              class="d-flex flex-column justify-center align-center"
+              class="d-flex flex-column justify-center align-center pa-3"
               width="596"
               height="216"
             >
@@ -201,24 +201,22 @@ export default {
   setup() {},
   data() {
     return {
-      page: 2,
+      page: 2
     };
   },
 
   methods: {
     moveToInfo() {
-      this.$router
-        .push({ name: "Thông tin đặt lịch bác sĩ" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
-    },
-  },
+      this.$router.push({ name: "Thông tin đặt lịch bác sĩ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
+    }
+  }
 };
 </script>
 <style scoped>
