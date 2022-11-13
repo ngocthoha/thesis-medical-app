@@ -276,7 +276,9 @@
                         <div
                           class="d-flex flex-row align-center justify-space-between"
                         >
-                          <p style="color: #537da5" class="ma-0">{{service.price}} đ</p>
+                          <p style="color: #537da5" class="ma-0">
+                            {{ service.price }} đ
+                          </p>
 
                           <v-icon small color="#537da5">mdi-arrow-right</v-icon>
                         </div>
@@ -369,15 +371,15 @@
                         <p class="text-body-2 mb-3">
                           {{ doctor.hospital.name }}
                         </p>
-                        <v-card class="text-body-2" color="#D0D5DD" outlined>
-                          <v-card
-                            elevation="0"
-                            color="#F9FAFB"
-                            class="d-flex justify-center"
-                          >
-                            {{ doctor.specialty }}</v-card
-                          >
-                        </v-card>
+                        <v-card
+                          class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+                          elevation="0"
+                          color="#F9FAFB"
+                          dark
+                          style="border: 1px solid #d0d5dd; color: #667085"
+                        >
+                          {{ doctor.specialty }}</v-card
+                        >
                       </v-card>
                     </div>
                     <div class="d-flex flex-row">
