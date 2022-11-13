@@ -20,14 +20,13 @@
         height="76px"
         outlined
       >
-        <v-card elevation="0"
-          ><p
-            class="ma-0 font-weight-medium text-body-1 ml-3"
-            style="color: #667085"
-          >
-            Tìm tên bác sĩ
-          </p></v-card
-        >
+        <v-text-field
+          full-width
+          solo
+          flat
+          placeholder="Tìm kiếm tên bác sĩ"
+          hide-details=""
+        ></v-text-field>
         <v-spacer />
         <v-divider inset vertical></v-divider>
         <v-menu>
@@ -198,7 +197,6 @@
 
 <script>
 export default {
-  setup() {},
   data() {
     return {
       page: 1,
@@ -214,6 +212,13 @@ export default {
   },
   async created() {
     await this.getListDoctor();
+  },
+  watch: {
+    page: {
+      handler() {
+        this.getListDoctor();
+      }
+    }
   },
   methods: {
     moveToInfo() {

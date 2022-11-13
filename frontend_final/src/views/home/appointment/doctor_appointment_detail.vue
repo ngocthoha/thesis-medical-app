@@ -19,21 +19,22 @@
           <!-- detail -->
           <v-card class="d-flex flex-column ml-3" elevation="0">
             <p class="text-body-2 mb-2 font-weight-bold">
-              {{ this.doctor_info.name }}
+              {{ doctor_info.level }}. {{ doctor_info.name }}
             </p>
-            <p class="text-body-2 mb-3">{{ this.doctor_info.hospital.name }}</p>
+            <p class="text-body-2 mb-3">{{ doctor_info.hospital.name }}</p>
             <div class="d-flex flex-row mb-3">
               <v-card
                 class="d-flex flex-row"
                 height="24"
+                width="56"
                 color="#EEF2F6"
                 elevation="0"
               >
-                <v-icon color="#537DA5" class="align-self-start mr-3"
+                <v-icon color="#537DA5" class="align-self-start mr-2"
                   >mdi-calendar-month-outline</v-icon
                 >
                 <p style="color: #537da5">
-                  {{ this.doctor_info.registrationNumber }}
+                  {{ doctor_info.registrationNumber }}
                 </p>
               </v-card>
               <v-card
@@ -43,23 +44,21 @@
                 color="#F9FAFB"
                 elevation="0"
               >
-                <v-icon color="#FFC107" class="align-self-start"
+                <v-icon color="#FFC107" class="align-self-start mr-2"
                   >mdi-star</v-icon
                 >
-                <p style="color: #537da5">4.8</p>
+                <p style="color: #537da5">{{ doctor_info.favorite }}</p>
               </v-card>
             </div>
-            <v-card max-width="422" class="d-flex flex-wrap" elevation="0">
-              <v-card class="text-body-2 mr-3 mb-3" color="#D0D5DD" outlined>
-                <v-card
-                  elevation="0"
-                  color="#F9FAFB"
-                  class="d-flex justify-center pa-1"
-                >
-                  {{ this.doctor_info.specialty }}</v-card
-                >
-              </v-card>
-            </v-card>
+            <v-card
+              class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+              elevation="0"
+              color="#F9FAFB"
+              dark
+              style="border: 1px solid #d0d5dd; color: #667085; width: fit-content;"
+            >
+              {{ doctor_info.specialty }}</v-card
+            >
           </v-card>
         </v-card>
 
@@ -83,13 +82,13 @@
                 style="text-transform: none"
                 class="font-weight-medium text-body-1"
                 :key="'tab-2'"
-                >Đánh giá</v-tab
+                >{{ titleFavorite }}</v-tab
               >
               <v-tab
                 style="text-transform: none"
                 class="font-weight-medium text-body-1"
                 :key="'tab-3'"
-                >Câu hỏi</v-tab
+                >{{ titleQuestion }}</v-tab
               >
             </v-tabs>
           </v-card>
@@ -100,7 +99,7 @@
               <v-tab-item :key="'tab-1'">
                 <v-card class="d-flex flex-column">
                   <p class="text-body-1 mb-6">
-                    {{ this.doctor_info.bio }}
+                    {{ doctor_info.bio }}
                   </p>
                   <div class="d-flex flex-row justify-space-between">
                     <v-card class="d-flex flex-row" width="45%" elevation="0">
@@ -109,9 +108,7 @@
                       >
                       <v-card class="ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-medium">
-                          {{
-                            this.get_hospital_address(this.doctor_info.hospital)
-                          }}
+                          {{ this.get_hospital_address(doctor_info.hospital) }}
                         </p>
                         <p
                           class="text-body-2 font-weight-medium"
@@ -127,12 +124,26 @@
 
               <!-- evaluate tab -->
               <v-tab-item :key="'tab-2'">
-                <v-card> evaluate tab </v-card>
+                <favorite
+                  v-if="doctor_info && username"
+                  :username="username"
+                  :object="doctor_info"
+                  @reloadFavorite="reloadFavorite"
+                  @setNumFavorite="numFavorite = $event"
+                  :key="keyFavorite"
+                ></favorite>
               </v-tab-item>
 
               <!-- question tab -->
               <v-tab-item :key="'tab-3'">
-                <v-card> question tab </v-card>
+                <question
+                  v-if="doctor_info && username"
+                  :username="username"
+                  :object="doctor_info"
+                  @reloadQuestion="reloadQuestion"
+                  @setNumQuestion="numQuestion = $event"
+                  :key="keyQuestion"
+                ></question>
               </v-tab-item>
             </v-tabs-items>
           </v-card>
@@ -164,7 +175,7 @@
           <div class="d-flex flex-row align-center justify-space-between">
             <p class="text-body-1 font-weight-medium">Khám theo yêu cầu</p>
             <p class="ml-3 font-weight-bold" style="color: #537da5">
-              {{ this.doctor_info.price }} VND
+              {{ doctor_info.price }} đ
             </p>
           </div>
           <!--  -->
@@ -172,14 +183,15 @@
             <v-card
               class="d-flex flex-row"
               height="24"
+              width="56"
               color="#EEF2F6"
               elevation="0"
             >
-              <v-icon color="#537DA5" class="align-self-start mr-3"
+              <v-icon color="#537DA5" class="align-self-start mr-2"
                 >mdi-calendar-month-outline</v-icon
               >
               <p style="color: #537da5">
-                {{ this.doctor_info.registrationNumber }}
+                {{ doctor_info.registrationNumber }}
               </p>
             </v-card>
             <v-card
@@ -189,8 +201,10 @@
               color="#F9FAFB"
               elevation="0"
             >
-              <v-icon color="#FFC107" class="align-self-start">mdi-star</v-icon>
-              <p style="color: #537da5">4.8</p>
+              <v-icon color="#FFC107" class="align-self-start mr-2"
+                >mdi-star</v-icon
+              >
+              <p style="color: #537da5">{{ doctor_info.favorite }}</p>
             </v-card>
           </div>
           <!-- location -->
@@ -203,7 +217,7 @@
                 class="text-body-2 mb-2 font-weight-medium"
                 style="color: #667085"
               >
-                {{ this.get_hospital_address(this.doctor_info.hospital) }}
+                {{ get_hospital_address(doctor_info.hospital) }}
               </p>
             </v-card>
           </v-card>
@@ -495,7 +509,13 @@
 </template>
 
 <script>
+import Favorite from "../Component/favorite.vue";
+import Question from "../Component/question.vue";
 export default {
+  components: {
+    Favorite,
+    Question
+  },
   created() {
     this.get_doctor_select();
 
@@ -534,10 +554,33 @@ export default {
         date: "",
         month: "",
         year: ""
-      }
+      },
+      keyFavorite: 0,
+      keyQuestion: 0,
+      numFavorite: 0,
+      numQuestion: 0
     };
   },
+  computed: {
+    username() {
+      return this.$store.getters["auth/username"];
+    },
+    titleFavorite() {
+      if (this.tab !== 1) return "Đánh giá";
+      return `Đánh giá (${this.numFavorite})`;
+    },
+    titleQuestion() {
+      if (this.tab !== 2) return "Câu hỏi";
+      return `Câu hỏi (${this.numQuestion})`;
+    }
+  },
   methods: {
+    reloadFavorite() {
+      this.keyFavorite++;
+    },
+    reloadQuestion() {
+      this.keyQuestion++;
+    },
     submit_offline_select_time() {
       let is_login = this.$store.getters["auth/isLogin"];
       if (is_login) {

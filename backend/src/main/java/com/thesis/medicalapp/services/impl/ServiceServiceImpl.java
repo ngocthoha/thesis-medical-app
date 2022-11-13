@@ -7,6 +7,8 @@ import com.thesis.medicalapp.payload.ServiceRequest;
 import com.thesis.medicalapp.pojo.ServiceDTO;
 import com.thesis.medicalapp.repository.HospitalRepository;
 import com.thesis.medicalapp.repository.ServiceRepository;
+import com.thesis.medicalapp.search.SearchRequest;
+import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.ServiceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -64,14 +66,10 @@ public class ServiceServiceImpl implements ServiceService {
     }
 
     @Override
-    public List<ServiceDTO> getServicesByHospital(String hospitalId) {
-        List<HospitalService> hospitalServices = serviceRepository.findByHospitalId(hospitalId)
-                .stream().collect(Collectors.toList());
-        List<ServiceDTO> serviceDTOS = hospitalServices.stream().map(d -> {
-            ServiceDTO serviceDTO = ServiceDTO.from(d);
-            return serviceDTO;
-        }).collect(Collectors.toList());
-        return serviceDTOS;
+    public Page<HospitalService> search(SearchRequest request) {
+        SearchSpecification<HospitalService> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        return serviceRepository.findAll(specification, pageable);
     }
 
     @Override

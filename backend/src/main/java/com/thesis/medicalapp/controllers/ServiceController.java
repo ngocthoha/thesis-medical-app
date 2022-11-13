@@ -1,12 +1,15 @@
 package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.models.Doctor;
+import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.HospitalService;
 import com.thesis.medicalapp.payload.ServiceRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
+import com.thesis.medicalapp.pojo.DoctorDTO;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.pojo.ServiceDTO;
 import com.thesis.medicalapp.pojo.UserDoctorDTO;
+import com.thesis.medicalapp.search.SearchRequest;
 import com.thesis.medicalapp.services.ServiceESService;
 import com.thesis.medicalapp.services.ServiceService;
 import lombok.RequiredArgsConstructor;
@@ -42,11 +45,17 @@ public class ServiceController {
         );
     }
 
-    @GetMapping("")
-    public ResponseEntity<Object> getHospitalServices() {
-        Iterable<HospitalService> services = serviceService.getAll();
+    @PostMapping("/search")
+    public ResponseEntity<Object> getHospitalServices(@RequestBody SearchRequest request) {
+        Page<HospitalService> page = serviceService.search(request);
+        Page<ServiceDTO> services = page.map(
+                s -> {
+                    ServiceDTO serviceDTO = ServiceDTO.from(s);
+                    return serviceDTO;
+                }
+        );
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(services)
+                new ApiResponse<>(services.getContent(), services)
         );
     }
 

@@ -276,7 +276,10 @@
                         <div
                           class="d-flex flex-row align-center justify-space-between"
                         >
-                          <p style="color: #537da5" class="ma-0">
+                          <p
+                            class="font-weight-bold text-body-2"
+                            style="color: #537da5"
+                          >
                             {{ service.price }} đ
                           </p>
 
@@ -422,10 +425,12 @@
                     class="d-flex flex-row mt-4 align-center justify-space-between"
                   >
                     <div class="d-flex flex-row align-center">
-                      <p>Giá khám:</p>
+                      <p style="font-size: 90%">
+                        Giá khám:
+                      </p>
                       <p
-                        class="ml-3 font-weight-bold"
-                        style="color: #537da5; font-size: 20px"
+                        class="font-weight-bold text-body-2 ml-3"
+                        style="color: #537da5"
                       >
                         {{ doctor.price }} đ
                       </p>
