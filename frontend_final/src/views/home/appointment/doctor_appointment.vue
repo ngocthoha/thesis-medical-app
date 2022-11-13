@@ -72,7 +72,7 @@
           <v-col v-for="n in 8" :key="n" md="6">
             <!-- in -->
             <v-card
-              class="d-flex flex-column justify-center align-center"
+              class="d-flex flex-column justify-center align-center pa-3"
               width="596"
               height="216"
             >

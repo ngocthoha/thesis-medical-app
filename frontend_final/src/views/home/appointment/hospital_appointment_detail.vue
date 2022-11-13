@@ -343,7 +343,7 @@
             <v-col v-for="doctor in doctor_list" :key="doctor.id" md="6">
               <!-- in -->
               <v-card
-                class="d-flex flex-column justify-center align-center"
+                class="d-flex flex-column justify-center align-center pa-3"
                 width="596"
                 height="216"
               >
