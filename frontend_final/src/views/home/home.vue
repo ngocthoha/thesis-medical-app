@@ -668,8 +668,8 @@
                 >
                   Blouse Care - Nền tảng đặt lịch khám online hàng đầu với các
                   bệnh viện, phòng khám uy tín trên cả nước: Hà Nội, Hồ Chí
-                  Minh, Đà Nẵng, Cần Thơ,… chọn dịch vụ Khám sản phụ khoa, khám
-                  tiêu hóa, khám cơ xương khớp, khám sức khỏe tổng quát, Khám
+                  Minh, Đà Nẵng, Cần Thơ,… chọn dịch vụ khám sản phụ khoa, khám
+                  tiêu hóa, khám cơ xương khớp, khám sức khỏe tổng quát, khám
                   nhi.
                 </p>
               </v-card>
