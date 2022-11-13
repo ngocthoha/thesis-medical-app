@@ -183,7 +183,7 @@
             <v-pagination
               color="#537DA5"
               v-model="page"
-              :length="15"
+              :length="totalPages"
               :total-visible="7"
             ></v-pagination>
           </div>
@@ -198,10 +198,20 @@ export default {
   setup() {},
   data() {
     return {
-      page: 2
+      page: 1,
+      listDoctor: [],
+      totalPages: 0,
+      params: {
+        filters: [],
+        sorts: [],
+        page: 0,
+        size: 8
+      }
     };
   },
-
+  async created() {
+    await this.getListDoctor;
+  },
   methods: {
     moveToInfo() {
       this.$router.push({ name: "Thông tin đặt lịch bác sĩ" }).catch(error => {
@@ -212,6 +222,14 @@ export default {
           throw error;
         }
       });
+    },
+    async getListDoctor() {
+      const url = process.env.VUE_APP_ROOT_API;
+      let params = this._.cloneDeep(this.params);
+      params.page = this.page - 1;
+      const res = await this.axios.post(`${url}/api/doctors/search`, params);
+      this.listDoctor = res.data.results;
+      this.totalPages = res.data?.meta?.totalPages;
     }
   }
 };

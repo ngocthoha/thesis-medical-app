@@ -233,7 +233,8 @@ export default {
     },
 
     async get_hospital_list() {
-      const params = this._.cloneDeep(this.params);
+      let params = this._.cloneDeep(this.params);
+      params.page = this.page - 1;
       let res = await this.$store.dispatch(
         "hospital/read_all_hospital",
         params

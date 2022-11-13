@@ -24,7 +24,7 @@
                 class="font-weight-bold ma-0 d-flex justify-lg-start justify-center"
                 :style="{ color: '#537DA5', fontSize: section1_title + 'px' }"
               >
-                BLOUSE CARE | Ứng dụng
+                Blouse Care | Ứng dụng
               </p>
               <p
                 class="font-weight-bold d-flex justify-lg-start justify-center"
@@ -46,7 +46,7 @@
                 >
                   Người tiêu dùng thông thái, hãy khám bệnh thông minh. Bạn là
                   người tiêu dùng thông thái, bạn yêu gia đình hơn chính bản
-                  thân mình. Hãy cùng BLOUSE CARE chăm sóc sức khỏe cho bản thân
+                  thân mình. Hãy cùng Blouse Care chăm sóc sức khỏe cho bản thân
                   và gia đình để mỗi ngày bên nhau là một ngày ý nghĩa.
                 </p></v-card
               >
@@ -572,7 +572,7 @@
             class="d-flex justify-center font-weight-bold"
             style="font-size: 40px"
           >
-            cùng BLOUSE CARE
+            cùng Blouse Care
           </p>
           <!-- <p class="d-flex justify-center text-body-1  font-weight-medium">
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
@@ -666,9 +666,11 @@
                   class="d-flex justify-center font-weight-normal text-body-1 text-center"
                   style="color: #667085"
                 >
-                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-                  amet sint. Velit officia consequat duis enim velit mollit.
-                  Exercitation veniam consequat sunt nostrud amet.
+                  Blouse Care - Nền tảng đặt lịch khám online hàng đầu với các
+                  bệnh viện, phòng khám uy tín trên cả nước: Hà Nội, Hồ Chí
+                  Minh, Đà Nẵng, Cần Thơ,… chọn dịch vụ Khám sản phụ khoa, khám
+                  tiêu hóa, khám cơ xương khớp, khám sức khỏe tổng quát, Khám
+                  nhi.
                 </p>
               </v-card>
             </div>
