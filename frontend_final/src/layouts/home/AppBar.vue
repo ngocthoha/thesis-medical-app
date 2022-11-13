@@ -516,15 +516,223 @@
 
       <!-- app bar nav icon -->
       <v-spacer class="hidden-md-and-up"></v-spacer>
-      <v-menu bottom left offset-y>
-        <template v-slot:activator="{ on, attrs }">
+      <v-menu
+        bottom
+        left
+        v-model="nav_menu_icon_show"
+        :close-on-click="false"
+        :close-on-content-click="false"
+      >
+        <template v-slot:activator="{}">
           <v-app-bar-nav-icon
-            v-bind="attrs"
-            v-on="on"
+            @click="nav_menu_icon_show = true"
             class="hidden-md-and-up"
           />
         </template>
-        <v-card width="500" height="500" class="hidden-md-and-up"></v-card>
+        <v-row class="hidden-md-and-up overflow-hidden ma-0 pa-0">
+          <v-card
+            width="500"
+            height="100%"
+            class="hidden-md-and-up d-flex flex-column  overflow-hidden"
+          >
+            <v-card
+              height="72"
+              class="d-flex flex-row align-center pa-2"
+              elevation="0"
+            >
+              <v-avatar class="mr-2">
+                <v-img src="@/assets/img/home/appbar/logo.png"></v-img>
+              </v-avatar>
+              <v-card
+                class="font-weight-medium text-body-1 mr-lg-12"
+                elevation="0"
+              >
+                Blouse Care
+              </v-card>
+              <v-spacer></v-spacer>
+              <v-icon class="mr-1" @click="nav_menu_icon_show = false"
+                >mdi-close</v-icon
+              >
+            </v-card>
+            <v-divider style="border-color: #f2f4f7 !important"></v-divider>
+            <v-card class="pa-2" elevation="0" v-if="is_login">
+              <!-- dropdown user menu  -->
+              <v-card
+                rounded="circle"
+                width="40px"
+                height="40px"
+                color="#FCFCFD"
+                class="d-flex justify-center align-center"
+                elevation="0"
+              >
+                <v-menu
+                  offset-y
+                  right
+                  content-class="elevation-1 overflow-hidden"
+                  style="overflow: hidden !important"
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      class="btn-not-hover"
+                      :ripple="false"
+                      v-bind="attrs"
+                      v-on="on"
+                    >
+                      <v-avatar size="40">
+                        <img src="@/assets/img/home/appbar/avatar.png" />
+                      </v-avatar>
+                    </v-btn>
+                  </template>
+                  <v-card class="mx-auto hidden-md-and-up" width="240px" tile>
+                    <v-list>
+                      <v-list-item
+                        v-for="(item, i) in function_menu"
+                        :key="i"
+                        @click="onMenuClick(item)"
+                      >
+                        <div class="d-flex flex-row">
+                          <v-list-item-icon class="mr-3">
+                            <v-img
+                              :src="item.icon"
+                              height="20px"
+                              width="20px"
+                              contain
+                              content-class
+                              class="d-flex align-end justify-start"
+                            ></v-img>
+                          </v-list-item-icon>
+                          <v-list-item-content>
+                            <p
+                              class="d-flex align-end pa-0 ma-0 text-body-2"
+                              :style="{ color: item.color }"
+                            >
+                              {{ item.content }}
+                            </p>
+                          </v-list-item-content>
+                        </div>
+                      </v-list-item>
+                    </v-list>
+                  </v-card>
+                </v-menu>
+              </v-card>
+            </v-card>
+            <v-divider
+              style="border-color: #f2f4f7 !important"
+              v-if="is_login"
+            ></v-divider>
+
+            <!-- operation list -->
+            <v-list>
+              <v-list-item @click="onHomeClick" color="#667085">
+                <v-list-item-title
+                  ><p
+                    class="font-weight-medium text-body-1 ma-0"
+                    style="color:#667085"
+                  >
+                    Trang chủ
+                  </p>
+                </v-list-item-title>
+              </v-list-item>
+
+              <v-list-group color="#667085">
+                <template v-slot:activator>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      ><p
+                        class="font-weight-medium text-body-1 ma-0"
+                        style="color:#667085"
+                      >
+                        Đặt lịch
+                      </p></v-list-item-title
+                    >
+                  </v-list-item-content>
+                </template>
+                <v-list-item
+                  v-for="(item, i) in appointment_list"
+                  :key="i"
+                  link
+                >
+                  <v-list-item-content
+                    style="height: 92px; width: 296px"
+                    @click="onAppointmentServiceClick(item)"
+                  >
+                    <v-col cols="12" class="pa-0">
+                      <v-row class="ma-0"
+                        ><v-col cols="2" class="pb-0 pt-4"
+                          ><v-img
+                            :src="item.icon"
+                            height="24"
+                            width="24"
+                          ></v-img></v-col
+                        ><v-col cols="10" class="pl-0"
+                          ><p class="font-weight-medium text-body-1 ma-0">
+                            {{ item.title }}
+                          </p>
+                          <p class="text-body-2" style="color: #667085">
+                            {{ item.content }}
+                          </p></v-col
+                        ></v-row
+                      ></v-col
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list-group>
+              <v-list-item>
+                <v-list-item-title
+                  ><p
+                    class="font-weight-medium text-body-1 ma-0"
+                    style="color:#667085"
+                  >
+                    Chuyên khoa
+                  </p></v-list-item-title
+                >
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title>
+                  <p
+                    class="font-weight-medium text-body-1 ma-0"
+                    style="color:#667085"
+                  >
+                    Cộng đồng
+                  </p></v-list-item-title
+                >
+              </v-list-item>
+              <v-list-item>
+                <v-list-item-title
+                  ><p
+                    class="font-weight-medium text-body-1 ma-0"
+                    style="color:#667085"
+                  >
+                    Cẩm nang
+                  </p></v-list-item-title
+                >
+              </v-list-item>
+              <v-list-item>
+                <v-btn
+                  elevation="0"
+                  width="100%"
+                  color="#537DA5"
+                  class="white--text btn-not-transform"
+                  @click="login_dialog = true"
+                  ><p class="ma-0 text-body-1">Đăng nhập</p></v-btn
+                >
+              </v-list-item>
+              <v-list-item>
+                <v-btn
+                  elevation="0"
+                  width="100%"
+                  color="#D4DFE9"
+                  class="btn-not-transform"
+                  @click="sign_up_dialog = true"
+                  ><p class="ma-0 text-body-1" style="color:#537DA5">
+                    Đăng ký
+                  </p></v-btn
+                >
+              </v-list-item>
+            </v-list>
+          </v-card>
+        </v-row>
       </v-menu>
 
       <!-- OTP -->
@@ -593,6 +801,7 @@ export default {
     sign_up_dialog: false,
     opt_dialog: false,
     is_login: false,
+    nav_menu_icon_show: false,
     appointment_list: [
       {
         icon: require("@/assets/img/home/appbar/doctor.svg"),
