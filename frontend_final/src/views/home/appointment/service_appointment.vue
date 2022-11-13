@@ -7,15 +7,11 @@
       color="#EEF2F6"
     >
       <p class="font-weight-bold mt-12" style="color: #537da5; font-size: 40px">
-        Tìm kiếm dịch vụ
+        Đặt khám theo dịch vụ
       </p>
-      <v-card width="640px" color="#EEF2F6" elevation="0">
-        <p>
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-          sint. Velit officia consequat duis enim velit mollit. Exercitation
-          veniam consequat sunt nostrud amet.
-        </p>
-      </v-card>
+      <p>
+        Lựa chọn dịch vụ theo nhu cầu của bạn
+      </p>
       <v-card
         elevation="0"
         class="d-flex align-center mt-8 mb-12"
@@ -28,7 +24,7 @@
             class="ma-0 font-weight-medium text-body-1 ml-3"
             style="color: #667085"
           >
-            Search Title
+            Tìm tên dịch vụ, mô tả dịch vụ
           </p></v-card
         >
         <v-spacer />
@@ -141,24 +137,22 @@ export default {
   setup() {},
   data() {
     return {
-      page: 2,
+      page: 2
     };
   },
 
   methods: {
     moveToInfo() {
-      this.$router
-        .push({ name: "Thông tin đặt lịch dịch vụ" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
-    },
-  },
+      this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
+    }
+  }
 };
 </script>
 <style scoped>

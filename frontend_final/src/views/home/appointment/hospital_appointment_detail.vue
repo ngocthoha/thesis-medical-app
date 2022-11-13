@@ -237,7 +237,7 @@
                 Dịch vụ
               </p>
               <p class="font-weight-bold" style="font-size: 40px">
-                Tất cả các dịch vụ
+                Đặt khám theo dịch vụ
               </p>
             </v-card>
             <!-- list service -->

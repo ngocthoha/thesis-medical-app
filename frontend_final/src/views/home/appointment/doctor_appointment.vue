@@ -7,15 +7,12 @@
       color="#EEF2F6"
     >
       <p class="font-weight-bold mt-12" style="color: #537da5; font-size: 40px">
-        Tìm kiếm bác sĩ theo tên
+        Đặt khám theo bác sĩ
       </p>
-      <v-card width="640px" color="#EEF2F6" elevation="0">
-        <p>
-          Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-          sint. Velit officia consequat duis enim velit mollit. Exercitation
-          veniam consequat sunt nostrud amet.
-        </p>
-      </v-card>
+      <p>
+        Để được tiếp đón ưu tiên viện hoặc được tư vấn với bác sĩ giỏi ngay tại
+        nhà
+      </p>
       <v-card
         elevation="0"
         class="d-flex align-center mt-8 mb-12"
@@ -28,7 +25,7 @@
             class="ma-0 font-weight-medium text-body-1 ml-3"
             style="color: #667085"
           >
-            Search Title
+            Tìm tên bác sĩ
           </p></v-card
         >
         <v-spacer />
@@ -201,24 +198,22 @@ export default {
   setup() {},
   data() {
     return {
-      page: 2,
+      page: 2
     };
   },
 
   methods: {
     moveToInfo() {
-      this.$router
-        .push({ name: "Thông tin đặt lịch bác sĩ" })
-        .catch((error) => {
-          if (error == null) {
-            return;
-          }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
-          }
-        });
-    },
-  },
+      this.$router.push({ name: "Thông tin đặt lịch bác sĩ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
+    }
+  }
 };
 </script>
 <style scoped>

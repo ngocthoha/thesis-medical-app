@@ -7,7 +7,11 @@
       color="#EEF2F6"
     >
       <p class="font-weight-bold mt-12" style="color: #537da5; font-size: 40px">
-        Tìm kiếm bệnh viện theo tên
+        Đặt khám tại bệnh viện
+      </p>
+      <p>
+        Để được tiếp đón ưu tiên, không chờ đợi tại các bệnh viện, phòng khám
+        hàng đầu
       </p>
       <v-card width="640px" color="#EEF2F6" elevation="0">
         <!-- <p>
@@ -28,7 +32,7 @@
             class="ma-0 font-weight-medium text-body-1 ml-3"
             style="color: #667085"
           >
-            Search Title
+            Tìm tên bệnh viện, phòng khám
           </p></v-card
         >
         <v-spacer />
