@@ -121,7 +121,7 @@
                       color="#EEF2F6"
                       elevation="0"
                     >
-                      <v-icon color="#537DA5" class="align-self-start"
+                      <v-icon color="#537DA5" class="align-self-start mr-2"
                         >mdi-calendar-month-outline</v-icon
                       >
                       <p style="color: #537da5">
@@ -135,7 +135,7 @@
                       color="#F9FAFB"
                       elevation="0"
                     >
-                      <v-icon color="#FFC107" class="align-self-start"
+                      <v-icon color="#FFC107" class="align-self-start mr-2"
                         >mdi-star</v-icon
                       >
                       <p style="color: #537da5">{{ hospital.favorite }}</p>
