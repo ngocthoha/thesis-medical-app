@@ -19,14 +19,14 @@
         height="76px"
         outlined
       >
-        <v-card elevation="0"
-          ><p
-            class="ma-0 font-weight-medium text-body-1 ml-3"
-            style="color: #667085"
-          >
-            Tìm tên dịch vụ, mô tả dịch vụ
-          </p></v-card
-        >
+        <v-text-field
+          v-model="search"
+          full-width
+          solo
+          flat
+          placeholder="Tìm kiếm tên dịch vụ, mô tả dịch vụ"
+          hide-details=""
+        ></v-text-field>
         <v-spacer />
         <v-divider inset vertical></v-divider>
         <v-menu>
@@ -53,6 +53,46 @@
           <v-img class="ml-3" src="@/assets/img/home/search_icon.svg"></v-img
         ></v-btn>
       </v-card>
+      <v-row style="width: 720px;">
+        <v-col cols="4">
+          <v-select
+            v-model="levelSelect"
+            :items="levels"
+            prepend-inner-icon="mdi-school"
+            label="Học Hàm/Học Vị"
+            clearable
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+        <v-col cols="4">
+          <v-select
+            v-model="specialtySelect"
+            :items="specialties"
+            label="Chuyên Khoa"
+            prepend-inner-icon="mdi-stethoscope"
+            item-text="text"
+            item-value="value"
+            clearable
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+
+        <v-col cols="4">
+          <v-select
+            v-model="genderSelect"
+            :items="genders"
+            label="Giới Tính"
+            prepend-inner-icon="mdi-gender-male"
+            item-text="text"
+            item-value="value"
+            clearable
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+      </v-row>
     </v-card>
     <v-card
       width="100%"

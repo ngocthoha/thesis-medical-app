@@ -1,6 +1,7 @@
 package com.thesis.medicalapp.search;
 
 import com.thesis.medicalapp.exception.ApiRequestException;
+import com.thesis.medicalapp.models.Gender;
 import com.thesis.medicalapp.models.SpecialtyType;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,7 +58,7 @@ public enum FieldType {
         public Object parse(String value) { return value; }
     },
 
-    SPECIALTYTYPE {
+    SPECIALTY {
         public Object parse(String value) {
             for (SpecialtyType type : SpecialtyType.values()) {
                 if (value.equals(type.toString())) {
@@ -65,6 +66,17 @@ public enum FieldType {
                 }
             }
             throw new ApiRequestException("Không tìm thấy chuyên khoa!");
+        }
+    },
+
+    GENDER {
+        public Object parse(String value) {
+            for (Gender type : Gender.values()) {
+                if (value.equals(type.toString())) {
+                    return type;
+                }
+            }
+            throw new ApiRequestException("Không tìm thấy giới tính!");
         }
     };
 

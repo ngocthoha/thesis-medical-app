@@ -21,7 +21,7 @@
         outlined
       >
         <v-text-field
-          v-model="params.filters[0].value"
+          v-model="search"
           full-width
           solo
           flat
@@ -275,19 +275,13 @@ export default {
       listDoctor: [],
       totalPages: 0,
       params: {
-        filters: [
-          {
-            key: "name",
-            operator: "LIKE",
-            field_type: "STRING",
-            value: ""
-          }
-        ],
+        filters: [],
         sorts: [],
         page: 0,
         size: 8
       },
       loading: false,
+      search: "",
       specialties: [],
       specialtySelect: null,
       levelSelect: null,
@@ -328,11 +322,25 @@ export default {
         this.getListDoctor();
       }
     },
-    params: {
+    search: {
       handler: _.debounce(function() {
         this.getListDoctor();
-      }, 400),
-      deep: true
+      }, 400)
+    },
+    specialtySelect: {
+      handler: _.debounce(function() {
+        this.getListDoctor();
+      }, 400)
+    },
+    genderSelect: {
+      handler: _.debounce(function() {
+        this.getListDoctor();
+      }, 400)
+    },
+    levelSelect: {
+      handler: _.debounce(function() {
+        this.getListDoctor();
+      }, 400)
     }
   },
   methods: {
@@ -350,6 +358,39 @@ export default {
       this.loading = true;
       const cancelToken = this.axios.CancelToken.source().token;
       let params = this._.cloneDeep(this.params);
+      if (this.search) {
+        params.filters.push({
+          key: "name",
+          operator: "LIKE",
+          field_type: "STRING",
+          value: this.search
+        });
+      }
+      if (this.specialtySelect) {
+        params.filters.push({
+          key: "specialty",
+          operator: "EQUAL",
+          field_type: "SPECIALTY",
+          value: this.specialtySelect
+        });
+      }
+
+      if (this.genderSelect) {
+        params.filters.push({
+          key: "gender",
+          operator: "EQUAL",
+          field_type: "GENDER",
+          value: this.genderSelect
+        });
+      }
+      if (this.levelSelect) {
+        params.filters.push({
+          key: "level",
+          operator: "EQUAL",
+          field_type: "STRING",
+          value: this.levelSelect
+        });
+      }
       params.page = this.page - 1;
       const res = await this.axios.post(`${url}/api/doctors/search`, params, {
         cancelToken
