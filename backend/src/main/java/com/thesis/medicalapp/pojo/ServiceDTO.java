@@ -20,7 +20,7 @@ public class ServiceDTO {
     private String price;
     private String specialty;
     private HospitalDTO hospital;
-    private String serviceImageUrl;
+    private String imageUrl;
     private Integer numOfServicePerHour;
     private ScheduleType type;
 
@@ -33,7 +33,7 @@ public class ServiceDTO {
                 .price(hospitalService.getPrice())
                 .specialty(hospitalService.getSpecialty().getName())
                 .hospital(HospitalDTO.from(hospitalService.getHospital()))
-                .serviceImageUrl(hospitalService.getImageUrl())
+                .imageUrl(hospitalService.getImageUrl())
                 .numOfServicePerHour(hospitalService.getNumOfServicePerHour())
                 .type(hospitalService.getType())
                 .build();

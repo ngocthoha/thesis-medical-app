@@ -495,7 +495,7 @@
           <v-card>
             <v-card class="d-flex justify-center" color="#FCFCFD" elevation="0">
               <v-card
-                class="d-flex justify-space-between"
+                class="d-flex justify-space-between mt-6"
                 width="65%"
                 color="#FCFCFD"
                 elevation="0"
@@ -508,7 +508,10 @@
                   elevation="0"
                   color="#FCFCFD"
                   :style="{ color: '#667085' }"
-                  >Xem tất cả</v-btn
+                  >Xem tất cả
+                  <v-icon class="ml-2" small color="#537da5"
+                    >mdi-arrow-right</v-icon
+                  ></v-btn
                 >
               </v-card>
             </v-card>
@@ -574,10 +577,6 @@
           >
             cùng Blouse Care
           </p>
-          <!-- <p class="d-flex justify-center text-body-1  font-weight-medium">
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint.
-          </p> -->
         </v-card>
       </v-layout>
 
@@ -597,7 +596,7 @@
             width="280px"
             elevation="0"
           >
-            <div class="d-flex justify-center">
+            <div class="d-flex justify-center mb-3">
               <v-card
                 width="56px"
                 height="56px"
@@ -668,8 +667,8 @@
                 >
                   Blouse Care - Nền tảng đặt lịch khám online hàng đầu với các
                   bệnh viện, phòng khám uy tín trên cả nước: Hà Nội, Hồ Chí
-                  Minh, Đà Nẵng, Cần Thơ,… chọn dịch vụ Khám sản phụ khoa, khám
-                  tiêu hóa, khám cơ xương khớp, khám sức khỏe tổng quát, Khám
+                  Minh, Đà Nẵng, Cần Thơ,… chọn dịch vụ khám sản phụ khoa, khám
+                  tiêu hóa, khám cơ xương khớp, khám sức khỏe tổng quát, khám
                   nhi.
                 </p>
               </v-card>
@@ -814,26 +813,26 @@ export default {
     ],
     service_list: [
       {
-        img: require("@/assets/img/home/service1.svg"),
+        img: require("@/assets/img/home/service5.jpeg"),
         title: "Gói Khám Gan nhiễm mỡ - Tổ hợp y tế MEDIPLUS",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
         price: "2.480.000 đ"
       },
       {
-        img: require("@/assets/img/home/service2.svg"),
+        img: require("@/assets/img/home/service6.png"),
         title:
           "Gói khám tổng quát hệ tiêu hoá, gan mật tiêu chuẩn - Tổ hợp y tế MEDIPLUS",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
         price: "2.220.000 đ"
       },
       {
-        img: require("@/assets/img/home/service3.svg"),
+        img: require("@/assets/img/home/service7.jpeg"),
         title: "Gói Xét nghiệm tổng quát cho Nam - TTXN LABHOUSE",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",
         price: "1.335.000 đ"
       },
       {
-        img: require("@/assets/img/home/service4.svg"),
+        img: require("@/assets/img/home/service8.png"),
         title:
           "Test nhanh Cúm A,B cho người Nước ngoài tại Bệnh viện Đa khoa Bảo Sơn",
         place: "Tổ Hợp Phòng Khám MEDIPLUS",

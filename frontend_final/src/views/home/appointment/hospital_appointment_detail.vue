@@ -317,20 +317,20 @@
         </v-card>
       </div>
     </v-card>
-    <v-card color="#EEF2F6" width="100%">
+    <v-card color="#EEF2F6" width="100%" class="pa-12">
       <!-- doctor of hospital -->
       <v-card
         width="100%"
         min-height="500px"
         color="#EEF2F6"
-        class="py-12 px-16"
+        class="py-12 px-16 d-flex justify-center"
         elevation="0"
       >
         <v-card
-          class="mx-4 pa-8 d-flex flex-column align-center"
+          class="mx-4 pa-8 d-flex flex-wrap justify-center"
+          max-width="1280"
           elevation="0"
           color="#EEF2F6"
-          width="100%"
         >
           <v-card
             height="180"
@@ -402,7 +402,7 @@
                           color="#EEF2F6"
                           elevation="0"
                         >
-                          <v-icon color="#537DA5" class="align-self-start mr-3"
+                          <v-icon color="#537DA5" class="align-self-start mr-2"
                             >mdi-calendar-month-outline</v-icon
                           >
                           <p style="color: #537da5">
@@ -416,7 +416,7 @@
                           color="#F9FAFB"
                           elevation="0"
                         >
-                          <v-icon color="#FFC107" class="align-self-start"
+                          <v-icon color="#FFC107" class="align-self-start mr-2"
                             >mdi-star</v-icon
                           >
                           <p style="color: #537da5">{{ doctor.favorite }}</p>

@@ -15,19 +15,19 @@
       </p>
       <v-card
         elevation="0"
-        class="d-flex align-center mt-8 mb-12"
+        class="d-flex align-center mt-8 mb-6"
         width="720px"
         height="76px"
         outlined
       >
-        <v-card elevation="0"
-          ><p
-            class="ma-0 font-weight-medium text-body-1 ml-3"
-            style="color: #667085"
-          >
-            Tìm tên bác sĩ
-          </p></v-card
-        >
+        <v-text-field
+          v-model="params.filters[0].value"
+          full-width
+          solo
+          flat
+          placeholder="Tìm kiếm tên bác sĩ"
+          hide-details=""
+        ></v-text-field>
         <v-spacer />
         <v-divider inset vertical></v-divider>
         <v-menu>
@@ -54,7 +54,52 @@
           <v-img class="ml-3" src="@/assets/img/home/search_icon.svg"></v-img
         ></v-btn>
       </v-card>
+      <v-row style="width: 720px;">
+        <v-col cols="4">
+          <v-select
+            v-model="levelSelect"
+            :items="levels"
+            prepend-inner-icon="mdi-school"
+            label="Học Hàm/Học Vị"
+            clearable
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+        <v-col cols="4">
+          <v-select
+            v-model="specialtySelect"
+            :items="specialties"
+            label="Chuyên Khoa"
+            prepend-inner-icon="mdi-stethoscope"
+            item-text="text"
+            item-value="value"
+            clearable
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+
+        <v-col cols="4">
+          <v-select
+            v-model="genderSelect"
+            :items="genders"
+            label="Giới Tính"
+            prepend-inner-icon="mdi-gender-male"
+            item-text="text"
+            item-value="value"
+            clearable
+            dense
+            outlined
+          ></v-select>
+        </v-col>
+      </v-row>
     </v-card>
+    <v-progress-linear
+      :indeterminate="loading"
+      :active="loading"
+    ></v-progress-linear>
+
     <v-card
       width="100%"
       min-height="500px"
@@ -67,9 +112,34 @@
         elevation="0"
         color="#FCFCFD"
       >
+        <div class="d-flex flex-column" v-if="!listDoctor.length">
+          <v-card
+            width="100%"
+            class="d-flex justify-center"
+            elevation="0"
+            style="background: none"
+          >
+            <v-img
+              class="d-flex"
+              src="@/assets/img/user/profile/lookingNotFound.png"
+              width="183px"
+              height="186px"
+              contain
+            ></v-img>
+          </v-card>
+          <p
+            class="font-weight-bold ml-8 d-flex justify-center"
+            style="font-size: 20px"
+          >
+            Không có kết quả tìm kiếm
+          </p>
+          <p class="ml-8 d-flex justify-center" style="color: #667085">
+            Xin lỗi chúng tôi không tìm thấy kết quả phù hợp với bạn.
+          </p>
+        </div>
         <!-- list doctor -->
         <v-row justify="center">
-          <v-col v-for="n in 8" :key="n" md="6">
+          <v-col v-for="(doctor, i) in listDoctor" :key="i" md="6">
             <!-- in -->
             <v-card
               class="d-flex flex-column justify-center align-center pa-3"
@@ -95,20 +165,20 @@
                     </v-avatar>
                     <v-card class="d-flex flex-column ml-3" elevation="0">
                       <p class="text-body-2 mb-2 font-weight-bold">
-                        Đỗ Hồng Việt
+                        {{ doctor.level }}. {{ doctor.name }}
                       </p>
                       <p class="text-body-2 mb-3">
-                        Bệnh viện hữu nghị Việt Đức
+                        {{ doctor.hospital.name }}
                       </p>
-                      <v-card class="text-body-2" color="#D0D5DD" outlined>
-                        <v-card
-                          elevation="0"
-                          color="#F9FAFB"
-                          class="d-flex justify-center"
-                        >
-                          Chuyên khoa TT Nam học</v-card
-                        >
-                      </v-card>
+                      <v-card
+                        class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+                        elevation="0"
+                        color="#F9FAFB"
+                        dark
+                        style="border: 1px solid #d0d5dd; color: #667085; width: fit-content"
+                      >
+                        {{ doctor.specialty }}</v-card
+                      >
                     </v-card>
                   </div>
                   <div class="d-flex flex-row">
@@ -119,10 +189,12 @@
                       color="#EEF2F6"
                       elevation="0"
                     >
-                      <v-icon color="#537DA5" class="align-self-start"
+                      <v-icon color="#537DA5" class="align-self-start mr-2"
                         >mdi-calendar-month-outline</v-icon
                       >
-                      <p style="color: #537da5">146</p>
+                      <p style="color: #537da5">
+                        {{ doctor.registrationNumber }}
+                      </p>
                     </v-card>
                     <v-card
                       class="d-flex flex-row ml-1"
@@ -131,10 +203,10 @@
                       color="#F9FAFB"
                       elevation="0"
                     >
-                      <v-icon color="#FFC107" class="align-self-start"
+                      <v-icon color="#FFC107" class="align-self-start mr-2"
                         >mdi-star</v-icon
                       >
-                      <p style="color: #537da5">146</p>
+                      <p style="color: #537da5">{{ doctor.favorite }}</p>
                     </v-card>
                   </div>
                 </v-card>
@@ -149,12 +221,12 @@
                   class="d-flex flex-row mt-4 align-center justify-space-between"
                 >
                   <div class="d-flex flex-row align-center">
-                    <p>Giá khám:</p>
+                    <p style="font-size: 90%">Giá khám:</p>
                     <p
-                      class="ml-3 font-weight-bold"
-                      style="color: #537da5; font-size: 20px"
+                      class="font-weight-bold text-body-2 ml-3"
+                      style="color: #537da5"
                     >
-                      100000VND
+                      {{ doctor.price }} đ
                     </p>
                   </div>
                   <v-btn
@@ -163,7 +235,7 @@
                     class="white--text btn text-body-2"
                     elevation="0"
                     color="#537DA5"
-                    @click="moveToInfo"
+                    @click="moveToInfo()"
                   >
                     Đặt khám
                   </v-btn>
@@ -172,15 +244,16 @@
             </v-card></v-col
           >
         </v-row>
-
         <!-- pagination -->
         <v-card
+          style="background: none"
           width="100%"
           elevation="0"
-          class="d-flex justify-center justify-lg-end mt-10"
+          class="d-flex justify-center mt-10"
         >
           <div class="text-center">
             <v-pagination
+              v-if="listDoctor.length"
               color="#537DA5"
               v-model="page"
               :length="totalPages"
@@ -194,23 +267,73 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
-  setup() {},
   data() {
     return {
       page: 1,
       listDoctor: [],
       totalPages: 0,
       params: {
-        filters: [],
+        filters: [
+          {
+            key: "name",
+            operator: "LIKE",
+            field_type: "STRING",
+            value: ""
+          }
+        ],
         sorts: [],
         page: 0,
         size: 8
-      }
+      },
+      loading: false,
+      specialties: [],
+      specialtySelect: null,
+      levelSelect: null,
+      genderSelect: null,
+      genders: [
+        {
+          value: "MALE",
+          text: "Nam"
+        },
+        {
+          value: "FEMALE",
+          text: "Nữ"
+        }
+      ],
+      levels: [
+        "BSCKI",
+        "TS.BS",
+        "PGS.TS.BS",
+        "BSCKII",
+        "CN",
+        "GS.TS.BS",
+        "TS",
+        "ThS",
+        "ThS.BS",
+        "BS",
+        "CKI"
+      ]
     };
   },
   async created() {
-    await this.getListDoctor;
+    await this.getListDoctor();
+    await this.getSpecialties();
+    this.loading = false;
+  },
+  watch: {
+    page: {
+      handler() {
+        this.getListDoctor();
+      }
+    },
+    params: {
+      handler: _.debounce(function() {
+        this.getListDoctor();
+      }, 400),
+      deep: true
+    }
   },
   methods: {
     moveToInfo() {
@@ -224,12 +347,21 @@ export default {
       });
     },
     async getListDoctor() {
-      const url = process.env.VUE_APP_ROOT_API;
+      this.loading = true;
+      const cancelToken = this.axios.CancelToken.source().token;
       let params = this._.cloneDeep(this.params);
       params.page = this.page - 1;
-      const res = await this.axios.post(`${url}/api/doctors/search`, params);
+      const res = await this.axios.post(`${url}/api/doctors/search`, params, {
+        cancelToken
+      });
+      this.loading = false;
       this.listDoctor = res.data.results;
       this.totalPages = res.data?.meta?.totalPages;
+    },
+    async getSpecialties() {
+      this.axios.get(`${url}/api/specialties`).then(res => {
+        this.specialties = res.data.results;
+      });
     }
   }
 };

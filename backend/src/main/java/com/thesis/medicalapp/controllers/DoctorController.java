@@ -124,8 +124,14 @@ public class DoctorController {
     @PostMapping("/search")
     public ResponseEntity<Object> search(@RequestBody SearchRequest request) {
         Page<Doctor> page = doctorService.search(request);
+        Page<DoctorDTO> doctors = page.map(
+                d -> {
+                    DoctorDTO doctorDTO = DoctorDTO.from(d);
+                    return doctorDTO;
+                }
+        );
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(page.getContent(), page)
+                new ApiResponse<>(doctors.getContent(), doctors)
         );
     }
 

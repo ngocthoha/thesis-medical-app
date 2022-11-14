@@ -81,7 +81,7 @@
         </v-card>
         <!-- list service -->
         <v-row justify="center">
-          <v-col v-for="n in 10" :key="n" md="5">
+          <v-col v-for="(service, i) in listService" :key="i" md="5">
             <!-- in -->
             <v-card class="d-flex flex-column pa-6" @click="moveToInfo">
               <v-card elevation="0" class="d-flex flex-row">
@@ -92,20 +92,22 @@
                     class="align-self-start"
                     elevation="0"
                   >
-                    <v-img src="@/assets/img/home/service_avt.png"></v-img>
+                    <v-img :src="getImgOfService(service)"></v-img>
                   </v-card>
                   <v-card class="d-flex flex-column ml-3" elevation="0">
                     <!-- service name -->
                     <p class="text-body-2 mb-2 font-weight-bold">
-                      Khám Cơ - Xương -Khớp và điều trị ngoại trú
+                      {{ service.name }}
                     </p>
 
-                    <p class="text-body-2 mb-3">Bệnh viện đa khoa Việt Đức</p>
+                    <p class="text-body-2 mb-3">{{ service.hospital.name }}</p>
 
                     <div
                       class="d-flex flex-row align-center justify-space-between"
                     >
-                      <p style="color: #537da5" class="ma-0">100.000 VND</p>
+                      <p style="color: #537da5" class="ma-0">
+                        {{ service.price }} đ
+                      </p>
 
                       <v-icon small color="#537da5">mdi-arrow-right</v-icon>
                     </div>
@@ -117,12 +119,17 @@
         </v-row>
 
         <!-- pagination -->
-        <v-card width="100%" elevation="0" class="d-flex justify-center mt-10">
+        <v-card
+          style="background: none"
+          width="100%"
+          elevation="0"
+          class="d-flex justify-center mt-10"
+        >
           <div class="text-center">
             <v-pagination
               color="#537DA5"
               v-model="page"
-              :length="15"
+              :length="totalPages"
               :total-visible="7"
             ></v-pagination>
           </div>
@@ -134,14 +141,38 @@
 
 <script>
 export default {
-  setup() {},
   data() {
     return {
-      page: 2
+      page: 1,
+      listService: [],
+      totalPages: 0,
+      params: {
+        filters: [],
+        sorts: [],
+        page: 0,
+        size: 8
+      }
     };
   },
-
+  async created() {
+    await this.getListService();
+  },
+  watch: {
+    page: {
+      handler() {
+        this.getListService();
+      }
+    }
+  },
   methods: {
+    async getListService() {
+      const url = process.env.VUE_APP_ROOT_API;
+      let params = this._.cloneDeep(this.params);
+      params.page = this.page - 1;
+      const res = await this.axios.post(`${url}/api/services/search`, params);
+      this.listService = res.data.results;
+      this.totalPages = res.data?.meta?.totalPages;
+    },
     moveToInfo() {
       this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {
         if (error == null) {
@@ -151,6 +182,13 @@ export default {
           throw error;
         }
       });
+    },
+    getImgOfService(service) {
+      if (service.imageUrl != null) {
+        return service.imageUrl;
+      } else {
+        return require("@/assets/img/home/service_avt.png");
+      }
     }
   }
 };
