@@ -107,8 +107,8 @@
       class="py-12 px-16 d-flex justify-center"
     >
       <v-card
-        class="mx-4 pa-8 d-flex flex-wrap justify-center"
-        max-width="1280"
+        class="mx-4 pa-8 d-flex flex-column"
+        width="1280"
         elevation="0"
         color="#FCFCFD"
       >
@@ -138,17 +138,16 @@
           </p>
         </div>
         <!-- list doctor -->
-        <v-row justify="center">
-          <v-col v-for="(doctor, i) in listDoctor" :key="i" md="6">
-            <!-- in -->
+        <v-row :justify="listDoctor.length == 1 ? 'center' : ''">
+          <v-col :md="6" v-for="(doctor, i) in listDoctor" :key="i">
             <v-card
               class="d-flex flex-column justify-center align-center pa-3"
               width="596"
-              height="216"
+              min-height="216"
             >
               <v-card
                 width="548"
-                height="84"
+                min-height="84"
                 elevation="0"
                 class="d-flex flex-column"
               >
@@ -212,7 +211,7 @@
                 </v-card>
               </v-card>
               <!-- price and booking -->
-              <v-card class="mt-2" width="548" height="40" elevation="0">
+              <v-card class="mt-2" width="548" min-height="40" elevation="0">
                 <v-divider
                   class="mt-1"
                   style="border-color: #f2f4f7 !important"
@@ -241,8 +240,8 @@
                   </v-btn>
                 </div>
               </v-card>
-            </v-card></v-col
-          >
+            </v-card>
+          </v-col>
         </v-row>
         <!-- pagination -->
         <v-card
