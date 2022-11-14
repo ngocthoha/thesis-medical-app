@@ -72,7 +72,7 @@ public class AppointmentServiceImpl implements AppointmentService {
         }
     }
     @Override
-    public List<Object> getAppointmentsByDateAndDoctor(String date) {
+    public List<AppointmentDTO> getAppointmentsByDateAndDoctor(String date) {
         Doctor doctor = doctorRepository.findDoctorByUsername(Global.user.getUsername());
         Date dateFormat = new Date();
         try {
@@ -87,15 +87,7 @@ public class AppointmentServiceImpl implements AppointmentService {
             AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
             return appointmentDTO;
         }).collect(Collectors.toList());
-
-        List<Object> obs = new ArrayList<>();
-        for (String t : Time.durationTimes) {
-            List<AppointmentDTO> aps = appointmentDTOS.stream().filter(a -> a.getTime().equals(t)).collect(Collectors.toList());
-            if(!aps.isEmpty()) {
-                obs.add(new AppointmentsByDateAndDoctor(t, aps));
-            }
-        }
-        return obs;
+        return appointmentDTOS;
     }
 //    @Override
 //    public Integer max(Date date) {

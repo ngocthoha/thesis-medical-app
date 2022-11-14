@@ -9,7 +9,7 @@ import java.util.List;
 public interface AppointmentService {
     AppointmentDTO saveAppointment(Appointment appointment);
     List<AppointmentDTO> getAppointmentByProfileId(String profileId);
-    List<Object> getAppointmentsByDateAndDoctor(String date);
+    List<AppointmentDTO> getAppointmentsByDateAndDoctor(String date);
     int updateAppointment(Appointment appointment);
     int removeAppointment(String id);
 //    Integer max(Date date);

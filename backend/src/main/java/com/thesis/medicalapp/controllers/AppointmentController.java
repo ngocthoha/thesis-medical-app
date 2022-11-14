@@ -142,7 +142,7 @@ public class AppointmentController {
 
     @GetMapping("/appointments/doctor")
     public ResponseEntity<ApiResponse> getAppointmentsByDateAndDoctor(@RequestParam String date) {
-        List<Object> list = appointmentService.getAppointmentsByDateAndDoctor(date);
+        List<AppointmentDTO> list = appointmentService.getAppointmentsByDateAndDoctor(date);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(list)
         );
