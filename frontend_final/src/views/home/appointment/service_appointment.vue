@@ -101,8 +101,8 @@
       class="py-12 px-16 d-flex justify-center"
     >
       <v-card
-        class="mx-4 pa-8 d-flex flex-wrap justify-center"
-        max-width="1280"
+        class="mx-4 pa-8 d-flex flex-column"
+        width="1000"
         elevation="0"
         color="#FCFCFD"
       >
@@ -120,15 +120,15 @@
           </p>
         </v-card>
         <!-- list service -->
-        <v-row justify="center">
-          <v-col v-for="(service, i) in listService" :key="i" md="5">
-            <!-- in -->
+
+        <v-row :justify="listService.length == 1 ? 'center' : ''">
+          <v-col :md="6" v-for="(service, i) in listService" :key="i">
             <v-card class="d-flex flex-column pa-6" @click="moveToInfo">
               <v-card elevation="0" class="d-flex flex-row">
                 <div class="d-flex flex-row">
                   <v-card
                     width="126"
-                    height="84"
+                    min-height="84"
                     class="align-self-start"
                     elevation="0"
                   >
@@ -154,10 +154,9 @@
                   </v-card>
                 </div>
               </v-card>
-            </v-card></v-col
-          >
+            </v-card>
+          </v-col>
         </v-row>
-
         <!-- pagination -->
         <v-card
           style="background: none"
