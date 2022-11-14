@@ -785,19 +785,14 @@ export default {
       //   })
       // ).then(this.createAppointment());
 
-      // if (response) {
-      //   this.createAppointment();
-      //   this.$router
-      //     .push({ name: "Đặt lịch bác sĩ thành công" })
-      //     .catch(error => {
-      //       if (error == null) {
-      //         return;
-      //       }
-      //       if (error.name != "NavigationDuplicated") {
-      //         throw error;
-      //       }
-      //     });
-      // }
+      this.$router.push({ name: "Đặt lịch bác sĩ thành công" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
     },
 
     addTestFile() {
