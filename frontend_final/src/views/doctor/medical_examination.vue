@@ -62,7 +62,34 @@
         </div>
       </template>
     </v-data-table>
-
+    <v-dialog v-model="exam_confirm_dialog" width="400">
+      <v-card height="150px" class="d-flex flex-column">
+        <div class="d-flex flex-column mt-8 ml-8">
+          <p style="font-size: 24px" class="font-weight-bold">
+            Xác nhận hoàn tất khám
+          </p>
+        </div>
+        <div class="d-flex flex-row justify-space-between ml-8 mr-8">
+          <v-btn
+            class="btn-not-transform font-weight-medium"
+            width="160px"
+            outlined
+            color="#667085"
+            text
+            @click="exam_confirm_dialog = false"
+            >Huỷ bỏ</v-btn
+          >
+          <v-btn
+            class="btn-not-transform white--text font-weight-medium"
+            width="160px"
+            color="#537DA5"
+            elevation="0"
+            @click="create_record"
+            >Hoàn tất</v-btn
+          >
+        </div>
+      </v-card>
+    </v-dialog>
     <v-dialog v-model="exam_dialog" fullscreen>
       <v-card>
         <v-footer
@@ -78,7 +105,7 @@
             class="mr-5"
             elevation="0"
             outlined
-            @click.stop="exam_dialog = false"
+            @click.stop="exam_confirm_dialog = true"
           >
             Lưu
           </v-btn>
@@ -331,6 +358,8 @@
                           spellcheck="false"
                           v-model="test_select"
                           :items="test_type"
+                          item-text="name"
+                          item-value="key"
                           solo
                           dense
                           flat
@@ -379,7 +408,7 @@
                         class="font-weight-medium text-body-2 ma-0"
                         style="color: #667085"
                       >
-                        {{ image.type }}
+                        {{ image.type_name }}
                       </p>
                       <v-card
                         min-width="50%"
@@ -413,6 +442,8 @@
                           spellcheck="false"
                           v-model="image_select"
                           :items="image_analyst_type"
+                          item-text="name"
+                          item-value="key"
                           solo
                           dense
                           flat
@@ -424,7 +455,7 @@
                         ></v-combobox>
                       </v-card>
                     </div>
-                    <!-- add test result  -->
+                    <!-- add image analyst  -->
                     <v-card
                       color="#EEF2F6"
                       class="my-5 pa-2 d-flex flex-row"
@@ -440,26 +471,28 @@
                         hide-details=""
                         flat
                         background-color="#EEF2F6"
+                        v-model="image_file"
                       ></v-file-input>
                       <v-btn
                         class="btn white--text text-body-2"
                         color="#537DA5"
                         elevation="0"
+                        @click="addImageAnalystFile"
                         >Tải lên</v-btn
                       >
                     </v-card>
 
-                    <!-- list add test result -->
+                    <!-- list add image analyst-->
                     <div
                       class="d-flex flex-wrap justify-space-between align-center mb-5"
-                      v-for="(image, index) in test_add_list"
+                      v-for="(image, index) in image_analyst_list"
                       :key="index + 3"
                     >
                       <p
                         class="font-weight-medium text-body-2 ma-0"
                         style="color: #667085"
                       >
-                        {{ image.type }}
+                        {{ image.type_name }}
                       </p>
                       <v-card
                         min-width="50%"
@@ -474,7 +507,7 @@
                         </v-card>
 
                         <v-spacer></v-spacer>
-                        <v-icon @click="removeTestFile(index)"
+                        <v-icon @click="removeImageFile(index)"
                           >mdi-close</v-icon
                         >
                       </v-card>
@@ -648,7 +681,7 @@
                       <template v-slot:[`item.use`]="{ item }">
                         <div class="d-flex flex-row align-center">
                           <p class="ma-0">
-                            {{ convert_date(item.profile.dob) }}
+                            {{ convert_to_use(item) }}
                           </p>
                         </div>
                       </template>
@@ -690,18 +723,6 @@
                         flat
                         background-color="#EEF2F6"
                         v-model="medicine.morning"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card elevation="0" class="d-flex flex-column">
-                      <p class="text-body-2 ma-0 font-weight-medium">
-                        Trưa uống:
-                      </p>
-                      <v-text-field
-                        type="number"
-                        solo
-                        flat
-                        background-color="#EEF2F6"
-                        v-model="medicine.noon"
                       ></v-text-field>
                     </v-card>
                     <v-card elevation="0" class="d-flex flex-column">
@@ -750,7 +771,7 @@
                         color="#6D91B3"
                         class="white--text btn font-weight-medium"
                         elevation="0"
-                        @click="open_edit_medicine_dialog"
+                        @click="medicine_dialog = false"
                         >Chỉnh sửa</v-btn
                       >
                     </v-card>
@@ -766,6 +787,8 @@
 </template>
 
 <script>
+import axios from "axios";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   created() {
     this.all_appointment_list = this.get_appointment();
@@ -907,24 +930,37 @@ export default {
         name: "",
         unit: "",
         morning: 0,
-        noon: 0,
         afternoon: 0,
         evening: 0
       },
       medicine_select: [],
-      test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
+      test_type: [
+        { name: "Xét nghiệm máu", key: "BLOOD_TEST" },
+        { name: "Xét nghiệm nước tiểu", key: "URINE_TEST" },
+        { name: "Xét nghiệm khác", key: "DIFFERENT_TEST" }
+      ],
       test_select: "",
       test_file: {},
-      image_select: "",
       test_add_list: [],
-      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
-
+      image_select: "",
+      image_analyst_type: [
+        { name: "CT", key: "CT_SCAN" },
+        { name: "X-quang", key: "X_RAY " },
+        { name: "PET", key: "PET_SCAN" },
+        { name: "Siêu âm", key: "SUPERSONIC" },
+        { name: "MRI", key: "MRI" },
+        { name: "Hình ảnh khác", key: "DIFFERENT_IMAGE" }
+      ],
+      image_analyst_list: [],
+      image_file: {},
+      submit_file_list: [],
       record: {
         diagnose: "",
         prescribe: "",
         note: "",
         reExaminationDate: ""
-      }
+      },
+      exam_confirm_dialog: false
     };
   },
   methods: {
@@ -956,7 +992,6 @@ export default {
         unit: "",
         count: 0,
         morning: 0,
-        noon: 0,
         afternoon: 0,
         evening: 0
       };
@@ -964,7 +999,7 @@ export default {
     },
     open_edit_medicine_dialog() {
       this.medicine_dialog_type = 2;
-      this.medicine = this.medicine_select;
+      this.medicine = this.medicine_select[0];
       this.medicine_dialog = this.medicine_dialog = true;
     },
 
@@ -978,21 +1013,15 @@ export default {
           use = use + ", Sáng: " + item.morning;
         }
       }
-      if (this.item.noon != 0) {
-        if (use.length == 0) {
-          use = use + "Trưa: " + item.noon;
-        } else {
-          use = use + ", Trưa: " + item.noon;
-        }
-      }
-      if (this.item.afternoon != 0) {
+
+      if (item.afternoon != 0) {
         if (use.length == 0) {
           use = use + "Chiều: " + item.afternoon;
         } else {
           use = use + ", Chiều: " + item.afternoon;
         }
       }
-      if (this.item.evening != 0) {
+      if (item.evening != 0) {
         if (use.length == 0) {
           use = use + "Tối: " + item.evening;
         } else {
@@ -1013,7 +1042,9 @@ export default {
     },
 
     remove_medicine_to_prescriptions() {
-      this.prescriptions = [];
+      let index = this.prescriptions.indexOf(this.medicine_select[0]);
+
+      this.prescriptions.splice(index, 1);
       this.medicine_dialog = false;
     },
 
@@ -1021,10 +1052,25 @@ export default {
       this.test_add_list.splice(index, 1);
     },
 
+    removeImageFile(index) {
+      this.image_analyst_list.splice(index, 1);
+    },
+
     addTestFile() {
       this.test_add_list.push({
-        type: this.test_select,
-        file_name: this.test_file.name
+        type: this.test_select.key,
+        type_name: this.test_select.name,
+        file_name: this.test_file.name,
+        data: this.test_file
+      });
+    },
+
+    addImageAnalystFile() {
+      this.image_analyst_list.push({
+        type: this.image_select.key,
+        type_name: this.image_select.name,
+        file_name: this.image_file.name,
+        data: this.image_file
       });
     },
 
@@ -1065,6 +1111,53 @@ export default {
         ", " +
         profile.address.province
       );
+    },
+
+    async create_record() {
+      // let post_file_list = this.test_add_list.concat(this.image_analyst_list);
+      // await Promise.all(
+      //   post_file_list.map(async file => {
+      //     await this.post_file(file.data, file.type);
+      //   })
+      // );
+      // let token = this.$store.getters["auth/access_token"];
+      // const param = {
+      //   token: token,
+      //   data: {
+      //     appointmentId: "4b3525c6-303d-4005-aaf9-2b6821b6626a",
+      //     diagnose: "Chuan doan",
+      //     prescribe: "Chi dinh",
+      //     reExaminationDate: "2022-07-12",
+      //     medicines: [],
+      //     files: this.submit_file_list
+      //   }
+      // };
+      this.exam_confirm_dialog = false;
+      this.exam_dialog = false;
+    },
+
+    async post_file(file, type) {
+      let form_data = new FormData();
+      form_data.append("file", file);
+      let token = this.$store.getters["auth/access_token"];
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      await axios
+        .post(`${url}/api/files/upload`, form_data, {
+          headers: {
+            "Content-Type": "multipart/form-data"
+          }
+        })
+        .then(response => {
+          if (response.data.code === 200) {
+            this.submit_file_list.push({
+              imageUrl: response.data.results,
+              type: type
+            });
+          }
+        });
     }
   }
 };
