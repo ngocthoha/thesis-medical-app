@@ -43,10 +43,20 @@
           >
         </div>
       </template>
+      <template v-slot:[`item.profile.dob`]="{ item }">
+        <div class="d-flex flex-row align-center">
+          <p class="ma-0">{{ convert_date(item.profile.dob) }}</p>
+        </div>
+      </template>
+      <template v-slot:[`item.date`]="{ item }">
+        <div class="d-flex flex-row align-center">
+          <p class="ma-0">{{ convert_date(item.date) }}</p>
+        </div>
+      </template>
       <template v-slot:[`item.room`]="{ item }">
         <div class="d-flex flex-row align-center">
           <p class="ma-0">{{ item.room.name }}</p>
-          <v-icon v-if="item.room.type === 'online'" class="ml-2"
+          <v-icon v-if="item.type === 'ONLINE'" class="ml-2"
             >mdi-video-outline</v-icon
           >
         </div>
@@ -97,6 +107,8 @@
                       Họ và tên lót:
                     </p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.lastName"
                       readonly
                       solo
                       flat
@@ -106,6 +118,8 @@
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">Tên:</p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.firstName"
                       readonly
                       solo
                       flat
@@ -115,6 +129,8 @@
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">Ngày sinh</p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.dob"
                       readonly
                       solo
                       flat
@@ -130,6 +146,8 @@
                       Nghề nghiệp:
                     </p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.job"
                       readonly
                       solo
                       flat
@@ -141,6 +159,8 @@
                       Giới tính:
                     </p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.gender"
                       readonly
                       solo
                       flat
@@ -152,6 +172,8 @@
                       Số điện thoại
                     </p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.phone"
                       readonly
                       solo
                       flat
@@ -165,6 +187,8 @@
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">Email:</p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.email"
                       readonly
                       solo
                       flat
@@ -174,6 +198,8 @@
                   <v-card width="65%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">Địa chỉ:</p>
                     <v-text-field
+                      class="text-body-2"
+                      v-model="selected_appointment.profile.address"
                       readonly
                       solo
                       flat
@@ -191,6 +217,8 @@
                       Triệu chứng:
                     </p>
                     <v-textarea
+                      class="text-body-2"
+                      v-model="selected_appointment.symptom"
                       readonly
                       solo
                       flat
@@ -201,6 +229,7 @@
                 <p class="text-body-2 font-weight-medium">
                   Kết quả xét nghiệm:
                 </p>
+
                 <p class="text-body-2 font-weight-medium">
                   Chuẩn đoán hình ảnh:
                 </p>
@@ -260,6 +289,7 @@
                       Chuẩn đoán:
                     </p>
                     <v-textarea
+                      v-model="record.diagnose"
                       solo
                       flat
                       background-color="#EEF2F6"
@@ -268,6 +298,7 @@
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">Chỉ định:</p>
                     <v-textarea
+                      v-model="record.prescribe"
                       solo
                       flat
                       background-color="#EEF2F6"
@@ -276,6 +307,7 @@
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
                     <p class="text-body-2 ma-0 font-weight-medium">Ghi chú:</p>
                     <v-textarea
+                      v-model="record.note"
                       solo
                       flat
                       background-color="#EEF2F6"
@@ -583,14 +615,14 @@
                         class="btn mr-3 white--text"
                         color="#537DA5"
                         elevation="0"
-                        @click.stop="medicine_dialog = true"
+                        @click.stop="open_add_medicine_dialog"
                         >Thêm</v-btn
                       >
                       <v-btn
                         class="btn mr-3 white--text"
                         color="#667085"
                         elevation="0"
-                        @click.stop="medicine_dialog = true"
+                        @click.stop="open_edit_medicine_dialog"
                         >Chỉnh sửa</v-btn
                       >
                       <v-btn
@@ -607,11 +639,19 @@
                       class="elevation-1"
                       single-select
                       show-select
+                      v-model="medicine_select"
                       item-key="name"
                       checkbox-color="#3C5E7E"
                       hide-default-footer
                       no-data-text="Đơn thuốc trống"
                     >
+                      <template v-slot:[`item.use`]="{ item }">
+                        <div class="d-flex flex-row align-center">
+                          <p class="ma-0">
+                            {{ convert_date(item.profile.dob) }}
+                          </p>
+                        </div>
+                      </template>
                     </v-data-table>
                   </v-card>
                 </div>
@@ -693,16 +733,25 @@
                         class="btn white--text"
                         color="#F04438"
                         elevation="0"
-                        @click.stop="medicine_dialog = close"
+                        @click.stop="medicine_dialog = false"
                         >Hủy</v-btn
                       >
                       <v-spacer></v-spacer>
                       <v-btn
+                        v-if="medicine_dialog_type == 1"
                         color="#6D91B3"
                         class="white--text btn font-weight-medium"
                         elevation="0"
                         @click="add_medicine_to_prescriptions"
                         >Thêm</v-btn
+                      >
+                      <v-btn
+                        v-if="medicine_dialog_type == 2"
+                        color="#6D91B3"
+                        class="white--text btn font-weight-medium"
+                        elevation="0"
+                        @click="open_edit_medicine_dialog"
+                        >Chỉnh sửa</v-btn
                       >
                     </v-card>
                   </v-card>
@@ -718,6 +767,11 @@
 
 <script>
 export default {
+  created() {
+    this.all_appointment_list = this.get_appointment();
+    this.list_appointment = this.all_appointment_list;
+  },
+
   data() {
     return {
       selected: [],
@@ -726,59 +780,109 @@ export default {
           text: "Họ và tên đệm",
           align: "start",
           sortable: false,
-          value: "lastName",
+          value: "profile.lastName"
         },
-        { text: "Tên", value: "firstName" },
-        { text: "Ngày sinh", value: "dob" },
-        { text: "Giới tính", value: "gender" },
-        { text: "Ngày khám", value: "date_medical_examination" },
+        { text: "Tên", value: "profile.firstName" },
+        { text: "Ngày sinh", value: "profile.dob" },
+        { text: "Ngày khám", value: "date" },
         { text: "Khung giờ khám", value: "time" },
-        { text: "Phòng", value: "room", sortable: false },
+        { text: "Phòng", value: "room", sortable: false }
       ],
-      list_appointment: [
-        {
-          id: "1",
-          firstName: "Thanh",
-          lastName: "Nguyễn Duy",
-          dob: "03/03/2000",
-          gender: "Nam",
-          date_medical_examination: "20/10/2022",
-          time: "13:00-14:00",
-          room: {
-            type: "online",
-            name: "H1",
-            link: "https://www.google.com/",
-          },
+      list_appointment: [],
+      selected_appointment: {
+        id: "",
+        code: 0,
+        room: {
+          id: "",
+          name: "",
+          link: null
         },
-        {
-          id: "2",
-          firstName: "Thọ",
-          lastName: "Hà Ngọc",
-          dob: "03/03/2003",
-          gender: "Nam",
-          date_medical_examination: "20/10/2022",
-          time: "13:00-14:00",
-          room: {
-            type: "offline",
-            name: "H1",
-            link: "https://www.google.com/",
-          },
+        profile: {
+          id: "",
+          profileNumber: 0,
+          firstName: "",
+          lastName: "",
+          address: "",
+          phone: "",
+          email: "",
+          dob: "",
+          job: "",
+          identityCard: "",
+          healthInsurance: "",
+          folk: "",
+          gender: "",
+          guardian: "",
+          guardianPhone: "",
+          guardianIdentityCard: "",
+          relationship: "",
+          relationshipWithPatient: "",
+          imageUrl: null
         },
-        {
-          id: "3",
-          firstName: "Thúy",
-          lastName: "Nguyễn Thị",
-          dob: "03/03/2004",
-          gender: "Nữ",
-          date_medical_examination: "20/10/2022",
-          time: "13:00-14:00",
-          room: {
-            type: "offline",
-            name: "H1",
-            link: "https://www.google.com/",
+        doctor: {
+          id: "",
+          name: "",
+          email: "",
+          specialty: "",
+          hospital: {
+            id: "",
+            name: "",
+            address: {
+              id: "",
+              country: "",
+              province: "",
+              district: "",
+              ward: "",
+              address: ""
+            },
+            info: "",
+            registrationNumber: 0,
+            favorite: 0.0,
+            mapImageUrl: null,
+            imageUrl: "",
+            isActive: true,
+            hospitalHour: {
+              id: "",
+              mondayTime: "",
+              mondayTimeBreak: "",
+              tuesdayTime: "",
+              tuesdayTimeBreak: "",
+              wednesdayTime: "",
+              wednesdayTimeBreak: "",
+              thursdayTime: "",
+              thursdayTimeBreak: "",
+              fridayTime: "",
+              fridayTimeBreak: "",
+              saturdayTime: "",
+              saturdayTimeBreak: "",
+              sundayTime: "",
+              sundayTimeBreak: ""
+            }
           },
+          level: "",
+          bio: "",
+          registrationNumber: 0,
+          price: "",
+          imageUrl: null,
+          favorite: 0
         },
-      ],
+        service: null,
+        date: "",
+        time: "",
+        symptom: "",
+        files: [
+          {
+            id: "",
+            imageUrl: "",
+            type: ""
+          }
+        ],
+        status: "",
+        type: "",
+        isPaid: true,
+        fee: "",
+        category: ""
+      },
+      all_appointment_list: [],
       exam_dialog: false,
       from_date_menu: false,
       from_date: "",
@@ -790,11 +894,11 @@ export default {
           text: "Tên",
           align: "start",
           sortable: false,
-          value: "name",
+          value: "name"
         },
         { text: "Số lượng", value: "mount", sortable: false },
         { text: "Liều", value: "use", sortable: false },
-        { text: "Đơn vị uống", value: "unit", sortable: false },
+        { text: "Đơn vị uống", value: "unit", sortable: false }
       ],
       prescriptions: [],
       medicine_dialog: false,
@@ -802,69 +906,108 @@ export default {
       medicine: {
         name: "",
         unit: "",
-        count: 0,
         morning: 0,
         noon: 0,
         afternoon: 0,
-        evening: 0,
+        evening: 0
       },
-
+      medicine_select: [],
       test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
       test_select: "",
       test_file: {},
       image_select: "",
       test_add_list: [],
       image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
+
+      record: {
+        diagnose: "",
+        prescribe: "",
+        note: "",
+        reExaminationDate: ""
+      }
     };
   },
   methods: {
     examinate() {
+      const data = this.selected[0];
+      this.selected_appointment = JSON.parse(JSON.stringify(data));
+      this.selected_appointment.profile.dob = this.convert_date(
+        data.profile.dob
+      );
+      switch (data.profile.gender) {
+        case "MALE":
+          this.selected_appointment.profile.gender = "Nam";
+          break;
+        case "FEMALE":
+          this.selected_appointment.profile.gender = "Nữ";
+          break;
+        default:
+          this.selected_appointment.profile.gender = "Khác";
+        // code block
+      }
+
+      this.selected_appointment.profile.address = this.getAddress(data.profile);
       this.exam_dialog = true;
     },
+    open_add_medicine_dialog() {
+      this.medicine_dialog_type = 1;
+      this.medicine = {
+        name: "",
+        unit: "",
+        count: 0,
+        morning: 0,
+        noon: 0,
+        afternoon: 0,
+        evening: 0
+      };
+      this.medicine_dialog = true;
+    },
+    open_edit_medicine_dialog() {
+      this.medicine_dialog_type = 2;
+      this.medicine = this.medicine_select;
+      this.medicine_dialog = this.medicine_dialog = true;
+    },
 
-    add_medicine_to_prescriptions() {
+    convert_to_use(item) {
       let use = "";
 
-      if (this.medicine.morning != 0) {
+      if (item.morning != 0) {
         if (use.length == 0) {
-          use = use + "Sáng: " + this.medicine.morning;
+          use = use + "Sáng: " + item.morning;
         } else {
-          use = use + ", Sáng: " + this.medicine.morning;
+          use = use + ", Sáng: " + item.morning;
         }
       }
-      if (this.medicine.noon != 0) {
+      if (this.item.noon != 0) {
         if (use.length == 0) {
-          use = use + "Trưa: " + this.medicine.noon;
+          use = use + "Trưa: " + item.noon;
         } else {
-          use = use + ", Trưa: " + this.medicine.noon;
+          use = use + ", Trưa: " + item.noon;
         }
       }
-      if (this.medicine.afternoon != 0) {
+      if (this.item.afternoon != 0) {
         if (use.length == 0) {
-          use = use + "Chiều: " + this.medicine.afternoon;
+          use = use + "Chiều: " + item.afternoon;
         } else {
-          use = use + ", Chiều: " + this.medicine.afternoon;
+          use = use + ", Chiều: " + item.afternoon;
         }
       }
-      if (this.medicine.evening != 0) {
+      if (this.item.evening != 0) {
         if (use.length == 0) {
-          use = use + "Tối: " + this.medicine.evening;
+          use = use + "Tối: " + item.evening;
         } else {
-          use = use + ", Tối: " + this.medicine.evening;
+          use = use + ", Tối: " + item.evening;
         }
       }
-
-      let total =
-        parseInt(this.medicine.morning) +
-        parseInt(this.medicine.noon) +
-        parseInt(this.medicine.afternoon) +
-        parseInt(this.medicine.evening);
-
+      return use;
+    },
+    add_medicine_to_prescriptions() {
       this.prescriptions.push({
         name: this.medicine.name,
-        mount: total,
-        use: use,
         unit: this.medicine.unit,
+        morning: this.medicine.morning,
+        afternoon: this.medicine.afternoon,
+        evening: this.medicine.evening
       });
       this.medicine_dialog = false;
     },
@@ -881,10 +1024,49 @@ export default {
     addTestFile() {
       this.test_add_list.push({
         type: this.test_select,
-        file_name: this.test_file.name,
+        file_name: this.test_file.name
       });
     },
-  },
+
+    get_appointment() {
+      let token = this.$store.getters["auth/access_token"];
+      let data = {
+        date: "2022-11-06"
+      };
+      const param = {
+        token: token,
+        data: data
+      };
+      this.$store.dispatch("appointment/get_appointment_by_doctor", param);
+      return this.$store.getters["appointment/doctor_appointment_list"];
+    },
+
+    convert_date(time) {
+      let date = new Date(time);
+      return (
+        (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
+        "/" +
+        (date.getMonth() > 8
+          ? date.getMonth() + 1
+          : "0" + (date.getMonth() + 1)) +
+        "/" +
+        date.getFullYear()
+      );
+    },
+
+    getAddress(profile) {
+      if (profile.address == null) return "";
+      return (
+        profile.address.address +
+        ", " +
+        profile.address.ward +
+        ", " +
+        profile.address.district +
+        ", " +
+        profile.address.province
+      );
+    }
+  }
 };
 </script>
 

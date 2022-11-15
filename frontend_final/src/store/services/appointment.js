@@ -9,7 +9,7 @@ function speciality_list(params) {
     };
   });
 }
-
+// user work
 function getDoctorList_byDateAndSpeciality(params) {
   axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
   return axios
@@ -31,16 +31,7 @@ function createAppointment(params) {
   });
 }
 
-function getAppointment_byDate_Doctor(params) {
-  axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
-  return axios
-    .get(`${url}/api/appointments/doctor`, { params: params.data })
-    .then(response => {
-      return {
-        data: response.data
-      };
-    });
-}
+
 
 function getAppointment_byProfileId(params) {
   axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
@@ -63,11 +54,26 @@ function get_doctor_schedule_by_date(params) {
     });
 }
 
+//doctor work
+function get_appointment_by_doctor(params) {
+  axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
+  return axios
+    .get(`${url}/api/appointments/doctor`, { params: params.data })
+    .then(response => {
+      return {
+        data: response.data
+      };
+    });
+}
+
 export default {
   speciality_list,
+  //user work
   getDoctorList_byDateAndSpeciality,
   createAppointment,
-  getAppointment_byDate_Doctor,
   getAppointment_byProfileId,
-  get_doctor_schedule_by_date
+  get_doctor_schedule_by_date,
+  //doctor work
+  get_appointment_by_doctor,
+
 };
