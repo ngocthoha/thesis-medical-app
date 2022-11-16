@@ -113,7 +113,7 @@
             color="white"
             elevation="0"
             outlined
-            @click.stop="exam_dialog = false"
+            @click.stop="stop_examination()"
           >
             Hủy
           </v-btn>
@@ -673,7 +673,7 @@
                       single-select
                       show-select
                       v-model="medicine_select"
-                      item-key="name"
+                      item-key="data.name"
                       checkbox-color="#3C5E7E"
                       hide-default-footer
                       no-data-text="Đơn thuốc trống"
@@ -685,22 +685,37 @@
                           </p>
                         </div>
                       </template>
+                      <template v-slot:[`item.name`]="{ item }">
+                        <div class="d-flex flex-row align-center">
+                          <p class="ma-0">
+                            {{ item.data.name }}
+                          </p>
+                        </div>
+                      </template>
                     </v-data-table>
                   </v-card>
                 </div>
 
                 <v-dialog v-model="medicine_dialog" width="500">
                   <v-card class="d-flex flex-column pa-8">
-                    <v-card elevation="0" class="d-flex flex-column">
+                    <v-card elevation="0" class="d-flex flex-column mb-5">
                       <p class="text-body-2 ma-0 font-weight-medium">
                         Tên thuốc:
                       </p>
-                      <v-text-field
+
+                      <v-combobox
+                        spellcheck="false"
+                        v-model="medicine.data"
+                        :items="store_medicine_list"
+                        item-text="name"
                         solo
                         flat
+                        append-icon="mdi-chevron-down"
+                        item-color="light-blue darken-4"
+                        placeholder="Chọn thuốc"
+                        hide-details=""
                         background-color="#EEF2F6"
-                        v-model="medicine.name"
-                      ></v-text-field>
+                      ></v-combobox>
                     </v-card>
                     <v-card elevation="0" class="d-flex flex-column">
                       <p class="text-body-2 ma-0 font-weight-medium">
@@ -926,8 +941,12 @@ export default {
       prescriptions: [],
       medicine_dialog: false,
       medicine_dialog_type: 1,
+      store_medicine_list: [],
       medicine: {
-        name: "",
+        data: {
+          name: "",
+          id: ""
+        },
         unit: "",
         morning: 0,
         afternoon: 0,
@@ -964,7 +983,7 @@ export default {
     };
   },
   methods: {
-    examinate() {
+    async examinate() {
       const data = this.selected[0];
       this.selected_appointment = JSON.parse(JSON.stringify(data));
       this.selected_appointment.profile.dob = this.convert_date(
@@ -983,12 +1002,27 @@ export default {
       }
 
       this.selected_appointment.profile.address = this.getAddress(data.profile);
+      let token = this.$store.getters["auth/access_token"];
+
+      const params = {
+        token: token,
+        data: {
+          hospitalId: this.selected_appointment.doctor.hospital.id
+        }
+      };
+      await this.$store.dispatch(
+        "medicine/get_store_medicine_by_hospital",
+        params
+      );
+      this.store_medicine_list = this.$store.getters[
+        "medicine/store_medicine_by_hospital"
+      ];
       this.exam_dialog = true;
     },
     open_add_medicine_dialog() {
       this.medicine_dialog_type = 1;
       this.medicine = {
-        name: "",
+        data: "",
         unit: "",
         count: 0,
         morning: 0,
@@ -1032,7 +1066,7 @@ export default {
     },
     add_medicine_to_prescriptions() {
       this.prescriptions.push({
-        name: this.medicine.name,
+        data: this.medicine.data,
         unit: this.medicine.unit,
         morning: this.medicine.morning,
         afternoon: this.medicine.afternoon,
@@ -1114,24 +1148,39 @@ export default {
     },
 
     async create_record() {
-      // let post_file_list = this.test_add_list.concat(this.image_analyst_list);
-      // await Promise.all(
-      //   post_file_list.map(async file => {
-      //     await this.post_file(file.data, file.type);
-      //   })
-      // );
-      // let token = this.$store.getters["auth/access_token"];
-      // const param = {
-      //   token: token,
-      //   data: {
-      //     appointmentId: "4b3525c6-303d-4005-aaf9-2b6821b6626a",
-      //     diagnose: "Chuan doan",
-      //     prescribe: "Chi dinh",
-      //     reExaminationDate: "2022-07-12",
-      //     medicines: [],
-      //     files: this.submit_file_list
-      //   }
-      // };
+      let post_file_list = this.test_add_list.concat(this.image_analyst_list);
+      await Promise.all(
+        post_file_list.map(async file => {
+          await this.post_file(file.data, file.type);
+        })
+      );
+      let token = this.$store.getters["auth/access_token"];
+
+      let medicine_list_submit = [];
+      this.prescriptions.forEach(medicine => {
+        medicine_list_submit.push({
+          storeMedicineId: medicine.data.id,
+          unit: medicine.unit,
+          numMedicineInMorning: medicine.morning,
+          numMedicineInAfternoon: medicine.afternoon,
+          numMedicineInEvening: medicine.evening,
+          dateStart: this.from_date,
+          dateEnd: this.to_date
+        });
+      });
+      const params = {
+        token: token,
+        data: {
+          appointmentId: this.selected_appointment.id,
+          diagnose: this.record.diagnose,
+          prescribe: this.record.prescribe,
+          reExaminationDate: this.record.reExaminationDate,
+          medicines: medicine_list_submit,
+          files: this.submit_file_list
+        }
+      };
+      this.$store.dispatch("record/create_record", params);
+      this.refresh_exam_data();
       this.exam_confirm_dialog = false;
       this.exam_dialog = false;
     },
@@ -1158,6 +1207,21 @@ export default {
             });
           }
         });
+    },
+
+    refresh_exam_data() {
+      this.from_date = "";
+      this.to_date = "";
+      this.record.diagnose = "";
+      this.record.prescribe = "";
+      this.record.note = "";
+      this.record.reExaminationDate = "";
+      this.prescriptions = [];
+    },
+
+    stop_examination() {
+      this.refresh_exam_data();
+      this.exam_dialog = false;
     }
   }
 };
