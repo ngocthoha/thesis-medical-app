@@ -7,13 +7,18 @@ import com.thesis.medicalapp.payload.MedicineRequest;
 import com.thesis.medicalapp.payload.RecordRequest;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.RecordDTO;
+import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.MedicalFileRepository;
 import com.thesis.medicalapp.repository.MedicineRepository;
+import com.thesis.medicalapp.search.SearchRequest;
 import com.thesis.medicalapp.services.MedicineService;
 import com.thesis.medicalapp.services.RecordService;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -80,11 +85,25 @@ public class RecordController {
         );
     }
 
-    @GetMapping("/records/all")
-    public ResponseEntity<ApiResponse> getAllRecords() {
-        List<RecordDTO> recordDTOS = recordService.getRecords();
+    @GetMapping("/records")
+    public ResponseEntity<Object> getAllRecords(
+            @RequestParam Integer size,
+            @RequestParam Integer page
+    ) {
+        SearchRequest request = new SearchRequest();
+        request.setFilters(new ArrayList<>());
+        request.setSorts(new ArrayList<>());
+        request.setPage(page);
+        request.setSize(size);
+        Page<Record> records = recordService.findAll(request);
+        Page<RecordDTO> recordDTOS = records.map(
+                record -> {
+                    RecordDTO recordDTO = RecordDTO.from(record);
+                    return recordDTO;
+                }
+        );
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(recordDTOS)
+                new ApiResponse<>(recordDTOS.getContent(), recordDTOS)
         );
     }
 

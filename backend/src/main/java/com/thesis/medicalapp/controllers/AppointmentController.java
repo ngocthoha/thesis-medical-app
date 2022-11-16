@@ -94,6 +94,14 @@ public class AppointmentController {
         );
     }
 
+    @GetMapping("/appointments/user")
+    public ResponseEntity<Object> getAppointmentByUser() {
+        List<AppointmentDTO> appointmentDTOS = appointmentService.getAppointmentByUser();
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(appointmentDTOS)
+        );
+    }
+
     @PatchMapping("/appointments")
     public ResponseEntity<Object> partialUpdateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentService.findAppointmentById(appointmentRequest.getId());

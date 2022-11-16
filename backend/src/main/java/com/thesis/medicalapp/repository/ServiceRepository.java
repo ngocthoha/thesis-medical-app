@@ -3,6 +3,7 @@ package com.thesis.medicalapp.repository;
 import com.thesis.medicalapp.models.Doctor;
 import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.HospitalService;
+import com.thesis.medicalapp.search.SearchSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
@@ -16,4 +17,5 @@ import java.util.List;
 public interface ServiceRepository extends JpaRepository<HospitalService, String>, JpaSpecificationExecutor<HospitalService> {
     List<HospitalService> findByHospitalId(String hospitalId);
     Page<HospitalService> findAllByHospitalId(String hospitalId, Pageable pageable);
+    Page<HospitalService> findAllByHospital_Id(String hospitalId, SearchSpecification specification, Pageable pageable);
 }

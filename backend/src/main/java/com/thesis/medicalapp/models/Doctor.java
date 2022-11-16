@@ -28,7 +28,7 @@ public class Doctor extends User implements Serializable {
     private String level;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "hospital_id")
+    @JoinColumn(name = "hospital_id", referencedColumnName = "id")
     private Hospital hospital;
     @Type(type="text")
     private String bio;
