@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card width="922px" elevation="4" class="pb-8">
+    <v-card width="922px" elevation="1" class="pb-8">
       <v-expand-transition>
         <profile-list
           v-if="visible_profile_list"

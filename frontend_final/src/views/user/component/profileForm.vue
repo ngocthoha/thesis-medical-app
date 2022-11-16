@@ -895,7 +895,6 @@ export default {
         data: data
       };
       await this.$store.dispatch("profile/edit_profile", param);
-      console.log("edit profile success");
     },
 
     /**

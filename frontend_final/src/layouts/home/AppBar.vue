@@ -843,7 +843,8 @@ export default {
         icon: require("@/assets/img/home/appbar/document_icon.svg"),
         content: "Hồ sơ sức khỏe",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
+        link: "/home/user/health-records"
       },
       {
         icon: require("@/assets/img/home/appbar/connection_icon.svg"),
@@ -854,6 +855,12 @@ export default {
       {
         icon: require("@/assets/img/home/appbar/help_icon.svg"),
         content: "Câu hỏi của bạn",
+        color: "#667085",
+        type: ButtonFunctionType.FUNCTION
+      },
+      {
+        icon: require("@/assets/img/home/appbar/bell_menu_icon.svg"),
+        content: "Thông báo",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION
       },
