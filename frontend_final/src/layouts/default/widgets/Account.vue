@@ -18,7 +18,7 @@
         <v-divider v-if="p.divider" :key="`divider-${i}`" class="mb-2 mt-2" />
 
         <app-bar-item v-else :key="`item-${i}`" to="/">
-          <v-list-item-title v-text="p.title" />
+          <v-list-item-title v-text="p.title" @click="logout" />
         </app-bar-item>
       </template>
     </v-list>
@@ -34,8 +34,21 @@ export default {
       { title: "Profile" },
       { title: "Settings" },
       { divider: true },
-      { title: "Log out" }
+      { title: "Đăng xuất" }
     ]
-  })
+  }),
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/logout", {});
+      this.$router.push({ name: "Trang chủ" }).catch(error => {
+        if (error == null) {
+          return;
+        }
+        if (error.name != "NavigationDuplicated") {
+          throw error;
+        }
+      });
+    }
+  }
 };
 </script>

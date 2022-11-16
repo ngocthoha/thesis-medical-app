@@ -2,25 +2,24 @@ import service from "@/store/services/appointment";
 
 const state = {
   speciality_list: [],
+  //user work
   doctors_list: [],
-  doctor_appointment_list: [],
   user_appointment_list: [],
   make_appointment_doctor_select: {},
   make_appointment_doctor_schedule: [],
-  make_appointment_set_time_doctor: null
+  make_appointment_set_time_doctor: null,
+
+  //doctor work
+  doctor_appointment_list: [],
 };
 
 const mutations = {
   SET_SPECIALITY_LIST: (state, list) => {
     state.speciality_list = list;
   },
-
+  // user work
   SET_DOCTOR_LIST: (state, list) => {
     state.doctors_list = list;
-  },
-
-  SET_DOCTOR_APPOINTMENT_LIST: (state, list) => {
-    state.doctor_appointment_list = list;
   },
 
   SET_USER_APPOINTMENT_LIST: (state, list) => {
@@ -46,7 +45,13 @@ const mutations = {
     make_appointment_set_time_doctor
   ) => {
     state.make_appointment_set_time_doctor = make_appointment_set_time_doctor;
-  }
+  },
+
+  //doctor work
+  SET_DOCTOR_APPOINTMENT_LIST: (state, list) => {
+    state.doctor_appointment_list = list;
+  },
+
 };
 
 const actions = {
@@ -59,7 +64,7 @@ const actions = {
       }
     });
   },
-
+  // user work
   getDoctorList_byDateAndSpeciality({ commit }, params) {
     return service
       .getDoctorList_byDateAndSpeciality(params)
@@ -75,16 +80,6 @@ const actions = {
   createAppointment({ commit }, params) {
     return service.createAppointment(params).then(({ data }) => {
       console.log("add new appointment success");
-    });
-  },
-
-  getAppointment_byDate_Doctor({ commit }, params) {
-    return service.getAppointment_byDate_Doctor(params).then(({ data }) => {
-      if (data.code == 1) {
-        commit("SET_DOCTOR_APPOINTMENT_LIST", data.results);
-      } else {
-        console.log("error");
-      }
     });
   },
 
@@ -114,19 +109,33 @@ const actions = {
 
   set_time_to_make_appointment_doctor({ commit }, params) {
     commit("SET_MAKE_APPOINTMENT_SET_TIME_DOCTOR", params);
-  }
+  },
+
+  //doctor work 
+  get_appointment_by_doctor({ commit }, params) {
+    return service.get_appointment_by_doctor(params).then(({ data }) => {
+      if (data.code == 200) {
+        commit("SET_DOCTOR_APPOINTMENT_LIST", data.results);
+      } else {
+        console.log("error");
+      }
+    });
+  },
 };
 
 const getters = {
   speciality_list: state => state.speciality_list,
+  //user work
   doctors_list: state => state.doctors_list,
-  doctor_appointment_list: state => state.doctor_appointment_list,
   user_appointment_list: state => state.user_appointment_list,
   make_appointment_doctor_select: state => state.make_appointment_doctor_select,
   make_appointment_doctor_schedule: state =>
     state.make_appointment_doctor_schedule,
   make_appointment_set_time_doctor: state =>
-    state.make_appointment_set_time_doctor
+    state.make_appointment_set_time_doctor,
+
+  //doctor work
+  doctor_appointment_list: state => state.doctor_appointment_list,
 };
 
 export default {

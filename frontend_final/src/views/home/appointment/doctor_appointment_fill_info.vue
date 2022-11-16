@@ -777,13 +777,6 @@ export default {
 
       window.open(responseData.data.results.payUrl);
       this.createAppointment();
-      // let post_file_list = this.test_add_list.concat(this.image_analyst_list);
-
-      // await Promise.all(
-      //   post_file_list.map(async file => {
-      //     this.post_file(file.data, file.type);
-      //   })
-      // ).then(this.createAppointment());
 
       this.$router.push({ name: "Đặt lịch bác sĩ thành công" }).catch(error => {
         if (error == null) {
@@ -864,7 +857,6 @@ export default {
     },
 
     async createAppointment() {
-      console.log("submit file add create appointment");
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
 
       await Promise.all(

@@ -630,13 +630,13 @@ export default {
   props: {
     type: {
       type: Number,
-      default: 0, // 0 is create, 1 is edit
+      default: 0 // 0 is create, 1 is edit
     },
 
     edit_profile: {
       type: Object,
-      default: null,
-    },
+      default: null
+    }
   },
 
   data() {
@@ -645,7 +645,7 @@ export default {
       days: {
         date: [],
         month: [],
-        year: [],
+        year: []
       },
       relationship: [
         "Ba",
@@ -658,13 +658,13 @@ export default {
         "Con",
         "Vợ",
         "Chồng",
-        "Khác",
+        "Khác"
       ],
 
       province_list: [
         "Thủ đô Hà Nội",
         "Thành phố Hồ Chí Minh",
-        "Bà Rịa-Vũng Tàu",
+        "Bà Rịa-Vũng Tàu"
       ],
 
       town_list: ["Quận 1", "Quận 2", "Quận 3"],
@@ -683,7 +683,7 @@ export default {
         dob: {
           date: "01",
           month: "01",
-          year: "2000",
+          year: "2000"
         },
         job: "",
         identityCard: "",
@@ -694,8 +694,8 @@ export default {
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: "",
-      },
+        relationshipWithPatient: ""
+      }
     };
   },
 
@@ -756,14 +756,11 @@ export default {
         this.profile.folk = this.edit_profile.folk;
         this.profile.gender = this.edit_profile.gender;
         this.profile.guardian = this.edit_profile.guardian;
-        this.profile.guardianIdentityCard =
-          this.edit_profile.guardianIdentityCard;
+        this.profile.guardianIdentityCard = this.edit_profile.guardianIdentityCard;
         this.profile.guardianPhone = this.edit_profile.guardianPhone;
         this.profile.relationship = this.edit_profile.relationship;
-        this.profile.relationshipWithPatient =
-          this.edit_profile.relationshipWithPatient;
+        this.profile.relationshipWithPatient = this.edit_profile.relationshipWithPatient;
         let date = new Date(this.edit_profile.dob);
-        console.log(date.getMonth());
         this.profile.dob.year = String(date.getFullYear());
         this.profile.dob.month =
           date.getMonth() > 9
@@ -785,7 +782,7 @@ export default {
           province: "",
           district: "",
           ward: "",
-          address: "",
+          address: ""
         },
         phone: "",
         email: "",
@@ -799,7 +796,7 @@ export default {
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: "",
+        relationshipWithPatient: ""
       };
       //process data
       data.lastName = this.profile.lastName;
@@ -831,7 +828,7 @@ export default {
       let token = this.$store.getters["auth/access_token"];
       const param = {
         token: token,
-        data: data,
+        data: data
       };
       await this.$store.dispatch("profile/add_new_profile", param);
       console.log("add profile successfully");
@@ -847,7 +844,7 @@ export default {
           province: "",
           district: "",
           ward: "",
-          address: "",
+          address: ""
         },
         phone: "",
         email: "",
@@ -861,7 +858,7 @@ export default {
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: "",
+        relationshipWithPatient: ""
       };
       //process data
       data.id = this.profile.id;
@@ -895,7 +892,7 @@ export default {
       let token = this.$store.getters["auth/access_token"];
       const param = {
         token: token,
-        data: data,
+        data: data
       };
       await this.$store.dispatch("profile/edit_profile", param);
       console.log("edit profile success");
@@ -907,9 +904,9 @@ export default {
     emitInterface() {
       this.$emit("interface", {
         addNewProfile: () => this.addNewProfile(),
-        editProfile: () => this.editProfile(),
+        editProfile: () => this.editProfile()
       });
-    },
-  },
+    }
+  }
 };
 </script>

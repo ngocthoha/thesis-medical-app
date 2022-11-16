@@ -276,7 +276,7 @@ export default {
     return {
       dialog: false,
       profile_remove: null,
-      profile_list: [],
+      profile_list: []
     };
   },
 
@@ -295,13 +295,13 @@ export default {
     getAddress(profile) {
       if (profile.address == null) return "";
       return (
-        profile.address.province +
-        ", " +
-        profile.address.district +
+        profile.address.address +
         ", " +
         profile.address.ward +
         ", " +
-        profile.address.address
+        profile.address.district +
+        ", " +
+        profile.address.province
       );
     },
 
@@ -328,7 +328,7 @@ export default {
       let token = this.$store.getters["auth/access_token"];
       const param = {
         token: token,
-        data: this.profile_remove.id,
+        data: this.profile_remove.id
       };
       await this.$store.dispatch("profile/remove_profile", param);
       this.getProfileList();
@@ -338,12 +338,12 @@ export default {
     async getProfileList() {
       let token = this.$store.getters["auth/access_token"];
       const param = {
-        token: token,
+        token: token
       };
       await this.$store.dispatch("profile/profile_list", param);
       this.profile_list = this.$store.getters["profile/profile_list"];
-    },
-  },
+    }
+  }
 };
 </script>
 

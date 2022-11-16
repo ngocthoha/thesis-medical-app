@@ -10,3 +10,4 @@ export { default as rooms } from "./rooms";
 export { default as scheduledoctor } from "./scheduledoctor";
 export { default as snackbar } from "./snackbar";
 export { default as hospital } from "./hospital";
+export { default as medicine } from "./medicine";
