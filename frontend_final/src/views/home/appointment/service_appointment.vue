@@ -29,73 +29,95 @@
         ></v-text-field>
         <v-spacer />
         <v-divider inset vertical></v-divider>
-        <v-menu>
+        <v-menu :close-on-content-click="false">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              color="#667085"
+              color="#537DA5"
               elevation="0"
-              class="font-weight-medium text-body-1 btn"
-              text
+              class="white--text btn font-weight-medium text-body-1 mr-3 ml-3"
               v-bind="attrs"
               v-on="on"
-              width="135px"
-              height="44px"
             >
-              Địa điểm <v-icon right>mdi-chevron-down</v-icon>
+              <v-icon medium class="mr-2">mdi-filter</v-icon> Lọc
+              <div v-if="filterNumber != 0" class="ml-2 numberCircle">
+                {{ filterNumber }}
+              </div>
             </v-btn>
           </template>
+          <v-card width="300px">
+            <div class="d-flex justify-center" style="color: #537DA5">
+              <p class="font-weight-bold mt-3">Lọc Kết Quả</p>
+            </div>
+            <v-divider></v-divider>
+            <v-list>
+              <v-list-item class="mt-3">
+                <v-select
+                  v-model="provinceSelect"
+                  :items="levels"
+                  prepend-inner-icon="mdi-map-marker"
+                  label="Địa Điểm"
+                  clearable
+                  dense
+                  outlined
+                  :menu-props="{ offsetY: true }"
+                ></v-select>
+              </v-list-item>
+              <v-list-item>
+                <v-select
+                  v-model="hospitalSelect"
+                  :items="hospitals"
+                  prepend-inner-icon="mdi-domain"
+                  label="Bệnh Viện"
+                  clearable
+                  dense
+                  outlined
+                  :menu-props="{ offsetY: true }"
+                ></v-select>
+              </v-list-item>
+              <v-list-item>
+                <v-select
+                  v-model="specialtySelect"
+                  :items="specialties"
+                  label="Chuyên Khoa"
+                  prepend-inner-icon="mdi-stethoscope"
+                  item-text="text"
+                  item-value="value"
+                  clearable
+                  dense
+                  outlined
+                  :menu-props="{ offsetY: true }"
+                ></v-select>
+              </v-list-item>
+              <v-list-item class="justify-center">
+                Giá từ
+                {{ range[0] }} đ đến {{ range[1] }} đ
+              </v-list-item>
+              <v-list-item>
+                <v-range-slider
+                  v-model="range"
+                  :max="max"
+                  :min="min"
+                  hide-details
+                  class="align-center"
+                >
+                </v-range-slider>
+              </v-list-item>
+              <div class="d-flex justify-center mt-3">
+                <v-btn
+                  color="#537DA5"
+                  elevation="0"
+                  class="white--text btn font-weight-medium text-body-1"
+                  width="90%"
+                  style="margin: 0 auto"
+                  @click="clearFilters()"
+                >
+                  Bỏ lọc
+                </v-btn>
+              </div>
+            </v-list>
+          </v-card>
         </v-menu>
-        <v-btn
-          color="#537DA5"
-          elevation="0"
-          class="white--text btn font-weight-medium text-body-1 mr-3"
-          >Tìm kiếm
-          <v-img class="ml-3" src="@/assets/img/home/search_icon.svg"></v-img
-        ></v-btn>
       </v-card>
-      <v-row style="width: 720px;">
-        <v-col cols="4">
-          <v-autocomplete
-            v-model="hospitalSelect"
-            :items="hospitals"
-            item-text="text"
-            item-value="value"
-            outlined
-            dense
-            prepend-inner-icon="mdi-domain"
-            label="Bệnh viện"
-            placeholder="Tìm bệnh viện"
-            clearable
-          ></v-autocomplete>
-        </v-col>
-        <v-col cols="4">
-          <v-select
-            v-model="specialtySelect"
-            :items="specialties"
-            label="Chuyên Khoa"
-            prepend-inner-icon="mdi-stethoscope"
-            item-text="text"
-            item-value="value"
-            clearable
-            dense
-            outlined
-          ></v-select>
-        </v-col>
-
-        <v-col cols="4">
-          <v-select
-            v-model="genderSelect"
-            :items="genders"
-            label="Giới Tính"
-            prepend-inner-icon="mdi-gender-male"
-            item-text="text"
-            item-value="value"
-            clearable
-            dense
-            outlined
-          ></v-select>
-        </v-col>
-      </v-row>
     </v-card>
     <v-progress-linear
       :indeterminate="loading"
@@ -218,7 +240,10 @@ export default {
       specialties: [],
       hospitalSelect: null,
       specialtySelect: null,
-      search: ""
+      search: "",
+      min: 0,
+      max: 5000000,
+      range: [100000, 1000000]
     };
   },
   async created() {
@@ -247,6 +272,15 @@ export default {
       handler: _.debounce(function() {
         this.getListService();
       }, 400)
+    }
+  },
+  computed: {
+    filterNumber() {
+      let filterNumber = 0;
+      if (this.provinceSelect) filterNumber++;
+      if (this.hospitalSelect) filterNumber++;
+      if (this.specialtySelect) filterNumber++;
+      return filterNumber;
     }
   },
   methods: {
@@ -317,5 +351,15 @@ export default {
 <style scoped>
 .btn {
   text-transform: none;
+}
+.numberCircle {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  padding: 3px;
+
+  background: #fff;
+  color: #537da5;
+  text-align: center;
 }
 </style>

@@ -41,6 +41,9 @@
               v-on="on"
             >
               <v-icon medium class="mr-2">mdi-filter</v-icon> Lọc
+              <div v-if="filterNumber != 0" class="ml-2 numberCircle">
+                {{ filterNumber }}
+              </div>
             </v-btn>
           </template>
           <v-card width="300px">
@@ -388,6 +391,16 @@ export default {
       }, 400)
     }
   },
+  computed: {
+    filterNumber() {
+      let filterNumber = 0;
+      if (this.provinceSelect) filterNumber++;
+      if (this.levelSelect) filterNumber++;
+      if (this.genderSelect) filterNumber++;
+      if (this.specialtySelect) filterNumber++;
+      return filterNumber;
+    }
+  },
   methods: {
     clearFilters() {
       this.provinceSelect = null;
@@ -469,5 +482,15 @@ export default {
 <style scoped>
 .btn {
   text-transform: none;
+}
+.numberCircle {
+  border-radius: 50%;
+  width: 25px;
+  height: 25px;
+  padding: 3px;
+
+  background: #fff;
+  color: #537da5;
+  text-align: center;
 }
 </style>
