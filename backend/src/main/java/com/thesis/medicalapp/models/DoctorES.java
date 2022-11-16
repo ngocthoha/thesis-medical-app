@@ -19,7 +19,7 @@ public class DoctorES {
     private String name;
     private String imageUrl;
     private String level;
-    private String price;
+    private Integer price;
     private String specialty;
     private Hospital hospital;
 }

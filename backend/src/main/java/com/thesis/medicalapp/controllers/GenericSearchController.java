@@ -31,9 +31,13 @@ public class GenericSearchController {
         private List<HospitalServiceES> services = new ArrayList<>();
         private List<DoctorES> doctors = new ArrayList<>();
     }
-
+    @Data
+    public static class ESSearchRequest {
+        private String value;
+    }
     @PostMapping("")
-    public ResponseEntity<Object> search(@RequestParam String value) {
+    public ResponseEntity<Object> search(@RequestBody ESSearchRequest esSearchRequest) {
+        String value = esSearchRequest.getValue();
         Page<HospitalES> pageHospital = hospitalESService.search(value);
         Page<HospitalServiceES> pageService = serviceESService.search(value);
         Page<DoctorES> pageDoctors = doctorESService.search(value);

@@ -76,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(POST, "/api/payment/momo/verify").permitAll()
                 .antMatchers(GET, "/api/questions/**").permitAll()
                 .antMatchers(GET, "/api/favorites/**").permitAll()
+                .antMatchers(POST, "/api/generic-search").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

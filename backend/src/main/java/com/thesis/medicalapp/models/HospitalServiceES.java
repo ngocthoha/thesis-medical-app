@@ -18,7 +18,7 @@ public class HospitalServiceES {
     private String id;
     private String name;
     private String info;
-    private String price;
+    private Integer price;
     private String imageUrl;
     private Hospital hospital;
 }

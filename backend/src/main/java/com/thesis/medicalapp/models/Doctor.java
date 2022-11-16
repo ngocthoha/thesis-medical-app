@@ -34,9 +34,9 @@ public class Doctor extends User implements Serializable {
     private String bio;
     private Integer registrationNumber = 0;
     private Double favorite = 0.0;
-    private String price;
+    private Integer price;
 
-    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  SpecialtyType specialty, String level, String bio, String price, Hospital hospital, Double favorite) {
+    public Doctor(String id, String username, String phone, String password, Boolean enabled, String imageUrl, Collection<Role> roles, String name, Gender gender, Date dob, String email,  SpecialtyType specialty, String level, String bio, Integer price, Hospital hospital, Double favorite) {
         super(id, username, phone, password, enabled, imageUrl, roles);
         this.name = name;
         this.gender = gender;

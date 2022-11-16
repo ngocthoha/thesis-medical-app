@@ -45,6 +45,6 @@ public class DoctorESServiceImpl implements DoctorESService {
 
     @Override
     public Page<DoctorES> search(String name) {
-        return doctorESRepository.findByName(name, PageRequest.of(0, 10));
+        return doctorESRepository.findByName(name, PageRequest.of(0, 8));
     }
 }

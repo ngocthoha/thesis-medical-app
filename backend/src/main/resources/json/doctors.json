@@ -1,0 +1,17 @@
+[
+  {
+    "username": "doctor1",
+    "phone": "",
+    "password": "1234",
+    "imageUrl": null,
+    "name": "Doctor 1",
+    "gender": "MALE",
+    "dob": "2022-11-06",
+    "email": "a@gmail.com",
+    "specialty": "CHUAN_DOAN_HINH_ANH",
+    "level": "CKII",
+    "hospitalId": "e2940ab0-e2f7-4887-98d4-b04bf2b32f3b",
+    "price": "10000",
+    "bio": ""
+  }
+]

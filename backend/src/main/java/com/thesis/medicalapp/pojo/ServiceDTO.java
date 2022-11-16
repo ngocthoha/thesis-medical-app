@@ -17,7 +17,7 @@ public class ServiceDTO {
     private String name;
     private String info;
     private Integer registrationNumber;
-    private String price;
+    private Integer price;
     private String specialty;
     private HospitalDTO hospital;
     private String imageUrl;

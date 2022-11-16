@@ -251,6 +251,7 @@
                 :offset-y="true"
                 v-model="show_search_menu"
                 allow-overflow
+                content-class="menu-content"
               >
                 <template v-slot:activator="{}">
                   <v-card
@@ -263,7 +264,7 @@
                       full-width
                       solo
                       flat
-                      placeholder="Tìm kiếm triệu chứng, bệnh viện, bác sĩ, ..."
+                      placeholder="Tìm kiếm triệu chứng, bệnh viện, phòng khám, bác sĩ, ..."
                       hide-details=""
                     ></v-text-field>
 
@@ -299,16 +300,49 @@
                 </template>
                 <!-- search result -->
                 <v-card class="d-flex flex-column pa-3" width="100%">
+                  <div class="d-flex flex-column" v-if="!showSearchResults">
+                    <v-card
+                      width="100%"
+                      class="d-flex justify-center"
+                      elevation="0"
+                      style="background: none"
+                    >
+                      <v-img
+                        class="d-flex"
+                        src="@/assets/img/user/profile/lookingNotFound.png"
+                        width="183px"
+                        height="186px"
+                        contain
+                      ></v-img>
+                    </v-card>
+                    <p
+                      class="font-weight-bold ml-8 d-flex justify-center"
+                      style="font-size: 20px"
+                    >
+                      Không có kết quả tìm kiếm
+                    </p>
+                    <p
+                      class="ml-8 d-flex justify-center"
+                      style="color: #667085"
+                    >
+                      Xin lỗi chúng tôi không tìm thấy kết quả phù hợp với bạn.
+                    </p>
+                  </div>
                   <!-- hospital -->
-                  <v-card class="d-flex flex-column" elevation="0" width="100%">
+                  <v-card
+                    v-if="hospitals.length"
+                    class="d-flex flex-column"
+                    elevation="0"
+                    width="100%"
+                  >
                     <v-card
                       class="d-flex flex-row justify-center align-center"
                       elevation="0"
                     >
                       <v-card width="500" elevation="0">
                         <p
-                          class="font-weight-bold justify-center ma-0"
-                          style="font-size:20px"
+                          class="font-weight-bold"
+                          style="color: #667085; font-size:20px; margin: 0"
                         >
                           Cơ sở y tế
                         </p>
@@ -318,8 +352,14 @@
                         elevation="0"
                         class="d-flex justify-end"
                       >
-                        <v-btn text class="btn text-body-2" color="#537DA5"
-                          >Xem thêm</v-btn
+                        <v-btn
+                          text
+                          class="btn text-body-2"
+                          color="#537DA5"
+                          @click="$router.push('/hospital-appointment/')"
+                          >Xem thêm<v-icon class="ml-2" small color="#537da5"
+                            >mdi-arrow-right</v-icon
+                          ></v-btn
                         >
                       </v-card>
                     </v-card>
@@ -331,8 +371,8 @@
                         elevation="0"
                       >
                         <v-card
-                          v-for="n in 4"
-                          :key="n"
+                          v-for="(hospital, iHospital) in hospitals"
+                          :key="iHospital"
                           width="500"
                           height="150"
                           class="d-flex flex-row pa-3 align-center"
@@ -340,19 +380,25 @@
                         >
                           <v-card>
                             <v-img
-                              height="80"
-                              width="80"
-                              src="@/assets/img/home/hospital_avt.png"
+                              style="width: 86px"
+                              :src="getImgOfHospital(hospital)"
                             ></v-img>
                           </v-card>
                           <div class="ml-2">
                             <p class="ma-0 font-weight-medium">
-                              Bệnh viện đại học y dược
+                              {{ hospital.name }}
                             </p>
-                            <p class="ma-0 text-body-2" style="color: #667085">
-                              08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh,
-                              Thành phố Hồ Chí Minh
-                            </p>
+                            <div class="d-flex">
+                              <v-icon
+                                class="align-self-start mr-2"
+                                medium
+                                color="#537da5"
+                                >mdi-map-marker-outline</v-icon
+                              >
+                              <p class="text-body-2 mb-3">
+                                {{ get_hospital_address(hospital) }}
+                              </p>
+                            </div>
                           </div>
                         </v-card>
                       </v-card>
@@ -363,42 +409,70 @@
                       class="d-flex flex-column"
                       width="500"
                       elevation="0"
+                      v-if="doctors.length"
                     >
                       <div
                         class="d-flex flex-row justify-space-between align-center"
                       >
-                        <p class="font-weight-bold ma-0" style="font-size:20px">
+                        <p
+                          class="font-weight-bold"
+                          style="color: #667085; font-size:20px; margin: 0"
+                        >
                           Bác sĩ
                         </p>
-                        <v-btn text class="btn text-body-2" color="#537DA5"
-                          >Xem thêm</v-btn
+                        <v-btn
+                          text
+                          class="btn text-body-2"
+                          color="#537DA5"
+                          @click="$router.push('/doctor-appointment/')"
+                          >Xem thêm<v-icon class="ml-2" small color="#537da5"
+                            >mdi-arrow-right</v-icon
+                          ></v-btn
                         >
                       </div>
 
                       <v-card
-                        v-for="n in 4"
-                        :key="n"
+                        v-for="(doctor, iDoctor) in doctors"
+                        :key="iDoctor"
                         class="pa-3 mb-3 d-flex flex-row align-center"
                         width="100%"
                         elevation="0"
                       >
-                        <v-card>
-                          <v-img
-                            height="80"
-                            width="80"
-                            src="@/assets/img/home/hospital_avt.png"
-                          ></v-img>
-                        </v-card>
+                        <v-avatar size="86" class="align-self-start">
+                          <v-img :src="getImgOfDoctor(doctor)"></v-img>
+                        </v-avatar>
+
                         <div class="ml-2">
                           <p class="ma-0 font-weight-medium">
-                            Nguyên Hồng Xuân
+                            {{ doctor.level }}. {{ doctor.name }}
                           </p>
-                          <p class="ma-0  text-body-2" style="color: #667085">
-                            Bệnh viện đại học y dược
-                          </p>
-                          <p class="ma-0  text-body-2" style="color: #537DA5">
-                            Chuẩn đoán hình ảnh
-                          </p>
+                          <div class="d-flex">
+                            <v-icon small color="#537da5">mdi-domain</v-icon>
+                            <p
+                              class="ma-0  text-body-2 ml-2"
+                              style="color: #667085"
+                            >
+                              {{ doctor.hospital.name }}
+                            </p>
+                          </div>
+                          <v-card
+                            class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
+                            elevation="0"
+                            color="#F9FAFB"
+                            dark
+                            style="border: 1px solid #d0d5dd; color: #667085; width: fit-content"
+                          >
+                            {{ doctor.specialty }}</v-card
+                          >
+                          <div class="d-flex flex-row align-center mt-1">
+                            <p style="font-size: 90%">Giá khám:</p>
+                            <p
+                              class="ml-3 font-weight-bold"
+                              style="color: #537da5"
+                            >
+                              {{ doctor.price }} đ
+                            </p>
+                          </div>
                         </div>
                       </v-card>
                     </v-card>
@@ -406,40 +480,58 @@
                       class="d-flex flex-column"
                       width="500"
                       elevation="0"
+                      v-if="services.length"
                     >
                       <div
                         class="d-flex flex-row justify-space-between align-center"
                       >
-                        <p class="font-weight-bold ma-0" style="font-size:20px">
+                        <p
+                          class="font-weight-bold"
+                          style="color: #667085; font-size:20px; margin: 0"
+                        >
                           Dịch vụ
                         </p>
-                        <v-btn text class="btn text-body-2" color="#537DA5"
-                          >Xem thêm</v-btn
+                        <v-btn
+                          text
+                          class="btn text-body-2"
+                          color="#537DA5"
+                          @click="$router.push('/service-appointment/')"
+                          >Xem thêm<v-icon class="ml-2" small color="#537da5"
+                            >mdi-arrow-right</v-icon
+                          ></v-btn
                         >
                       </div>
                       <v-card
-                        v-for="n in 4"
-                        :key="n"
+                        v-for="(service, iService) in services"
+                        :key="iService"
                         class="pa-3 mb-3 d-flex flex-row align-center"
                         width="100%"
                         elevation="0"
                       >
                         <v-card>
                           <v-img
-                            height="80"
-                            width="80"
-                            src="@/assets/img/home/hospital_avt.png"
+                            style="width: 86px"
+                            :src="getImgOfService(service)"
                           ></v-img>
                         </v-card>
                         <div class="ml-2">
                           <p class="ma-0 font-weight-medium">
-                            Xét nghiệm gan
+                            {{ service.name }}
                           </p>
-                          <p class="ma-0  text-body-2" style="color: #667085">
-                            Bệnh viện đại học y dược
-                          </p>
-                          <p class="ma-0  text-body-2" style="color: #537DA5">
-                            100.000VND
+                          <div class="d-flex">
+                            <v-icon small color="#537da5">mdi-domain</v-icon>
+                            <p
+                              class="ma-0  text-body-2 ml-2"
+                              style="color: #667085"
+                            >
+                              {{ service.hospital.name }}
+                            </p>
+                          </div>
+                          <p
+                            class="font-weight-bold text-body-2"
+                            style="color: #537da5"
+                          >
+                            {{ service.price }} đ
                           </p>
                         </div>
                       </v-card>
@@ -509,6 +601,7 @@
                   elevation="0"
                   color="#FCFCFD"
                   :style="{ color: '#667085' }"
+                  @click="$router.push('/service-appointment/')"
                   >Xem tất cả
                   <v-icon class="ml-2" small color="#537da5"
                     >mdi-arrow-right</v-icon
@@ -732,6 +825,7 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data: () => ({
     search: "",
@@ -892,10 +986,29 @@ export default {
         img: require("@/assets/img/home/Tim.svg"),
         title: "Tim mạch"
       }
-    ]
+    ],
+    hospitals: [],
+    doctors: [],
+    services: []
   }),
-
+  watch: {
+    search: {
+      handler: _.debounce(function() {
+        this.getSearchResults();
+      }, 400)
+    }
+  },
   methods: {
+    async getSearchResults() {
+      const params = {
+        value: this.search
+      };
+      const res = await this.axios.post(`${url}/api/generic-search`, params);
+      this.services = res.data.results.services;
+      this.doctors = res.data.results.doctors;
+      this.hospitals = res.data.results.hospitals;
+      this.show_search_menu = true;
+    },
     login() {
       this.$router.push({ name: "Đăng nhập" });
     },
@@ -907,9 +1020,70 @@ export default {
     },
     getpage(name) {
       this.$router.push({ name: name });
+    },
+    get_hospital_address(hospital) {
+      let address_str = "";
+      if (hospital.address.address != null) {
+        if (address_str.length == 0) {
+          address_str = hospital.address.address;
+        }
+      }
+      if (hospital.address.ward != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.ward
+            : address_str + ", " + hospital.address.ward;
+      }
+      if (hospital.address.district != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.district
+            : address_str + ", " + hospital.address.district;
+      }
+      if (hospital.address.province != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.province
+            : address_str + ", " + hospital.address.province;
+      }
+
+      if (hospital.address.country != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.country
+            : address_str + ", " + hospital.address.country;
+      }
+      return address_str;
+    },
+
+    getImgOfHospital(hospital) {
+      if (hospital.imageUrl != null) {
+        return hospital.imageUrl;
+      } else {
+        return require("@/assets/img/home/hospital_avt.png");
+      }
+    },
+    getImgOfService(service) {
+      if (service.imageUrl != null) {
+        return service.imageUrl;
+      } else {
+        return require("@/assets/img/home/service_avt.png");
+      }
+    },
+    getImgOfDoctor(doctor) {
+      if (doctor.imageUrl != null) {
+        return doctor.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
+      }
     }
   },
   computed: {
+    showSearchResults() {
+      return (
+        this.doctors.length || this.hospitals.length || this.services.length
+      );
+    },
     columns() {
       if (this.$vuetify.breakpoint.xl) {
         return 6;
@@ -941,5 +1115,8 @@ export default {
 <style scoped>
 .btn {
   text-transform: none;
+}
+.menu-content {
+  margin-top: 20px;
 }
 </style>

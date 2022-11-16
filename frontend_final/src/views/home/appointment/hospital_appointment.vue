@@ -164,12 +164,12 @@
                       <p class="text-body-2 mb-2 font-weight-bold">
                         {{ hospital.name }}
                       </p>
-                      <div class="d-flex flex-row">
+                      <div class="d-flex">
                         <v-icon
-                          class="align-self-start mr-3"
+                          class="align-self-start mr-2"
                           size="24"
                           color="#537da5"
-                          >mdi-map-marker-radius-outline</v-icon
+                          >mdi-map-marker-outline</v-icon
                         >
                         <p class="text-body-2 mb-3">
                           {{ get_hospital_address(hospital) }}

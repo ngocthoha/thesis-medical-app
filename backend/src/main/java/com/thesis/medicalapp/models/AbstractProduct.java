@@ -9,5 +9,5 @@ import javax.persistence.MappedSuperclass;
 @Data
 @MappedSuperclass
 public abstract class AbstractProduct extends AbstractFavorite {
-    private String price;
+    private Integer price;
 }

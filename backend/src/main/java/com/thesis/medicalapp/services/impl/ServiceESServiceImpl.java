@@ -43,6 +43,6 @@ public class ServiceESServiceImpl implements ServiceESService {
 
     @Override
     public Page<HospitalServiceES> search(String name) {
-        return serviceESRepository.findByName(name, PageRequest.of(0, 10));
+        return serviceESRepository.findByName(name, PageRequest.of(0, 8));
     }
 }

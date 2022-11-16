@@ -99,7 +99,7 @@
                   <div class="d-flex flex-row justify-space-between">
                     <v-card class="d-flex flex-row" width="45%" elevation="0">
                       <v-icon class="align-self-start" size="24" color="#537da5"
-                        >mdi-map-marker-radius-outline</v-icon
+                        >mdi-map-marker-outline</v-icon
                       >
                       <v-card class="ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-medium">
@@ -208,7 +208,7 @@
           <!-- location -->
           <v-card class="d-flex flex-row" elevation="0">
             <v-icon class="align-self-start" size="24" color="#537da5"
-              >mdi-map-marker-radius-outline</v-icon
+              >mdi-map-marker-outline</v-icon
             >
             <v-card class="ml-3" elevation="0">
               <p
@@ -428,21 +428,21 @@ export default {
         "09:00 - 09:30",
         "10:00 - 10:30",
         "11:00 - 11:30",
-        "12:00 - 12:30",
+        "12:00 - 12:30"
       ],
       affternoon_time: [
         "13:00 - 13:30",
         "14:00 - 14:30",
         "15:00 - 15:30",
-        "16:00 - 16:30",
-      ],
+        "16:00 - 16:30"
+      ]
     };
   },
   methods: {
     submit_select_time() {
       this.$router
         .push({ name: "Điền thông tin đặt lịch dịch vụ" })
-        .catch((error) => {
+        .catch(error => {
           if (error == null) {
             return;
           }
@@ -450,8 +450,8 @@ export default {
             throw error;
           }
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

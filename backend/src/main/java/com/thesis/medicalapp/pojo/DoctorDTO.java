@@ -19,7 +19,7 @@ public class DoctorDTO {
     private String level;
     private String bio;
     private Integer registrationNumber;
-    private String price;
+    private Integer price;
     private String imageUrl;
     private Double favorite;
 

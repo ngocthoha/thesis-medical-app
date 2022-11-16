@@ -19,7 +19,7 @@ public class ServiceRequest {
     private String name;
     private String info;
     private Integer registrationNumber;
-    private String price;
+    private Integer price;
     @NotNull
     private SpecialtyType specialty;
     @NotEmpty

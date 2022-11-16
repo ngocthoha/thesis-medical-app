@@ -24,7 +24,7 @@ public class UserDoctorDTO {
     private String bio;
     private Integer registrationNumber;
     private Double favorite;
-    private String price;
+    private Integer price;
     private String imageUrl;
     private HospitalDTO hospital;
 

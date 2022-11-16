@@ -1,9 +1,12 @@
 package com.thesis.medicalapp;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thesis.medicalapp.config.ESConfig;
 import com.thesis.medicalapp.indices.Indices;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.models.HospitalService;
+import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.*;
 import org.modelmapper.ModelMapper;
@@ -22,6 +25,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -60,7 +65,8 @@ public class ThesisMedicalAppApplication {
             HospitalESService hospitalESService,
             DoctorESService doctorESService,
             ServiceRepository serviceRepository,
-            ServiceESService serviceESService
+            ServiceESService serviceESService,
+            com.thesis.medicalapp.services.HospitalService hospitalService
     ) {
         return args -> {
             // Remove all data in ES
@@ -99,7 +105,7 @@ public class ThesisMedicalAppApplication {
             service.setType(ScheduleType.ONLINE);
             service.setHospital(hospital1);
             service.setNumOfServicePerHour(2);
-            service.setPrice("100.000");
+            service.setPrice(100000);
             service.setName("Khám cơ xương khớp");
             service.setImageUrl("https://isofhcare-backup.s3-ap-southeast-1.amazonaws.com/images/20190927_121721_552975_tai-mui-hong-crop-1.max-1800x1800_e35067f6_29c0_47b2_bf9a_0149821990b6.jpg");
             service.setRegistrationNumber(0);
@@ -111,7 +117,7 @@ public class ThesisMedicalAppApplication {
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
-            User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, null, new ArrayList<>(), "Đinh Ngọc Sơn", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS", bio, "100.000", hospital, 0.0);
+            User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, "https://znews-photo.zingcdn.me/w660/Uploaded/ngogtn/2022_03_30/yoo_yeon_seok_3_7704_1629893125.jpeg", new ArrayList<>(), "Đinh Ngọc Sơn", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS.BS", bio, 100000, hospital, 0.0);
             User userEntity = userService.saveUser(user);
             userService.saveUser(admin);
 
@@ -136,6 +142,19 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
             profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc", address1, "0326185289", "email@gmail.com", new Date(), "Developer", "038200008299", "032288997", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "relation ship with patient", null, userEntity));
+            // init data json
+            ObjectMapper mapper = new ObjectMapper();
+            TypeReference<List<HospitalDTO>> typeReference = new TypeReference<List<HospitalDTO>>(){};
+            InputStream inputStream = TypeReference.class.getResourceAsStream("/json/hospitals.json");
+            try {
+                List<HospitalDTO> hospitals = mapper.readValue(inputStream,typeReference);
+                for (HospitalDTO hospitalDTO : hospitals) {
+                    Hospital hospitalJson = hospitalService.saveHospital(hospitalDTO);
+                    hospitalESService.save(hospitalJson);
+                }
+            } catch (IOException e){
+                System.out.println("Unable to save hospital: " + e.getMessage());
+            }
         };
     }
     @GetMapping

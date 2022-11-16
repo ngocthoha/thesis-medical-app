@@ -16,7 +16,7 @@
               </p>
               <div class="d-flex flex-row">
                 <v-icon class="align-self-start mr-3" size="24" color="#537da5"
-                  >mdi-map-marker-radius-outline</v-icon
+                  >mdi-map-marker-outline</v-icon
                 >
                 <p class="text-body-2 mb-3">
                   {{ this.get_hospital_address(this.hospital_info) }}
@@ -168,7 +168,7 @@
                           class="align-self-start"
                           size="24"
                           color="#537da5"
-                          >mdi-map-marker-radius-outline</v-icon
+                          >mdi-map-marker-outline</v-icon
                         >
                         <v-card class="ml-3" elevation="0">
                           <p class="text-body-2 mb-2 font-weight-medium">
@@ -275,9 +275,15 @@
                             {{ service.name }}
                           </p>
 
-                          <p class="text-body-2 mb-3">
-                            {{ hospital_info.name }}
-                          </p>
+                          <div class="d-flex">
+                            <v-icon small>mdi-domain</v-icon>
+                            <p
+                              class="ma-0  text-body-2 ml-2"
+                              style="color: #667085"
+                            >
+                              {{ service.hospital.name }}
+                            </p>
+                          </div>
 
                           <div
                             class="d-flex flex-row align-center justify-space-between"
@@ -376,23 +382,27 @@
                     >
                       <div class="d-flex flex-row">
                         <v-avatar size="64" class="align-self-start">
-                          <v-img
-                            src="@/assets/img/user/profile/avatar1.svg"
-                          ></v-img>
+                          <v-img :src="getImgOfDoctor(doctor)"></v-img>
                         </v-avatar>
                         <v-card class="d-flex flex-column ml-3" elevation="0">
                           <p class="text-body-2 mb-2 font-weight-bold">
                             {{ doctor.level }}. {{ doctor.name }}
                           </p>
-                          <p class="text-body-2 mb-3">
-                            {{ doctor.hospital.name }}
-                          </p>
+                          <div class="d-flex">
+                            <v-icon small>mdi-domain</v-icon>
+                            <p
+                              class="ma-0  text-body-2 ml-2"
+                              style="color: #667085"
+                            >
+                              {{ doctor.hospital.name }}
+                            </p>
+                          </div>
                           <v-card
                             class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
                             elevation="0"
                             color="#F9FAFB"
                             dark
-                            style="border: 1px solid #d0d5dd; color: #667085"
+                            style="border: 1px solid #d0d5dd; color: #667085; width: fit-content"
                           >
                             {{ doctor.specialty }}</v-card
                           >
@@ -649,6 +659,13 @@ export default {
         return service.imageUrl;
       } else {
         return require("@/assets/img/home/service_avt.png");
+      }
+    },
+    getImgOfDoctor(doctor) {
+      if (doctor.imageUrl != null) {
+        return doctor.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
       }
     }
   }

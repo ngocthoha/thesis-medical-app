@@ -45,6 +45,6 @@ public class HospitalESServiceImpl implements HospitalESService {
 
     @Override
     public Page<HospitalES> search(String name) {
-        return hospitalESRepository.findByName(name, PageRequest.of(0, 10));
+        return hospitalESRepository.findByName(name, PageRequest.of(0, 8));
     }
 }

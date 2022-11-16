@@ -103,6 +103,7 @@
                   :min="min"
                   hide-details
                   class="align-center"
+                  step="100000"
                 >
                 </v-range-slider>
               </v-list-item>
@@ -184,7 +185,12 @@
                       {{ service.name }}
                     </p>
 
-                    <p class="text-body-2 mb-3">{{ service.hospital.name }}</p>
+                    <div class="d-flex">
+                      <v-icon small color="#537da5">mdi-domain</v-icon>
+                      <p class="ma-0  text-body-2 ml-2" style="color: #667085">
+                        {{ service.hospital.name }}
+                      </p>
+                    </div>
 
                     <div
                       class="d-flex flex-row align-center justify-space-between"

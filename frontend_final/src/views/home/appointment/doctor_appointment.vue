@@ -118,6 +118,7 @@
                   :min="min"
                   hide-details
                   class="align-center"
+                  step="100000"
                 >
                 </v-range-slider>
               </v-list-item>
@@ -201,17 +202,21 @@
                 >
                   <div class="d-flex flex-row">
                     <v-avatar size="64" class="align-self-start">
-                      <v-img
-                        src="@/assets/img/user/profile/avatar1.svg"
-                      ></v-img>
+                      <v-img :src="getImgOfDoctor(doctor)"></v-img>
                     </v-avatar>
                     <v-card class="d-flex flex-column ml-3" elevation="0">
                       <p class="text-body-2 mb-2 font-weight-bold">
                         {{ doctor.level }}. {{ doctor.name }}
                       </p>
-                      <p class="text-body-2 mb-3">
-                        {{ doctor.hospital.name }}
-                      </p>
+                      <div class="d-flex">
+                        <v-icon small color="#537da5">mdi-domain</v-icon>
+                        <p
+                          class="ma-0  text-body-2 ml-2"
+                          style="color: #667085"
+                        >
+                          {{ doctor.hospital.name }}
+                        </p>
+                      </div>
                       <v-card
                         class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
                         elevation="0"
@@ -489,6 +494,13 @@ export default {
       this.axios.get(`${url}/api/specialties`).then(res => {
         this.specialties = res.data.results;
       });
+    },
+    getImgOfDoctor(doctor) {
+      if (doctor.imageUrl != null) {
+        return doctor.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
+      }
     }
   }
 };
