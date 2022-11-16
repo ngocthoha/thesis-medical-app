@@ -21,3 +21,23 @@ export default {
   }
 };
 </script>
+<style>
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: rgba(189, 189, 189, 0.87);
+}
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+  background-color: rgb(241, 241, 241);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(168, 168, 168);
+}
+::-webkit-scrollbar-thumb:active {
+  background: rgb(120, 120, 120);
+}
+</style>

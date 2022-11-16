@@ -279,6 +279,7 @@
                 flat
                 dense
                 class="text-body-1"
+                disabled
               ></v-text-field>
             </v-card>
           </div>
@@ -373,6 +374,8 @@
               <v-select
                 :items="province_list"
                 v-model="profile.province"
+                item-text="text"
+                item-value="text"
                 solo
                 flat
                 dense
@@ -395,6 +398,8 @@
                 :items="town_list"
                 v-model="profile.district"
                 label=""
+                item-text="text"
+                item-value="text"
                 solo
                 flat
                 dense
@@ -626,6 +631,8 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
+
 export default {
   props: {
     type: {
@@ -661,19 +668,15 @@ export default {
         "Khác"
       ],
 
-      province_list: [
-        "Thủ đô Hà Nội",
-        "Thành phố Hồ Chí Minh",
-        "Bà Rịa-Vũng Tàu"
-      ],
+      province_list: [],
 
-      town_list: ["Quận 1", "Quận 2", "Quận 3"],
-      commune_list: ["Phường 1", "Phường 2", "Phường 3"],
+      town_list: [],
+      commune_list: [],
       profile: {
         id: "",
         firstName: "",
         lastName: "",
-        country: "",
+        country: "Việt Nam",
         province: "",
         district: "",
         ward: "",
@@ -710,12 +713,70 @@ export default {
     let year = Array.from({ length: 100 }, (_, i) => String(i + 1923));
     this.days.year = year.reverse();
     this.setDataForm();
+    this.getProvines();
+  },
+  watch: {
+    "profile.province": {
+      handler() {
+        this.getDistricts();
+      }
+    },
+    "profile.district": {
+      handler() {
+        this.getWards();
+      }
+    }
   },
   mounted() {
     // Emits on mount
     this.emitInterface();
   },
   methods: {
+    async getProvines() {
+      const res = await this.axios.get(
+        `https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`
+      );
+      let provinces = res.data?.data?.data;
+      for (let p of provinces) {
+        this.province_list.push({ text: p.name, value: p.code });
+      }
+    },
+    async getDistricts() {
+      let province = (this.province_list || []).find(
+        p => p.text == this.profile.province
+      );
+      const params = {
+        limit: -1,
+        provinceCode: province.value
+      };
+      const res = await this.axios.get(
+        `https://vn-public-apis.fpo.vn/districts/getByProvince`,
+        { params: params }
+      );
+      console.log(res);
+      let districts = res.data.data.data || [];
+      for (let p of districts) {
+        this.town_list.push({ text: p.name, value: p.code });
+      }
+    },
+    async getWards() {
+      let district = (this.town_list || []).find(
+        p => p.text == this.profile.district
+      );
+      const params = {
+        limit: -1,
+        districtCode: district.value
+      };
+      const res = await this.axios.get(
+        `https://vn-public-apis.fpo.vn/wards/getByDistrict`,
+        { params: params }
+      );
+      console.log(res);
+      let wards = res.data.data.data || [];
+      for (let p of wards) {
+        this.commune_list.push({ text: p.name, value: p.code });
+      }
+    },
     previewFiles(event) {
       let file_1 = event.target.files[0];
       let reader = new FileReader();

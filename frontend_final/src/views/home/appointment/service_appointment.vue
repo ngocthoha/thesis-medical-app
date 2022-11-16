@@ -51,19 +51,22 @@
             <v-divider></v-divider>
             <v-list>
               <v-list-item class="mt-3">
-                <v-select
+                <v-autocomplete
                   v-model="provinceSelect"
-                  :items="levels"
+                  :items="provinces"
                   prepend-inner-icon="mdi-map-marker"
+                  item-text="text"
+                  item-value="text"
                   label="Địa Điểm"
                   clearable
                   dense
                   outlined
                   :menu-props="{ offsetY: true }"
-                ></v-select>
+                  placeholder="Tìm địa điểm"
+                ></v-autocomplete>
               </v-list-item>
               <v-list-item>
-                <v-select
+                <v-autocomplete
                   v-model="hospitalSelect"
                   :items="hospitals"
                   prepend-inner-icon="mdi-domain"
@@ -72,7 +75,8 @@
                   dense
                   outlined
                   :menu-props="{ offsetY: true }"
-                ></v-select>
+                  placeholder="Tìm bện viện"
+                ></v-autocomplete>
               </v-list-item>
               <v-list-item>
                 <v-select
@@ -240,16 +244,19 @@ export default {
       specialties: [],
       hospitalSelect: null,
       specialtySelect: null,
+      provinceSelect: null,
       search: "",
       min: 0,
       max: 5000000,
-      range: [100000, 1000000]
+      range: [100000, 1000000],
+      provinces: []
     };
   },
   async created() {
-    await this.getListService();
+    this.getProvines();
     this.getHospitals();
     this.getSpecialties();
+    await this.getListService();
     this.loading = false;
   },
   watch: {
@@ -264,6 +271,11 @@ export default {
       }, 400)
     },
     specialtySelect: {
+      handler: _.debounce(function() {
+        this.getListService();
+      }, 400)
+    },
+    provinceSelect: {
       handler: _.debounce(function() {
         this.getListService();
       }, 400)
@@ -284,6 +296,20 @@ export default {
     }
   },
   methods: {
+    clearFilters() {
+      this.provinceSelect = null;
+      this.hospitalSelect = null;
+      this.specialtySelect = null;
+    },
+    async getProvines() {
+      const res = await this.axios.get(
+        `https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`
+      );
+      let provinces = res.data?.data?.data;
+      for (let p of provinces) {
+        this.provinces.push({ text: p.name, value: p.code });
+      }
+    },
     async getListService() {
       this.loading = true;
       let params = this._.cloneDeep(this.params);
@@ -303,7 +329,14 @@ export default {
           value: this.specialtySelect
         });
       }
-
+      if (this.provinceSelect) {
+        params.filters.push({
+          key: "hospital.address.province",
+          operator: "EQUAL_NESTED",
+          field_type: "STRING",
+          value: this.provinceSelect
+        });
+      }
       if (this.hospitalSelect) {
         params.filters.push({
           key: "hospital.id",

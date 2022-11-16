@@ -53,16 +53,19 @@
             <v-divider></v-divider>
             <v-list>
               <v-list-item class="mt-3">
-                <v-select
+                <v-autocomplete
                   v-model="provinceSelect"
-                  :items="levels"
+                  :items="provinces"
                   prepend-inner-icon="mdi-map-marker"
+                  item-text="text"
+                  item-value="text"
                   label="Địa Điểm"
                   clearable
                   dense
                   outlined
                   :menu-props="{ offsetY: true }"
-                ></v-select>
+                  placeholder="Tìm địa điểm"
+                ></v-autocomplete>
               </v-list-item>
               <v-list-item>
                 <v-select
@@ -351,10 +354,12 @@ export default {
       ],
       min: 0,
       max: 5000000,
-      range: [100000, 1000000]
+      range: [100000, 1000000],
+      provinces: []
     };
   },
   async created() {
+    this.getProvines();
     await this.getListDoctor();
     await this.getSpecialties();
     this.loading = false;
@@ -402,6 +407,15 @@ export default {
     }
   },
   methods: {
+    async getProvines() {
+      const res = await this.axios.get(
+        `https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`
+      );
+      let provinces = res.data?.data?.data;
+      for (let p of provinces) {
+        this.provinces.push({ text: p.name, value: p.code });
+      }
+    },
     clearFilters() {
       this.provinceSelect = null;
       this.levelSelect = null;
@@ -447,20 +461,20 @@ export default {
           value: this.genderSelect
         });
       }
+      if (this.provinceSelect) {
+        params.filters.push({
+          key: "hospital.address.province",
+          operator: "EQUAL_NESTED",
+          field_type: "STRING",
+          value: this.provinceSelect
+        });
+      }
       if (this.levelSelect) {
         params.filters.push({
           key: "level",
           operator: "EQUAL",
           field_type: "STRING",
           value: this.levelSelect
-        });
-      }
-      if (this.provinceSelect) {
-        params.filters.push({
-          key: "hospital.address.name",
-          operator: "EQUAL_NESTED",
-          field_type: "STRING",
-          value: this.provinceSelect
         });
       }
       params.page = this.page - 1;

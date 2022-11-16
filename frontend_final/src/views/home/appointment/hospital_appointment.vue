@@ -27,41 +27,74 @@
         height="76px"
         outlined
       >
-        <v-card elevation="0"
-          ><p
-            class="ma-0 font-weight-medium text-body-1 ml-3"
-            style="color: #667085"
-          >
-            Tìm tên bệnh viện, phòng khám
-          </p></v-card
-        >
+        <v-text-field
+          v-model="search"
+          full-width
+          solo
+          flat
+          placeholder="Tìm kiếm tên bệnh viện, phòng khám"
+          hide-details=""
+        ></v-text-field>
         <v-spacer />
         <v-divider inset vertical></v-divider>
-        <v-menu>
+
+        <v-menu :close-on-content-click="false">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
-              color="#667085"
+              color="#537DA5"
               elevation="0"
-              class="font-weight-medium text-body-1 btn"
-              text
+              class="white--text btn font-weight-medium text-body-1 mr-3 ml-3"
               v-bind="attrs"
               v-on="on"
-              width="135px"
-              height="44px"
             >
-              Địa điểm <v-icon right>mdi-chevron-down</v-icon>
+              <v-icon medium class="mr-2">mdi-filter</v-icon> Lọc
+              <div v-if="filterNumber != 0" class="ml-2 numberCircle">
+                {{ filterNumber }}
+              </div>
             </v-btn>
           </template>
+          <v-card width="300px">
+            <div class="d-flex justify-center" style="color: #537DA5">
+              <p class="font-weight-bold mt-3">Lọc Kết Quả</p>
+            </div>
+            <v-divider></v-divider>
+            <v-list>
+              <v-list-item class="mt-3">
+                <v-autocomplete
+                  v-model="provinceSelect"
+                  :items="provinces"
+                  prepend-inner-icon="mdi-map-marker"
+                  item-text="text"
+                  item-value="text"
+                  label="Địa Điểm"
+                  clearable
+                  dense
+                  outlined
+                  :menu-props="{ offsetY: true }"
+                  placeholder="Tìm địa điểm"
+                ></v-autocomplete>
+              </v-list-item>
+              <div class="d-flex justify-center mt-3">
+                <v-btn
+                  color="#537DA5"
+                  elevation="0"
+                  class="white--text btn font-weight-medium text-body-1"
+                  width="90%"
+                  style="margin: 0 auto"
+                  @click="clearFilters()"
+                >
+                  Bỏ lọc
+                </v-btn>
+              </div>
+            </v-list>
+          </v-card>
         </v-menu>
-        <v-btn
-          color="#537DA5"
-          elevation="0"
-          class="white--text btn font-weight-medium text-body-1 mr-3"
-          >Tìm kiếm
-          <v-img class="ml-3" src="@/assets/img/home/search_icon.svg"></v-img
-        ></v-btn>
       </v-card>
     </v-card>
+    <v-progress-linear
+      :indeterminate="loading"
+      :active="loading"
+    ></v-progress-linear>
     <v-card
       width="100%"
       min-height="500px"
@@ -74,6 +107,31 @@
         elevation="0"
         color="#FCFCFD"
       >
+        <div class="d-flex flex-column" v-if="!hospital_list.length">
+          <v-card
+            width="100%"
+            class="d-flex justify-center"
+            elevation="0"
+            style="background: none"
+          >
+            <v-img
+              class="d-flex"
+              src="@/assets/img/user/profile/lookingNotFound.png"
+              width="183px"
+              height="186px"
+              contain
+            ></v-img>
+          </v-card>
+          <p
+            class="font-weight-bold ml-8 d-flex justify-center"
+            style="font-size: 20px"
+          >
+            Không có kết quả tìm kiếm
+          </p>
+          <p class="ml-8 d-flex justify-center" style="color: #667085">
+            Xin lỗi chúng tôi không tìm thấy kết quả phù hợp với bạn.
+          </p>
+        </div>
         <!-- list hospital -->
 
         <v-row :justify="hospital_list.length == 1 ? 'center' : ''">
@@ -199,8 +257,10 @@
 
 <script>
 export default {
-  created() {
-    this.get_hospital_list();
+  async created() {
+    this.getProvines();
+    await this.get_hospital_list();
+    this.loading = false;
   },
 
   data() {
@@ -214,7 +274,11 @@ export default {
         size: 8
       },
       page: 1,
-      totalPages: 0
+      totalPages: 0,
+      provinceSelect: null,
+      search: "",
+      loading: false,
+      provinces: []
     };
   },
   watch: {
@@ -222,9 +286,38 @@ export default {
       handler() {
         this.get_hospital_list();
       }
+    },
+    search: {
+      handler: _.debounce(function() {
+        this.get_hospital_list();
+      }, 400)
+    },
+    provinceSelect: {
+      handler: _.debounce(function() {
+        this.get_hospital_list();
+      }, 400)
+    }
+  },
+  computed: {
+    filterNumber() {
+      let filterNumber = 0;
+      if (this.provinceSelect) filterNumber++;
+      return filterNumber;
     }
   },
   methods: {
+    clearFilters() {
+      this.provinceSelect = null;
+    },
+    async getProvines() {
+      const res = await this.axios.get(
+        `https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`
+      );
+      let provinces = res.data?.data?.data;
+      for (let p of provinces) {
+        this.provinces.push({ text: p.name, value: p.code });
+      }
+    },
     async moveToInfo(hospital) {
       await this.$store.dispatch("hospital/set_hospital_select_info", hospital);
       this.$router
@@ -240,7 +333,24 @@ export default {
     },
 
     async get_hospital_list() {
+      this.loading = true;
       let params = this._.cloneDeep(this.params);
+      if (this.search) {
+        params.filters.push({
+          key: "name",
+          operator: "LIKE",
+          field_type: "STRING",
+          value: this.search
+        });
+      }
+      if (this.provinceSelect) {
+        params.filters.push({
+          key: "address.province",
+          operator: "EQUAL_NESTED",
+          field_type: "STRING",
+          value: this.provinceSelect
+        });
+      }
       params.page = this.page - 1;
       let res = await this.$store.dispatch(
         "hospital/read_all_hospital",
@@ -249,6 +359,7 @@ export default {
       this.totalPages = res.meta?.totalPages;
       let hospital_all_data = this.$store.getters["hospital/hospital_all_data"];
       this.hospital_list = hospital_all_data;
+      this.loading = false;
     },
 
     get_hospital_address(hospital) {

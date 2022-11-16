@@ -259,10 +259,11 @@
                     elevation="0"
                   >
                     <v-text-field
+                      v-model="search"
                       full-width
                       solo
                       flat
-                      placeholder="Tìm kiếm"
+                      placeholder="Tìm kiếm triệu chứng, bệnh viện, bác sĩ, ..."
                       hide-details=""
                     ></v-text-field>
 
@@ -733,6 +734,7 @@
 <script>
 export default {
   data: () => ({
+    search: "",
     show_search_menu: false,
     offset: true,
     items: [
