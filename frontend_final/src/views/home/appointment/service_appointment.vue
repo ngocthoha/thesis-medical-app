@@ -55,15 +55,18 @@
       </v-card>
       <v-row style="width: 720px;">
         <v-col cols="4">
-          <v-select
-            v-model="levelSelect"
-            :items="levels"
-            prepend-inner-icon="mdi-school"
-            label="Học Hàm/Học Vị"
-            clearable
-            dense
+          <v-autocomplete
+            v-model="hospitalSelect"
+            :items="hospitals"
+            item-text="text"
+            item-value="value"
             outlined
-          ></v-select>
+            dense
+            prepend-inner-icon="mdi-domain"
+            label="Bệnh viện"
+            placeholder="Tìm bệnh viện"
+            clearable
+          ></v-autocomplete>
         </v-col>
         <v-col cols="4">
           <v-select
@@ -94,6 +97,10 @@
         </v-col>
       </v-row>
     </v-card>
+    <v-progress-linear
+      :indeterminate="loading"
+      :active="loading"
+    ></v-progress-linear>
     <v-card
       width="100%"
       min-height="500px"
@@ -106,21 +113,32 @@
         elevation="0"
         color="#FCFCFD"
       >
-        <v-card
-          height="180"
-          class="d-flex flex-column align-center"
-          color="#FCFCFD"
-          elevation="0"
-        >
-          <p class="font-weight-bold text-body-1" style="color: #537da5">
-            Dịch vụ
+        <div class="d-flex flex-column" v-if="!listService.length">
+          <v-card
+            width="100%"
+            class="d-flex justify-center"
+            elevation="0"
+            style="background: none"
+          >
+            <v-img
+              class="d-flex"
+              src="@/assets/img/user/profile/lookingNotFound.png"
+              width="183px"
+              height="186px"
+              contain
+            ></v-img>
+          </v-card>
+          <p
+            class="font-weight-bold ml-8 d-flex justify-center"
+            style="font-size: 20px"
+          >
+            Không có kết quả tìm kiếm
           </p>
-          <p class="font-weight-bold" style="font-size: 40px">
-            Tất cả các dịch vụ
+          <p class="ml-8 d-flex justify-center" style="color: #667085">
+            Xin lỗi chúng tôi không tìm thấy kết quả phù hợp với bạn.
           </p>
-        </v-card>
+        </div>
         <!-- list service -->
-
         <v-row :justify="listService.length == 1 ? 'center' : ''">
           <v-col :md="6" v-for="(service, i) in listService" :key="i">
             <v-card class="d-flex flex-column pa-6" @click="moveToInfo">
@@ -145,7 +163,10 @@
                     <div
                       class="d-flex flex-row align-center justify-space-between"
                     >
-                      <p style="color: #537da5" class="ma-0">
+                      <p
+                        class="font-weight-bold text-body-2"
+                        style="color: #537da5"
+                      >
                         {{ service.price }} đ
                       </p>
 
@@ -179,6 +200,7 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data() {
     return {
@@ -190,27 +212,87 @@ export default {
         sorts: [],
         page: 0,
         size: 8
-      }
+      },
+      loading: false,
+      hospitals: [],
+      specialties: [],
+      hospitalSelect: null,
+      specialtySelect: null,
+      search: ""
     };
   },
   async created() {
     await this.getListService();
+    this.getHospitals();
+    this.getSpecialties();
+    this.loading = false;
   },
   watch: {
     page: {
       handler() {
         this.getListService();
       }
+    },
+    hospitalSelect: {
+      handler: _.debounce(function() {
+        this.getListService();
+      }, 400)
+    },
+    specialtySelect: {
+      handler: _.debounce(function() {
+        this.getListService();
+      }, 400)
+    },
+    search: {
+      handler: _.debounce(function() {
+        this.getListService();
+      }, 400)
     }
   },
   methods: {
     async getListService() {
-      const url = process.env.VUE_APP_ROOT_API;
+      this.loading = true;
       let params = this._.cloneDeep(this.params);
+      if (this.search) {
+        params.filters.push({
+          key: "name",
+          operator: "LIKE",
+          field_type: "STRING",
+          value: this.search
+        });
+      }
+      if (this.specialtySelect) {
+        params.filters.push({
+          key: "specialty",
+          operator: "EQUAL",
+          field_type: "SPECIALTY",
+          value: this.specialtySelect
+        });
+      }
+
+      if (this.hospitalSelect) {
+        params.filters.push({
+          key: "hospital.id",
+          operator: "EQUAL_NESTED",
+          field_type: "STRING",
+          value: this.hospitalSelect
+        });
+      }
       params.page = this.page - 1;
       const res = await this.axios.post(`${url}/api/services/search`, params);
+      this.loading = false;
       this.listService = res.data.results;
       this.totalPages = res.data?.meta?.totalPages;
+    },
+    async getHospitals() {
+      this.axios.get(`${url}/api/hospitals/list`).then(res => {
+        this.hospitals = res.data.results;
+      });
+    },
+    async getSpecialties() {
+      this.axios.get(`${url}/api/specialties`).then(res => {
+        this.specialties = res.data.results;
+      });
     },
     moveToInfo() {
       this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {

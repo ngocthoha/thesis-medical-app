@@ -51,6 +51,20 @@ public class AppointmentServiceImpl implements AppointmentService {
         }).collect(Collectors.toList());
         return appointmentDTOS;
     }
+
+    @Override
+    public List<AppointmentDTO> getAppointmentByUser() {
+        String username = Global.user.getUsername();
+        List<Appointment> appointments = appointmentRepository.findAllByProfile_User_Username(username)
+                .stream()
+                .collect(Collectors.toList());
+        List<AppointmentDTO> appointmentDTOS = appointments.stream().map(a -> {
+            AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
+            return appointmentDTO;
+        }).collect(Collectors.toList());
+        return appointmentDTOS;
+    }
+
     @Override
     public int updateAppointment(Appointment appointment) {
         try {

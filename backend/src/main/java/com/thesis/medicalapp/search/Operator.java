@@ -1,11 +1,10 @@
 package com.thesis.medicalapp.search;
 
+import com.thesis.medicalapp.models.Doctor;
+import com.thesis.medicalapp.models.Hospital;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,6 +16,21 @@ public enum Operator {
             Object value = request.getFieldType().parse(request.getValue().toString());
             Expression<?> key = root.get(request.getKey());
             return cb.and(cb.equal(key, value), predicate);
+        }
+    },
+
+    EQUAL_NESTED {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+            Object value = request.getFieldType().parse(request.getValue().toString());
+            String key = request.getKey();
+            String[] keys = key.split("\\.");
+            Path<String> nestedObject;
+            if (keys.length == 2) {
+                nestedObject = root.join(keys[0]).get(keys[1]);
+            } else {
+                nestedObject = root.join(keys[0]).join(keys[1]).get(keys[2]);
+            }
+            return cb.and(cb.equal(nestedObject, value), predicate);
         }
     },
 
