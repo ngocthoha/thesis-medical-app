@@ -52,10 +52,10 @@
 import ProfileForm from "./profileForm.vue";
 export default {
   props: {
-    profile: Object,
+    profile: Object
   },
   components: {
-    ProfileForm,
+    ProfileForm
   },
   methods: {
     cancleEditProfile() {
@@ -64,11 +64,11 @@ export default {
     getChildInterface(childInterface) {
       this.$options.childInterface = childInterface;
     },
-    editProfile() {
-      this.$options.childInterface.editProfile();
+    async editProfile() {
+      await this.$options.childInterface.editProfile();
       this.$emit("editProfileClose");
-    },
-  },
+    }
+  }
 };
 </script>
 <style scoped>

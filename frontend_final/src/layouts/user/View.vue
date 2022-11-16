@@ -8,7 +8,7 @@
         class="d-flex justify-center py-12"
       >
         <div class="mr-12">
-          <v-card class="pb-4" elevation="4">
+          <v-card class="pb-4" elevation="1">
             <v-list nav>
               <v-list-item-group
                 v-model="selectedItem"
@@ -65,7 +65,9 @@ export default {
           icon: "mdi-file-document-multiple-outline",
           link: "/home/user/health-records"
         },
-        { text: "Lịch sử giao dịch", icon: "mdi-swap-horizontal" }
+        { text: "Lịch sử giao dịch", icon: "mdi-swap-horizontal" },
+        { text: "Câu hỏi của bạn", icon: "mdi-help-circle-outline" },
+        { text: "Thông báo", icon: "mdi-bell-outline" }
       ]
     };
   }
