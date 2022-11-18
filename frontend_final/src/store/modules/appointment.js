@@ -83,9 +83,9 @@ const actions = {
     });
   },
 
-  getAppointment_byProfileId({ commit }, params) {
-    return service.getAppointment_byProfileId(params).then(({ data }) => {
-      if (data.code == 1) {
+  get_appointment_by_user({ commit }, params) {
+    return service.get_appointment_by_user(params).then(({ data }) => {
+      if (data.code == 200) {
         commit("SET_USER_APPOINTMENT_LIST", data.results);
       } else {
         console.log("error");

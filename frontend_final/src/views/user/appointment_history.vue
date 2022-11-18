@@ -8,6 +8,7 @@
         ></appointment-list>
       </v-expand-transition>
       <appointment-detail
+        :appointment="appointment_detail"
         v-on:appointmentDetailClose="close_view_appointment_detail"
         v-if="visible_appointment_detail"
       ></appointment-detail>
@@ -31,7 +32,8 @@ export default {
   },
   methods: {
     view_appointment_detail(appointment) {
-      this.appointmentDetail = appointment;
+      this.appointment_detail = appointment;
+
       this.visible_appointment_detail = true;
     },
 

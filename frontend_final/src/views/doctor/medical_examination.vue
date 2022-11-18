@@ -805,8 +805,8 @@
 import axios from "axios";
 const url = process.env.VUE_APP_ROOT_API;
 export default {
-  created() {
-    this.all_appointment_list = this.get_appointment();
+  async created() {
+    await this.get_appointment();
     this.list_appointment = this.all_appointment_list;
   },
 
@@ -1108,7 +1108,7 @@ export default {
       });
     },
 
-    get_appointment() {
+    async get_appointment() {
       let token = this.$store.getters["auth/access_token"];
       let data = {
         date: "2022-11-06"
@@ -1117,8 +1117,13 @@ export default {
         token: token,
         data: data
       };
-      this.$store.dispatch("appointment/get_appointment_by_doctor", param);
-      return this.$store.getters["appointment/doctor_appointment_list"];
+      await this.$store.dispatch(
+        "appointment/get_appointment_by_doctor",
+        param
+      );
+      this.all_appointment_list = this.$store.getters[
+        "appointment/doctor_appointment_list"
+      ];
     },
 
     convert_date(time) {
