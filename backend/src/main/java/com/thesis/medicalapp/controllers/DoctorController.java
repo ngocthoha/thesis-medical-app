@@ -71,6 +71,7 @@ public class DoctorController {
         @NotBlank
         @NotEmpty
         private String hospitalId;
+        private String hospitalName;
         private String bio;
         @NotBlank
         @NotEmpty

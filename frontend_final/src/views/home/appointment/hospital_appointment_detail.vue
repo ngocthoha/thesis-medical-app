@@ -21,19 +21,27 @@
                 <p class="text-body-2 mb-3">
                   {{ this.get_hospital_address(this.hospital_info) }}
                 </p>
+                <a
+                  class="text-body-2 ml-3 text-decoration-underline font-italic"
+                  style="color: grey"
+                  @click="hospital_hour_dialog = true"
+                >
+                  Hiện chỉ đường
+                </a>
               </div>
-              <div class="d-flex flex-row mb-3">
+              <div class="d-flex flex-row mb-2">
                 <v-card
                   class="d-flex flex-row"
                   height="24"
+                  width="56"
                   color="#EEF2F6"
                   elevation="0"
                 >
-                  <v-icon color="#537DA5" class="align-self-start mr-3"
+                  <v-icon color="#537DA5" class="align-self-start mr-2"
                     >mdi-calendar-month-outline</v-icon
                   >
                   <p style="color: #537da5">
-                    {{ this.hospital_info.registrationNumber }}
+                    {{ hospital_info.registrationNumber }}
                   </p>
                 </v-card>
                 <v-card
@@ -43,11 +51,11 @@
                   color="#F9FAFB"
                   elevation="0"
                 >
-                  <v-icon color="#FFC107" class="align-self-start mr-3"
+                  <v-icon color="#FFC107" class="align-self-start mr-2"
                     >mdi-star</v-icon
                   >
                   <p style="color: #537da5">
-                    {{ this.hospital_info.favorite }}
+                    {{ hospital_info.favorite }}
                   </p>
                 </v-card>
               </div>
@@ -61,10 +69,11 @@
                 <p v-else class="text-body-2">Không có lịch làm việc</p>
 
                 <a
-                  class="text-body-2 ml-3 text-decoration-underline"
+                  class="text-body-2 ml-3 text-decoration-underline font-italic"
+                  style="color: grey"
                   @click="hospital_hour_dialog = true"
                 >
-                  (Xem lịch)
+                  Xem lịch
                 </a>
 
                 <v-dialog v-model="hospital_hour_dialog" width="300">
@@ -159,7 +168,7 @@
                 <!-- infomation tab -->
                 <v-tab-item :key="'tab-1'">
                   <v-card class="d-flex flex-column">
-                    <p class="text-body-1 mb-6">
+                    <p style="white-space: pre-line" class="text-body-1 mb-6">
                       {{ this.hospital_info.info }}
                     </p>
                     <div class="d-flex flex-row justify-space-between">
@@ -192,6 +201,7 @@
                     v-if="hospital_info && username"
                     :username="username"
                     :object="hospital_info"
+                    :objectType="'hospital'"
                     @reloadFavorite="reloadFavorite"
                     @setNumFavorite="numFavorite = $event"
                     :key="keyFavorite"
@@ -215,6 +225,7 @@
         </v-card>
         <!-- servive of hospital -->
         <v-card
+          v-if="listService.length"
           width="100%"
           min-height="500px"
           color="#FCFCFD"
@@ -275,8 +286,8 @@
                             {{ service.name }}
                           </p>
 
-                          <div class="d-flex">
-                            <v-icon small>mdi-domain</v-icon>
+                          <div class="d-flex mb-2">
+                            <v-icon small color="#537da5">mdi-domain</v-icon>
                             <p
                               class="ma-0  text-body-2 ml-2"
                               style="color: #667085"
@@ -388,8 +399,8 @@
                           <p class="text-body-2 mb-2 font-weight-bold">
                             {{ doctor.level }}. {{ doctor.name }}
                           </p>
-                          <div class="d-flex">
-                            <v-icon small>mdi-domain</v-icon>
+                          <div class="d-flex mb-2">
+                            <v-icon small color="#537da5">mdi-domain</v-icon>
                             <p
                               class="ma-0  text-body-2 ml-2"
                               style="color: #667085"
@@ -412,6 +423,7 @@
                         <v-card
                           class="d-flex flex-row"
                           height="24"
+                          width="56"
                           color="#EEF2F6"
                           elevation="0"
                         >
@@ -432,7 +444,9 @@
                           <v-icon color="#FFC107" class="align-self-start mr-2"
                             >mdi-star</v-icon
                           >
-                          <p style="color: #537da5">{{ doctor.favorite }}</p>
+                          <p style="color: #537da5">
+                            {{ doctor.favorite }}
+                          </p>
                         </v-card>
                       </div>
                     </v-card>

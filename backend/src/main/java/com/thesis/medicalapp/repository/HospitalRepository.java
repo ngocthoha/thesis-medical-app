@@ -17,4 +17,5 @@ public interface HospitalRepository extends JpaRepository<Hospital, String>, Jpa
 
     @Query(value = FIND_HOSPITALS, nativeQuery = true)
     List<Object[]> findAllForListing();
+    Hospital findByName(String name);
 }

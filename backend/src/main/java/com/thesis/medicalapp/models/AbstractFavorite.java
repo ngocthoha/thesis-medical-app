@@ -7,7 +7,7 @@ import javax.persistence.MappedSuperclass;
 
 @Data
 @MappedSuperclass
-public abstract class AbstractFavorite extends AuditLog{
+public abstract class AbstractFavorite extends AuditLog {
     private String name;
     private Integer registrationNumber;
     private Double favorite;

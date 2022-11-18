@@ -1,12 +1,12 @@
 package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.exception.ApiRequestException;
-import com.thesis.medicalapp.models.Favorite;
-import com.thesis.medicalapp.models.Hospital;
-import com.thesis.medicalapp.models.Profile;
-import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.HospitalDTO;
+import com.thesis.medicalapp.repository.DoctorRepository;
+import com.thesis.medicalapp.repository.FavoriteRepository;
+import com.thesis.medicalapp.repository.HospitalRepository;
 import com.thesis.medicalapp.repository.ProfileRepository;
 import com.thesis.medicalapp.search.*;
 import com.thesis.medicalapp.services.FavoriteService;
@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.OneToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -30,8 +31,12 @@ import java.util.Date;
 @RequiredArgsConstructor
 public class FavoriteController {
     private final FavoriteService favoriteService;
+    private final FavoriteRepository favoriteRepository;
     private final UserService userService;
     private final ProfileRepository profileRepository;
+    private final HospitalRepository hospitalRepository;
+    private final DoctorRepository doctorRepository;
+    private static final DecimalFormat df = new DecimalFormat("0.0");
 
     @Data
     public static class FavoriteRequest {
@@ -42,6 +47,7 @@ public class FavoriteController {
         private String username;
         @NotNull
         private String objectId;
+        private String objectType;
     }
 
     @PostMapping("")
@@ -49,15 +55,28 @@ public class FavoriteController {
         String username = favoriteRequest.getUsername();
         if (!userService.existsByUsername(username))
             throw new ApiRequestException("Không tìm thấy user!");
-
+        String objectId = favoriteRequest.getObjectId();
         Favorite favorite = new Favorite();
         favorite.setFavorite(favoriteRequest.getFavorite());
         favorite.setComment(favoriteRequest.getComment());
         favorite.setDate(new Date());
         Profile profile = profileRepository.findProfileByRelationshipAndUser_Username("Chủ tài khoản", username);
         favorite.setProfile(profile);
-        favorite.setObjectId(favoriteRequest.getObjectId());
+        favorite.setObjectId(objectId);
         Favorite favoriteRes = favoriteService.save(favorite);
+        if (favoriteRequest.getObjectType().equals("hospital")) {
+            Hospital hospital = hospitalRepository.findById(objectId).get();
+            Double favoriteCount = favoriteRepository.countFavoriteByObjectId(objectId);
+            hospital.setFavorite(Double.parseDouble(df.format(favoriteCount)));
+            hospitalRepository.save(hospital);
+        }
+        else if (favoriteRequest.getObjectType().equals("doctor")) {
+            Doctor doctor = doctorRepository.findById(objectId).get();
+            Double favoriteCount = favoriteRepository.countFavoriteByObjectId(objectId);
+            doctor.setFavorite(Double.parseDouble(df.format(favoriteCount)));
+            doctorRepository.save(doctor);
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(favoriteRes)
         );

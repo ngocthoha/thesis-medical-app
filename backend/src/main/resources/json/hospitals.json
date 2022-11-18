@@ -230,5 +230,34 @@
       "sundayTime": "7:00 - 17:00",
       "sundayTimeBreak": "12:00 - 13:00"
     }
+  },
+  {
+    "name": "Bệnh Viện VINMEC",
+    "address": {
+      "country": "Việt Nam",
+      "province": "Hồ Chí Minh",
+      "district": "Bình Thạnh",
+      "ward": "Phường 22",
+      "address": "208 Nguyễn Hữu Cảnh"
+    },
+    "info": "Vinmec là Hệ thống y tế hàn lâm do Vingroup - Tập đoàn kinh tế tư nhân hàng đầu Việt Nam đầu tư phát triển với sứ mệnh \"Chăm sóc bằng tài năng, y đức và sự thấu cảm\".\nKế thừa uy tín và chất lượng vượt trội của thương hiệu Y tế Vinmec, Bệnh viện Đa khoa Quốc tế Vinmec Central Park là bệnh viện thứ 3 trong hệ thống chính thức đi vào hoạt động. Với tổng nguồn vốn hơn 1.200 tỷ đồng, Vinmec Central Park được xây dựng trong khuôn viên có diện tích mặt bằng rộng 38.643 m2, với 7 tầng nổi, 3 tầng hầm, quy mô 178 giường, 16 chuyên khoa cùng một số trung tâm hỗ trợ chuyên ngành. Toàn bộ hệ thống hoạt động đều được đầu tư các trang thiết bị hiện đại, cao cấp nhất theo tiêu chuẩn quốc tế.",
+    "mapImageUrl": "https://isofhcare-backup.s3-ap-southeast-1.amazonaws.com/images/so-do-benh-vien-e-isofhcare-jpg_e44333b5_003d_4680_81bc_ae8998949166.png",
+    "imageUrl": "https://khamdinhkydanang.com/wp-content/uploads/2019/09/Vinmec-Nha-Trang-1024x614.jpg",
+    "hospitalHour": {
+      "mondayTime": "7:00 - 17:00",
+      "mondayTimeBreak": "12:00 - 13:00",
+      "tuesdayTime": "7:00 - 17:00",
+      "tuesdayTimeBreak": "12:00 - 13:00",
+      "wednesdayTime": "7:00 - 17:00",
+      "wednesdayTimeBreak": "12:00 - 13:00",
+      "thursdayTime": "7:00 - 17:00",
+      "thursdayTimeBreak": "12:00 - 13:00",
+      "fridayTime": "7:00 - 17:00",
+      "fridayTimeBreak": "12:00 - 13:00",
+      "saturdayTime": "7:00 - 17:00",
+      "saturdayTimeBreak": "12:00 - 13:00",
+      "sundayTime": "7:00 - 17:00",
+      "sundayTimeBreak": "12:00 - 13:00"
+    }
   }
 ]

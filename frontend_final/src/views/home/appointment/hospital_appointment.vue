@@ -243,6 +243,7 @@
         >
           <div class="text-center">
             <v-pagination
+              v-if="hospital_list.length"
               color="#537DA5"
               v-model="page"
               :length="totalPages"

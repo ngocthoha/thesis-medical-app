@@ -208,7 +208,7 @@
                       <p class="text-body-2 mb-2 font-weight-bold">
                         {{ doctor.level }}. {{ doctor.name }}
                       </p>
-                      <div class="d-flex">
+                      <div class="d-flex mb-2">
                         <v-icon small color="#537da5">mdi-domain</v-icon>
                         <p
                           class="ma-0  text-body-2 ml-2"

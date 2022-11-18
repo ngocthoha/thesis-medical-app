@@ -185,7 +185,7 @@
                       {{ service.name }}
                     </p>
 
-                    <div class="d-flex">
+                    <div class="d-flex mb-2">
                       <v-icon small color="#537da5">mdi-domain</v-icon>
                       <p class="ma-0  text-body-2 ml-2" style="color: #667085">
                         {{ service.hospital.name }}
@@ -197,7 +197,7 @@
                     >
                       <p
                         class="font-weight-bold text-body-2"
-                        style="color: #537da5"
+                        style="color: #537da5; margin: 0"
                       >
                         {{ service.price }} đ
                       </p>
@@ -219,6 +219,7 @@
         >
           <div class="text-center">
             <v-pagination
+              v-if="listService.length"
               color="#537DA5"
               v-model="page"
               :length="totalPages"

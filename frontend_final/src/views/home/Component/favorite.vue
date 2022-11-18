@@ -90,7 +90,8 @@ export default {
         favorite: 0,
         comment: "",
         username: this.username,
-        objectId: this.object?.id
+        objectId: this.object?.id,
+        objectType: this.objectType
       },
       listFavorite: [],
       params: {
@@ -163,7 +164,7 @@ export default {
       return `${profile.lastName} ${profile.firstName}`;
     }
   },
-  props: ["object", "username"]
+  props: ["object", "username", "objectType"]
 };
 </script>
 

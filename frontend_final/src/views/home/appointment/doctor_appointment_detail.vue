@@ -14,41 +14,18 @@
         <v-card class="d-flex flex-row pa-6" width="100%">
           <!-- avatar -->
           <v-avatar size="64" class="align-self-start">
-            <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+            <v-img :src="getImgOfDoctor(doctor_info)"></v-img>
           </v-avatar>
           <!-- detail -->
           <v-card class="d-flex flex-column ml-3" elevation="0">
             <p class="text-body-2 mb-2 font-weight-bold">
               {{ doctor_info.level }}. {{ doctor_info.name }}
             </p>
-            <p class="text-body-2 mb-3">{{ doctor_info.hospital.name }}</p>
-            <div class="d-flex flex-row mb-3">
-              <v-card
-                class="d-flex flex-row"
-                height="24"
-                width="56"
-                color="#EEF2F6"
-                elevation="0"
-              >
-                <v-icon color="#537DA5" class="align-self-start mr-2"
-                  >mdi-calendar-month-outline</v-icon
-                >
-                <p style="color: #537da5">
-                  {{ doctor_info.registrationNumber }}
-                </p>
-              </v-card>
-              <v-card
-                class="d-flex flex-row ml-1"
-                height="24"
-                width="56"
-                color="#F9FAFB"
-                elevation="0"
-              >
-                <v-icon color="#FFC107" class="align-self-start mr-2"
-                  >mdi-star</v-icon
-                >
-                <p style="color: #537da5">{{ doctor_info.favorite }}</p>
-              </v-card>
+            <div class="d-flex mb-2">
+              <v-icon small color="#537da5">mdi-domain</v-icon>
+              <p class="ma-0  text-body-2 ml-2" style="color: #667085">
+                {{ doctor_info.hospital.name }}
+              </p>
             </div>
             <v-card
               class="py-1 px-2 mr-2 font-weight-medium text-body-2 d-flex justify-center"
@@ -98,7 +75,7 @@
               <!-- infomation tab -->
               <v-tab-item :key="'tab-1'">
                 <v-card class="d-flex flex-column">
-                  <p class="text-body-1 mb-6">
+                  <p style="white-space: pre-line" class="text-body-1 mb-6">
                     {{ doctor_info.bio }}
                   </p>
                   <div class="d-flex flex-row justify-space-between">
@@ -128,6 +105,7 @@
                   v-if="doctor_info && username"
                   :username="username"
                   :object="doctor_info"
+                  :objectType="'doctor'"
                   @reloadFavorite="reloadFavorite"
                   @setNumFavorite="numFavorite = $event"
                   :key="keyFavorite"
@@ -575,6 +553,13 @@ export default {
     }
   },
   methods: {
+    getImgOfDoctor(doctor) {
+      if (doctor.imageUrl != null) {
+        return doctor.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
+      }
+    },
     reloadFavorite() {
       this.keyFavorite++;
     },

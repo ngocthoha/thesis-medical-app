@@ -25,6 +25,7 @@ public class ServiceRequest {
     @NotEmpty
     @NotNull
     private String hospitalId;
+    private String hospitalName;
     private String imageUrl;
     @NotNull
     private Integer numOfServicePerHour;

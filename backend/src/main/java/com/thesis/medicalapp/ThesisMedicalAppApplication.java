@@ -3,18 +3,23 @@ package com.thesis.medicalapp;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thesis.medicalapp.config.ESConfig;
+import com.thesis.medicalapp.controllers.DoctorController;
+import com.thesis.medicalapp.controllers.ServiceController;
 import com.thesis.medicalapp.indices.Indices;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.models.HospitalService;
+import com.thesis.medicalapp.payload.ServiceRequest;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.*;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.event.BeforeConvertCallback;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -32,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback;
 
 @EnableAsync
 @SpringBootApplication
@@ -39,6 +45,7 @@ import java.util.UUID;
 @EnableJpaAuditing
 @EnableScheduling
 @EnableJpaRepositories("com.thesis.medicalapp.repository")
+@Slf4j
 public class ThesisMedicalAppApplication {
     public static void main(String[] args) {
         SpringApplication.run(ThesisMedicalAppApplication.class, args);
@@ -66,7 +73,9 @@ public class ThesisMedicalAppApplication {
             DoctorESService doctorESService,
             ServiceRepository serviceRepository,
             ServiceESService serviceESService,
-            com.thesis.medicalapp.services.HospitalService hospitalService
+            com.thesis.medicalapp.services.HospitalService hospitalService,
+            DoctorController doctorController,
+            ServiceController serviceController
     ) {
         return args -> {
             // Remove all data in ES
@@ -82,6 +91,8 @@ public class ThesisMedicalAppApplication {
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
             userService.saveRole(new Role(null, "ROLE_DOCTOR"));
             Address address = new Address(null, "Việt Nam", "Hồ Chí Minh", "Quận 5", "Phường 11", "215 Hồng Bàng");
+            Address address2 = new Address("d43d408d-979c-49c2-8066-d7ee66db4ff9", "Việt Nam", "Hồ Chí Minh", "Quận 5", "Phường 11", "215 Hồng Bàng");
+            addressRepository.save(address2);
             Address address1 = addressRepository.save(address);
             String hospitalTime = "7:00 - 17:00";
             String hospitalBreak = "12:00 - 13:00";
@@ -144,17 +155,44 @@ public class ThesisMedicalAppApplication {
             profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc", address1, "0326185289", "email@gmail.com", new Date(), "Developer", "038200008299", "032288997", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "relation ship with patient", null, userEntity));
             // init data json
             ObjectMapper mapper = new ObjectMapper();
-            TypeReference<List<HospitalDTO>> typeReference = new TypeReference<List<HospitalDTO>>(){};
+            TypeReference<List<HospitalDTO>> typeReference = new TypeReference<>() {};
             InputStream inputStream = TypeReference.class.getResourceAsStream("/json/hospitals.json");
             try {
-                List<HospitalDTO> hospitals = mapper.readValue(inputStream,typeReference);
+                List<HospitalDTO> hospitals = mapper.readValue(inputStream, typeReference);
                 for (HospitalDTO hospitalDTO : hospitals) {
                     Hospital hospitalJson = hospitalService.saveHospital(hospitalDTO);
                     hospitalESService.save(hospitalJson);
                 }
-            } catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("Unable to save hospital: " + e.getMessage());
             }
+
+            TypeReference<List<DoctorController.DoctorCreateDTO>> typeReferenceDoctor = new TypeReference<>() {};
+            InputStream inputStreamDoctor = TypeReference.class.getResourceAsStream("/json/doctors.json");
+            try {
+                List<DoctorController.DoctorCreateDTO> doctorCreateDTOS = mapper.readValue(inputStreamDoctor, typeReferenceDoctor);
+                for (DoctorController.DoctorCreateDTO doctorCreateDTO : doctorCreateDTOS) {
+                    Hospital hospitalDoctor = hospitalRepository.findByName(doctorCreateDTO.getHospitalName());
+                    doctorCreateDTO.setHospitalId(hospitalDoctor.getId());
+                    doctorController.saveDoctor(doctorCreateDTO);
+                }
+            } catch (IOException e) {
+                System.out.println("Unable to save doctor: " + e.getMessage());
+            }
+
+            TypeReference<List<ServiceRequest>> typeReferenceService = new TypeReference<>() {};
+            InputStream inputStreamService = TypeReference.class.getResourceAsStream("/json/services.json");
+            try {
+                List<ServiceRequest> serviceRequests = mapper.readValue(inputStreamService, typeReferenceService);
+                for (ServiceRequest serviceRequest : serviceRequests) {
+                    Hospital hospitalDoctor = hospitalRepository.findByName(serviceRequest.getHospitalName());
+                    serviceRequest.setHospitalId(hospitalDoctor.getId());
+                    serviceController.saveHospitalService(serviceRequest);
+                }
+            } catch (IOException e) {
+                System.out.println("Unable to save service: " + e.getMessage());
+            }
+            log.info("Done init data.");
         };
     }
     @GetMapping
