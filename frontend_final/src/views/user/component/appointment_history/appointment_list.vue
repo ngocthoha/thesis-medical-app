@@ -19,8 +19,8 @@
           width="100%"
           height="120"
           class="d-flex flex-row mb-5"
-          v-for="n in 3"
-          :key="n"
+          v-for="appointment in appointment_list"
+          :key="appointment.id"
           elevation="1"
         >
           <v-card
@@ -31,13 +31,15 @@
             class="d-flex flex-column justify-center align-center"
           >
             <p class="ma-0 font-weight-bold text-body-1" style="color:#537DA5">
-              24/10/2022
+              {{ appointment.date }}
             </p>
-            <p class="ma-0 font-weight-medium text-body-2">11:00 - 12:00</p>
+            <p class="ma-0 font-weight-medium text-body-2">
+              {{ appointment.time }}
+            </p>
             <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: #667085"
-              v-if="n == 1"
+              v-if="appointment.status === 'PENDING'"
             >
               Chưa tiến hành
             </p>
@@ -45,17 +47,17 @@
             <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: #12B76A"
-              v-if="n == 2"
+              v-if="appointment.status === 'COMPLETE'"
             >
               Đã hoàn tất
             </p>
-            <p
+            <!-- <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: red"
               v-if="n == 3"
             >
               Đã hủy
-            </p>
+            </p> -->
           </v-card>
 
           <v-card class="d-flex flex-row align-center ml-3" elevation="0">
@@ -64,13 +66,13 @@
             </v-avatar>
             <div class="d-flex flex-column ml-3">
               <p class="ma-0 font-weight-bold text-body-1">
-                Nguyễn Duy Thanh
+                {{ appointment.profile.lastName }}
               </p>
               <p
                 class="ma-0 font-weight-normal text-body-2"
                 style="color: #667085"
               >
-                chủ tài khoản
+                {{ appointment.profile.firstName }}
               </p>
             </div>
           </v-card>
@@ -83,17 +85,9 @@
               elevation="0"
               color="#537DA5"
               class="white--text btn-not-transform font-weight-bold"
-              @click="view_appointment_detail({})"
+              @click="view_appointment_detail(appointment)"
               >Chi tiết</v-btn
             >
-
-            <!-- <v-card>Chưa khám</v-card>
-          <v-btn
-            elevation="0"
-            color="#537DA5"
-            class="white--text btn-not-transform font-weight-bold"
-            >Chi tiết</v-btn
-          > -->
           </v-card>
         </v-card>
       </v-card>
@@ -103,9 +97,28 @@
 
 <script>
 export default {
+  created() {
+    this.get_appointment_by_user();
+  },
+  data() {
+    return {
+      appointment_list: []
+    };
+  },
   methods: {
     view_appointment_detail(appointment) {
+      console.log(appointment);
       this.$emit("viewDetail", appointment);
+    },
+
+    async get_appointment_by_user() {
+      const params = {
+        token: this.$store.getters["auth/access_token"]
+      };
+      await this.$store.dispatch("appointment/get_appointment_by_user", params);
+      this.appointment_list = this.$store.getters[
+        "appointment/user_appointment_list"
+      ];
     }
   }
 };

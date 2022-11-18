@@ -83,8 +83,12 @@
               Người khám
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">Nguyễn Duy Thanh</p>
+          <p class="ma-0 font-weight-medium">
+            {{ this.appointment.profile.lastName }}
+            {{ this.appointment.profile.firstName }}
+          </p>
         </v-card>
+
         <v-card class="d-flex flex-row mb-3 align-center" elevation="0">
           <!-- label -->
           <v-card width="30%" elevation="0">
@@ -95,13 +99,17 @@
               Tình trạng
             </p></v-card
           >
-          <!-- <p
+          <p
             class="ma-0 font-weight-medium text-body-1 d-flex align-center"
             style="color: #667085"
+            v-if="this.appointment.status === 'PENDING'"
           >
             Chưa tiến hành
-          </p> -->
-          <div class="d-flex flex-row align-center">
+          </p>
+          <div
+            class="d-flex flex-row align-center"
+            v-if="this.appointment.status === 'COMPLETE'"
+          >
             <p
               class="ma-0 font-weight-medium text-body-1"
               style="color: #12B76A"
@@ -145,7 +153,7 @@
           >
           <v-card width="70%" elevation="0">
             <p class="ma-0 font-weight-medium">
-              Tôi bị đau bụng
+              {{ this.appointment.symptom }}
             </p>
           </v-card>
         </v-card>
@@ -179,7 +187,9 @@
               Bác sĩ
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">Nguyễn Xuân Hồng</p>
+          <p class="ma-0 font-weight-medium">
+            {{ this.appointment.doctor.name }}
+          </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
@@ -203,7 +213,9 @@
               Thời gian
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">11:00 - 12:00, 12/07/2022</p>
+          <p class="ma-0 font-weight-medium">
+            {{ this.appointment.time }}, {{ this.appointment.date }}
+          </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
@@ -215,15 +227,26 @@
               Hình thức
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium mr-3">Trực tuyến</p>
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on, attrs }">
-              <v-icon color="#537DA5" dark v-bind="attrs" v-on="on">
-                mdi-video
-              </v-icon>
-            </template>
-            <span>Bấm để vào đường link khám trực tuyến</span>
-          </v-tooltip>
+          <div
+            class="d-flex flex-row"
+            v-if="this.appointment.type === 'ONLINE'"
+          >
+            <p class="ma-0 font-weight-medium mr-3">Trực tuyến</p>
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <v-icon color="#537DA5" dark v-bind="attrs" v-on="on">
+                  mdi-video
+                </v-icon>
+              </template>
+              <span>Bấm để vào đường link khám trực tuyến</span>
+            </v-tooltip>
+          </div>
+          <div
+            class="d-flex flex-row"
+            v-if="this.appointment.type === 'OFFLINE'"
+          >
+            <p class="ma-0 font-weight-medium mr-3">Trực tiếp tại viện</p>
+          </div>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
@@ -235,7 +258,9 @@
               Tên phòng khám
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">H3</p>
+          <p class="ma-0 font-weight-medium">
+            {{ this.appointment.room.name }}
+          </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
@@ -247,7 +272,9 @@
               Cơ sở y tế
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">Bệnh viện Hữu Nghị Việt Đức</p>
+          <p class="ma-0 font-weight-medium">
+            {{ this.appointment.doctor.hospital.name }}
+          </p>
         </v-card>
         <v-card class="d-flex flex-row" elevation="0">
           <!-- label -->
@@ -280,9 +307,7 @@
               Tổng tiền
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">
-            100.000VND
-          </p>
+          <p class="ma-0 font-weight-medium">{{ this.appointment.fee }} đ</p>
         </v-card>
         <v-card class="d-flex flex-row" elevation="0">
           <!-- label -->
@@ -294,8 +319,14 @@
               Trạng thái thanh toán
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">
+          <p
+            class="ma-0 font-weight-medium"
+            v-if="this.appointment.isPaid == false"
+          >
             Chưa thanh toán
+          </p>
+          <p class="ma-0 font-weight-medium" v-else>
+            Đã thanh toán
           </p>
         </v-card>
       </v-card>
