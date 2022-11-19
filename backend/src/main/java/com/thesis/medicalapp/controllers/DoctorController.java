@@ -5,6 +5,7 @@ import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.DoctorDTO;
 import com.thesis.medicalapp.pojo.UserDoctorDTO;
+import com.thesis.medicalapp.repository.DoctorRepository;
 import com.thesis.medicalapp.search.SearchRequest;
 import com.thesis.medicalapp.services.DoctorESService;
 import com.thesis.medicalapp.services.DoctorService;
@@ -41,6 +42,7 @@ public class DoctorController {
     private final UserService userService;
     private final HospitalService hospitalService;
     private final DoctorESService doctorESService;
+    private final DoctorRepository doctorRepository;
 
     @Data
     public static class DoctorCreateDTO {
@@ -95,6 +97,15 @@ public class DoctorController {
                 new ApiResponse<>(doctors)
         );
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Object> getDoctorDetail(@PathVariable String id) {
+        Doctor doctor =  doctorRepository.findDoctorById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(UserDoctorDTO.from(doctor))
+        );
+    }
+
     @GetMapping("/specialty")
     public ResponseEntity<Object> getDoctorsBySpecialty(@RequestParam String specialty) {
         List<UserDoctorDTO> doctors = doctorService.getDoctorsBySpecialty(specialty);

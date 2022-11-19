@@ -489,13 +489,14 @@
 <script>
 import Favorite from "../Component/favorite.vue";
 import Question from "../Component/question.vue";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   components: {
     Favorite,
     Question
   },
-  created() {
-    this.get_doctor_select();
+  async mounted() {
+    await this.get_doctor_select();
 
     let currentDate = new Date().toJSON().slice(0, 10);
     this.date_pick = currentDate;
@@ -640,10 +641,17 @@ export default {
       }
     },
 
-    get_doctor_select() {
-      this.doctor_info = this.$store.getters[
-        "appointment/make_appointment_doctor_select"
-      ];
+    async get_doctor_select() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const id = urlParams.get("id");
+      if (id) {
+        const res = await this.axios.get(`${url}/api/doctors/${id}`);
+        this.doctor_info = res.data.results;
+      } else
+        this.doctor_info = this.$store.getters[
+          "appointment/make_appointment_doctor_select"
+        ];
     },
 
     get_hospital_address(hospital) {

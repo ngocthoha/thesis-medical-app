@@ -134,7 +134,7 @@
         </div>
         <!-- list hospital -->
 
-        <v-row :justify="hospital_list.length == 1 ? 'center' : ''">
+        <v-row :justify="hospital_list.length == 1 ? 'center' : undefined">
           <v-col
             :md="6"
             v-for="(hospital, iHospital) in hospital_list"
@@ -341,7 +341,7 @@ export default {
           key: "name",
           operator: "LIKE",
           field_type: "STRING",
-          value: this.search
+          value: this.search.trim()
         });
       }
       if (this.provinceSelect) {

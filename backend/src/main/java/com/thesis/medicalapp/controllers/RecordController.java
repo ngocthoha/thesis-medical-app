@@ -49,6 +49,7 @@ public class RecordController {
         record.setRecordId(recordId);
         record.setDiagnose(recordRequest.getDiagnose());
         record.setPrescribe(recordRequest.getPrescribe());
+        record.setNote(recordRequest.getNote());
         record.setMedicines(new ArrayList<>());
         if (null != recordRequest.getMedicines()) {
             System.out.println("save medicine!");
@@ -112,6 +113,14 @@ public class RecordController {
         List<RecordDTO> recordDTOS = recordService.getRecordsByProfile(profileId);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(recordDTOS)
+        );
+    }
+
+    @GetMapping("/appointments/record")
+    public ResponseEntity<ApiResponse> getRecordsByAppointment(@RequestParam String appointmentId) {
+        RecordDTO recordDTO = recordService.getRecordByAppointment(appointmentId);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(recordDTO)
         );
     }
 }

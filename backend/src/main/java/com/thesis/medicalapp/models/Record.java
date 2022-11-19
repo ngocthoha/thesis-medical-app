@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -26,8 +27,12 @@ public class Record extends AuditLog {
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
     private Long recordId;
+    @Type(type="text")
     private String diagnose;
+    @Type(type="text")
     private String prescribe;
+    @Type(type="text")
+    private String note;
     @OneToMany
     private Collection<Medicine> medicines;
     @ElementCollection

@@ -166,7 +166,7 @@
           </p>
         </div>
         <!-- list service -->
-        <v-row :justify="listService.length == 1 ? 'center' : ''">
+        <v-row :justify="listService.length == 1 ? 'center' : undefined">
           <v-col :md="6" v-for="(service, i) in listService" :key="i">
             <v-card class="d-flex flex-column pa-6" @click="moveToInfo">
               <v-card elevation="0" class="d-flex flex-row">
@@ -325,7 +325,7 @@ export default {
           key: "name",
           operator: "LIKE",
           field_type: "STRING",
-          value: this.search
+          value: this.search.trim()
         });
       }
       if (this.specialtySelect) {

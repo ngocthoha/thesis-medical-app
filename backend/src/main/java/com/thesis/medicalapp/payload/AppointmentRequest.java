@@ -41,4 +41,5 @@ public class AppointmentRequest {
     private Boolean isPaid;
     @NotNull
     private CategoryType category;
+    private String orderId;
 }

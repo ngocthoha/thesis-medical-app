@@ -22,6 +22,7 @@ public class RecordDTO {
     private AppointmentDTO appointment;
     private String diagnose;
     private String prescribe;
+    private String note;
     private Collection<Medicine> medicines;
     private List<Date> reExaminationDate;
     private Collection<MedicalFile> files;
@@ -33,6 +34,7 @@ public class RecordDTO {
                 .appointment(AppointmentDTO.from(record.getAppointment()))
                 .diagnose(record.getDiagnose())
                 .prescribe(record.getPrescribe())
+                .note(record.getNote())
                 .medicines(record.getMedicines())
                 .reExaminationDate(record.getReExaminationDate())
                 .files(record.getFiles())

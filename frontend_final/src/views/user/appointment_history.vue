@@ -33,7 +33,6 @@ export default {
   methods: {
     view_appointment_detail(appointment) {
       this.appointment_detail = appointment;
-
       this.visible_appointment_detail = true;
     },
 

@@ -8,7 +8,7 @@
         class="mt-3 mb-16 font-weight-bold"
         style="color: #537da5; font-size: 32px"
       >
-        Thanh toán thành công
+        {{ message }}
       </p>
       <v-card
         width="704"
@@ -396,6 +396,7 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data() {
     return {
@@ -416,7 +417,7 @@ export default {
             province: "Tinh",
             district: "Huyen",
             ward: "Xa",
-            address: "364 Do Bi",
+            address: "364 Do Bi"
           },
           phone: "phoneNumber",
           email: "email@gmail.com",
@@ -430,27 +431,51 @@ export default {
           guardianPhone: "guardianPhone",
           guardianIdentityCard: "guardianIdentityCard",
           relationship: "relationship",
-          relationshipWithPatient: "relationshipWithPatient",
-        },
+          relationshipWithPatient: "relationshipWithPatient"
+        }
       ],
       test_add_list: [
         {
           type: "Xét nghiệm máu",
-          file_name: "ketquaxetnghiem.jpg",
+          file_name: "ketquaxetnghiem.jpg"
         },
         {
           type: "Xét nghiệm nước tiểu",
-          file_name: "ketquaxetnghiem.jpg",
+          file_name: "ketquaxetnghiem.jpg"
         },
         {
           type: "Xét nghiệm khác",
-          file_name: "ketquaxetnghiem.jpg",
-        },
+          file_name: "ketquaxetnghiem.jpg"
+        }
       ],
       image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
+      message: ""
     };
   },
+  async mounted() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const resultCode = urlParams.get("resultCode");
+    const orderId = urlParams.get("orderId");
+    this.message = "Đang xử lý thanh toán...";
+    if (resultCode === "0") {
+      await this.updateAppointment(orderId);
+      this.message = "Thanh Toán Thành Công";
+    } else this.message = "Thanh Toán Thất Bại";
+  },
   methods: {
+    async updateAppointment(orderId) {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const params = {
+        orderId: orderId,
+        isPaid: true
+      };
+      await this.axios.patch(`${url}/api/appointments`, params);
+    },
     removeTestFile(index) {
       this.test_add_list.splice(index, 1);
     },
@@ -481,8 +506,8 @@ export default {
       this.is_payment = true;
     },
 
-    make_pay_ment() {},
-  },
+    make_pay_ment() {}
+  }
 };
 </script>
 

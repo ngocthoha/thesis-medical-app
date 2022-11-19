@@ -182,7 +182,7 @@
           </p>
         </div>
         <!-- list doctor -->
-        <v-row :justify="listDoctor.length == 1 ? 'center' : ''">
+        <v-row :justify="listDoctor.length == 1 ? 'center' : undefined">
           <v-col :md="6" v-for="(doctor, i) in listDoctor" :key="i">
             <v-card
               class="d-flex flex-column justify-center align-center pa-3"
@@ -446,7 +446,7 @@ export default {
           key: "name",
           operator: "LIKE",
           field_type: "STRING",
-          value: this.search
+          value: this.search.trim()
         });
       }
       if (this.specialtySelect) {

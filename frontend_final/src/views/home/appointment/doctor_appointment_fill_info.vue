@@ -629,7 +629,7 @@
                     ></v-img>
                     <v-card class="d-flex flex-column mr-3" elevation="0">
                       <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ Visa
+                        Thanh toán bằng Momo
                       </p>
                       <p class="ma-0">
                         Quét mã QR trong ứng dụng ví điện tử Momo để thanh toán
@@ -751,16 +751,19 @@ export default {
 
     async make_payment() {
       let token = this.$store.getters["auth/access_token"];
-
+      const orderId = new Date().getTime();
       const params = {
         token: token,
         data: {
-          ipnUrl: "https://sangle.free.beeceptor.com",
-          redirectUrl: "https://sangle.free.beeceptor.com",
+          requestId: new Date().getTime() + "id",
+          orderId: orderId,
+          ipnUrl: "http://localhost:8080/api/payment/momo/verify",
+          redirectUrl:
+            "http://localhost:8081/doctor-appointment-booking-success/",
           amount: "100000",
           orderInfo: "Khám theo yêu cầu tại đại học y dược",
           extraData: "",
-          requestType: "captureWallet"
+          requestType: "payWithATM"
         }
       };
 
@@ -775,17 +778,8 @@ export default {
           };
         });
 
-      window.open(responseData.data.results.payUrl);
-      this.createAppointment();
-
-      this.$router.push({ name: "Đặt lịch bác sĩ thành công" }).catch(error => {
-        if (error == null) {
-          return;
-        }
-        if (error.name != "NavigationDuplicated") {
-          throw error;
-        }
-      });
+      window.open(responseData.data.results.payUrl, "_self");
+      this.createAppointment(orderId);
     },
 
     addTestFile() {
@@ -856,7 +850,7 @@ export default {
       this.profile_list = this.$store.getters["profile/profile_list"];
     },
 
-    async createAppointment() {
+    async createAppointment(orderId) {
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
 
       await Promise.all(
@@ -877,16 +871,11 @@ export default {
           time: this.book_time.time,
           symptom: this.symptom,
           type: this.book_time.type,
-          // files: [
-          //   {
-          //     imageUrl: "aaa",
-          //     type: "X_RAY"
-          //   }
-          // ],
           files: b,
           fee: this.doctor_info.price,
-          isPaid: true,
-          category: "DOCTOR"
+          isPaid: false,
+          category: "DOCTOR",
+          orderId: orderId
         }
       };
       await this.$store.dispatch("appointment/createAppointment", param);

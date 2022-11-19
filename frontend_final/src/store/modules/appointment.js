@@ -10,7 +10,7 @@ const state = {
   make_appointment_set_time_doctor: null,
 
   //doctor work
-  doctor_appointment_list: [],
+  doctor_appointment_list: []
 };
 
 const mutations = {
@@ -50,8 +50,7 @@ const mutations = {
   //doctor work
   SET_DOCTOR_APPOINTMENT_LIST: (state, list) => {
     state.doctor_appointment_list = list;
-  },
-
+  }
 };
 
 const actions = {
@@ -87,6 +86,7 @@ const actions = {
     return service.get_appointment_by_user(params).then(({ data }) => {
       if (data.code == 200) {
         commit("SET_USER_APPOINTMENT_LIST", data.results);
+        return data;
       } else {
         console.log("error");
       }
@@ -111,7 +111,7 @@ const actions = {
     commit("SET_MAKE_APPOINTMENT_SET_TIME_DOCTOR", params);
   },
 
-  //doctor work 
+  //doctor work
   get_appointment_by_doctor({ commit }, params) {
     return service.get_appointment_by_doctor(params).then(({ data }) => {
       if (data.code == 200) {
@@ -120,7 +120,7 @@ const actions = {
         console.log("error");
       }
     });
-  },
+  }
 };
 
 const getters = {
@@ -135,7 +135,7 @@ const getters = {
     state.make_appointment_set_time_doctor,
 
   //doctor work
-  doctor_appointment_list: state => state.doctor_appointment_list,
+  doctor_appointment_list: state => state.doctor_appointment_list
 };
 
 export default {

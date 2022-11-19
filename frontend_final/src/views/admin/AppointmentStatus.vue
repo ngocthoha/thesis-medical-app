@@ -150,24 +150,16 @@
               </v-col>
               <v-col class=" headline font-weight-regular font-italic" cols="3">
                 <div v-if="selected.status == 'Đang chờ'">
-                  <p class="my-auto warning--text">
-                    :{{ selected.status }}
-                  </p>
+                  <p class="my-auto warning--text">:{{ selected.status }}</p>
                 </div>
                 <div v-if="selected.status == 'Đang khám'">
-                  <p class="my-auto success--text">
-                    :{{ selected.status }}
-                  </p>
+                  <p class="my-auto success--text">:{{ selected.status }}</p>
                 </div>
                 <div v-if="selected.status == 'Hoàn tất'">
-                  <p class="my-auto info--text">
-                    :{{ selected.status }}
-                  </p>
+                  <p class="my-auto info--text">:{{ selected.status }}</p>
                 </div>
                 <div v-if="selected.status == 'Bị hủy'">
-                  <p class="my-auto error--text">
-                    :{{ selected.status }}
-                  </p>
+                  <p class="my-auto error--text">:{{ selected.status }}</p>
                 </div>
               </v-col>
             </v-row>

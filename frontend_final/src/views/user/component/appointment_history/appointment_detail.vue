@@ -73,103 +73,140 @@
         style="border: #D0D5DD solid 1px"
         elevation="0"
       >
-        <v-card class="d-flex flex-row mb-3" elevation="0">
-          <!-- label -->
-          <v-card width="30%" elevation="0"
-            ><p
-              class="ma-0 text-body-1 font-weight-regular"
-              style="color: #667085"
-            >
-              Người khám
-            </p></v-card
-          >
-          <p class="ma-0 font-weight-medium">
-            {{ this.appointment.profile.lastName }}
-            {{ this.appointment.profile.firstName }}
-          </p>
-        </v-card>
-
-        <v-card class="d-flex flex-row mb-3 align-center" elevation="0">
-          <!-- label -->
-          <v-card width="30%" elevation="0">
-            <p
-              class="ma-0 text-body-1 font-weight-regular"
-              style="color: #667085"
-            >
-              Tình trạng
-            </p></v-card
-          >
-          <p
-            class="ma-0 font-weight-medium text-body-1 d-flex align-center"
-            style="color: #667085"
-            v-if="this.appointment.status === 'PENDING'"
-          >
-            Chưa tiến hành
-          </p>
-          <div
-            class="d-flex flex-row align-center"
-            v-if="this.appointment.status === 'COMPLETE'"
-          >
-            <p
-              class="ma-0 font-weight-medium text-body-1"
-              style="color: #12B76A"
-            >
-              Đã hoàn tất
-            </p>
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on, attrs }">
-                <v-icon
-                  color="#537DA5"
-                  class="ml-3"
-                  dark
-                  v-bind="attrs"
-                  v-on="on"
-                  @click="medical_record_dialog = true"
+        <div class="d-flex">
+          <div style="width: 100%">
+            <v-card class="d-flex flex-row mb-3" elevation="0">
+              <!-- label -->
+              <v-card width="45%" elevation="0"
+                ><p
+                  class="ma-0 text-body-1 font-weight-regular"
+                  style="color: #667085"
                 >
-                  mdi-account-eye
-                </v-icon>
-              </template>
-              <span>Bấm để xem kết quả khám</span>
-            </v-tooltip>
+                  Người khám
+                </p></v-card
+              >
+              <p class="ma-0 font-weight-medium">
+                {{ this.appointment.profile.lastName }}
+                {{ this.appointment.profile.firstName }}
+              </p>
+            </v-card>
+
+            <v-card class="d-flex flex-row mb-3 align-center" elevation="0">
+              <!-- label -->
+              <v-card width="45%" elevation="0">
+                <p
+                  class="ma-0 text-body-1 font-weight-regular"
+                  style="color: #667085"
+                >
+                  Tình trạng
+                </p></v-card
+              >
+              <p
+                class="ma-0 font-weight-medium text-body-2"
+                style="color: #667085"
+                v-if="!appointment.isPaid && appointment.type == 'OFFLINE'"
+              >
+                <v-chip text-color="white" color="orange" small>
+                  Chờ duyệt
+                </v-chip>
+              </p>
+              <p
+                v-else-if="!appointment.isPaid"
+                class="ma-0 font-weight-medium text-body-2"
+                style="color: red"
+              >
+                <v-chip small color="red" text-color="white">
+                  Đã hủy
+                </v-chip>
+              </p>
+              <p
+                class="ma-0 font-weight-medium text-body-2"
+                style="color: #667085"
+                v-else-if="appointment.status === 'PENDING'"
+              >
+                <v-chip color="primary" small>
+                  Chưa tiến hành
+                </v-chip>
+              </p>
+              <div
+                class="d-flex flex-row align-center"
+                v-else-if="appointment.status === 'COMPLETE'"
+              >
+                <p
+                  class="ma-0 font-weight-medium text-body-1"
+                  style="color: #12B76A"
+                >
+                  <v-chip small color="green" text-color="white">
+                    Đã hoàn tất
+                  </v-chip>
+                </p>
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-icon
+                      color="#537DA5"
+                      class="ml-3"
+                      dark
+                      v-bind="attrs"
+                      v-on="on"
+                      @click="medical_record_dialog = true"
+                    >
+                      mdi-account-eye
+                    </v-icon>
+                  </template>
+                  <span>Bấm để xem kết quả khám</span>
+                </v-tooltip>
+              </div>
+            </v-card>
+            <v-card class="d-flex flex-row mb-3" elevation="0">
+              <!-- label -->
+              <v-card width="45%" elevation="0">
+                <p
+                  class="ma-0 text-body-1 font-weight-regular"
+                  style="color: #667085"
+                >
+                  Triệu chứng
+                </p></v-card
+              >
+              <v-card elevation="0">
+                <p class="ma-0 font-weight-medium">
+                  {{ this.appointment.symptom | empty }}
+                </p>
+              </v-card>
+            </v-card>
+
+            <v-card class="d-flex flex-row mb-3" elevation="0">
+              <!-- label -->
+              <v-card width="45%" elevation="0">
+                <p
+                  class="ma-0 text-body-1 font-weight-regular"
+                  style="color: #667085"
+                >
+                  HÌnh ảnh bổ sung
+                </p></v-card
+              >
+              <v-card elevation="0" class="d-flex flex-row"> </v-card>
+            </v-card>
           </div>
+          <div style="margin-left: auto;">
+            <div class="d-flex flex-column align-center" style="width: 280px">
+              <h4>Mã QR code đặt khám</h4>
+              <p class="text-center mb-0">
+                Cơ sở y tế sẽ quét Mã QR Code để xem thông tin lịch khám của bạn
+              </p>
+              <v-img
+                style="width: 120px; height: 120px"
+                :src="appointment.qrcode"
+              ></v-img>
 
-          <!-- <p
-            class="ma-0 font-weight-medium text-body-1"
-            style="color: red"
-            v-if="n == 3"
-          >
-            Đã hủy
-          </p> -->
-        </v-card>
-        <v-card class="d-flex flex-row mb-3" elevation="0">
-          <!-- label -->
-          <v-card width="30%" elevation="0">
-            <p
-              class="ma-0 text-body-1 font-weight-regular"
-              style="color: #667085"
-            >
-              Triệu chứng
-            </p></v-card
-          >
-          <v-card width="70%" elevation="0">
-            <p class="ma-0 font-weight-medium">
-              {{ this.appointment.symptom }}
-            </p>
-          </v-card>
-        </v-card>
-
-        <v-card class="d-flex flex-row" elevation="0">
-          <!-- label -->
-          <v-card width="30%" elevation="0">
-            <p
-              class="ma-0 text-body-1 font-weight-regular"
-              style="color: #667085"
-            >
-              HÌnh ảnh bổ sung
-            </p></v-card
-          >
-          <v-card width="70%" elevation="0" class="d-flex flex-row"> </v-card>
-        </v-card>
+              <v-chip text-color="black" color="green" outlined>
+                Mã đặt khám:
+                <span style="color: green" class="ml-2">{{
+                  appointment.code
+                }}</span>
+              </v-chip>
+            </div>
+          </div>
+        </div>
       </v-card>
       <!-- service info -->
       <v-card
@@ -177,21 +214,54 @@
         style="border: #D0D5DD solid 1px"
         elevation="0"
       >
-        <v-card class="d-flex flex-row mb-3" elevation="0">
-          <!-- label -->
-          <v-card width="30%" elevation="0"
-            ><p
-              class="ma-0 text-body-1 font-weight-regular"
-              style="color: #667085"
+        <div v-if="appointment.category == 'DOCTOR'">
+          <v-card class="d-flex flex-row mb-3" elevation="0">
+            <!-- label -->
+            <v-card width="30%" elevation="0"
+              ><p
+                class="ma-0 text-body-1 font-weight-regular"
+                style="color: #667085"
+              >
+                Bác sĩ
+              </p></v-card
             >
-              Bác sĩ
-            </p></v-card
-          >
-          <p class="ma-0 font-weight-medium">
-            {{ this.appointment.doctor.name }}
-          </p>
-        </v-card>
-        <v-card class="d-flex flex-row mb-3" elevation="0">
+            <p class="ma-0 font-weight-medium">
+              {{ appointment.doctor.level }}.
+              {{ appointment.doctor.name }}
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <a
+                    v-bind="attrs"
+                    v-on="on"
+                    target="_blank"
+                    style="text-decoration: none;"
+                    :href="
+                      '/doctor-appointment-detail/?id=' + appointment.doctor.id
+                    "
+                    ><v-icon small color="primary">mdi-open-in-new</v-icon></a
+                  >
+                </template>
+                <span>Xem bác sĩ</span>
+              </v-tooltip>
+            </p>
+          </v-card>
+
+          <v-card class="d-flex flex-row mb-3" elevation="0">
+            <!-- label -->
+            <v-card width="30%" elevation="0"
+              ><p
+                class="ma-0 text-body-1 font-weight-regular"
+                style="color: #667085"
+              >
+                Chuyên khoa
+              </p></v-card
+            >
+            <p class="ma-0 font-weight-medium">
+              {{ appointment.doctor.specialty }}
+            </p>
+          </v-card>
+        </div>
+        <v-card v-else class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
           <v-card width="30%" elevation="0"
             ><p
@@ -201,7 +271,9 @@
               Dịch vụ
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">Khám theo yêu cầu</p>
+          <p class="ma-0 font-weight-medium">
+            {{ getServiceName(appointment) }}
+          </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
@@ -210,11 +282,11 @@
               class="ma-0 text-body-1 font-weight-regular"
               style="color: #667085"
             >
-              Thời gian
+              Thời gian khám
             </p></v-card
           >
           <p class="ma-0 font-weight-medium">
-            {{ this.appointment.time }}, {{ this.appointment.date }}
+            {{ appointment.time }}, {{ getDate(appointment.date) }}
           </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
@@ -241,10 +313,7 @@
               <span>Bấm để vào đường link khám trực tuyến</span>
             </v-tooltip>
           </div>
-          <div
-            class="d-flex flex-row"
-            v-if="this.appointment.type === 'OFFLINE'"
-          >
+          <div class="d-flex flex-row" v-if="appointment.type === 'OFFLINE'">
             <p class="ma-0 font-weight-medium mr-3">Trực tiếp tại viện</p>
           </div>
         </v-card>
@@ -259,7 +328,7 @@
             </p></v-card
           >
           <p class="ma-0 font-weight-medium">
-            {{ this.appointment.room.name }}
+            {{ appointment.room.name }}
           </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
@@ -273,7 +342,23 @@
             </p></v-card
           >
           <p class="ma-0 font-weight-medium">
-            {{ this.appointment.doctor.hospital.name }}
+            {{ appointment.doctor.hospital.name }}
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <a
+                  v-bind="attrs"
+                  v-on="on"
+                  target="_blank"
+                  style="text-decoration: none;"
+                  :href="
+                    '/hospital-appointment-detail/?id=' +
+                      appointment.doctor.hospital.id
+                  "
+                  ><v-icon small color="primary">mdi-open-in-new</v-icon></a
+                >
+              </template>
+              <span>Xem bệnh viện</span>
+            </v-tooltip>
           </p>
         </v-card>
         <v-card class="d-flex flex-row" elevation="0">
@@ -287,7 +372,7 @@
             </p></v-card
           >
           <p class="ma-0 font-weight-medium">
-            Số 18 Phủ Doãn, Hàng Bông, Hoàn Kiếm, Thành phố Hà Nội
+            {{ getAddress(appointment.profile) }}
           </p>
         </v-card>
       </v-card>
@@ -297,7 +382,7 @@
         style="border: #D0D5DD solid 1px"
         elevation="0"
       >
-        <v-card class="d-flex flex-row" elevation="0">
+        <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
           <v-card width="30%" elevation="0"
             ><p
@@ -309,7 +394,21 @@
           >
           <p class="ma-0 font-weight-medium">{{ this.appointment.fee }} đ</p>
         </v-card>
-        <v-card class="d-flex flex-row" elevation="0">
+        <v-card class="d-flex flex-row mb-3" elevation="0">
+          <!-- label -->
+          <v-card width="30%" elevation="0"
+            ><p
+              class="ma-0 text-body-1 font-weight-regular"
+              style="color: #667085"
+            >
+              Tổng tiền thanh toán
+            </p></v-card
+          >
+          <p style="color: red" class="ma-0 font-weight-medium">
+            {{ this.appointment.fee }} đ
+          </p>
+        </v-card>
+        <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
           <v-card width="30%" elevation="0"
             ><p
@@ -324,6 +423,26 @@
             v-if="this.appointment.isPaid == false"
           >
             Chưa thanh toán
+          </p>
+          <p class="ma-0 font-weight-medium" v-else>
+            Đã thanh toán
+          </p>
+        </v-card>
+        <v-card class="d-flex flex-row" elevation="0">
+          <!-- label -->
+          <v-card width="30%" elevation="0"
+            ><p
+              class="ma-0 text-body-1 font-weight-regular"
+              style="color: #667085"
+            >
+              Phương thức thanh toán
+            </p></v-card
+          >
+          <p
+            class="ma-0 font-weight-medium"
+            v-if="this.appointment.isPaid == false"
+          >
+            Không xác định
           </p>
           <p class="ma-0 font-weight-medium" v-else>
             Đã thanh toán
@@ -393,8 +512,32 @@ export default {
   },
 
   methods: {
+    getAddress(profile) {
+      if (profile.address == null) return "";
+      return (
+        profile.address.address +
+        ", " +
+        profile.address.ward +
+        ", " +
+        profile.address.district +
+        ", " +
+        profile.address.province
+      );
+    },
+    getDate(date) {
+      let date_array = date.split("-");
+      return `ngày ${date_array[2]} tháng ${date_array[1]}, ${date_array[0]}`;
+    },
     close_view_appointment_detail() {
       this.$emit("appointmentDetailClose");
+    },
+    getServiceName(appointment) {
+      if (appointment.category == "DOCTOR") {
+        if (appointment.type == "ONLINE") {
+          return `Tư vấn trực tuyến`;
+        }
+        return `Khám trực tiếp`;
+      }
     }
   }
 };

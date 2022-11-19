@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface RecordRepository extends JpaRepository<Record, String>, JpaSpecificationExecutor<Record> {
     List<Record> findByAppointment_Profile_Id(String profileId);
+    Record findByAppointment_Id(String appointmentId);
 }

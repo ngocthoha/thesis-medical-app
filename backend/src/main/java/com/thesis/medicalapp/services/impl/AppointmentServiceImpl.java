@@ -5,6 +5,7 @@ import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.AppointmentsByDateAndDoctor;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
+import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.DoctorRepository;
 import com.thesis.medicalapp.repository.ProfileRepository;
@@ -13,6 +14,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -53,15 +56,15 @@ public class AppointmentServiceImpl implements AppointmentService {
     }
 
     @Override
-    public List<AppointmentDTO> getAppointmentByUser() {
+    public Page<AppointmentDTO> getAppointmentByUser(Pageable pageable) {
         String username = Global.user.getUsername();
-        List<Appointment> appointments = appointmentRepository.findAllByProfile_User_Username(username)
-                .stream()
-                .collect(Collectors.toList());
-        List<AppointmentDTO> appointmentDTOS = appointments.stream().map(a -> {
-            AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
-            return appointmentDTO;
-        }).collect(Collectors.toList());
+        Page<Appointment> appointments = appointmentRepository.findAllByProfile_User_Username(username, pageable);
+        Page<AppointmentDTO> appointmentDTOS = appointments.map(
+                a -> {
+                    AppointmentDTO appointmentDTO = AppointmentDTO.from(a);
+                    return appointmentDTO;
+                }
+        );
         return appointmentDTOS;
     }
 
