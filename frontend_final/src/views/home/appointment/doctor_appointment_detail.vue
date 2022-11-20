@@ -166,7 +166,7 @@
             <div class="d-flex flex-row align-center justify-space-between">
               <p class="text-body-1 font-weight-medium">Khám theo yêu cầu</p>
               <p class="ml-3 font-weight-bold" style="color: #537da5">
-                {{ doctor_info.price }} đ
+                {{ get_text_price(doctor_info.price) }} đ
               </p>
             </div>
             <!--  -->
@@ -765,6 +765,9 @@ export default {
       (this.offline.morning = []),
         (this.offline.afternoon = []),
         (this.offline.has_schedule = false);
+    },
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
     }
   }
 };

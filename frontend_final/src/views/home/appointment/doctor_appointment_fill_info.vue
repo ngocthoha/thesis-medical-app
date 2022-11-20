@@ -28,7 +28,7 @@
             <p class="ma-0 font-weight-bold">Khám theo yêu cầu</p>
             <v-spacer></v-spacer>
             <p class="ma-0 font-weight-bold" style="color: #537da5">
-              {{ doctor_info.price }} đ
+              {{ get_text_price(doctor_info.price) }} đ
             </p>
           </v-card>
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -961,6 +961,9 @@ export default {
             });
           }
         });
+    },
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
     }
   }
 };
