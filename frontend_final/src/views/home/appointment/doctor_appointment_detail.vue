@@ -179,7 +179,7 @@
                 style="border-radius: 50px"
                 elevation="0"
               >
-                <v-icon color="#537DA5" class="align-self-start mr-1"
+                <v-icon color="#537DA5" class="align-self-start mr-1 ml-1"
                   >mdi-calendar-month-outline</v-icon
                 >
                 <p style="color: #537da5">
@@ -194,7 +194,7 @@
                 style="border-radius: 50px"
                 elevation="0"
               >
-                <v-icon color="#FFC107" class="align-self-start mr-1"
+                <v-icon color="#FFC107" class="align-self-start mr-1 ml-1"
                   >mdi-star</v-icon
                 >
                 <p style="color: #537da5">{{ doctor_info.favorite }}</p>
