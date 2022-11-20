@@ -63,7 +63,6 @@
         >
           <v-card
             elevation="0"
-            color="#EEF2F6"
             tile
             width="20%"
             class="d-flex flex-column justify-center align-center"
@@ -112,7 +111,7 @@
               </v-chip>
             </p>
           </v-card>
-
+          <v-divider class="mx-3" inset vertical></v-divider>
           <v-card class="d-flex flex-row align-center ml-3" elevation="0">
             <v-avatar size="40">
               <img src="@/assets/img/home/appbar/avatar.png" />
