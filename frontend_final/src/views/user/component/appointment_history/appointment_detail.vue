@@ -176,7 +176,7 @@
               <p
                 class="ma-0 font-weight-medium text-body-2"
                 style="color: #667085"
-                v-else-if="appointment.status === 'PROCCESS'"
+                v-else-if="appointment.status === 'PROCESS'"
               >
                 <v-chip color="primary" small>
                   Chưa tiến hành
@@ -485,6 +485,23 @@
               class="ma-0 text-body-1 font-weight-regular"
               style="color: #667085"
             >
+              Phương thức thanh toán
+            </p></v-card
+          >
+          <p class="ma-0 font-weight-medium" v-if="!appointment.paymentType">
+            Không xác định
+          </p>
+          <p class="ma-0 font-weight-medium" v-else>
+            {{ getPayment(appointment.paymentType) }}
+          </p>
+        </v-card>
+        <v-card class="d-flex flex-row mb-3" elevation="0">
+          <!-- label -->
+          <v-card width="30%" elevation="0"
+            ><p
+              class="ma-0 text-body-1 font-weight-regular"
+              style="color: #667085"
+            >
               Trạng thái thanh toán
             </p></v-card
           >
@@ -496,23 +513,6 @@
           </p>
           <p class="ma-0 font-weight-medium" v-else>
             Đã thanh toán
-          </p>
-        </v-card>
-        <v-card class="d-flex flex-row" elevation="0">
-          <!-- label -->
-          <v-card width="30%" elevation="0"
-            ><p
-              class="ma-0 text-body-1 font-weight-regular"
-              style="color: #667085"
-            >
-              Phương thức thanh toán
-            </p></v-card
-          >
-          <p class="ma-0 font-weight-medium" v-if="!appointment.paymentType">
-            Không xác định
-          </p>
-          <p class="ma-0 font-weight-medium" v-else>
-            {{ getPayment(appointment.paymentType) }}
           </p>
         </v-card>
       </v-card>

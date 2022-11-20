@@ -481,7 +481,8 @@ export default {
       };
       const params = {
         orderId: orderId,
-        isPaid: true
+        isPaid: true,
+        status: "PROCESS"
       };
       await this.axios.patch(`${url}/api/appointments`, params);
     },

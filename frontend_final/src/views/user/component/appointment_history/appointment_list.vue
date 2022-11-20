@@ -95,7 +95,7 @@
             <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: #667085"
-              v-else-if="appointment.status === 'PROCCESS'"
+              v-else-if="appointment.status === 'PROCESS'"
             >
               <v-chip color="primary" small class="ma-2">
                 Chưa tiến hành
