@@ -850,19 +850,22 @@ export default {
         icon: require("@/assets/img/home/appbar/connection_icon.svg"),
         content: "Lịch sử giao dịch",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
+        link: "/home/user/transaction-history"
       },
       {
         icon: require("@/assets/img/home/appbar/help_icon.svg"),
         content: "Câu hỏi của bạn",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
+        link: "/home/user/your-question"
       },
       {
         icon: require("@/assets/img/home/appbar/bell_menu_icon.svg"),
         content: "Thông báo",
         color: "#667085",
-        type: ButtonFunctionType.FUNCTION
+        type: ButtonFunctionType.FUNCTION,
+        link: "/home/user/notify"
       },
       {
         icon: require("@/assets/img/home/appbar/logout_icon.svg"),

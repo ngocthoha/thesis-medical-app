@@ -280,29 +280,6 @@
                     >
                     <v-icon>mdi-download-outline</v-icon>
                   </v-card>
-                  <v-card
-                    elevation="0"
-                    class="d-flex flex-row pa-2"
-                    color="#EEF2F6"
-                    v-for="file in selected_appointment.files"
-                    :key="file.id"
-                  >
-                    <div class="mr-5">
-                      <p class="ma-0 text-body-2 font-weight-medium">
-                        {{ get_text_of_type_file(file) }}
-                      </p>
-                      <p class="ma-0 text-body-2">
-                        {{ get_name_of_file(file) }}
-                      </p>
-                    </div>
-                    <v-icon
-                      class="mr-2"
-                      @click="view_file(file)"
-                      v-if="is_img_file(file)"
-                      >mdi-eye-outline</v-icon
-                    >
-                    <v-icon>mdi-download-outline</v-icon>
-                  </v-card>
                 </div>
               </v-card>
             </v-tab-item>

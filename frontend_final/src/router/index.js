@@ -232,7 +232,29 @@ const router = new Router({
                 default: "user/health_records"
               },
               "health-records"
-            )
+            ),
+            route(
+              "Lịch sử giao dịch",
+              {
+                default: "user/transaction_history"
+              },
+              "transaction-history"
+            ),
+            route(
+              "Câu hỏi của bạn",
+              {
+                default: "user/your_question"
+              },
+              "your-question"
+            ),
+            route(
+              "Thông báo",
+              {
+                default: "user/notify"
+              },
+              "notify"
+            ),
+
           ],
           "user"
         )

@@ -65,9 +65,21 @@ export default {
           icon: "mdi-file-document-multiple-outline",
           link: "/home/user/health-records"
         },
-        { text: "Lịch sử giao dịch", icon: "mdi-swap-horizontal" },
-        { text: "Câu hỏi của bạn", icon: "mdi-help-circle-outline" },
-        { text: "Thông báo", icon: "mdi-bell-outline" }
+        {
+          text: "Lịch sử giao dịch",
+          icon: "mdi-swap-horizontal",
+          link: "/home/user/transaction-history"
+        },
+        {
+          text: "Câu hỏi của bạn",
+          icon: "mdi-help-circle-outline",
+          link: "/home/user/your-question"
+        },
+        {
+          text: "Thông báo",
+          icon: "mdi-bell-outline",
+          link: "/home/user/notify"
+        }
       ]
     };
   }
