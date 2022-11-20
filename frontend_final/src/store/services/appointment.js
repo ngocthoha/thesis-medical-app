@@ -31,12 +31,15 @@ function createAppointment(params) {
   });
 }
 
-
-
 function get_appointment_by_user(params) {
   axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
   return axios
-    .get(`${url}/api/appointments/user`)
+    .get(`${url}/api/appointments/user`, {
+      params: {
+        size: params.size,
+        page: params.page
+      }
+    })
     .then(response => {
       return {
         data: response.data
@@ -74,6 +77,5 @@ export default {
   get_appointment_by_user,
   get_doctor_schedule_by_date,
   //doctor work
-  get_appointment_by_doctor,
-
+  get_appointment_by_doctor
 };

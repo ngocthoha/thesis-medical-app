@@ -21,6 +21,7 @@ public class RecordRequest {
     private String appointmentId;
     private String diagnose;
     private String prescribe;
+    private String note;
     private Collection<@Valid MedicineRequest> medicines;
     private String reExaminationDate;
     private Collection<MedicalFile> files;

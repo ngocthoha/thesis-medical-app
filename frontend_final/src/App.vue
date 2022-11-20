@@ -21,7 +21,17 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="scss">
+@import url("https://fonts.cdnfonts.com/css/svn-gilroy");
+// .v-application {
+//   font-family: "SVN-Gilroy", sans-serif !important;
+//   .title {
+//     font-family: "SVN-Gilroy", sans-serif !important;
+//   }
+// }
+// * {
+//   font-family: "SVN-Gilroy", sans-serif !important;
+// }
 ::-webkit-scrollbar {
   width: 8px;
   height: 8px;

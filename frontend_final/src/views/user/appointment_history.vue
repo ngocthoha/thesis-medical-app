@@ -3,6 +3,7 @@
     <v-card width="922px" elevation="1" class="pb-8">
       <v-expand-transition>
         <appointment-list
+          :key="componentKey"
           v-show="!visible_appointment_detail"
           v-on:viewDetail="view_appointment_detail"
         ></appointment-list>
@@ -11,6 +12,7 @@
         :appointment="appointment_detail"
         v-on:appointmentDetailClose="close_view_appointment_detail"
         v-if="visible_appointment_detail"
+        @reloadDetail="reloadDetail"
       ></appointment-detail>
     </v-card>
   </div>
@@ -27,13 +29,17 @@ export default {
   data() {
     return {
       visible_appointment_detail: false,
-      appointment_detail: null
+      appointment_detail: null,
+      componentKey: 0
     };
   },
   methods: {
+    reloadDetail() {
+      this.visible_appointment_detail = false;
+      this.componentKey += 1;
+    },
     view_appointment_detail(appointment) {
       this.appointment_detail = appointment;
-
       this.visible_appointment_detail = true;
     },
 

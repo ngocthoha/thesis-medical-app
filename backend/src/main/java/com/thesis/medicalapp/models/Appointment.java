@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.Collection;
@@ -48,4 +49,8 @@ public class Appointment extends AuditLog {
     private Boolean isPaid = false;
     private String fee;
     private CategoryType category;
+    private String orderId;
+    @Type(type="text")
+    private String qrcode;
+    private PaymentType paymentType;
 }

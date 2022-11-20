@@ -4,18 +4,26 @@
       <v-avatar size="316" color="#EEF2F6">
         <v-img src="@/assets/img/payment/booking_success.png"></v-img>
       </v-avatar>
-      <p
-        class="mt-3 mb-16 font-weight-bold"
-        style="color: #537da5; font-size: 32px"
-      >
-        Thanh toán thành công
+      <p class="mt-3 font-weight-bold" style="color: #537da5; font-size: 32px">
+        {{ message }}
       </p>
+      <div class="d-flex">
+        <v-btn
+          class="ml-3 btn-not-transform text-body-1 font-weight-medium"
+          elevation="0"
+          outlined
+          color="#667085"
+          >Xem lịch khám<v-icon class="ml-2" small color="#537da5"
+            >mdi-arrow-right</v-icon
+          ></v-btn
+        >
+      </div>
       <v-card
         width="704"
         min-height="500"
         elevation="0"
         color="#FCFCFD"
-        class="align-self-start"
+        class="align-self-start mt-10"
       >
         <v-card width="700" class="d-flex flex-column">
           <!-- header -->
@@ -396,6 +404,7 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data() {
     return {
@@ -416,7 +425,7 @@ export default {
             province: "Tinh",
             district: "Huyen",
             ward: "Xa",
-            address: "364 Do Bi",
+            address: "364 Do Bi"
           },
           phone: "phoneNumber",
           email: "email@gmail.com",
@@ -430,27 +439,53 @@ export default {
           guardianPhone: "guardianPhone",
           guardianIdentityCard: "guardianIdentityCard",
           relationship: "relationship",
-          relationshipWithPatient: "relationshipWithPatient",
-        },
+          relationshipWithPatient: "relationshipWithPatient"
+        }
       ],
       test_add_list: [
         {
           type: "Xét nghiệm máu",
-          file_name: "ketquaxetnghiem.jpg",
+          file_name: "ketquaxetnghiem.jpg"
         },
         {
           type: "Xét nghiệm nước tiểu",
-          file_name: "ketquaxetnghiem.jpg",
+          file_name: "ketquaxetnghiem.jpg"
         },
         {
           type: "Xét nghiệm khác",
-          file_name: "ketquaxetnghiem.jpg",
-        },
+          file_name: "ketquaxetnghiem.jpg"
+        }
       ],
       image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
+      message: ""
     };
   },
+  async mounted() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const resultCode = urlParams.get("resultCode");
+    const orderId = urlParams.get("orderId");
+    const paymentType = urlParams.get("paymentType");
+    this.message = "Đang xử lý thanh toán...";
+    if (resultCode === "0") {
+      if (paymentType != "DIRECT") await this.updateAppointment(orderId);
+      this.message = "Đặt Khám Thành Công";
+    } else this.message = "Đặt Khám Thất Bại";
+  },
   methods: {
+    async updateAppointment(orderId) {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const params = {
+        orderId: orderId,
+        isPaid: true,
+        status: "PROCESS"
+      };
+      await this.axios.patch(`${url}/api/appointments`, params);
+    },
     removeTestFile(index) {
       this.test_add_list.splice(index, 1);
     },
@@ -481,8 +516,8 @@ export default {
       this.is_payment = true;
     },
 
-    make_pay_ment() {},
-  },
+    make_pay_ment() {}
+  }
 };
 </script>
 

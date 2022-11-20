@@ -11,4 +11,5 @@ public interface RecordService {
     RecordDTO saveRecord(Record record);
     Page<Record> findAll(SearchRequest searchRequest);
     List<RecordDTO> getRecordsByProfile(String profileId);
+    RecordDTO getRecordByAppointment(String appointmentId);
 }

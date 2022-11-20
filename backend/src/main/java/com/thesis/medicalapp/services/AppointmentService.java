@@ -2,6 +2,8 @@ package com.thesis.medicalapp.services;
 
 import com.thesis.medicalapp.models.Appointment;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Date;
 import java.util.List;
@@ -9,7 +11,7 @@ import java.util.List;
 public interface AppointmentService {
     AppointmentDTO saveAppointment(Appointment appointment);
     List<AppointmentDTO> getAppointmentByProfileId(String profileId);
-    List<AppointmentDTO> getAppointmentByUser();
+    Page<AppointmentDTO> getAppointmentByUser(Pageable pageable);
     List<AppointmentDTO> getAppointmentsByDateAndDoctor(String date);
     int updateAppointment(Appointment appointment);
     int removeAppointment(String id);

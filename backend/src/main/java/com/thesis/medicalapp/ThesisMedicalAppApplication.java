@@ -37,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import org.springframework.data.relational.core.mapping.event.BeforeSaveCallback;
 
 @EnableAsync
 @SpringBootApplication
@@ -90,9 +89,7 @@ public class ThesisMedicalAppApplication {
             userService.saveRole(new Role(null, "ROLE_USER"));
             userService.saveRole(new Role(null, "ROLE_ADMIN"));
             userService.saveRole(new Role(null, "ROLE_DOCTOR"));
-            Address address = new Address(null, "Việt Nam", "Hồ Chí Minh", "Quận 5", "Phường 11", "215 Hồng Bàng");
-            Address address2 = new Address("d43d408d-979c-49c2-8066-d7ee66db4ff9", "Việt Nam", "Hồ Chí Minh", "Quận 5", "Phường 11", "215 Hồng Bàng");
-            addressRepository.save(address2);
+            Address address = new Address(null, "Việt Nam", "Hồ Chí Minh", "5", "11", "215 Hồng Bàng");
             Address address1 = addressRepository.save(address);
             String hospitalTime = "7:00 - 17:00";
             String hospitalBreak = "12:00 - 13:00";
@@ -105,7 +102,7 @@ public class ThesisMedicalAppApplication {
             hospital.setFavorite(0.0);
             hospital.setRegistrationNumber(0);
             hospital.setIsActive(Boolean.TRUE);
-            hospital.setMapImageUrl(null);
+            hospital.setMapImageUrl("https://isofhcare-backup.s3-ap-southeast-1.amazonaws.com/images/so-do-benh-vien-viet-duc-isofhcare2-(1)_03053edd_8673_4b36_8237_2c214b3f1c28.jpg");
             hospital.setHospitalHour(hospitalHour1);
             hospital.setImageUrl("https://ump.edu.vn/img/image-default.png");
             Hospital hospital1 = hospitalRepository.save(hospital);
@@ -192,7 +189,6 @@ public class ThesisMedicalAppApplication {
             } catch (IOException e) {
                 System.out.println("Unable to save service: " + e.getMessage());
             }
-            log.info("Done init data.");
         };
     }
     @GetMapping

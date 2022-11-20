@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="!_.isEmpty(hospital_info)">
     <v-card color="#FCFCFD" width="100%" class="pa-12">
       <div class="d-flex flex-column mx-8 justify-center align-center">
         <v-card min-height="500" width="1216" elevation="0" color="#FCFCFD">
@@ -19,7 +19,7 @@
                   >mdi-map-marker-outline</v-icon
                 >
                 <p class="text-body-2 mb-3">
-                  {{ this.get_hospital_address(this.hospital_info) }}
+                  {{ get_hospital_address(hospital_info) }}
                 </p>
                 <a
                   class="text-body-2 ml-3 text-decoration-underline font-italic"
@@ -33,11 +33,12 @@
                 <v-card
                   class="d-flex flex-row"
                   height="24"
-                  width="56"
+                  width="50"
                   color="#EEF2F6"
+                  style="border-radius: 50px"
                   elevation="0"
                 >
-                  <v-icon color="#537DA5" class="align-self-start mr-2"
+                  <v-icon color="#537DA5" class="align-self-start mr-1"
                     >mdi-calendar-month-outline</v-icon
                   >
                   <p style="color: #537da5">
@@ -47,11 +48,12 @@
                 <v-card
                   class="d-flex flex-row ml-1"
                   height="24"
-                  width="56"
-                  color="#F9FAFB"
+                  width="50"
+                  color="#EEF2F6"
+                  style="border-radius: 50px"
                   elevation="0"
                 >
-                  <v-icon color="#FFC107" class="align-self-start mr-2"
+                  <v-icon color="#FFC107" class="align-self-start mr-1 ml-1"
                     >mdi-star</v-icon
                   >
                   <p style="color: #537da5">
@@ -83,49 +85,69 @@
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Thứ hai:</p>
                         <v-spacer></v-spacer>
-                        <p>{{ this.hospital_info.hospitalHour.mondayTime }}</p>
+                        <p>{{ hospital_info.hospitalHour.mondayTime }}</p>
                       </v-card>
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Thứ ba:</p>
                         <v-spacer></v-spacer>
-                        <p>{{ this.hospital_info.hospitalHour.tuesdayTime }}</p>
+                        <p>{{ hospital_info.hospitalHour.tuesdayTime }}</p>
                       </v-card>
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Thứ tư:</p>
                         <v-spacer></v-spacer>
                         <p>
-                          {{ this.hospital_info.hospitalHour.wednesdayTime }}
+                          {{ hospital_info.hospitalHour.wednesdayTime }}
                         </p>
                       </v-card>
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Thứ năm:</p>
                         <v-spacer></v-spacer>
                         <p>
-                          {{ this.hospital_info.hospitalHour.thursdayTime }}
+                          {{ hospital_info.hospitalHour.thursdayTime }}
                         </p>
                       </v-card>
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Thứ sáu:</p>
                         <v-spacer></v-spacer>
                         <p>
-                          {{ this.hospital_info.hospitalHour.fridayTime }}
+                          {{ hospital_info.hospitalHour.fridayTime }}
                         </p>
                       </v-card>
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Thứ bảy:</p>
                         <v-spacer></v-spacer>
                         <p>
-                          {{ this.hospital_info.hospitalHour.saturdayTime }}
+                          {{ hospital_info.hospitalHour.saturdayTime }}
                         </p>
                       </v-card>
                       <v-card class="d-flex flex-row" elevation="0">
                         <p class="ma-0 font-weight-bold">Chủ nhật</p>
                         <v-spacer></v-spacer>
                         <p>
-                          {{ this.hospital_info.hospitalHour.sundayTime }}
+                          {{ hospital_info.hospitalHour.sundayTime }}
                         </p>
                       </v-card>
                     </v-card>
+                  </v-card>
+                </v-dialog>
+              </div>
+              <div v-if="hospital_info.mapImageUrl" class="d-flex">
+                <v-icon class="align-self-start mr-3" size="24" color="#537da5"
+                  >mdi-map-legend</v-icon
+                >
+                <p v-if="hospital_info.isActive" class="text-body-2">
+                  Sơ đồ trong cơ sở y tế
+                </p>
+                <a
+                  class="text-body-2 ml-3 text-decoration-underline font-italic"
+                  style="color: grey"
+                  @click="map_dialog = true"
+                >
+                  Xem sơ đồ
+                </a>
+                <v-dialog v-model="map_dialog" width="65%">
+                  <v-card width="100%" elevation="0">
+                    <v-img :src="hospital_info.mapImageUrl"></v-img>
                   </v-card>
                 </v-dialog>
               </div>
@@ -171,27 +193,6 @@
                     <p style="white-space: pre-line" class="text-body-1 mb-6">
                       {{ this.hospital_info.info }}
                     </p>
-                    <div class="d-flex flex-row justify-space-between">
-                      <v-card class="d-flex flex-row" width="45%" elevation="0">
-                        <v-icon
-                          class="align-self-start"
-                          size="24"
-                          color="#537da5"
-                          >mdi-map-marker-outline</v-icon
-                        >
-                        <v-card class="ml-3" elevation="0">
-                          <p class="text-body-2 mb-2 font-weight-medium">
-                            {{ this.get_hospital_address(this.hospital_info) }}
-                          </p>
-                          <p
-                            class="text-body-2 font-weight-medium"
-                            style="color: #537da5"
-                          >
-                            Hiện chỉ đường
-                          </p>
-                        </v-card>
-                      </v-card>
-                    </div>
                   </v-card>
                 </v-tab-item>
 
@@ -259,7 +260,7 @@
               elevation="0"
               color="#FCFCFD"
             >
-              <v-row :justify="listService.length == 1 ? 'center' : ''">
+              <v-row :justify="listService.length == 1 ? 'center' : undefined">
                 <v-col
                   :sm="6"
                   v-for="(service, iService) in listService"
@@ -372,8 +373,9 @@
             width="1280"
             elevation="0"
             color="#EEF2F6"
+            v-if="doctor_list.length"
           >
-            <v-row :justify="doctor_list.length == 1 ? 'center' : ''">
+            <v-row :justify="doctor_list.length == 1 ? 'center' : undefined">
               <v-col :md="6" v-for="doctor in doctor_list" :key="doctor.id">
                 <v-card
                   class="d-flex flex-column justify-center align-center pa-3"
@@ -423,11 +425,12 @@
                         <v-card
                           class="d-flex flex-row"
                           height="24"
-                          width="56"
+                          width="50"
                           color="#EEF2F6"
+                          style="border-radius: 50px"
                           elevation="0"
                         >
-                          <v-icon color="#537DA5" class="align-self-start mr-2"
+                          <v-icon color="#537DA5" class="align-self-start mr-1"
                             >mdi-calendar-month-outline</v-icon
                           >
                           <p style="color: #537da5">
@@ -437,11 +440,14 @@
                         <v-card
                           class="d-flex flex-row ml-1"
                           height="24"
-                          width="56"
-                          color="#F9FAFB"
+                          width="50"
+                          color="#EEF2F6"
+                          style="border-radius: 50px"
                           elevation="0"
                         >
-                          <v-icon color="#FFC107" class="align-self-start mr-2"
+                          <v-icon
+                            color="#FFC107"
+                            class="align-self-start mr-1 ml-1"
                             >mdi-star</v-icon
                           >
                           <p style="color: #537da5">
@@ -513,14 +519,16 @@
 <script>
 import Favorite from "../Component/favorite.vue";
 import Question from "../Component/question.vue";
+const url = process.env.VUE_APP_ROOT_API;
+import axios from "axios";
 
 export default {
   components: {
     Favorite,
     Question
   },
-  created() {
-    this.hospital_info = this.$store.getters["hospital/hospital_selected"];
+  async created() {
+    await this.getHospital();
     this.username = this.$store.getters["auth/username"];
     this.get_doctor_by_hospital();
     this.getServiceByHospital();
@@ -543,7 +551,8 @@ export default {
       keyQuestion: 0,
       numFavorite: 0,
       numQuestion: 0,
-      listService: []
+      listService: [],
+      map_dialog: false
     };
   },
   watch: {
@@ -569,6 +578,19 @@ export default {
     }
   },
   methods: {
+    async getHospital() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const id = urlParams.get("id");
+      if (id) {
+        const res = await axios.get(`${url}/api/hospitals/${id}`);
+        this.hospital_info = res.data.results;
+      } else
+        this.hospital_info = await this.$store.getters[
+          "hospital/hospital_selected"
+        ];
+      console.log(this.hospital_info);
+    },
     move_to_service_info() {
       this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {
         if (error == null) {
@@ -601,6 +623,7 @@ export default {
     },
 
     get_hospital_address(hospital) {
+      if (!hospital?.address) return "";
       let address_str = "";
       if (hospital.address.address != null) {
         if (address_str.length == 0) {
@@ -641,7 +664,7 @@ export default {
         page: this.pageService - 1,
         size: 8
       };
-      const res = await this.axios.get(`${url}/api/services/hospital`, {
+      const res = await axios.get(`${url}/api/services/hospital`, {
         params: params
       });
       this.listService = res.data.results;

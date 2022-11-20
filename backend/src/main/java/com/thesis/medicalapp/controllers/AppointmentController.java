@@ -13,6 +13,10 @@ import com.thesis.medicalapp.services.*;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +38,7 @@ public class AppointmentController {
     private final RoomRepository roomRepository;
     private final MedicalFileRepository medicalFileRepository;
     private final ServiceRepository serviceRepository;
+    private final AppointmentRepository appointmentRepository;
 
     @PostMapping("/appointments")
     public ResponseEntity<Object> saveAppointment(@RequestBody @Valid AppointmentRequest appointmentRequest) {
@@ -72,7 +77,6 @@ public class AppointmentController {
                 appointment.getFiles().add(File);
             }
         }
-        appointment.setStatus(Status.PENDING);
         appointment.setType(appointmentRequest.getType());
         appointment.setCategory(appointmentRequest.getCategory());
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
@@ -80,6 +84,25 @@ public class AppointmentController {
         appointment.setCode(code);
         appointment.setFee(appointmentRequest.getFee());
         appointment.setIsPaid(appointmentRequest.getIsPaid());
+        appointment.setOrderId(appointmentRequest.getOrderId());
+        String dataQrCode =
+                appointment.getProfile().getFirstName() + appointment.getProfile().getLastName() + "\n"
+                + appointment.getTime() + "\n"
+                + appointment.getDoctor().getName() + "\n"
+                + appointment.getId() + "\n"
+                + appointment.getOrderId();
+        String qrcode = QRCode.createQR(dataQrCode, 300, 300);
+        appointment.setQrcode(qrcode);
+        appointment.setPaymentType(appointmentRequest.getPaymentType());
+        if (appointment.getPaymentType().equals(PaymentType.DIRECT) && !appointment.getIsPaid())
+            appointment.setStatus(Status.PENDING);
+        else {
+            if (appointment.getIsPaid()) {
+                appointment.setStatus(Status.PROCESS);
+            } else {
+                appointment.setStatus(Status.CANCEL);
+            }
+        }
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(appointmentDTO)
@@ -95,17 +118,25 @@ public class AppointmentController {
     }
 
     @GetMapping("/appointments/user")
-    public ResponseEntity<Object> getAppointmentByUser() {
-        List<AppointmentDTO> appointmentDTOS = appointmentService.getAppointmentByUser();
+    public ResponseEntity<Object> getAppointmentByUser(
+            @RequestParam Integer size,
+            @RequestParam Integer page
+    ) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<AppointmentDTO> pageAppointment = appointmentService.getAppointmentByUser(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(appointmentDTOS)
+                new ApiResponse<>(pageAppointment.getContent(), pageAppointment)
         );
     }
 
     @PatchMapping("/appointments")
     public ResponseEntity<Object> partialUpdateAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         Appointment appointment = appointmentService.findAppointmentById(appointmentRequest.getId());
-        if (appointment == null) throw new ApiRequestException("Không tìm thấy lịch hẹn!");
+        if (appointment == null) {
+            if (appointmentRequest.getOrderId() != null) {
+                appointment = appointmentRepository.findByOrderId(appointmentRequest.getOrderId());
+            } else throw new ApiRequestException("Không tìm thấy lịch hẹn!");
+        }
         if (appointmentRequest.getProfileId() != null) {
             Profile profile = profileService.findProfileById(appointmentRequest.getProfileId());
             if (profile == null) throw new ApiRequestException("Không tìm thấy hồ sơ khám!");
@@ -134,6 +165,7 @@ public class AppointmentController {
         if (appointmentRequest.getSymptom() != null)  appointment.setSymptom(appointmentRequest.getSymptom());
         if (appointmentRequest.getFee() != null)  appointment.setFee(appointmentRequest.getFee());
         if (appointmentRequest.getIsPaid() != null)  appointment.setIsPaid(appointmentRequest.getIsPaid());
+        if (appointmentRequest.getStatus() != null)  appointment.setStatus(appointmentRequest.getStatus());
         appointmentService.updateAppointment(appointment);
         return ResponseEntity.ok(
                 new ApiResponse(null)

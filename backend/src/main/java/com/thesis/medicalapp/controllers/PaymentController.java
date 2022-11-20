@@ -39,8 +39,8 @@ public class PaymentController {
     @PostMapping("/momo")
     public ResponseEntity<Object> makeMomoPayment(@RequestBody MomoRequest momoRequest) {
         try {
-            String requestId = String.valueOf(System.currentTimeMillis());
-            String orderId = String.valueOf(System.currentTimeMillis());
+            String requestId = momoRequest.getRequestId();
+            String orderId = momoRequest.getOrderId();
 //            String storeId = env.getProperty("momo.partner_code");
 //            String partnerCode = env.getProperty("momo.partner_code");
             String storeId = "MOMOBKUN20180529";

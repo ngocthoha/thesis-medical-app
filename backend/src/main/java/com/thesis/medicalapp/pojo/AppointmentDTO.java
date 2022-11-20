@@ -40,6 +40,10 @@ public class AppointmentDTO {
     private Boolean isPaid;
     private String fee;
     private CategoryType category;
+    private String orderId;
+    private String qrcode;
+    private PaymentType paymentType;
+    private Date createdAt;
 
     public static AppointmentDTO from(Appointment appointment) {
         return AppointmentDTO.builder()
@@ -58,6 +62,10 @@ public class AppointmentDTO {
                 .isPaid(appointment.getIsPaid())
                 .fee(appointment.getFee())
                 .category(appointment.getCategory())
+                .orderId(appointment.getOrderId())
+                .qrcode(appointment.getQrcode())
+                .paymentType(appointment.getPaymentType())
+                .createdAt(appointment.getCreatedAt())
                 .build();
     }
 }

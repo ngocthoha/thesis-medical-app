@@ -63,7 +63,13 @@
     </v-dialog>
     <!-- list profile -->
     <div class="d-flex justify-center mt-8">
-      <v-card width="858px" elevation="0">
+      <v-progress-circular
+        v-if="loading"
+        indeterminate
+        color="primary"
+      ></v-progress-circular>
+
+      <v-card v-else width="858px" elevation="0">
         <v-expansion-panels accordion tile flat>
           <v-expansion-panel
             v-for="profile in profile_list"
@@ -276,14 +282,14 @@ export default {
     return {
       dialog: false,
       profile_remove: null,
-      profile_list: []
+      profile_list: [],
+      loading: false
     };
   },
 
-  created() {
-    this.getProfileList();
+  async mounted() {
+    await this.getProfileList();
   },
-
   methods: {
     createProfile() {
       this.$emit("OpenCreateProfile");
@@ -336,11 +342,13 @@ export default {
     },
 
     async getProfileList() {
+      this.loading = true;
       let token = this.$store.getters["auth/access_token"];
       const param = {
         token: token
       };
       await this.$store.dispatch("profile/profile_list", param);
+      this.loading = false;
       this.profile_list = this.$store.getters["profile/profile_list"];
     }
   }

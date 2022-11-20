@@ -50,4 +50,10 @@ public class RecordServiceImpl implements RecordService {
         }).collect(Collectors.toList());
         return recordDTOS;
     }
+
+    @Override
+    public RecordDTO getRecordByAppointment(String appointmentId) {
+        Record record = recordRepository.findByAppointment_Id(appointmentId);
+        return RecordDTO.from(record);
+    }
 }

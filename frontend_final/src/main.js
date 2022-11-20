@@ -11,6 +11,9 @@ import axios from "axios";
 Vue.config.productionTip = false;
 Vue.prototype._ = lodash;
 Vue.prototype.axios = axios;
+Vue.filter("empty", function(value) {
+  return value || "——";
+});
 sync(store, router);
 
 new Vue({
