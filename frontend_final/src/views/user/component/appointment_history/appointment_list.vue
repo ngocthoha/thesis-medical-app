@@ -19,8 +19,40 @@
         indeterminate
         color="primary"
       ></v-progress-circular>
-
-      <v-card v-else class="d-flex flex-column" width="100%" elevation="0">
+      <div
+        class="d-flex flex-column"
+        v-if="!appointment_list.length && !loading"
+      >
+        <v-card
+          width="100%"
+          class="d-flex justify-center"
+          elevation="0"
+          style="background: none"
+        >
+          <v-img
+            class="d-flex"
+            src="@/assets/img/user/profile/lookingNotFound.png"
+            width="183px"
+            height="186px"
+            contain
+          ></v-img>
+        </v-card>
+        <p
+          class="font-weight-bold ml-8 d-flex justify-center"
+          style="font-size: 20px"
+        >
+          Bạn chưa có lịch sử khám
+        </p>
+        <p class="ml-8 d-flex justify-center" style="color: #667085">
+          Xin lỗi chúng tôi không tìm thấy kết quả phù hợp với bạn.
+        </p>
+      </div>
+      <v-card
+        v-if="appointment_list.length && !loading"
+        class="d-flex flex-column"
+        width="100%"
+        elevation="0"
+      >
         <v-card
           width="100%"
           height="120"

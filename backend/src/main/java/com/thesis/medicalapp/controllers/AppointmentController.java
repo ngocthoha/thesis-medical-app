@@ -93,6 +93,7 @@ public class AppointmentController {
                 + appointment.getOrderId();
         String qrcode = QRCode.createQR(dataQrCode, 300, 300);
         appointment.setQrcode(qrcode);
+        appointment.setPaymentType(appointmentRequest.getPaymentType());
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(appointmentDTO)

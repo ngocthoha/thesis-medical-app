@@ -438,14 +438,11 @@
               Phương thức thanh toán
             </p></v-card
           >
-          <p
-            class="ma-0 font-weight-medium"
-            v-if="this.appointment.isPaid == false"
-          >
+          <p class="ma-0 font-weight-medium" v-if="!appointment.paymentType">
             Không xác định
           </p>
           <p class="ma-0 font-weight-medium" v-else>
-            Đã thanh toán
+            {{ getPayment(appointment.paymentType) }}
           </p>
         </v-card>
       </v-card>
@@ -512,6 +509,15 @@ export default {
   },
 
   methods: {
+    getPayment(type) {
+      const map = {
+        MOMO: "Thanh toán bằng Momo",
+        ATM: "Thanh toán bằng Atm",
+        VISA: "Thanh toán bằng Visa",
+        CSYT: "Thanh toán tại CSYT"
+      };
+      return map[type];
+    },
     getAddress(profile) {
       if (profile.address == null) return "";
       return (

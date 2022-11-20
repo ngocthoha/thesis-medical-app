@@ -1,5 +1,10 @@
 <template>
-  <v-card color="#FCFCFD" width="100%" class="pa-12">
+  <v-card
+    color="#FCFCFD"
+    width="100%"
+    class="pa-12"
+    v-if="!_.isEmpty(doctor_info)"
+  >
     <div
       class="d-flex flex-column flex-md-row mx-8 justify-center align-center"
     >
@@ -649,7 +654,7 @@ export default {
         const res = await this.axios.get(`${url}/api/doctors/${id}`);
         this.doctor_info = res.data.results;
       } else
-        this.doctor_info = this.$store.getters[
+        this.doctor_info = await this.$store.getters[
           "appointment/make_appointment_doctor_select"
         ];
     },

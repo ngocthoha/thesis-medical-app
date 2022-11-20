@@ -258,7 +258,7 @@
               elevation="0"
               color="#FCFCFD"
             >
-              <v-row :justify="listService.length == 1 ? 'center' : ''">
+              <v-row :justify="listService.length == 1 ? 'center' : undefined">
                 <v-col
                   :sm="6"
                   v-for="(service, iService) in listService"
@@ -371,8 +371,9 @@
             width="1280"
             elevation="0"
             color="#EEF2F6"
+            v-if="doctor_list.length"
           >
-            <v-row :justify="doctor_list.length == 1 ? 'center' : ''">
+            <v-row :justify="doctor_list.length == 1 ? 'center' : undefined">
               <v-col :md="6" v-for="doctor in doctor_list" :key="doctor.id">
                 <v-card
                   class="d-flex flex-column justify-center align-center pa-3"

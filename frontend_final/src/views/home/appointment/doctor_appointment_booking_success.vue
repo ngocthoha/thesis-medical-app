@@ -457,11 +457,12 @@ export default {
     const urlParams = new URLSearchParams(queryString);
     const resultCode = urlParams.get("resultCode");
     const orderId = urlParams.get("orderId");
+    const paymentType = urlParams.get("paymentType");
     this.message = "Đang xử lý thanh toán...";
     if (resultCode === "0") {
-      await this.updateAppointment(orderId);
-      this.message = "Thanh Toán Thành Công";
-    } else this.message = "Thanh Toán Thất Bại";
+      if (paymentType != "DIRECT") await this.updateAppointment(orderId);
+      this.message = "Đặt Khám Thành Công";
+    } else this.message = "Đặt Khám Thất Bại";
   },
   methods: {
     async updateAppointment(orderId) {

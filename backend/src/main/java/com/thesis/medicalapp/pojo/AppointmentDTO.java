@@ -42,6 +42,7 @@ public class AppointmentDTO {
     private CategoryType category;
     private String orderId;
     private String qrcode;
+    private PaymentType paymentType;
 
     public static AppointmentDTO from(Appointment appointment) {
         return AppointmentDTO.builder()
@@ -62,6 +63,7 @@ public class AppointmentDTO {
                 .category(appointment.getCategory())
                 .orderId(appointment.getOrderId())
                 .qrcode(appointment.getQrcode())
+                .paymentType(appointment.getPaymentType())
                 .build();
     }
 }

@@ -52,4 +52,5 @@ public class Appointment extends AuditLog {
     private String orderId;
     @Type(type="text")
     private String qrcode;
+    private PaymentType paymentType;
 }

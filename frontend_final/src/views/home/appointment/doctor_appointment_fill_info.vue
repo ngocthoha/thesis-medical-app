@@ -28,7 +28,7 @@
             <p class="ma-0 font-weight-bold">Khám theo yêu cầu</p>
             <v-spacer></v-spacer>
             <p class="ma-0 font-weight-bold" style="color: #537da5">
-              {{ this.doctor_info.price }} VND
+              {{ doctor_info.price }} đ
             </p>
           </v-card>
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -67,12 +67,12 @@
             color="#FCFCFD"
           >
             <v-avatar size="48" class="mr-5">
-              <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+              <v-img :src="getImgOfDoctor(doctor_info)"></v-img>
             </v-avatar>
             <div class="d-flex flex-column justify-center">
               <p class="mb-2 font-weight-bold">{{ this.doctor_info.name }}</p>
               <p class="ma-0 text-body-2" style="color: #667085">
-                {{ this.doctor_info.hospital.name }}
+                {{ this.doctor_info.specialty }}
               </p>
             </div>
           </v-card>
@@ -85,7 +85,7 @@
             color="#FCFCFD"
           >
             <v-avatar size="48" class="mr-5">
-              <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+              <v-img :src="getImgOfHospital(doctor_info.hospital)"></v-img>
             </v-avatar>
             <div class="d-flex flex-column justify-center">
               <p class="mb-2 font-weight-bold">
@@ -567,7 +567,82 @@
                 </p>
                 <v-radio-group v-model="payment_selection" class="ma-0">
                   <!-- Visa -->
+                  <div>
+                    <v-card
+                      class="mt-6 d-flex flex-row pa-4"
+                      elevation="0"
+                      color="#FCFCFD"
+                    >
+                      <v-img
+                        contain
+                        height="32"
+                        width="32"
+                        class="mr-5"
+                        src="@/assets/img/payment/visa.png"
+                      ></v-img>
+                      <v-card class="d-flex flex-column mr-3" elevation="0">
+                        <p class="mb-2 font-weight-bold">
+                          Thanh toán bằng thẻ Visa
+                        </p>
+                        <p class="ma-0">
+                          Hỗ trợ thanh toán xuyên quốc gia qua thẻ
+                          Visa/Mastercard.
+                        </p>
+                      </v-card>
+                      <v-radio value="VISA" color="#537DA5"></v-radio>
+                    </v-card>
+                    <!-- ATM -->
+                    <v-card
+                      class="mt-6 d-flex flex-row pa-4"
+                      elevation="0"
+                      color="#FCFCFD"
+                    >
+                      <v-img
+                        contain
+                        height="32"
+                        width="32"
+                        class="mr-5"
+                        src="@/assets/img/payment/atm_card.png"
+                      ></v-img>
+                      <v-card class="d-flex flex-column mr-3" elevation="0">
+                        <p class="mb-2 font-weight-bold">
+                          Thanh toán bằng thẻ ATM nội địa
+                        </p>
+                        <p class="ma-0">
+                          Sử dụng tài khoản Internet Banking của ngân hàng bạn
+                          đang sử dụng để thanh toán.
+                        </p>
+                      </v-card>
+                      <v-radio value="ATM" color="#537DA5"></v-radio>
+                    </v-card>
+                    <!-- Momo -->
+                    <v-card
+                      class="mt-6 d-flex flex-row pa-4"
+                      elevation="0"
+                      color="#FCFCFD"
+                    >
+                      <v-img
+                        contain
+                        height="32"
+                        width="32"
+                        class="mr-5"
+                        src="@/assets/img/payment/momo.png"
+                      ></v-img>
+                      <v-card class="d-flex flex-column mr-3" elevation="0">
+                        <p class="mb-2 font-weight-bold">
+                          Thanh toán bằng Momo
+                        </p>
+                        <p class="ma-0">
+                          Quét mã QR trong ứng dụng ví điện tử Momo để thanh
+                          toán dịch vụ.
+                        </p>
+                      </v-card>
+                      <v-radio value="MOMO" color="#537DA5"></v-radio>
+                    </v-card>
+                  </div>
+                  <!-- CSYT -->
                   <v-card
+                    v-if="book_time.type == 'OFFLINE'"
                     class="mt-6 d-flex flex-row pa-4"
                     elevation="0"
                     color="#FCFCFD"
@@ -577,66 +652,18 @@
                       height="32"
                       width="32"
                       class="mr-5"
-                      src="@/assets/img/payment/visa.png"
+                      src="@/assets/img/payment/direct.jpg"
                     ></v-img>
                     <v-card class="d-flex flex-column mr-3" elevation="0">
                       <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ Visa
+                        Thanh toán tại Cơ sở y tế
                       </p>
                       <p class="ma-0">
-                        Hỗ trợ thanh toán xuyên quốc gia qua thẻ
-                        Visa/Mastercard.
+                        Làm thủ tục thanh toán tại quầy của CSYT trước khi thực
+                        hiện mỗi dịch vụ
                       </p>
                     </v-card>
-                    <v-radio value="VISA" color="#537DA5"></v-radio>
-                  </v-card>
-                  <!-- ATM -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/atm_card.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ ATM nội địa
-                      </p>
-                      <p class="ma-0">
-                        Sử dụng tài khoản Internet Banking của ngân hàng bạn
-                        đang sử dụng để thanh toán.
-                      </p>
-                    </v-card>
-                    <v-radio value="ATM" color="#537DA5"></v-radio>
-                  </v-card>
-                  <!-- Momo -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/momo.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng Momo
-                      </p>
-                      <p class="ma-0">
-                        Quét mã QR trong ứng dụng ví điện tử Momo để thanh toán
-                        dịch vụ.
-                      </p>
-                    </v-card>
-                    <v-radio value="MOMO" color="#537DA5"></v-radio>
+                    <v-radio value="DIRECT" color="#537DA5"></v-radio>
                   </v-card>
                 </v-radio-group>
                 <v-card></v-card>
@@ -648,6 +675,7 @@
             color="#537DA5"
             elevation="0"
             width="100%"
+            :loading="loading"
             @click="make_payment"
             >Xác nhận thanh toán
           </v-btn>
@@ -695,10 +723,10 @@ export default {
       test_select: "",
       image_select: "",
       radioGroup: 1,
-      payment_selection: "",
+      payment_selection: null,
       selected_profile: {},
       test_add_list: [],
-
+      loading: false,
       test_file: {},
       image_analyst_type: [
         { name: "CT", key: "CT_SCAN" },
@@ -715,6 +743,20 @@ export default {
     };
   },
   methods: {
+    getImgOfDoctor(doctor) {
+      if (doctor.imageUrl != null) {
+        return doctor.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
+      }
+    },
+    getImgOfHospital(hospital) {
+      if (hospital.imageUrl != null) {
+        return hospital.imageUrl;
+      } else {
+        return require("@/assets/img/home/hospital_avt.png");
+      }
+    },
     removeTestFile(index) {
       this.test_add_list.splice(index, 1);
     },
@@ -750,8 +792,17 @@ export default {
     },
 
     async make_payment() {
+      let orderId = new Date().getTime();
+      if (this.book_time.type == "ONLINE") await this.paymentOnline(orderId);
+      this.createAppointment(orderId);
+    },
+    async paymentOnline(orderId) {
       let token = this.$store.getters["auth/access_token"];
-      const orderId = new Date().getTime();
+      const mapPaymentType = {
+        ATM: "payWithATM",
+        MOMO: "captureWallet",
+        VISA: ""
+      };
       const params = {
         token: token,
         data: {
@@ -763,7 +814,7 @@ export default {
           amount: "100000",
           orderInfo: "Khám theo yêu cầu tại đại học y dược",
           extraData: "",
-          requestType: "payWithATM"
+          requestType: mapPaymentType[this.payment_selection]
         }
       };
 
@@ -779,9 +830,7 @@ export default {
         });
 
       window.open(responseData.data.results.payUrl, "_self");
-      this.createAppointment(orderId);
     },
-
     addTestFile() {
       this.test_add_list.push({
         type: this.test_select.key,
@@ -851,6 +900,7 @@ export default {
     },
 
     async createAppointment(orderId) {
+      this.loading = true;
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
 
       await Promise.all(
@@ -875,10 +925,18 @@ export default {
           fee: this.doctor_info.price,
           isPaid: false,
           category: "DOCTOR",
-          orderId: orderId
+          orderId: orderId,
+          paymentType: this.payment_selection
         }
       };
       await this.$store.dispatch("appointment/createAppointment", param);
+      this.loading = false;
+      if (this.payment_selection == "DIRECT") {
+        this.$router.push({
+          path:
+            "/doctor-appointment-booking-success/?paymentType=DIRECT&resultCode=0"
+        });
+      }
     },
 
     async post_file(file, type) {
