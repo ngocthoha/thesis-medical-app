@@ -793,7 +793,7 @@ export default {
 
     async make_payment() {
       let orderId = new Date().getTime();
-      if (this.book_time.type == "ONLINE") await this.paymentOnline(orderId);
+      if (this.payment_selection != "DIRECT") await this.paymentOnline(orderId);
       this.createAppointment(orderId);
     },
     async paymentOnline(orderId) {
@@ -822,7 +822,7 @@ export default {
         Authorization: `Bearer ${params.token}`
       };
       let responseData = await axios
-        .post(`http://127.0.0.1:8080/api/payment/momo`, params.data)
+        .post(`${url}/api/payment/momo`, params.data)
         .then(response => {
           return {
             data: response.data

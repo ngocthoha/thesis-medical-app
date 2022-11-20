@@ -4,18 +4,31 @@
       <v-avatar size="316" color="#EEF2F6">
         <v-img src="@/assets/img/payment/booking_success.png"></v-img>
       </v-avatar>
-      <p
-        class="mt-3 mb-16 font-weight-bold"
-        style="color: #537da5; font-size: 32px"
-      >
+      <p class="mt-3 font-weight-bold" style="color: #537da5; font-size: 32px">
         {{ message }}
       </p>
+      <div class="d-flex">
+        <v-btn
+          class="btn-not-transform text-body-1 font-weight-medium"
+          elevation="0"
+          outlined
+          color="#667085"
+          >Về trang chủ</v-btn
+        >
+        <v-btn
+          class="ml-3 btn-not-transform text-body-1 font-weight-medium"
+          elevation="0"
+          outlined
+          color="#667085"
+          >Xem lịch khám</v-btn
+        >
+      </div>
       <v-card
         width="704"
         min-height="500"
         elevation="0"
         color="#FCFCFD"
-        class="align-self-start"
+        class="align-self-start mt-10"
       >
         <v-card width="700" class="d-flex flex-column">
           <!-- header -->

@@ -12,13 +12,25 @@
       </div>
       <v-spacer></v-spacer>
       <v-btn
-        class="mr-6 btn-not-transform text-body-1 font-weight-medium"
+        class="btn-not-transform text-body-1 font-weight-medium"
         elevation="0"
         outlined
         color="#667085"
         text
         @click="close_view_appointment_detail"
         >Hủy xem</v-btn
+      >
+      <v-btn
+        v-if="!appointment.isPaid && appointment.paymentType != 'DIRECT'"
+        class="ml-3 white--text btn-not-transform text-body-2 font-weight-medium"
+        elevation="0"
+        color="#537DA5"
+        @click="
+          $router.push(
+            '/doctor-appointment-detail/?id=' + appointment.doctor.id
+          )
+        "
+        >Đặt khám lại</v-btn
       >
     </v-card>
     <v-divider
@@ -104,7 +116,9 @@
               <p
                 class="ma-0 font-weight-medium text-body-2"
                 style="color: #667085"
-                v-if="!appointment.isPaid && appointment.type == 'OFFLINE'"
+                v-if="
+                  !appointment.isPaid && appointment.paymentType == 'DIRECT'
+                "
               >
                 <v-chip text-color="white" color="orange" small>
                   Chờ duyệt
@@ -532,7 +546,7 @@ export default {
     },
     getDate(date) {
       let date_array = date.split("-");
-      return `ngày ${date_array[2]} tháng ${date_array[1]}, ${date_array[0]}`;
+      return `${date_array[2]} tháng ${date_array[1]}, ${date_array[0]}`;
     },
     close_view_appointment_detail() {
       this.$emit("appointmentDetailClose");

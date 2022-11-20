@@ -232,11 +232,12 @@
                     <v-card
                       class="d-flex flex-row"
                       height="24"
-                      width="56"
+                      width="50"
                       color="#EEF2F6"
+                      style="border-radius: 50px"
                       elevation="0"
                     >
-                      <v-icon color="#537DA5" class="align-self-start mr-2"
+                      <v-icon color="#537DA5" class="align-self-start mr-1"
                         >mdi-calendar-month-outline</v-icon
                       >
                       <p style="color: #537da5">
@@ -246,11 +247,12 @@
                     <v-card
                       class="d-flex flex-row ml-1"
                       height="24"
-                      width="56"
-                      color="#F9FAFB"
+                      width="50"
+                      color="#EEF2F6"
+                      style="border-radius: 50px"
                       elevation="0"
                     >
-                      <v-icon color="#FFC107" class="align-self-start mr-2"
+                      <v-icon color="#FFC107" class="align-self-start mr-1"
                         >mdi-star</v-icon
                       >
                       <p style="color: #537da5">{{ doctor.favorite }}</p>
@@ -315,6 +317,8 @@
 
 <script>
 const url = process.env.VUE_APP_ROOT_API;
+import axios from "axios";
+
 export default {
   data() {
     return {
@@ -413,7 +417,7 @@ export default {
   },
   methods: {
     async getProvines() {
-      const res = await this.axios.get(
+      const res = await axios.get(
         `https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`
       );
       let provinces = res.data?.data?.data;
@@ -439,7 +443,7 @@ export default {
     },
     async getListDoctor() {
       this.loading = true;
-      const cancelToken = this.axios.CancelToken.source().token;
+      const cancelToken = axios.CancelToken.source().token;
       let params = this._.cloneDeep(this.params);
       if (this.search) {
         params.filters.push({
@@ -483,7 +487,7 @@ export default {
         });
       }
       params.page = this.page - 1;
-      const res = await this.axios.post(`${url}/api/doctors/search`, params, {
+      const res = await axios.post(`${url}/api/doctors/search`, params, {
         cancelToken
       });
       this.loading = false;
@@ -491,7 +495,7 @@ export default {
       this.totalPages = res.data?.meta?.totalPages;
     },
     async getSpecialties() {
-      this.axios.get(`${url}/api/specialties`).then(res => {
+      axios.get(`${url}/api/specialties`).then(res => {
         this.specialties = res.data.results;
       });
     },

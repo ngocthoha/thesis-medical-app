@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -113,7 +114,7 @@ public class AppointmentController {
             @RequestParam Integer size,
             @RequestParam Integer page
     ) {
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
         Page<AppointmentDTO> pageAppointment = appointmentService.getAppointmentByUser(pageable);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(pageAppointment.getContent(), pageAppointment)

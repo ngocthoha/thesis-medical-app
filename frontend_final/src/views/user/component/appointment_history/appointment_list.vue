@@ -77,7 +77,7 @@
             <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: #667085"
-              v-if="!appointment.isPaid && appointment.type == 'OFFLINE'"
+              v-if="!appointment.isPaid && appointment.paymentType == 'DIRECT'"
             >
               <v-chip text-color="white" color="orange" small class="ma-2">
                 Chờ duyệt

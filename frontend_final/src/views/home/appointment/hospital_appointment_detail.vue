@@ -33,11 +33,12 @@
                 <v-card
                   class="d-flex flex-row"
                   height="24"
-                  width="56"
+                  width="50"
                   color="#EEF2F6"
+                  style="border-radius: 50px"
                   elevation="0"
                 >
-                  <v-icon color="#537DA5" class="align-self-start mr-2"
+                  <v-icon color="#537DA5" class="align-self-start mr-1"
                     >mdi-calendar-month-outline</v-icon
                   >
                   <p style="color: #537da5">
@@ -47,11 +48,12 @@
                 <v-card
                   class="d-flex flex-row ml-1"
                   height="24"
-                  width="56"
-                  color="#F9FAFB"
+                  width="50"
+                  color="#EEF2F6"
+                  style="border-radius: 50px"
                   elevation="0"
                 >
-                  <v-icon color="#FFC107" class="align-self-start mr-2"
+                  <v-icon color="#FFC107" class="align-self-start mr-1"
                     >mdi-star</v-icon
                   >
                   <p style="color: #537da5">
@@ -423,11 +425,12 @@
                         <v-card
                           class="d-flex flex-row"
                           height="24"
-                          width="56"
+                          width="50"
                           color="#EEF2F6"
+                          style="border-radius: 50px"
                           elevation="0"
                         >
-                          <v-icon color="#537DA5" class="align-self-start mr-2"
+                          <v-icon color="#537DA5" class="align-self-start mr-1"
                             >mdi-calendar-month-outline</v-icon
                           >
                           <p style="color: #537da5">
@@ -437,11 +440,12 @@
                         <v-card
                           class="d-flex flex-row ml-1"
                           height="24"
-                          width="56"
-                          color="#F9FAFB"
+                          width="50"
+                          color="#EEF2F6"
+                          style="border-radius: 50px"
                           elevation="0"
                         >
-                          <v-icon color="#FFC107" class="align-self-start mr-2"
+                          <v-icon color="#FFC107" class="align-self-start mr-1"
                             >mdi-star</v-icon
                           >
                           <p style="color: #537da5">
@@ -514,6 +518,7 @@
 import Favorite from "../Component/favorite.vue";
 import Question from "../Component/question.vue";
 const url = process.env.VUE_APP_ROOT_API;
+import axios from "axios";
 
 export default {
   components: {
@@ -576,7 +581,7 @@ export default {
       const urlParams = new URLSearchParams(queryString);
       const id = urlParams.get("id");
       if (id) {
-        const res = await this.axios.get(`${url}/api/hospitals/${id}`);
+        const res = await axios.get(`${url}/api/hospitals/${id}`);
         this.hospital_info = res.data.results;
       } else
         this.hospital_info = await this.$store.getters[
@@ -657,7 +662,7 @@ export default {
         page: this.pageService - 1,
         size: 8
       };
-      const res = await this.axios.get(`${url}/api/services/hospital`, {
+      const res = await axios.get(`${url}/api/services/hospital`, {
         params: params
       });
       this.listService = res.data.results;

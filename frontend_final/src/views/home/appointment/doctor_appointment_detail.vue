@@ -166,11 +166,12 @@
             <v-card
               class="d-flex flex-row"
               height="24"
-              width="56"
+              width="50"
               color="#EEF2F6"
+              style="border-radius: 50px"
               elevation="0"
             >
-              <v-icon color="#537DA5" class="align-self-start mr-2"
+              <v-icon color="#537DA5" class="align-self-start mr-1"
                 >mdi-calendar-month-outline</v-icon
               >
               <p style="color: #537da5">
@@ -180,11 +181,12 @@
             <v-card
               class="d-flex flex-row ml-1"
               height="24"
-              width="56"
-              color="#F9FAFB"
+              width="50"
+              color="#EEF2F6"
+              style="border-radius: 50px"
               elevation="0"
             >
-              <v-icon color="#FFC107" class="align-self-start mr-2"
+              <v-icon color="#FFC107" class="align-self-start mr-1"
                 >mdi-star</v-icon
               >
               <p style="color: #537da5">{{ doctor_info.favorite }}</p>
@@ -361,14 +363,11 @@
                 <!-- booking -->
                 <v-btn
                   elevation="0"
-                  color="#D4DFE9"
-                  class="btn"
+                  color="#537DA5"
+                  class="btn white--text"
                   @click="submit_online_select_time"
                   ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
-                  <p
-                    class="ma-0 font-weight-bold text-body-1"
-                    style="color: #537da5"
-                  >
+                  <p class="ma-0 font-weight-bold text-body-1">
                     Đặt lịch
                   </p>
                 </v-btn>
@@ -471,14 +470,11 @@
 
                 <v-btn
                   elevation="0"
-                  color="#D4DFE9"
-                  class="btn"
+                  color="#537DA5"
+                  class="btn white--text"
                   @click="submit_offline_select_time"
-                  ><v-icon left color="#537da5">mdi-plus-circle-outline</v-icon>
-                  <p
-                    class="ma-0 font-weight-bold text-body-1"
-                    style="color: #537da5"
-                  >
+                >
+                  <p class="ma-0 font-weight-bold text-body-1">
                     Đặt lịch
                   </p>
                 </v-btn>
