@@ -20,6 +20,15 @@
         <v-icon>mdi-calendar-edit-outline</v-icon>
         Chỉnh sửa lịch
       </v-btn>
+      <v-btn
+        class="mr-4 btn font-weight-medium"
+        color="#537DA5"
+        outlined
+        @click.stop="absent_dialog = true"
+      >
+        <v-icon>mdi-calendar-remove-outline</v-icon>
+        Báo nghỉ
+      </v-btn>
 
       <!-- add dialog -->
       <v-dialog v-model="add_dialog" max-width="800">
@@ -353,6 +362,137 @@
           </div>
         </v-card>
       </v-dialog>
+
+      <!-- absent dialog-->
+      <v-dialog v-model="absent_dialog" max-width="800">
+        <v-toolbar color="#537DA5" height="64" class="white--text">
+          Thông báo nghỉ
+        </v-toolbar>
+        <v-card height="600" class="pa-6 d-flex flex-column" tile>
+          <!-- select date -->
+          <p class="mb-2 font-weight-medium text-body-2">Chọn ngày:</p>
+          <v-card class="d-flex flex-row align-center" elevation="0">
+            <v-card outlined width="100%" rounded="">
+              <v-menu
+                ref="edit_menu"
+                v-model="edit_menu"
+                :close-on-content-click="false"
+                :return-value.sync="edit_date"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-combobox
+                    flat
+                    v-model="edit_date"
+                    hide-details=""
+                    readonly
+                    v-bind="attrs"
+                    v-on="on"
+                    solo
+                    append-icon="mdi-calendar-outline"
+                  ></v-combobox>
+                </template>
+                <v-date-picker
+                  v-model="edit_date"
+                  no-title
+                  scrollable
+                  locale="vi"
+                  color="#537DA5"
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn text color="primary" @click="edit_menu = false">
+                    Hủy
+                  </v-btn>
+                  <v-btn
+                    text
+                    color="primary"
+                    @click="$refs.edit_menu.save(edit_date)"
+                  >
+                    Chọn
+                  </v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-card>
+          </v-card>
+          <!-- type  -->
+          <div class="d-flex flex-column mt-2">
+            <p class="d-flex ma-0 align-center font-weight-medium text-body-2">
+              Chọn loại hình khám:
+            </p>
+            <v-card outlined width="50%">
+              <v-combobox
+                :items="service_type"
+                append-icon=""
+                solo
+                flat
+                hide-details=""
+                spellcheck="false"
+                item-color="blue-grey darken-1"
+              ></v-combobox>
+            </v-card>
+          </div>
+          <!--seclect timeframe -->
+          <p class="mt-2 mb-2 font-weight-medium text-body-2">Chọn ca:</p>
+          <v-card outlined width="100%" rounded="">
+            <v-select
+              multiple
+              :items="selected_absent_date.times"
+              :item-text="
+                item => `${item.timeFrame}; ${item.patientCount} bệnh nhân`
+              "
+              v-model="selected_absent_time"
+              chips
+              flat
+              solo
+              counter-value="3"
+              hide-details=""
+            >
+              <template v-slot:prepend-item>
+                <v-list-item ripple @mousedown.prevent @click="toggle">
+                  <v-list-item-action>
+                    <v-icon
+                      :color="
+                        selected_absent_time.length > 0 ? 'indigo darken-4' : ''
+                      "
+                    >
+                      {{ icon }}
+                    </v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title>
+                      Chọn tất cả
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-divider class="mt-2"></v-divider>
+              </template>
+            </v-select>
+          </v-card>
+
+          <!-- operate -->
+          <v-spacer></v-spacer>
+          <div class="d-flex flex-row">
+            <v-btn
+              class="btn mr-5 white--text"
+              color="#98A2B3"
+              elevation="0"
+              @click="absent_dialog = false"
+              >Hủy</v-btn
+            >
+            <v-spacer></v-spacer>
+
+            <v-btn
+              class="btn white--text"
+              color="#6D91B3"
+              elevation="0"
+              @click="absent_dialog = false"
+              >Xác nhận</v-btn
+            >
+          </div>
+        </v-card>
+      </v-dialog>
     </v-card>
     <!-- calendar -->
     <v-card width="100%">
@@ -455,6 +595,7 @@ export default {
   data: () => ({
     add_dialog: false,
     edit_dialog: false,
+    absent_dialog: false,
     add_menu: false,
     edit_menu: false,
     add_date: [],
@@ -470,7 +611,7 @@ export default {
       "14:00 - 15:00",
       "15:00 - 16:00",
       "16:00 - 17:00",
-      "17:00 - 18:00",
+      "17:00 - 18:00"
     ],
     patient_count: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
     patient_select: 1,
@@ -481,7 +622,7 @@ export default {
     typeToLabel: {
       month: "Tháng",
       week: "Tuần",
-      day: "Ngày",
+      day: "Ngày"
     },
     selectedEvent: {},
     selectedElement: null,
@@ -490,7 +631,7 @@ export default {
 
     colors: {
       online: { color: "#98A2B3", text: "white" },
-      offline_color: { color: "#6D91B3", text: "white" },
+      offline_color: { color: "#6D91B3", text: "white" }
     },
     names: [
       "Meeting",
@@ -500,7 +641,7 @@ export default {
       "Event",
       "Birthday",
       "Conference",
-      "Party",
+      "Party"
     ],
 
     doctor_calendar: [
@@ -510,22 +651,66 @@ export default {
           {
             type: "online",
             name: "Tư vấn online",
-            time: "12:00-13:00",
+            time: "12:00-13:00"
           },
           {
             type: "offline",
             name: "Khám tại viện",
-            time: "13:00-14:00",
+            time: "13:00-14:00"
           },
           {
             type: "online",
             name: "Tư vấn online",
-            time: "13:00-14:00",
-          },
-        ],
-      },
+            time: "13:00-14:00"
+          }
+        ]
+      }
     ],
+    absent_schedule_list: [
+      {
+        date: "2022-11-06",
+        times: [
+          { timeFrame: "9:00 - 10:00", patientCount: 5 },
+          { timeFrame: "10:00 - 11:00", patientCount: 3 },
+          { timeFrame: "11:00 - 12:00", patientCount: 4 },
+          { timeFrame: "13:00 - 14:00", patientCount: 5 }
+        ]
+      }
+    ],
+    selected_absent_date: {
+      date: "2022-11-06",
+      times: [
+        { timeFrame: "9:00 - 10:00", patientCount: 5 },
+        { timeFrame: "10:00 - 11:00", patientCount: 3 },
+        { timeFrame: "11:00 - 12:00", patientCount: 4 },
+        { timeFrame: "13:00 - 14:00", patientCount: 5 },
+        { timeFrame: "14:00 - 15:00", patientCount: 5 },
+        { timeFrame: "15:00 - 16:00", patientCount: 3 },
+        { timeFrame: "16:00 - 17:00", patientCount: 4 },
+        { timeFrame: "17:00 - 18:00", patientCount: 5 }
+      ]
+    },
+    selected_absent_time: []
   }),
+
+  computed: {
+    select_absent_all_time() {
+      return (
+        this.selected_absent_time.length ===
+        this.selected_absent_date.times.length
+      );
+    },
+    select_some_absent_time() {
+      return (
+        this.selected_absent_time.lengthh > 0 && !this.select_absent_all_time
+      );
+    },
+    icon() {
+      if (this.select_absent_all_time) return "mdi-close-box";
+      if (this.select_some_absent_time) return "mdi-minus-box";
+      return "mdi-checkbox-blank-outline";
+    }
+  },
   mounted() {
     this.$refs.calendar.checkChange();
   },
@@ -591,10 +776,10 @@ export default {
       //       timed: true
       //     });
       //   }
-      this.doctor_calendar.forEach((calendar) => {
+      this.doctor_calendar.forEach(calendar => {
         const day = new Date(calendar.date);
         if (day >= min && day <= max) {
-          calendar.event_in_day.forEach((event) => {
+          calendar.event_in_day.forEach(event => {
             const time_frame = event.time.split("-");
             const start_string = `${calendar.date}T${time_frame[0]}:00`;
             const end_string = `${calendar.date}T${time_frame[1]}:00`;
@@ -611,8 +796,8 @@ export default {
               timed: true,
               details: {
                 max_count: 5,
-                current_count: 3,
-              },
+                current_count: 3
+              }
             });
           });
         }
@@ -626,7 +811,17 @@ export default {
     intervalFormatter(locale, getOptions) {
       return locale.time;
     },
-  },
+
+    toggle() {
+      this.$nextTick(() => {
+        if (this.select_absent_all_time) {
+          this.selected_absent_time = [];
+        } else {
+          this.selected_absent_time = this.selected_absent_date.times.slice();
+        }
+      });
+    }
+  }
 };
 </script>
 

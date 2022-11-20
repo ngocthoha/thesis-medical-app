@@ -90,7 +90,7 @@
         </div>
       </v-card>
     </v-dialog>
-    <v-dialog v-model="exam_dialog" fullscreen>
+    <v-dialog v-model="exam_dialog" fullscreen v-if="exam_dialog">
       <v-card>
         <v-footer
           color="#314E6A"
@@ -254,12 +254,56 @@
                   </v-card>
                 </div>
                 <p class="text-body-2 font-weight-medium">
-                  Kết quả xét nghiệm:
+                  Hình ảnh đính kèm:
                 </p>
-
-                <p class="text-body-2 font-weight-medium">
-                  Chuẩn đoán hình ảnh:
-                </p>
+                <div class="d-flex flex-wrap">
+                  <v-card
+                    elevation="0"
+                    class="d-flex flex-row pa-2 mr-2"
+                    color="#EEF2F6"
+                    v-for="file in selected_appointment.files"
+                    :key="file.id"
+                  >
+                    <div class="mr-5">
+                      <p class="ma-0 text-body-2 font-weight-medium">
+                        {{ get_text_of_type_file(file) }}
+                      </p>
+                      <p class="ma-0 text-body-2">
+                        {{ get_name_of_file(file) }}
+                      </p>
+                    </div>
+                    <v-icon
+                      class="mr-2"
+                      @click="view_file(file)"
+                      v-if="is_img_file(file)"
+                      >mdi-eye-outline</v-icon
+                    >
+                    <v-icon>mdi-download-outline</v-icon>
+                  </v-card>
+                  <v-card
+                    elevation="0"
+                    class="d-flex flex-row pa-2"
+                    color="#EEF2F6"
+                    v-for="file in selected_appointment.files"
+                    :key="file.id"
+                  >
+                    <div class="mr-5">
+                      <p class="ma-0 text-body-2 font-weight-medium">
+                        {{ get_text_of_type_file(file) }}
+                      </p>
+                      <p class="ma-0 text-body-2">
+                        {{ get_name_of_file(file) }}
+                      </p>
+                    </div>
+                    <v-icon
+                      class="mr-2"
+                      @click="view_file(file)"
+                      v-if="is_img_file(file)"
+                      >mdi-eye-outline</v-icon
+                    >
+                    <v-icon>mdi-download-outline</v-icon>
+                  </v-card>
+                </div>
               </v-card>
             </v-tab-item>
             <!-- history -->
@@ -979,7 +1023,26 @@ export default {
         note: "",
         reExaminationDate: ""
       },
-      exam_confirm_dialog: false
+      exam_confirm_dialog: false,
+      image_file_accept: [
+        "wmf",
+        "webp",
+        "tga",
+        "emf",
+        "ai",
+        "tif",
+        "bmp",
+        "gif",
+        "jpg",
+        "ps",
+        "jpeg",
+        "ufo",
+        "pdf",
+        "eps",
+        "svg",
+        "png",
+        "psd"
+      ]
     };
   },
   methods: {
@@ -1227,7 +1290,35 @@ export default {
     stop_examination() {
       this.refresh_exam_data();
       this.exam_dialog = false;
-    }
+    },
+
+    get_text_of_type_file(file) {
+      let type_name = "";
+      this.test_type.forEach(file_type => {
+        if (file_type.key === file.type) type_name = file_type.name;
+      });
+      this.image_analyst_type.forEach(file_type => {
+        if (file_type.key === file.type) type_name = file_type.name;
+      });
+      return type_name;
+    },
+
+    get_name_of_file(file) {
+      let temp_array = file.imageUrl.split("/");
+      return temp_array[temp_array.length - 1];
+    },
+    view_file(file) {
+      window.open(file.imageUrl);
+    },
+    is_img_file(file) {
+      let temp_array = file.imageUrl.split("/");
+      let name_file = temp_array[temp_array.length - 1];
+      let temp_array_1 = name_file.split(".");
+      let result = false;
+      if (this.image_file_accept.includes(temp_array_1[1])) result = true;
+      return result;
+    },
+    down_load_file() {}
   }
 };
 </script>

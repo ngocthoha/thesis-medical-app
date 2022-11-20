@@ -282,7 +282,7 @@
                     class="white--text btn text-body-2"
                     elevation="0"
                     color="#537DA5"
-                    @click="moveToInfo()"
+                    @click="moveToInfo(doctor)"
                   >
                     Đặt khám
                   </v-btn>
@@ -427,7 +427,11 @@ export default {
       this.genderSelect = null;
       this.specialtySelect = null;
     },
-    moveToInfo() {
+    async moveToInfo(doctor) {
+      await this.$store.dispatch(
+        "appointment/set_doctor_select_to_make_appointment",
+        doctor
+      );
       this.$router.push({ name: "Thông tin đặt lịch bác sĩ" }).catch(error => {
         if (error == null) {
           return;
