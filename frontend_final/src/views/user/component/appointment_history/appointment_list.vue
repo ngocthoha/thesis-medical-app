@@ -77,14 +77,14 @@
             <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: #667085"
-              v-if="!appointment.isPaid && appointment.paymentType == 'DIRECT'"
+              v-if="appointment.status == 'PENDING'"
             >
               <v-chip text-color="white" color="orange" small class="ma-2">
                 Chờ duyệt
               </v-chip>
             </p>
             <p
-              v-else-if="!appointment.isPaid"
+              v-else-if="appointment.status == 'CANCEL'"
               class="ma-0 font-weight-medium text-body-2"
               style="color: red"
             >
@@ -95,7 +95,7 @@
             <p
               class="ma-0 font-weight-medium text-body-2"
               style="color: #667085"
-              v-else-if="appointment.status === 'PENDING'"
+              v-else-if="appointment.status === 'PROCCESS'"
             >
               <v-chip color="primary" small class="ma-2">
                 Chưa tiến hành

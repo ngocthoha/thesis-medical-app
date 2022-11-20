@@ -77,7 +77,6 @@ public class AppointmentController {
                 appointment.getFiles().add(File);
             }
         }
-        appointment.setStatus(Status.PENDING);
         appointment.setType(appointmentRequest.getType());
         appointment.setCategory(appointmentRequest.getCategory());
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
@@ -95,6 +94,15 @@ public class AppointmentController {
         String qrcode = QRCode.createQR(dataQrCode, 300, 300);
         appointment.setQrcode(qrcode);
         appointment.setPaymentType(appointmentRequest.getPaymentType());
+        if (appointment.getPaymentType().equals(PaymentType.DIRECT) && !appointment.getIsPaid())
+            appointment.setStatus(Status.PENDING);
+        else {
+            if (appointment.getIsPaid()) {
+                appointment.setStatus(Status.PROCESS);
+            } else {
+                appointment.setStatus(Status.CANCEL);
+            }
+        }
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(appointmentDTO)
@@ -157,6 +165,7 @@ public class AppointmentController {
         if (appointmentRequest.getSymptom() != null)  appointment.setSymptom(appointmentRequest.getSymptom());
         if (appointmentRequest.getFee() != null)  appointment.setFee(appointmentRequest.getFee());
         if (appointmentRequest.getIsPaid() != null)  appointment.setIsPaid(appointmentRequest.getIsPaid());
+        if (appointmentRequest.getStatus() != null)  appointment.setStatus(appointmentRequest.getStatus());
         appointmentService.updateAppointment(appointment);
         return ResponseEntity.ok(
                 new ApiResponse(null)

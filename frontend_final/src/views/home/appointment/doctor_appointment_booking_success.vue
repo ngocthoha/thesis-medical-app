@@ -9,18 +9,13 @@
       </p>
       <div class="d-flex">
         <v-btn
-          class="btn-not-transform text-body-1 font-weight-medium"
-          elevation="0"
-          outlined
-          color="#667085"
-          >Về trang chủ</v-btn
-        >
-        <v-btn
           class="ml-3 btn-not-transform text-body-1 font-weight-medium"
           elevation="0"
           outlined
           color="#667085"
-          >Xem lịch khám</v-btn
+          >Xem lịch khám<v-icon class="ml-2" small color="#537da5"
+            >mdi-arrow-right</v-icon
+          ></v-btn
         >
       </div>
       <v-card

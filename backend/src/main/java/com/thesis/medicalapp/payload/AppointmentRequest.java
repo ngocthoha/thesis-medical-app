@@ -1,9 +1,6 @@
 package com.thesis.medicalapp.payload;
 
-import com.thesis.medicalapp.models.CategoryType;
-import com.thesis.medicalapp.models.MedicalFile;
-import com.thesis.medicalapp.models.PaymentType;
-import com.thesis.medicalapp.models.ScheduleType;
+import com.thesis.medicalapp.models.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -44,4 +41,5 @@ public class AppointmentRequest {
     private CategoryType category;
     private String orderId;
     private PaymentType paymentType;
+    private Status status;
 }

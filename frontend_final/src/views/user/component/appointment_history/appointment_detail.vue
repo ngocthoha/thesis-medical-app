@@ -21,7 +21,7 @@
         >Hủy xem</v-btn
       >
       <v-btn
-        v-if="!appointment.isPaid && appointment.paymentType != 'DIRECT'"
+        v-if="appointment.status == 'CANCEL'"
         class="ml-3 white--text btn-not-transform text-body-2 font-weight-medium"
         elevation="0"
         color="#537DA5"
@@ -32,6 +32,48 @@
         "
         >Đặt khám lại</v-btn
       >
+      <v-btn
+        v-if="
+          appointment.status == 'PENDING' || appointment.status == 'PROCESS'
+        "
+        class="ml-3 white--text btn-not-transform text-body-2 font-weight-medium"
+        elevation="0"
+        color="red"
+        @click="dialog = true"
+        >Hủy đặt khám</v-btn
+      >
+      <v-dialog v-model="dialog" width="408px">
+        <v-card height="192px" class="d-flex flex-column">
+          <div class="d-flex flex-column mt-8 ml-8">
+            <p style="font-size: 24px" class="font-weight-bold">
+              Xác nhận hủy đặt khám
+            </p>
+            <p style="color: #667085">
+              Bạn có chắc chắn muốn hủy lịch hẹn này không?
+            </p>
+          </div>
+          <div class="d-flex flex-row justify-space-between ml-8 mr-8">
+            <v-btn
+              class="btn-not-transform font-weight-medium"
+              width="160px"
+              outlined
+              color="#667085"
+              text
+              @click="dialog = false"
+              >Huỷ bỏ</v-btn
+            >
+            <v-btn
+              class="btn-not-transform white--text font-weight-medium"
+              width="160px"
+              color="#F04438"
+              elevation="0"
+              :loading="loadingCancel"
+              @click="cancelAppointment()"
+              >Hủy đặt khám</v-btn
+            >
+          </div>
+        </v-card>
+      </v-dialog>
     </v-card>
     <v-divider
       style="border-color: rgba(16, 24, 40, 0.03) !important"
@@ -116,16 +158,14 @@
               <p
                 class="ma-0 font-weight-medium text-body-2"
                 style="color: #667085"
-                v-if="
-                  !appointment.isPaid && appointment.paymentType == 'DIRECT'
-                "
+                v-if="appointment.status == 'PENDING'"
               >
                 <v-chip text-color="white" color="orange" small>
                   Chờ duyệt
                 </v-chip>
               </p>
               <p
-                v-else-if="!appointment.isPaid"
+                v-else-if="appointment.status == 'CANCEL'"
                 class="ma-0 font-weight-medium text-body-2"
                 style="color: red"
               >
@@ -136,7 +176,7 @@
               <p
                 class="ma-0 font-weight-medium text-body-2"
                 style="color: #667085"
-                v-else-if="appointment.status === 'PENDING'"
+                v-else-if="appointment.status === 'PROCCESS'"
               >
                 <v-chip color="primary" small>
                   Chưa tiến hành
@@ -170,6 +210,22 @@
                   <span>Bấm để xem kết quả khám</span>
                 </v-tooltip>
               </div>
+            </v-card>
+            <v-card class="d-flex flex-row mb-3" elevation="0">
+              <!-- label -->
+              <v-card width="45%" elevation="0">
+                <p
+                  class="ma-0 text-body-1 font-weight-regular"
+                  style="color: #667085"
+                >
+                  Ngày đặt khám
+                </p></v-card
+              >
+              <v-card elevation="0">
+                <p class="ma-0 font-weight-medium">
+                  {{ formatDate(appointment.createdAt) | empty }}
+                </p>
+              </v-card>
             </v-card>
             <v-card class="d-flex flex-row mb-3" elevation="0">
               <!-- label -->
@@ -465,6 +521,7 @@
 </template>
 
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   props: {
     appointment: Object
@@ -472,6 +529,7 @@ export default {
   data() {
     return {
       medical_record_dialog: false,
+      dialog: false,
       prescriptions_header: [
         {
           text: "Tên",
@@ -518,17 +576,45 @@ export default {
           use: "Sáng: 1, Chiều: 1, Tối: 1",
           unit: "Viên"
         }
-      ]
+      ],
+      loadingCancel: false
     };
   },
 
   methods: {
+    async cancelAppointment() {
+      this.loadingCancel = true;
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const params = {
+        orderId: this.appointment.orderId,
+        status: "CANCEL"
+      };
+      await this.axios.patch(`${url}/api/appointments`, params);
+      this.loadingCancel = false;
+      this.dialog = false;
+      this.$emit("reloadDetail");
+      this.$store.dispatch("snackbar/set_snackbar", {
+        text: "Hủy đặt khám thành công",
+        type: "success"
+      });
+    },
+    formatDate(date_string) {
+      let date = new Date(date_string);
+      let day = date.getDate();
+      let month = date.getMonth();
+      let year = date.getFullYear();
+      return `${day} tháng ${month}, ${year}`;
+    },
     getPayment(type) {
       const map = {
         MOMO: "Thanh toán bằng Momo",
-        ATM: "Thanh toán bằng Atm",
-        VISA: "Thanh toán bằng Visa",
-        CSYT: "Thanh toán tại CSYT"
+        ATM: "Thanh toán bằng thẻ ATM",
+        VISA: "Thanh toán bằng thẻ VISA",
+        DIRECT: "Thanh toán tại CSYT"
       };
       return map[type];
     },
