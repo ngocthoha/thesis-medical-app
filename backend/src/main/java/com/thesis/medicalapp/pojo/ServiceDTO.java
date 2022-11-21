@@ -22,6 +22,7 @@ public class ServiceDTO {
     private HospitalDTO hospital;
     private String imageUrl;
     private Integer numOfServicePerHour;
+    private Double favorite;
     private ScheduleType type;
 
     public static ServiceDTO from(HospitalService hospitalService) {
@@ -35,6 +36,7 @@ public class ServiceDTO {
                 .hospital(HospitalDTO.from(hospitalService.getHospital()))
                 .imageUrl(hospitalService.getImageUrl())
                 .numOfServicePerHour(hospitalService.getNumOfServicePerHour())
+                .favorite(hospitalService.getFavorite())
                 .type(hospitalService.getType())
                 .build();
     }
