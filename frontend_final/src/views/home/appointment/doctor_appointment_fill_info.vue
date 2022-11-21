@@ -801,7 +801,7 @@ export default {
       const mapPaymentType = {
         ATM: "payWithATM",
         MOMO: "captureWallet",
-        VISA: ""
+        VISA: "payWithCC"
       };
       const params = {
         token: token,

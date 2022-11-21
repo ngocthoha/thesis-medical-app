@@ -26,7 +26,7 @@ export default {
   name: "HomeLayout",
 
   computed: {
-    ...mapState("snackbar", ["snackbar"]),
+    ...mapState("snackbar", ["snackbar"])
   },
   components: {
     DefaultBar: () =>
@@ -53,7 +53,7 @@ export default {
       import(
         /* webpackChunkName: "default-view" */
         "./View"
-      ),
-  },
+      )
+  }
 };
 </script>

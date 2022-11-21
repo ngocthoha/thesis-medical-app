@@ -9,7 +9,8 @@ const state = {
   is_verify_submit_success: false,
   username: null,
   isDoctor: false,
-  isUser: false
+  isUser: false,
+  userId: null
 };
 
 const mutations = {
@@ -40,6 +41,10 @@ const mutations = {
 
   SET_IS_USER: (state, isUser) => {
     state.isUser = isUser;
+  },
+
+  SET_USER_ID: (state, userId) => {
+    state.userId = userId;
   }
 };
 
@@ -51,7 +56,11 @@ const actions = {
         localStorage.setItem("username", decoded.sub);
         let isDoctor = (decoded.roles || []).some(r => r === "ROLE_DOCTOR");
         let isUser = (decoded.roles || []).some(r => r === "ROLE_USER");
+        let userId = (decoded.roles || []).filter(
+          r => !["ROLE_DOCTOR", "ROLE_USER", "ROLE_ADMIN"].includes(r)
+        );
         commit("SET_USERNAME", decoded.sub);
+        commit("SET_USER_ID", userId[0]);
         commit("SET_IS_DOCTOR", isDoctor);
         commit("SET_IS_USER", isUser);
         commit("SET_TOKEN", data.access_token);
@@ -63,7 +72,7 @@ const actions = {
       } else {
         commit("SET_TOKEN", "");
         commit("SET_IS_LOGIN", false);
-        console.log("fail success");
+        console.log("login fail");
       }
     });
   },
@@ -104,7 +113,8 @@ const getters = {
   is_verify_submit_success: state => state.is_verify_submit_success,
   username: state => state.username,
   isDoctor: state => state.isDoctor,
-  isUser: state => state.isUser
+  isUser: state => state.isUser,
+  userId: state => state.userId
 };
 
 export default {

@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -39,6 +40,17 @@ public class AppointmentController {
     private final MedicalFileRepository medicalFileRepository;
     private final ServiceRepository serviceRepository;
     private final AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final HospitalRepository hospitalRepository;
+
+    @Async
+    public void updateRegistrationNumber(Doctor doctor) {
+        doctor.setRegistrationNumber(doctor.getRegistrationNumber() + 1);
+        doctorRepository.save(doctor);
+        Hospital hospital = hospitalRepository.findById(doctor.getHospital().getId()).get();
+        hospital.setRegistrationNumber(hospital.getRegistrationNumber() + 1);
+        hospitalRepository.save(hospital);
+    }
 
     @PostMapping("/appointments")
     public ResponseEntity<Object> saveAppointment(@RequestBody @Valid AppointmentRequest appointmentRequest) {
@@ -49,10 +61,10 @@ public class AppointmentController {
         if (appointmentRequest.getDoctorId()  == null && appointmentRequest.getServiceId() == null)
             throw new ApiRequestException("doctor or service must not be blank");
         if (appointmentRequest.getDoctorId() != null) {
-            System.out.println("create doctor appointment");
             Doctor doctor = doctorService.findDoctorById(appointmentRequest.getDoctorId());
             if (doctor == null) throw new ApiRequestException("Không tìm thấy bác sĩ!");
             appointment.setDoctor(doctor);
+            updateRegistrationNumber(doctor);
         } else {
            Optional<HospitalService> service = serviceRepository.findById(appointmentRequest.getServiceId());
            if (!service.isPresent()) throw new ApiRequestException("Không tìm thấy dịch vụ!");

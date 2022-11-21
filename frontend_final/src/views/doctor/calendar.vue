@@ -21,12 +21,11 @@
         Chỉnh sửa lịch
       </v-btn>
       <v-btn
-        class="mr-4 btn font-weight-medium"
+        class="mr-4 white--text btn font-weight-medium"
         color="#537DA5"
-        outlined
         @click.stop="absent_dialog = true"
       >
-        <v-icon>mdi-calendar-remove-outline</v-icon>
+        <v-icon>mdi-calendar-remove</v-icon>
         Báo nghỉ
       </v-btn>
 
@@ -364,11 +363,11 @@
       </v-dialog>
 
       <!-- absent dialog-->
-      <v-dialog v-model="absent_dialog" max-width="800">
+      <v-dialog v-model="absent_dialog" max-width="600">
         <v-toolbar color="#537DA5" height="64" class="white--text">
           Thông báo nghỉ
         </v-toolbar>
-        <v-card height="600" class="pa-6 d-flex flex-column" tile>
+        <v-card height="500" class="pa-6 d-flex flex-column" tile>
           <!-- select date -->
           <p class="mb-2 font-weight-medium text-body-2">Chọn ngày:</p>
           <v-card class="d-flex flex-row align-center" elevation="0">
@@ -417,37 +416,20 @@
             </v-card>
           </v-card>
           <!-- type  -->
-          <div class="d-flex flex-column mt-2">
-            <p class="d-flex ma-0 align-center font-weight-medium text-body-2">
-              Chọn loại hình khám:
-            </p>
-            <v-card outlined width="50%">
-              <v-combobox
-                :items="service_type"
-                append-icon=""
-                solo
-                flat
-                hide-details=""
-                spellcheck="false"
-                item-color="blue-grey darken-1"
-              ></v-combobox>
-            </v-card>
-          </div>
           <!--seclect timeframe -->
           <p class="mt-2 mb-2 font-weight-medium text-body-2">Chọn ca:</p>
           <v-card outlined width="100%" rounded="">
             <v-select
               multiple
-              :items="selected_absent_date.times"
-              :item-text="
-                item => `${item.timeFrame}; ${item.patientCount} bệnh nhân`
-              "
+              :items="absentTimes"
               v-model="selected_absent_time"
               chips
               flat
               solo
               counter-value="3"
               hide-details=""
+              deletable-chips
+              small-chips
             >
               <template v-slot:prepend-item>
                 <v-list-item ripple @mousedown.prevent @click="toggle">
@@ -470,24 +452,36 @@
               </template>
             </v-select>
           </v-card>
-
+          <p class="mt-2 mb-2 font-weight-medium text-body-2">Lý do nghỉ:</p>
+          <v-card outlined class="mb-3">
+            <v-textarea
+              v-model="absentReason"
+              spellcheck="false"
+              solo
+              height="148"
+              flat
+              hide-details
+              placeholder="Vui lòng nhập lý do nghỉ lịch làm việc..."
+            >
+            </v-textarea>
+          </v-card>
           <!-- operate -->
           <v-spacer></v-spacer>
           <div class="d-flex flex-row">
+            <v-spacer></v-spacer>
             <v-btn
               class="btn mr-5 white--text"
-              color="#98A2B3"
+              color="primary"
+              outlined
               elevation="0"
-              @click="absent_dialog = false"
+              @click="cancelLeave()"
               >Hủy</v-btn
             >
-            <v-spacer></v-spacer>
-
             <v-btn
               class="btn white--text"
-              color="#6D91B3"
+              color="#537DA5"
               elevation="0"
-              @click="absent_dialog = false"
+              @click="createLeave()"
               >Xác nhận</v-btn
             >
           </div>
@@ -591,6 +585,8 @@
 </template>
 
 <script>
+import axios from "axios";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data: () => ({
     add_dialog: false,
@@ -666,39 +662,23 @@ export default {
         ]
       }
     ],
-    absent_schedule_list: [
-      {
-        date: "2022-11-06",
-        times: [
-          { timeFrame: "9:00 - 10:00", patientCount: 5 },
-          { timeFrame: "10:00 - 11:00", patientCount: 3 },
-          { timeFrame: "11:00 - 12:00", patientCount: 4 },
-          { timeFrame: "13:00 - 14:00", patientCount: 5 }
-        ]
-      }
-    ],
-    selected_absent_date: {
-      date: "2022-11-06",
-      times: [
-        { timeFrame: "9:00 - 10:00", patientCount: 5 },
-        { timeFrame: "10:00 - 11:00", patientCount: 3 },
-        { timeFrame: "11:00 - 12:00", patientCount: 4 },
-        { timeFrame: "13:00 - 14:00", patientCount: 5 },
-        { timeFrame: "14:00 - 15:00", patientCount: 5 },
-        { timeFrame: "15:00 - 16:00", patientCount: 3 },
-        { timeFrame: "16:00 - 17:00", patientCount: 4 },
-        { timeFrame: "17:00 - 18:00", patientCount: 5 }
-      ]
-    },
-    selected_absent_time: []
+    selected_absent_time: [],
+    absentTimes: [],
+    absentReason: ""
   }),
-
+  watch: {
+    edit_date: {
+      handler(val) {
+        if (val) this.getScheduleByDate();
+      }
+    }
+  },
   computed: {
+    userId() {
+      return this.$store.getters["auth/userId"];
+    },
     select_absent_all_time() {
-      return (
-        this.selected_absent_time.length ===
-        this.selected_absent_date.times.length
-      );
+      return this.selected_absent_time.length === this.absentTimes.length;
     },
     select_some_absent_time() {
       return (
@@ -715,6 +695,51 @@ export default {
     this.$refs.calendar.checkChange();
   },
   methods: {
+    cancelLeave() {
+      this.edit_date = null;
+      this.absentTimes = [];
+      this.selected_absent_time = [];
+      this.absentReason = "";
+      this.absent_dialog = false;
+    },
+    getScheduleByDate() {
+      let token = this.$store.getters["auth/access_token"];
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const params = {
+        date: this.edit_date,
+        doctorId: this.userId
+      };
+      axios
+        .get(`${url}/api/schedules`, {
+          params: params
+        })
+        .then(res => {
+          this.absentTimes = res.data.results[0]?.times;
+        });
+    },
+    createLeave() {
+      let token = this.$store.getters["auth/access_token"];
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const data = {
+        date: this.edit_date,
+        doctorId: this.userId,
+        times: this.selected_absent_time,
+        reason: this.absentReason
+      };
+      axios.post(`${url}/api/leave-requests`, data).then(res => {
+        this.$store.dispatch("snackbar/set_snackbar", {
+          text: "Thông báo nghỉ thành công",
+          type: "success"
+        });
+        this.cancelLeave();
+      });
+    },
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -817,7 +842,7 @@ export default {
         if (this.select_absent_all_time) {
           this.selected_absent_time = [];
         } else {
-          this.selected_absent_time = this.selected_absent_date.times.slice();
+          this.selected_absent_time = this.absentTimes.slice();
         }
       });
     }

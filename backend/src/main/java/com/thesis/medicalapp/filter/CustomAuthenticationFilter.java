@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.thesis.medicalapp.ThesisMedicalAppApplication;
 import com.thesis.medicalapp.models.Global;
 import com.thesis.medicalapp.repository.UserRepository;
+import com.thesis.medicalapp.services.UserService;
+import com.thesis.medicalapp.services.impl.UserServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

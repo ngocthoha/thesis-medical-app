@@ -59,6 +59,7 @@
               elevation="0"
               color="#537DA5"
               @click="AddProfile"
+              :loading="loading"
               >Thêm hồ sơ</v-btn
             >
           </div>
@@ -192,7 +193,8 @@ export default {
       tab: null,
       hasLookingResult: false,
       notFound: true,
-      phoneInputData: ""
+      phoneInputData: "",
+      loading: false
     };
   },
   methods: {
@@ -213,7 +215,9 @@ export default {
     },
 
     async AddProfile() {
+      this.loading = true;
       await this.$options.childInterface.addNewProfile();
+      this.loading = false;
       this.$emit("addProfileClose");
     }
   }

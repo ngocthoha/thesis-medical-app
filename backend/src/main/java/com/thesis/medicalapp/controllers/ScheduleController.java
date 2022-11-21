@@ -10,6 +10,7 @@ import com.thesis.medicalapp.pojo.ScheduleDTO;
 import com.thesis.medicalapp.repository.RoomRepository;
 import com.thesis.medicalapp.repository.ScheduleRepository;
 import com.thesis.medicalapp.services.ScheduleService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +29,8 @@ import java.util.List;
 public class ScheduleController {
     private final ScheduleService scheduleService;
     private final RoomRepository roomRepository;
+    private final ScheduleRepository scheduleRepository;
+
     @PostMapping("/schedules")
     public ResponseEntity<Object> saveSchedule(@RequestBody @Valid ListSchedule request) {
         List<ScheduleDTO> scheduleDTOS = new ArrayList<>();
@@ -52,7 +55,7 @@ public class ScheduleController {
         );
     }
     @GetMapping("/schedules/all")
-    public ResponseEntity<Object> getSchedules() {
+    public ResponseEntity<Object> getSchedules(@RequestBody @Valid ListSchedule request) {
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(scheduleService.getSchedules())
         );
