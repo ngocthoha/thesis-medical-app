@@ -729,6 +729,9 @@ export default {
       } else {
         return require("@/assets/img/user/profile/avatar1.svg");
       }
+    },
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
     }
   }
 };

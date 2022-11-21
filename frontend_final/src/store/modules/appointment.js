@@ -8,7 +8,7 @@ const state = {
   make_appointment_doctor_select: {},
   make_appointment_doctor_schedule: [],
   make_appointment_set_time_doctor: null,
-
+  make_appointment_service_select:{},
   //doctor work
   doctor_appointment_list: []
 };
@@ -45,6 +45,10 @@ const mutations = {
     make_appointment_set_time_doctor
   ) => {
     state.make_appointment_set_time_doctor = make_appointment_set_time_doctor;
+  },
+
+  SET_MAKE_APPOINTMENT_SERVICE_SELECT:(state, make_appointment_service_select)=>{
+    state.make_appointment_service_select = make_appointment_service_select
   },
 
   //doctor work
@@ -111,6 +115,9 @@ const actions = {
     commit("SET_MAKE_APPOINTMENT_SET_TIME_DOCTOR", params);
   },
 
+  set_service_select_to_make_appointment({ commit }, params){
+    commit("SET_MAKE_APPOINTMENT_SERVICE_SELECT", params);
+  },
   //doctor work
   get_appointment_by_doctor({ commit }, params) {
     return service.get_appointment_by_doctor(params).then(({ data }) => {
@@ -133,7 +140,7 @@ const getters = {
     state.make_appointment_doctor_schedule,
   make_appointment_set_time_doctor: state =>
     state.make_appointment_set_time_doctor,
-
+  make_appointment_service_select: state => state.make_appointment_service_select,
   //doctor work
   doctor_appointment_list: state => state.doctor_appointment_list
 };

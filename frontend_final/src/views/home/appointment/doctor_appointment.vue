@@ -109,7 +109,8 @@
               </v-list-item>
               <v-list-item class="justify-center">
                 Giá từ
-                {{ range[0] }} đ đến {{ range[1] }} đ
+                {{ get_text_price(range[0]) }} đ đến
+                {{ get_text_price(range[1]) }} đ
               </v-list-item>
               <v-list-item>
                 <v-range-slider
@@ -275,7 +276,7 @@
                       class="font-weight-bold text-body-2 ml-3"
                       style="color: #537da5"
                     >
-                      {{ doctor.price }} đ
+                      {{ get_text_price(doctor.price) }} đ
                     </p>
                   </div>
                   <v-btn
@@ -509,6 +510,9 @@ export default {
       } else {
         return require("@/assets/img/user/profile/avatar1.svg");
       }
+    },
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
     }
   }
 };

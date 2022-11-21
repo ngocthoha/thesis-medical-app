@@ -94,7 +94,8 @@
               </v-list-item>
               <v-list-item class="justify-center">
                 Giá từ
-                {{ range[0] }} đ đến {{ range[1] }} đ
+                {{ get_text_price(range[0]) }} đ đến
+                {{ get_text_price(range[1]) }} đ
               </v-list-item>
               <v-list-item>
                 <v-range-slider
@@ -168,44 +169,48 @@
         <!-- list service -->
         <v-row :justify="listService.length == 1 ? 'center' : undefined">
           <v-col :md="6" v-for="(service, i) in listService" :key="i">
-            <v-card class="d-flex flex-column pa-6" @click="moveToInfo">
+            <v-card
+              class="d-flex flex-column pa-6"
+              @click="moveToInfo(service)"
+            >
               <v-card elevation="0" class="d-flex flex-row">
-                <div class="d-flex flex-row">
-                  <v-card
-                    width="126"
-                    min-height="84"
-                    class="align-self-start"
-                    elevation="0"
-                  >
-                    <v-img :src="getImgOfService(service)"></v-img>
-                  </v-card>
-                  <v-card class="d-flex flex-column ml-3" elevation="0">
-                    <!-- service name -->
-                    <p class="text-body-2 mb-2 font-weight-bold">
-                      {{ service.name }}
+                <v-card
+                  width="126"
+                  min-height="100"
+                  class="align-self-start"
+                  elevation="0"
+                >
+                  <v-img :src="getImgOfService(service)"></v-img>
+                </v-card>
+                <v-card
+                  class="d-flex flex-column ml-3"
+                  elevation="0"
+                  width="100%"
+                >
+                  <!-- service name -->
+                  <p class="text-body-2 mb-2 font-weight-bold">
+                    {{ service.name }}
+                  </p>
+
+                  <div class="d-flex mb-2">
+                    <v-icon small color="#537da5">mdi-domain</v-icon>
+                    <p class="ma-0  text-body-2 ml-2" style="color: #667085">
+                      {{ service.hospital.name }}
                     </p>
-
-                    <div class="d-flex mb-2">
-                      <v-icon small color="#537da5">mdi-domain</v-icon>
-                      <p class="ma-0  text-body-2 ml-2" style="color: #667085">
-                        {{ service.hospital.name }}
-                      </p>
-                    </div>
-
-                    <div
-                      class="d-flex flex-row align-center justify-space-between"
+                  </div>
+                  <v-spacer></v-spacer>
+                  <div
+                    class="d-flex flex-row align-center justify-space-between"
+                  >
+                    <p
+                      class="font-weight-bold text-body-2"
+                      style="color: #537da5; margin: 0"
                     >
-                      <p
-                        class="font-weight-bold text-body-2"
-                        style="color: #537da5; margin: 0"
-                      >
-                        {{ service.price }} đ
-                      </p>
-
-                      <v-icon small color="#537da5">mdi-arrow-right</v-icon>
-                    </div>
-                  </v-card>
-                </div>
+                      {{ get_text_price(service.price) }} đ
+                    </p>
+                    <v-icon small color="#537da5">mdi-arrow-right</v-icon>
+                  </div>
+                </v-card>
               </v-card>
             </v-card>
           </v-col>
@@ -368,7 +373,11 @@ export default {
         this.specialties = res.data.results;
       });
     },
-    moveToInfo() {
+    async moveToInfo(service) {
+      await this.$store.dispatch(
+        "appointment/set_service_select_to_make_appointment",
+        service
+      );
       this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {
         if (error == null) {
           return;
@@ -384,6 +393,9 @@ export default {
       } else {
         return require("@/assets/img/home/service_avt.png");
       }
+    },
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
     }
   }
 };

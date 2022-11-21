@@ -22,7 +22,7 @@
     </v-list-item-avatar> -->
 
     <v-list-item-icon class="my-2 align-self-center">
-      <v-icon v-text="'mdi-menu-right'" />
+      <v-icon v-text="'mdi-hexagram-outline'" small />
     </v-list-item-icon>
 
     <v-list-item-content v-if="item.title" class="font-weight-medium">
@@ -38,8 +38,8 @@ export default {
   props: {
     item: {
       type: Object,
-      default: () => ({}),
-    },
+      default: () => ({})
+    }
   },
 
   computed: {
@@ -47,8 +47,8 @@ export default {
       const matches = this.item.title.match(/\b(\w)/g);
 
       return matches.join("");
-    },
-  },
+    }
+  }
 };
 </script>
 

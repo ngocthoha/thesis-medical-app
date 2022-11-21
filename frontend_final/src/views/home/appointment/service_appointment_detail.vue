@@ -13,15 +13,17 @@
         <!-- doctor detail -->
         <v-card class="d-flex flex-row pa-6" width="100%">
           <!-- avatar -->
-          <v-card width="240" height="160" class="align-self-start">
-            <v-img src="@/assets/img/home/service_avt.png"></v-img>
+          <v-card width="240" class="align-self-start">
+            <v-img :src="getImgOfService(service_info)"></v-img>
           </v-card>
           <!-- detail -->
           <v-card class="d-flex flex-column ml-5" elevation="0">
             <p class="mb-2 font-weight-bold" style="font-size: 20px">
-              Gói xét nghiệm tổng quát cho Nam
+              {{ this.service_info.name }}
             </p>
-            <p class="text-body-2 mb-3">Bệnh viện hữu nghị Việt Đức</p>
+            <p class="text-body-2 mb-3">
+              {{ this.service_info.hospital.name }}
+            </p>
             <div class="d-flex flex-row mb-3">
               <v-card
                 class="d-flex flex-row"
@@ -48,10 +50,6 @@
                 <p style="color: #537da5">146</p>
               </v-card>
             </div>
-            <v-spacer></v-spacer>
-            <p class="ma-0 font-weight-bold" style="color: #537da5">
-              100.000VND
-            </p>
           </v-card>
         </v-card>
 
@@ -91,10 +89,8 @@
               <!-- infomation tab -->
               <v-tab-item :key="'tab-1'">
                 <v-card class="d-flex flex-column">
-                  <p class="text-body-1 mb-6">
-                    Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều
-                    năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh
-                    vực dịch vụ y tế tại nhà trong khu vực.
+                  <p style="white-space: pre-line" class="text-body-1 mb-6">
+                    {{ service_info.info }}
                   </p>
                   <div class="d-flex flex-row justify-space-between">
                     <v-card class="d-flex flex-row" width="45%" elevation="0">
@@ -103,32 +99,13 @@
                       >
                       <v-card class="ml-3" elevation="0">
                         <p class="text-body-2 mb-2 font-weight-medium">
-                          08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành
-                          phố Hồ Chí Minh
+                          {{ get_hospital_address(service_info.hospital) }}
                         </p>
                         <p
                           class="text-body-2 font-weight-medium"
                           style="color: #537da5"
                         >
                           Hiện chỉ đường
-                        </p>
-                      </v-card>
-                    </v-card>
-                    <v-card class="d-flex flex-row" width="45%" elevation="0">
-                      <v-icon class="align-self-start" size="24" color="#537da5"
-                        >mdi-clock-time-nine-outline</v-icon
-                      >
-                      <v-card class="ml-3" elevation="0">
-                        <p class="text-body-2 mb-2 font-weight-medium">
-                          Thứ 2 đến Thứ 7
-                        </p>
-                        <p
-                          v-for="n in 3"
-                          :key="n"
-                          class="text-body-2 mb-0"
-                          style="color: #667085"
-                        >
-                          10:15 AM - 02:30 PM
                         </p>
                       </v-card>
                     </v-card>
@@ -174,37 +151,13 @@
           <!--  -->
           <div class="d-flex flex-row align-center justify-space-between">
             <p class="text-body-1 font-weight-medium">
-              Gói xét nghiệm tổng quát cho Nam
+              {{ service_info.name }}
             </p>
             <p class="ml-3 font-weight-bold" style="color: #537da5">
-              100000 VND
+              {{ get_text_price(service_info.price) }} đ
             </p>
           </div>
-          <!--  -->
-          <div class="d-flex flex-row mb-3">
-            <v-card
-              class="d-flex flex-row"
-              height="24"
-              width="56"
-              color="#EEF2F6"
-              elevation="0"
-            >
-              <v-icon color="#537DA5" class="align-self-start"
-                >mdi-calendar-month-outline</v-icon
-              >
-              <p style="color: #537da5">146</p>
-            </v-card>
-            <v-card
-              class="d-flex flex-row ml-1"
-              height="24"
-              width="56"
-              color="#F9FAFB"
-              elevation="0"
-            >
-              <v-icon color="#FFC107" class="align-self-start">mdi-star</v-icon>
-              <p style="color: #537da5">146</p>
-            </v-card>
-          </div>
+
           <!-- location -->
           <v-card class="d-flex flex-row" elevation="0">
             <v-icon class="align-self-start" size="24" color="#537da5"
@@ -215,8 +168,7 @@
                 class="text-body-2 mb-2 font-weight-medium"
                 style="color: #667085"
               >
-                08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành phố Hồ Chí
-                Minh
+                {{ get_hospital_address(service_info.hospital) }}
               </p>
             </v-card>
           </v-card>
@@ -418,12 +370,21 @@
 
 <script>
 export default {
-  setup() {},
+  async mounted() {
+    await this.get_service_select();
+  },
   data() {
     return {
       tab: null,
       calander_tab: null,
       selected: null,
+      service_info: {
+        hospital: {
+          name: "",
+          address: {}
+        },
+        price: 0
+      },
       morning_time: [
         "09:00 - 09:30",
         "10:00 - 10:30",
@@ -450,6 +411,67 @@ export default {
             throw error;
           }
         });
+    },
+
+    async get_service_select() {
+      // const queryString = window.location.search;
+      // const urlParams = new URLSearchParams(queryString);
+      // const id = urlParams.get("id");
+      // if (id) {
+      //   const res = await this.axios.get(`${url}/api/doctors/${id}`);
+      //   this.doctor_info = res.data.results;
+      // } else
+      //   this.doctor_info = await this.$store.getters[
+      //     "appointment/make_appointment_doctor_select"
+      //   ];
+      this.service_info = await this.$store.getters[
+        "appointment/make_appointment_service_select"
+      ];
+    },
+    getImgOfService(service) {
+      if (service.imageUrl != null) {
+        return service.imageUrl;
+      } else {
+        return require("@/assets/img/home/service_avt.png");
+      }
+    },
+
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
+    },
+    get_hospital_address(hospital) {
+      let address_str = "";
+      if (hospital.address.address != null) {
+        if (address_str.length == 0) {
+          address_str = hospital.address.address;
+        }
+      }
+      if (hospital.address.ward != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.ward
+            : address_str + ", " + hospital.address.ward;
+      }
+      if (hospital.address.district != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.district
+            : address_str + ", " + hospital.address.district;
+      }
+      if (hospital.address.province != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.province
+            : address_str + ", " + hospital.address.province;
+      }
+
+      if (hospital.address.country != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.country
+            : address_str + ", " + hospital.address.country;
+      }
+      return address_str;
     }
   }
 };
