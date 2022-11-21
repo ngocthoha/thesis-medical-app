@@ -323,7 +323,7 @@
                                 style="color: #537da5"
                                 class="ma-0 font-weight-bold text-body-2"
                               >
-                                {{ service.price }} đ
+                                {{ get_text_price(service.price) }} đ
                               </p>
 
                               <v-icon small color="#537da5"
@@ -498,7 +498,7 @@
                             class="ml-3 font-weight-bold"
                             style="color: #537da5"
                           >
-                            {{ doctor.price }} đ
+                            {{ get_text_price(doctor.price) }} đ
                           </p>
                         </div>
                         <v-btn
