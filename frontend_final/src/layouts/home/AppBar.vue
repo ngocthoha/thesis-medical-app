@@ -428,14 +428,7 @@
                             <v-list-item-content>
                               <h4>{{ _.get(item, "title") }}</h4>
                               <p class="d-flex align-end pa-0 ma-0 text-body-2">
-                                {{
-                                  _.get(item, "text", []).length > 76
-                                    ? `${_.get(item, "text").substring(
-                                        0,
-                                        76
-                                      )} ...`
-                                    : _.get(item, "text")
-                                }}
+                                {{ getText(item) }}
                               </p>
                               <p
                                 class="d-flex align-end pa-0 ma-0 text-body-2"
@@ -932,6 +925,12 @@ export default {
     }
   },
   methods: {
+    getText(item) {
+      let text = this._.get(item, "text") || "";
+      text.length > 76
+        ? `${_.get(item, "text").substring(0, 76)} ...`
+        : _.get(item, "text");
+    },
     goToNotification(item) {
       let token = this.$store.getters["auth/access_token"];
 
