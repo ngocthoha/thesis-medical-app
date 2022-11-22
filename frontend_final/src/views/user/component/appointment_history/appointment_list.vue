@@ -141,7 +141,11 @@
                 style="color: #667085"
               >
                 <v-icon small color="#537da5" class="mr-2">mdi-domain</v-icon>
-                {{ appointment.doctor.hospital.name }}
+                {{
+                  appointment.category === "DOCTOR"
+                    ? appointment.doctor.hospital.name
+                    : appointment.service.hospital.name
+                }}
               </p>
             </div>
           </v-card>
@@ -219,6 +223,11 @@ export default {
           return `Tư vấn trực tuyến với ${appointment.doctor.level}. ${appointment.doctor.name}`;
         }
         return `Khám trực tiếp với ${appointment.doctor.level}. ${appointment.doctor.name}`;
+      } else {
+        if (appointment.type == "ONLINE") {
+          return `Dịch vụ khám tại nhà ${appointment.service.name}`;
+        }
+        return `Dịch vụ khám tại viện ${appointment.service.name}`;
       }
     },
     view_appointment_detail(appointment) {

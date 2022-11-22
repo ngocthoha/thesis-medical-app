@@ -77,13 +77,13 @@
                 style="text-transform: none"
                 class="font-weight-medium text-body-1"
                 :key="'tab-2'"
-                >Đánh giá</v-tab
+                >{{ titleFavorite }}</v-tab
               >
               <v-tab
                 style="text-transform: none"
                 class="font-weight-medium text-body-1"
                 :key="'tab-3'"
-                >Câu hỏi</v-tab
+                >{{ titleQuestion }}</v-tab
               >
             </v-tabs>
           </v-card>
@@ -119,12 +119,27 @@
 
               <!-- evaluate tab -->
               <v-tab-item :key="'tab-2'">
-                <v-card> evaluate tab </v-card>
+                <favorite
+                  v-if="service_info && username"
+                  :username="username"
+                  :object="service_info"
+                  :objectType="'service'"
+                  @reloadFavorite="reloadFavorite"
+                  @setNumFavorite="numFavorite = $event"
+                  :key="keyFavorite"
+                ></favorite>
               </v-tab-item>
 
               <!-- question tab -->
               <v-tab-item :key="'tab-3'">
-                <v-card> question tab </v-card>
+                <question
+                  v-if="service_info && username"
+                  :username="username"
+                  :object="service_info"
+                  @reloadQuestion="reloadQuestion"
+                  @setNumQuestion="numQuestion = $event"
+                  :key="keyQuestion"
+                ></question>
               </v-tab-item>
             </v-tabs-items>
           </v-card>
@@ -466,7 +481,13 @@
 </template>
 
 <script>
+import Favorite from "../Component/favorite.vue";
+import Question from "../Component/question.vue";
 export default {
+  components: {
+    Favorite,
+    Question
+  },
   async mounted() {
     await this.get_service_select();
     await this.analyst_work_time_of_hospital(this.service_info.hospital);
@@ -525,10 +546,33 @@ export default {
         year: ""
       },
       online_selected: null,
-      offline_selected: null
+      offline_selected: null,
+      keyFavorite: 0,
+      keyQuestion: 0,
+      numFavorite: 0,
+      numQuestion: 0
     };
   },
+  computed: {
+    username() {
+      return this.$store.getters["auth/username"];
+    },
+    titleFavorite() {
+      if (this.tab !== 1) return "Đánh giá";
+      return `Đánh giá (${this.numFavorite})`;
+    },
+    titleQuestion() {
+      if (this.tab !== 2) return "Câu hỏi";
+      return `Câu hỏi (${this.numQuestion})`;
+    }
+  },
   methods: {
+    reloadFavorite() {
+      this.keyFavorite++;
+    },
+    reloadQuestion() {
+      this.keyQuestion++;
+    },
     submit_select_time() {
       this.$router
         .push({ name: "Điền thông tin đặt lịch dịch vụ" })

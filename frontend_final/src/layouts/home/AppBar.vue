@@ -428,7 +428,14 @@
                             <v-list-item-content>
                               <h4>{{ _.get(item, "title") }}</h4>
                               <p class="d-flex align-end pa-0 ma-0 text-body-2">
-                                {{ _.get(item, "text").substring(0, 76) }}...
+                                {{
+                                  _.get(item, "text", []).length > 76
+                                    ? `${_.get(item, "text").substring(
+                                        0,
+                                        76
+                                      )} ...`
+                                    : _.get(item, "text")
+                                }}
                               </p>
                               <p
                                 class="d-flex align-end pa-0 ma-0 text-body-2"

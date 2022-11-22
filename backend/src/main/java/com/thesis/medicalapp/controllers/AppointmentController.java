@@ -81,9 +81,11 @@ public class AppointmentController {
             throw new ApiRequestException("Invalid date!");
         }
         appointment.setDate(dateFormat);
-        Room room = roomRepository.findRoomById(appointmentRequest.getRoomId());
-        if (room == null) throw new ApiRequestException("Không tìm thấy phòng!");
-        appointment.setRoom(room);
+        if (appointmentRequest.getCategory().equals(CategoryType.DOCTOR)) {
+            Room room = roomRepository.findRoomById(appointmentRequest.getRoomId());
+            if (room == null) throw new ApiRequestException("Không tìm thấy phòng!");
+            appointment.setRoom(room);
+        }
         appointment.setTime(appointmentRequest.getTime());
         appointment.setSymptom(appointmentRequest.getSymptom());
         appointment.setFiles(new ArrayList<>());
@@ -101,14 +103,7 @@ public class AppointmentController {
         appointment.setFee(appointmentRequest.getFee());
         appointment.setIsPaid(appointmentRequest.getIsPaid());
         appointment.setOrderId(appointmentRequest.getOrderId());
-        String dataQrCode =
-                appointment.getProfile().getFirstName() + appointment.getProfile().getLastName() + "\n"
-                + appointment.getTime() + "\n"
-                + appointment.getDoctor().getName() + "\n"
-                + appointment.getId() + "\n"
-                + appointment.getOrderId();
-        String qrcode = QRCode.createQR(dataQrCode, 300, 300);
-        appointment.setQrcode(qrcode);
+
         appointment.setPaymentType(appointmentRequest.getPaymentType());
         if (appointment.getPaymentType().equals(PaymentType.DIRECT) && !appointment.getIsPaid())
             appointment.setStatus(Status.PENDING);
@@ -119,8 +114,24 @@ public class AppointmentController {
                 appointment.setStatus(Status.CANCEL);
             }
         }
-
+        String objectName = "";
+        if (appointmentRequest.getCategory().equals(CategoryType.DOCTOR)) {
+            objectName = appointment.getDoctor().getName();
+        } else {
+            objectName = appointment.getService().getName();
+        }
+        String dataQrCode =
+                appointment.getProfile().getLastName() + " " + appointment.getProfile().getFirstName() + "\n"
+                        + appointment.getTime() + "\n"
+                        + appointmentRequest.getDate()
+                        + objectName + "\n"
+                        + appointment.getStatus() + "\n"
+                        + appointment.getCode() + "\n"
+                        + appointment.getOrderId();
+        String qrcode = QRCode.createQR(dataQrCode, 300, 300);
+        appointment.setQrcode(qrcode);
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
+        System.out.println("createaaaa");
         Notification notification = new Notification();
         notification.setTime(new Date());
         String text = "";
@@ -136,8 +147,13 @@ public class AppointmentController {
                         + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
                         + " ngày " + dateNoti
                         + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
-                notification.setText(text);
+            } else {
+                text = "Lịch khám theo dịch vụ "
+                        + appointmentDTO.getService().getName()
+                        + " ngày " + dateNoti
+                        + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
             }
+            notification.setText(text);
         }
         else if (appointmentDTO.getStatus().equals(Status.CANCEL)) {
             notification.setType(NotificationType.FAIL_APPOINTMENT);
@@ -147,8 +163,14 @@ public class AppointmentController {
                         + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
                         + " ngày " + dateNoti
                         + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
-                notification.setText(text);
+
+            } else {
+                text = "Lịch khám theo dịch vụ "
+                        + appointmentDTO.getService().getName()
+                        + " ngày " + dateNoti
+                        + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
             }
+            notification.setText(text);
         }
         Notification notificationRes = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);

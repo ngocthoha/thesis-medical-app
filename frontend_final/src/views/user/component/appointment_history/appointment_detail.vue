@@ -296,8 +296,8 @@
               </p></v-card
             >
             <p class="ma-0 font-weight-medium">
-              {{ appointment.doctor.level }}.
-              {{ appointment.doctor.name }}
+              {{ _.get(appointment, "doctor.level") }}.
+              {{ _.get(appointment, "doctor.name") }}
               <v-tooltip bottom>
                 <template v-slot:activator="{ on, attrs }">
                   <a
@@ -343,6 +343,22 @@
           >
           <p class="ma-0 font-weight-medium">
             {{ getServiceName(appointment) }}
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on, attrs }">
+                <a
+                  v-if="appointment.category === 'SERVICE'"
+                  v-bind="attrs"
+                  v-on="on"
+                  target="_blank"
+                  style="text-decoration: none;"
+                  :href="
+                    '/service-appointment-detail/?id=' + appointment.service.id
+                  "
+                  ><v-icon small color="primary">mdi-open-in-new</v-icon></a
+                >
+              </template>
+              <span>Xem bệnh viện</span>
+            </v-tooltip>
           </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
@@ -373,10 +389,18 @@
             class="d-flex flex-row"
             v-if="this.appointment.type === 'ONLINE'"
           >
-            <p class="ma-0 font-weight-medium mr-3">Trực tuyến</p>
+            <p class="ma-0 font-weight-medium mr-3">
+              {{ appointment.category === "DOCTOR" ? "Trực tuyến" : "Tại nhà" }}
+            </p>
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
-                <v-icon color="#537DA5" dark v-bind="attrs" v-on="on">
+                <v-icon
+                  v-if="appointment.category === 'DOCTOR'"
+                  color="#537DA5"
+                  dark
+                  v-bind="attrs"
+                  v-on="on"
+                >
                   mdi-video
                 </v-icon>
               </template>
@@ -387,7 +411,11 @@
             <p class="ma-0 font-weight-medium mr-3">Trực tiếp tại viện</p>
           </div>
         </v-card>
-        <v-card class="d-flex flex-row mb-3" elevation="0">
+        <v-card
+          v-if="appointment.category === 'DOCTOR'"
+          class="d-flex flex-row mb-3"
+          elevation="0"
+        >
           <!-- label -->
           <v-card width="30%" elevation="0"
             ><p
@@ -412,7 +440,11 @@
             </p></v-card
           >
           <p class="ma-0 font-weight-medium">
-            {{ appointment.doctor.hospital.name }}
+            {{
+              appointment.category === "DOCTOR"
+                ? appointment.doctor.hospital.name
+                : appointment.service.hospital.name
+            }}
             <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <a
@@ -420,10 +452,7 @@
                   v-on="on"
                   target="_blank"
                   style="text-decoration: none;"
-                  :href="
-                    '/hospital-appointment-detail/?id=' +
-                      appointment.doctor.hospital.id
-                  "
+                  :href="'/hospital-appointment-detail/?id=' + hospitalId"
                   ><v-icon small color="primary">mdi-open-in-new</v-icon></a
                 >
               </template>
@@ -581,7 +610,13 @@ export default {
       loadingCancel: false
     };
   },
-
+  computed: {
+    hospitalId() {
+      return this.appointment.category == "DOCTOR"
+        ? this.appointment.doctor.hospital.id
+        : this.appointment.service.hospital.id;
+    }
+  },
   methods: {
     async cancelAppointment() {
       this.loadingCancel = true;
@@ -644,6 +679,8 @@ export default {
           return `Tư vấn trực tuyến`;
         }
         return `Khám trực tiếp`;
+      } else {
+        return appointment.service.name;
       }
     }
   }

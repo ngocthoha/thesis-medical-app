@@ -46,13 +46,17 @@ public class AppointmentDTO {
     private Date createdAt;
 
     public static AppointmentDTO from(Appointment appointment) {
+        DoctorDTO doctorDTO;
+        if (appointment.getCategory().equals(CategoryType.DOCTOR)) {
+            doctorDTO = DoctorDTO.from(appointment.getDoctor());
+        } else doctorDTO = null;
         return AppointmentDTO.builder()
                 .id(appointment.getId())
                 .code(appointment.getCode())
                 .room(appointment.getRoom())
                 .profile(ProfileDTO.from(appointment.getProfile()))
-                .doctor(DoctorDTO.from(appointment.getDoctor()))
-               .service(appointment.getService())
+                .doctor(doctorDTO)
+                .service(appointment.getService())
                 .date(appointment.getDate())
                 .time(appointment.getTime())
                 .symptom(appointment.getSymptom())

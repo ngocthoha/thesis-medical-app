@@ -621,7 +621,6 @@
                   </div>
                   <!-- CSYT -->
                   <v-card
-                    v-if="book_time.type == 'OFFLINE'"
                     class="mt-6 d-flex flex-row pa-4"
                     elevation="0"
                     color="#FCFCFD"

@@ -4,10 +4,7 @@ import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.pojo.HospitalDTO;
-import com.thesis.medicalapp.repository.DoctorRepository;
-import com.thesis.medicalapp.repository.FavoriteRepository;
-import com.thesis.medicalapp.repository.HospitalRepository;
-import com.thesis.medicalapp.repository.ProfileRepository;
+import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.search.*;
 import com.thesis.medicalapp.services.FavoriteService;
 import com.thesis.medicalapp.services.ProfileService;
@@ -36,6 +33,7 @@ public class FavoriteController {
     private final ProfileRepository profileRepository;
     private final HospitalRepository hospitalRepository;
     private final DoctorRepository doctorRepository;
+    private final ServiceRepository serviceRepository;
     private static final DecimalFormat df = new DecimalFormat("0.0");
 
     @Data
@@ -75,6 +73,12 @@ public class FavoriteController {
             Double favoriteCount = favoriteRepository.countFavoriteByObjectId(objectId);
             doctor.setFavorite(Double.parseDouble(df.format(favoriteCount)));
             doctorRepository.save(doctor);
+        }
+        else if (favoriteRequest.getObjectType().equals("service")) {
+            HospitalService hospitalService = serviceRepository.findById(objectId).get();
+            Double favoriteCount = favoriteRepository.countFavoriteByObjectId(objectId);
+            hospitalService.setFavorite(Double.parseDouble(df.format(favoriteCount)));
+            serviceRepository.save(hospitalService);
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(
