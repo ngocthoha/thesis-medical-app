@@ -137,7 +137,7 @@
     >
       <v-card
         class="mx-4 pa-8 d-flex flex-column"
-        width="1000"
+        width="1200"
         elevation="0"
         color="#FCFCFD"
       >
@@ -188,9 +188,43 @@
                   width="100%"
                 >
                   <!-- service name -->
-                  <p class="text-body-2 mb-2 font-weight-bold">
-                    {{ service.name }}
-                  </p>
+                  <div class="d-flex flex-row justify-space-between">
+                    <p class="text-body-2 mb-2 font-weight-bold">
+                      {{ service.name }}
+                    </p>
+                    <div class="d-flex flex-row">
+                      <v-card
+                        class="d-flex flex-row"
+                        height="24"
+                        width="50"
+                        color="#EEF2F6"
+                        style="border-radius: 50px"
+                        elevation="0"
+                      >
+                        <v-icon color="#537DA5" class="align-self-start mr-1"
+                          >mdi-calendar-month-outline</v-icon
+                        >
+                        <p style="color: #537da5">
+                          {{ service.registrationNumber }}
+                        </p>
+                      </v-card>
+                      <v-card
+                        class="d-flex flex-row ml-1"
+                        height="24"
+                        width="50"
+                        color="#EEF2F6"
+                        style="border-radius: 50px"
+                        elevation="0"
+                      >
+                        <v-icon
+                          color="#FFC107"
+                          class="align-self-start mr-1 ml-1"
+                          >mdi-star</v-icon
+                        >
+                        <p style="color: #537da5">{{ service.favorite }}</p>
+                      </v-card>
+                    </div>
+                  </div>
 
                   <div class="d-flex mb-2">
                     <v-icon small color="#537da5">mdi-domain</v-icon>

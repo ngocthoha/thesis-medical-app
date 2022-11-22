@@ -22,15 +22,15 @@
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
           <!-- price -->
           <v-card class="pa-6 d-flex flex-row align-center" tile elevation="0">
-            <v-avatar size="28" class="mr-5">
-              <v-img src="@/assets/img/home/appbar/doctor.svg"></v-img>
+            <v-avatar size="48" class="mr-5">
+              <v-img :src="getImgOfService(service_info)"></v-img>
             </v-avatar>
             <p class="ma-0 font-weight-bold">
-              Gói xét nghiệm tổng quát cho Nam
+              {{ service_info.name }}
             </p>
             <v-spacer></v-spacer>
             <p class="ma-0 font-weight-bold" style="color: #537da5">
-              100.000VND
+              {{ get_text_price(service_info.price) }} đ
             </p>
           </v-card>
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
@@ -54,8 +54,10 @@
               >
             </v-avatar>
             <div class="d-flex flex-column">
-              <p class="mb-3 font-weight-bold">09:00 - 09:30</p>
-              <p class="ma-0 text-body-2" style="color: #667085">24/8/2022</p>
+              <p class="mb-3 font-weight-bold">{{ book_time.time }}</p>
+              <p class="ma-0 text-body-2" style="color: #667085">
+                {{ book_time.date }}
+              </p>
             </div>
           </v-card>
 
@@ -68,15 +70,14 @@
             color="#FCFCFD"
           >
             <v-avatar size="48" class="mr-5">
-              <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+              <v-img :src="getImgOfHospital(service_info.hospital)"></v-img>
             </v-avatar>
             <div class="d-flex flex-column justify-center">
               <p class="mb-2 font-weight-bold">
-                Phòng khám Vinmec Central Park
+                {{ service_info.hospital.name }}
               </p>
               <p class="text-body-2" style="color: #667085">
-                08 Đ. Nguyễn Hữu Cảnh, Phường 22, Bình Thạnh, Thành phố Hồ Chí
-                Minh
+                {{ get_hospital_address(service_info.hospital) }}
               </p>
               <p class="text-body-2 font-weight-medium" style="color: #537da5">
                 Hiện chỉ đường
@@ -96,11 +97,7 @@
           >
           <v-divider style="border-color: #f2f4f7 !important"></v-divider>
           <v-expansion-panels accordion tile flat>
-            <v-expansion-panel
-              v-for="profile in profile_list"
-              :key="profile.id"
-              class="mb-4"
-            >
+            <v-expansion-panel v-model="selected_profile" class="mb-4">
               <v-expansion-panel-header>
                 <v-card class="d-flex flex-row align-center" elevation="0">
                   <v-avatar size="40">
@@ -108,13 +105,14 @@
                   </v-avatar>
                   <div class="d-flex flex-column ml-3">
                     <p class="ma-0 font-weight-bold text-body-1">
-                      {{ profile.lastName }} {{ profile.firstName }}
+                      {{ selected_profile.lastName }}
+                      {{ selected_profile.firstName }}
                     </p>
                     <p
                       class="ma-0 font-weight-normal text-body-2"
                       style="color: #667085"
                     >
-                      {{ profile.relationship }}
+                      {{ selected_profile.relationship }}
                     </p>
                   </div>
                 </v-card>
@@ -149,7 +147,7 @@
                       Email
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.email }}
+                      {{ selected_profile.email }}
                     </p>
                   </v-card>
                   <!-- phone -->
@@ -165,7 +163,7 @@
                       Số điện thoại
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.phone }}
+                      {{ selected_profile.phone }}
                     </p>
                   </v-card>
                   <!-- address -->
@@ -181,7 +179,7 @@
                       Địa chỉ
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ getAddress(profile) }}
+                      {{ getAddress(selected_profile) }}
                     </p>
                   </v-card>
                   <!-- gender -->
@@ -197,7 +195,7 @@
                       Giới tính
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ getGender(profile.gender) }}
+                      {{ getGender(selected_profile.gender) }}
                     </p>
                   </v-card>
                   <!-- birthday -->
@@ -213,7 +211,7 @@
                       Ngày sinh
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ getDate(profile.dob) }}
+                      {{ getDate(selected_profile.dob) }}
                     </p>
                   </v-card>
                   <!-- identify -->
@@ -229,7 +227,7 @@
                       Số CMND/CCCD
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.identityCard }}
+                      {{ selected_profile.identityCard }}
                     </p>
                   </v-card>
                   <!-- job -->
@@ -244,7 +242,9 @@
                     <p class="ma-0 font-weight-medium" style="color: #667085">
                       Nghề nghiệp
                     </p>
-                    <p class="ma-0 font-weight-medium">{{ profile.job }}</p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ selected_profile.job }}
+                    </p>
                   </v-card>
                   <!-- country -->
                   <v-divider
@@ -259,7 +259,7 @@
                       Quốc gia
                     </p>
                     <p class="ma-0 font-weight-medium">
-                      {{ profile.address.country }}
+                      {{ selected_profile.address.country }}
                     </p>
                   </v-card>
                   <!-- ethnic -->
@@ -274,7 +274,9 @@
                     <p class="ma-0 font-weight-medium" style="color: #667085">
                       Dân tộc
                     </p>
-                    <p class="ma-0 font-weight-medium">{{ profile.folk }}</p>
+                    <p class="ma-0 font-weight-medium">
+                      {{ selected_profile.folk }}
+                    </p>
                   </v-card>
                 </div>
               </v-expansion-panel-content>
@@ -298,6 +300,7 @@
             <p class="font-weight-medium text-body-1">Triệu chứng</p>
             <v-card outlined class="mb-6">
               <v-textarea
+                v-model="symptom"
                 spellcheck="false"
                 solo
                 height="148"
@@ -313,20 +316,6 @@
               <p class="font-weight-medium text-body-1 ma-0">
                 Kết quả xét nghiệm
               </p>
-              <v-card width="221" outlined v-if="is_select_profile">
-                <v-combobox
-                  spellcheck="false"
-                  v-model="test_select"
-                  :items="test_type"
-                  solo
-                  dense
-                  flat
-                  append-icon="mdi-chevron-down"
-                  item-color="light-blue darken-4"
-                  placeholder="Chọn loại xét nghiệm"
-                  hide-details=""
-                ></v-combobox>
-              </v-card>
             </div>
             <!-- add test result  -->
             <v-card
@@ -335,6 +324,7 @@
               v-if="is_select_profile"
             >
               <v-file-input
+                v-model="test_file"
                 placeholder="Vui lòng chọn hình ảnh"
                 solo
                 dense
@@ -343,11 +333,14 @@
                 prepend-icon=""
                 hide-details=""
                 flat
+                multiple
+                small-chips
               ></v-file-input>
               <v-btn
                 class="btn white--text font-weight-medium text-body-2"
                 color="#537DA5"
                 elevation="0"
+                @click="addTestFile"
                 >Tải lên</v-btn
               >
             </v-card>
@@ -358,12 +351,22 @@
               v-for="(image, index) in test_add_list"
               :key="index"
             >
-              <p
-                class="font-weight-medium text-body-1 ma-0"
-                style="color: #667085"
-              >
-                {{ image.type }}
-              </p>
+              <v-card width="221" outlined class="pa-1">
+                <v-combobox
+                  spellcheck="false"
+                  v-model="image.type"
+                  :items="test_type"
+                  item-text="name"
+                  solo
+                  dense
+                  flat
+                  append-icon="mdi-chevron-down"
+                  item-color="light-blue darken-4"
+                  placeholder="Chọn loại xét nghiệm"
+                  hide-details=""
+                  :readonly="!is_select_profile"
+                ></v-combobox>
+              </v-card>
               <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
                 <v-icon class="mr-2">mdi-image-outline</v-icon>
                 <v-card min-width="50%" elevation="0">
@@ -373,7 +376,9 @@
                 </v-card>
 
                 <v-spacer></v-spacer>
-                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
+                <v-icon @click="removeTestFile(index)" v-if="is_select_profile"
+                  >mdi-close</v-icon
+                >
               </v-card>
             </div>
             <!-- Image analysation type -->
@@ -383,20 +388,6 @@
               <p class="font-weight-medium text-body-1 ma-0">
                 Chuẩn đoán hình ảnh
               </p>
-              <v-card width="221" outlined v-if="is_select_profile">
-                <v-combobox
-                  spellcheck="false"
-                  v-model="image_select"
-                  :items="image_analyst_type"
-                  solo
-                  dense
-                  flat
-                  append-icon="mdi-chevron-down"
-                  item-color="light-blue darken-4"
-                  placeholder="Chọn loại hình ảnh"
-                  hide-details=""
-                ></v-combobox>
-              </v-card>
             </div>
             <!-- add test result  -->
             <v-card
@@ -413,11 +404,15 @@
                 prepend-icon=""
                 hide-details=""
                 flat
+                v-model="image_file"
+                multiple
+                small-chips
               ></v-file-input>
               <v-btn
                 class="btn white--text font-weight-medium text-body-2"
                 color="#537DA5"
                 elevation="0"
+                @click="addImageAnalystFile"
                 >Tải lên</v-btn
               >
             </v-card>
@@ -425,15 +420,26 @@
             <!-- list add test result -->
             <div
               class="d-flex flex-wrap justify-space-between align-center mb-5"
-              v-for="(image, index) in test_add_list"
+              v-for="(image, index) in image_analyst_list"
               :key="index + 3"
             >
-              <p
-                class="font-weight-medium text-body-1 ma-0"
-                style="color: #667085"
-              >
-                {{ image.type }}
-              </p>
+              <v-card width="221" outlined class="pa-1">
+                <v-combobox
+                  spellcheck="false"
+                  v-model="image.type"
+                  :items="image_analyst_type"
+                  item-text="name"
+                  item-value="key"
+                  solo
+                  dense
+                  flat
+                  append-icon="mdi-chevron-down"
+                  item-color="light-blue darken-4"
+                  placeholder="Chọn loại hình ảnh"
+                  hide-details=""
+                  :readonly="!is_select_profile"
+                ></v-combobox>
+              </v-card>
               <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
                 <v-icon class="mr-2">mdi-image-outline</v-icon>
                 <v-card min-width="50%" elevation="0">
@@ -443,7 +449,9 @@
                 </v-card>
 
                 <v-spacer></v-spacer>
-                <v-icon @click="removeTestFile(index)">mdi-close</v-icon>
+                <v-icon @click="removeImageFile(index)" v-if="is_select_profile"
+                  >mdi-close</v-icon
+                >
               </v-card>
             </div>
           </v-card>
@@ -468,10 +476,10 @@
             >
             <v-divider style="border-color: #f2f4f7 !important"></v-divider>
             <!-- price -->
-            <v-radio-group v-model="radioGroup" class="ma-0">
+            <v-radio-group v-model="selected_profile" class="ma-0">
               <v-card
-                v-for="n in 3"
-                :key="n"
+                v-for="(profile, index) in profile_list"
+                :key="index"
                 class="pa-6 d-flex flex-row"
                 tile
                 elevation="0"
@@ -480,13 +488,15 @@
                   <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
                 </v-avatar>
                 <div class="d-flex flex-column justify-center">
-                  <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
+                  <p class="mb-2 font-weight-bold">
+                    {{ profile.lastName }} {{ profile.firstName }}
+                  </p>
                   <p class="ma-0 text-body-2" style="color: #667085">
-                    Chủ tài khoản
+                    {{ profile.relationship }}
                   </p>
                 </div>
                 <v-spacer></v-spacer>
-                <v-radio :value="n" color="#537DA5"></v-radio>
+                <v-radio :value="profile" color="#537DA5"></v-radio>
               </v-card>
             </v-radio-group>
           </v-card>
@@ -536,7 +546,82 @@
                 </p>
                 <v-radio-group v-model="payment_selection" class="ma-0">
                   <!-- Visa -->
+                  <div>
+                    <v-card
+                      class="mt-6 d-flex flex-row pa-4"
+                      elevation="0"
+                      color="#FCFCFD"
+                    >
+                      <v-img
+                        contain
+                        height="32"
+                        width="32"
+                        class="mr-5"
+                        src="@/assets/img/payment/visa.png"
+                      ></v-img>
+                      <v-card class="d-flex flex-column mr-3" elevation="0">
+                        <p class="mb-2 font-weight-bold">
+                          Thanh toán bằng thẻ Visa
+                        </p>
+                        <p class="ma-0">
+                          Hỗ trợ thanh toán xuyên quốc gia qua thẻ
+                          Visa/Mastercard.
+                        </p>
+                      </v-card>
+                      <v-radio value="VISA" color="#537DA5"></v-radio>
+                    </v-card>
+                    <!-- ATM -->
+                    <v-card
+                      class="mt-6 d-flex flex-row pa-4"
+                      elevation="0"
+                      color="#FCFCFD"
+                    >
+                      <v-img
+                        contain
+                        height="32"
+                        width="32"
+                        class="mr-5"
+                        src="@/assets/img/payment/atm_card.png"
+                      ></v-img>
+                      <v-card class="d-flex flex-column mr-3" elevation="0">
+                        <p class="mb-2 font-weight-bold">
+                          Thanh toán bằng thẻ ATM nội địa
+                        </p>
+                        <p class="ma-0">
+                          Sử dụng tài khoản Internet Banking của ngân hàng bạn
+                          đang sử dụng để thanh toán.
+                        </p>
+                      </v-card>
+                      <v-radio value="ATM" color="#537DA5"></v-radio>
+                    </v-card>
+                    <!-- Momo -->
+                    <v-card
+                      class="mt-6 d-flex flex-row pa-4"
+                      elevation="0"
+                      color="#FCFCFD"
+                    >
+                      <v-img
+                        contain
+                        height="32"
+                        width="32"
+                        class="mr-5"
+                        src="@/assets/img/payment/momo.png"
+                      ></v-img>
+                      <v-card class="d-flex flex-column mr-3" elevation="0">
+                        <p class="mb-2 font-weight-bold">
+                          Thanh toán bằng Momo
+                        </p>
+                        <p class="ma-0">
+                          Quét mã QR trong ứng dụng ví điện tử Momo để thanh
+                          toán dịch vụ.
+                        </p>
+                      </v-card>
+                      <v-radio value="MOMO" color="#537DA5"></v-radio>
+                    </v-card>
+                  </div>
+                  <!-- CSYT -->
                   <v-card
+                    v-if="book_time.type == 'OFFLINE'"
                     class="mt-6 d-flex flex-row pa-4"
                     elevation="0"
                     color="#FCFCFD"
@@ -546,66 +631,18 @@
                       height="32"
                       width="32"
                       class="mr-5"
-                      src="@/assets/img/payment/visa.png"
+                      src="@/assets/img/payment/direct.jpg"
                     ></v-img>
                     <v-card class="d-flex flex-column mr-3" elevation="0">
                       <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ Visa
+                        Thanh toán tại Cơ sở y tế
                       </p>
                       <p class="ma-0">
-                        Hỗ trợ thanh toán xuyên quốc gia qua thẻ
-                        Visa/Mastercard.
+                        Làm thủ tục thanh toán tại quầy của CSYT trước khi thực
+                        hiện mỗi dịch vụ
                       </p>
                     </v-card>
-                    <v-radio value="VISA" color="#537DA5"></v-radio>
-                  </v-card>
-                  <!-- ATM -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/atm_card.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ ATM nội địa
-                      </p>
-                      <p class="ma-0">
-                        Sử dụng tài khoản Internet Banking của ngân hàng bạn
-                        đang sử dụng để thanh toán.
-                      </p>
-                    </v-card>
-                    <v-radio value="ATM" color="#537DA5"></v-radio>
-                  </v-card>
-                  <!-- Momo -->
-                  <v-card
-                    class="mt-6 d-flex flex-row pa-4"
-                    elevation="0"
-                    color="#FCFCFD"
-                  >
-                    <v-img
-                      contain
-                      height="32"
-                      width="32"
-                      class="mr-5"
-                      src="@/assets/img/payment/momo.png"
-                    ></v-img>
-                    <v-card class="d-flex flex-column mr-3" elevation="0">
-                      <p class="mb-2 font-weight-bold">
-                        Thanh toán bằng thẻ Visa
-                      </p>
-                      <p class="ma-0">
-                        Quét mã QR trong ứng dụng ví điện tử Momo để thanh toán
-                        dịch vụ.
-                      </p>
-                    </v-card>
-                    <v-radio value="MOMO" color="#537DA5"></v-radio>
+                    <v-radio value="DIRECT" color="#537DA5"></v-radio>
                   </v-card>
                 </v-radio-group>
                 <v-card></v-card>
@@ -617,6 +654,7 @@
             color="#537DA5"
             elevation="0"
             width="100%"
+            :loading="loading"
             @click="make_payment"
             >Xác nhận thanh toán
           </v-btn>
@@ -627,59 +665,63 @@
 </template>
 
 <script>
+import axios from "axios";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
-  setup() {},
+  created() {
+    let time_data = this.$store.getters[
+      "appointment/make_appointment_set_time_service"
+    ];
+    if (time_data != null) {
+      this.book_time.time = time_data.time;
+      this.book_time.date = time_data.date;
+      this.book_time.type = time_data.type;
+      this.book_time.room = time_data.room;
+    }
+    this.get_service_select();
+    this.getProfileList();
+  },
   data() {
     return {
+      book_time: {
+        time: "",
+        date: "",
+        type: "",
+        room: {}
+      },
+      service_info: {
+        hospital: {
+          name: "",
+          address: {}
+        },
+        price: 0
+      },
+      symptom: "",
+      selected_profile: {},
+      loading: false,
       is_select_profile: true,
       is_payment: false,
-      test_type: ["Xét nghiệm máu", "Xét nghiệm nước tiểu", "Xét nghiệm khác"],
-      test_select: "",
-      image_select: "",
+      test_type: [
+        { name: "Xét nghiệm máu", key: "BLOOD_TEST" },
+        { name: "Xét nghiệm nước tiểu", key: "URINE_TEST" },
+        { name: "Xét nghiệm khác", key: "DIFFERENT_TEST" }
+      ],
       radioGroup: 1,
       payment_selection: "",
-      profile_list: [
-        {
-          id: "1",
-          firstName: "Tho",
-          lastName: "Ha Ngoc",
-          address: {
-            country: "Viet Nam",
-            province: "Tinh",
-            district: "Huyen",
-            ward: "Xa",
-            address: "364 Do Bi",
-          },
-          phone: "phoneNumber",
-          email: "email@gmail.com",
-          dob: "2012-04-23T18:25:43.511Z",
-          job: "job",
-          identityCard: "identityCard",
-          healthInsurance: "healthInsurance",
-          folk: "folk",
-          gender: "MALE",
-          guardian: "guardian",
-          guardianPhone: "guardianPhone",
-          guardianIdentityCard: "guardianIdentityCard",
-          relationship: "relationship",
-          relationshipWithPatient: "relationshipWithPatient",
-        },
+      profile_list: [],
+      test_file: [],
+      test_add_list: [],
+      image_analyst_type: [
+        { name: "CT", key: "CT_SCAN" },
+        { name: "X-quang", key: "X_RAY " },
+        { name: "PET", key: "PET_SCAN" },
+        { name: "Siêu âm", key: "SUPERSONIC" },
+        { name: "MRI", key: "MRI" },
+        { name: "Hình ảnh khác", key: "DIFFERENT_IMAGE" }
       ],
-      test_add_list: [
-        {
-          type: "Xét nghiệm máu",
-          file_name: "ketquaxetnghiem.jpg",
-        },
-        {
-          type: "Xét nghiệm nước tiểu",
-          file_name: "ketquaxetnghiem.jpg",
-        },
-        {
-          type: "Xét nghiệm khác",
-          file_name: "ketquaxetnghiem.jpg",
-        },
-      ],
-      image_analyst_type: ["CT", "X-quang", "PET", "Siêu âm", "Hình ảnh khác"],
+      image_analyst_list: [],
+      image_file: [],
+      submit_file_list: []
     };
   },
   methods: {
@@ -687,15 +729,40 @@ export default {
       this.test_add_list.splice(index, 1);
     },
 
+    removeImageFile(index) {
+      this.image_analyst_list.splice(index, 1);
+    },
+
+    addTestFile() {
+      this.test_file.forEach(file => {
+        this.test_add_list.push({
+          type: { key: "", name: "" },
+          file_name: file.name,
+          data: file
+        });
+      });
+    },
+
+    addImageAnalystFile() {
+      this.image_file.forEach(file => {
+        this.image_analyst_list.push({
+          type: { key: "", name: "" },
+          file_name: file.name,
+          data: file
+        });
+      });
+    },
+
     getAddress(profile) {
+      if (profile.address == null) return "";
       return (
-        profile.address.province +
-        ", " +
-        profile.address.district +
+        profile.address.address +
         ", " +
         profile.address.ward +
         ", " +
-        profile.address.address
+        profile.address.district +
+        ", " +
+        profile.address.province
       );
     },
 
@@ -713,19 +780,176 @@ export default {
       this.is_payment = true;
     },
 
-    make_payment() {
-      this.$router
-        .push({ name: "Đặt lịch bác sĩ thành công" })
-        .catch((error) => {
-          if (error == null) {
-            return;
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
+    },
+
+    async get_service_select() {
+      this.service_info = await this.$store.getters[
+        "appointment/make_appointment_service_select"
+      ];
+    },
+    get_hospital_address(hospital) {
+      let address_str = "";
+      if (hospital.address.address != null) {
+        if (address_str.length == 0) {
+          address_str = hospital.address.address;
+        }
+      }
+      if (hospital.address.ward != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.ward
+            : address_str + ", " + hospital.address.ward;
+      }
+      if (hospital.address.district != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.district
+            : address_str + ", " + hospital.address.district;
+      }
+      if (hospital.address.province != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.province
+            : address_str + ", " + hospital.address.province;
+      }
+
+      if (hospital.address.country != null) {
+        address_str =
+          address_str.length == 0
+            ? hospital.address.country
+            : address_str + ", " + hospital.address.country;
+      }
+      return address_str;
+    },
+
+    async getProfileList() {
+      let token = this.$store.getters["auth/access_token"];
+      const param = {
+        token: token
+      };
+      await this.$store.dispatch("profile/profile_list", param);
+      this.profile_list = this.$store.getters["profile/profile_list"];
+    },
+    getImgOfHospital(hospital) {
+      if (hospital.imageUrl != null) {
+        return hospital.imageUrl;
+      } else {
+        return require("@/assets/img/home/hospital_avt.png");
+      }
+    },
+    getImgOfService(service) {
+      if (service.imageUrl != null) {
+        return service.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
+      }
+    },
+    async make_payment() {
+      let orderId = new Date().getTime();
+      if (this.payment_selection != "DIRECT") await this.paymentOnline(orderId);
+      this.createAppointment(orderId);
+    },
+    async paymentOnline(orderId) {
+      let token = this.$store.getters["auth/access_token"];
+      const mapPaymentType = {
+        ATM: "payWithATM",
+        MOMO: "captureWallet",
+        VISA: "payWithCC"
+      };
+      const params = {
+        token: token,
+        data: {
+          requestId: new Date().getTime() + "id",
+          orderId: orderId,
+          ipnUrl: "http://localhost:8080/api/payment/momo/verify",
+          redirectUrl:
+            "http://localhost:8081/doctor-appointment-booking-success/",
+          amount: "100000",
+          orderInfo: "Khám theo yêu cầu tại đại học y dược",
+          extraData: "",
+          requestType: mapPaymentType[this.payment_selection]
+        }
+      };
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${params.token}`
+      };
+      let responseData = await axios
+        .post(`${url}/api/payment/momo`, params.data)
+        .then(response => {
+          return {
+            data: response.data
+          };
+        });
+
+      window.open(responseData.data.results.payUrl, "_self");
+    },
+    async createAppointment(orderId) {
+      this.loading = true;
+      let post_file_list = this.test_add_list.concat(this.image_analyst_list);
+
+      await Promise.all(
+        post_file_list.map(async file => {
+          await this.post_file(file.data, file.type);
+        })
+      );
+
+      let b = this.submit_file_list;
+      let token = this.$store.getters["auth/access_token"];
+      let param = {
+        token: token,
+        data: {
+          profileId: this.selected_profile.id,
+          serviceId: this.service_info.id,
+          //roomId: this.book_time.room.id,
+          date: this.book_time.date,
+          time: this.book_time.time,
+          symptom: this.symptom,
+          type: this.book_time.type,
+          files: b,
+          fee: this.service_info.price,
+          isPaid: false,
+          category: "SERVICE",
+          orderId: orderId,
+          paymentType: this.payment_selection
+        }
+      };
+      await this.$store.dispatch("appointment/createAppointment", param);
+      this.loading = false;
+      if (this.payment_selection == "DIRECT") {
+        this.$router.push({
+          path:
+            "/doctor-appointment-booking-success/?paymentType=DIRECT&resultCode=0"
+        });
+      }
+    },
+
+    async post_file(file, type) {
+      let form_data = new FormData();
+      form_data.append("file", file);
+      let token = this.$store.getters["auth/access_token"];
+
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      await axios
+        .post(`${url}/api/files/upload`, form_data, {
+          headers: {
+            "Content-Type": "multipart/form-data"
           }
-          if (error.name != "NavigationDuplicated") {
-            throw error;
+        })
+        .then(response => {
+          if (response.data.code === 200) {
+            this.submit_file_list.push({
+              imageUrl: response.data.results,
+              type: type.key
+            });
           }
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -22,7 +22,6 @@ function getDoctorList_byDateAndSpeciality(params) {
 }
 
 function createAppointment(params) {
-  console.log(params.data);
   axios.defaults.headers.common = { Authorization: `Bearer ${params.token}` };
   return axios.post(`${url}/api/appointments`, params.data).then(response => {
     return {

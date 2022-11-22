@@ -331,21 +331,6 @@
               <p class="font-weight-medium text-body-1 ma-0">
                 Kết quả xét nghiệm
               </p>
-              <v-card width="221" outlined v-if="is_select_profile">
-                <v-combobox
-                  spellcheck="false"
-                  v-model="test_select"
-                  :items="test_type"
-                  item-text="name"
-                  solo
-                  dense
-                  flat
-                  append-icon="mdi-chevron-down"
-                  item-color="light-blue darken-4"
-                  placeholder="Chọn loại xét nghiệm"
-                  hide-details=""
-                ></v-combobox>
-              </v-card>
             </div>
             <!-- add test result  -->
             <v-card
@@ -363,6 +348,8 @@
                 prepend-icon=""
                 hide-details=""
                 flat
+                multiple
+                small-chips
               ></v-file-input>
               <v-btn
                 class="btn white--text font-weight-medium text-body-2"
@@ -379,12 +366,22 @@
               v-for="(image, index) in test_add_list"
               :key="index"
             >
-              <p
-                class="font-weight-medium text-body-1 ma-0"
-                style="color: #667085"
-              >
-                {{ image.type_name }}
-              </p>
+              <v-card width="221" outlined class="pa-1">
+                <v-combobox
+                  spellcheck="false"
+                  v-model="image.type"
+                  :items="test_type"
+                  item-text="name"
+                  solo
+                  dense
+                  flat
+                  append-icon="mdi-chevron-down"
+                  item-color="light-blue darken-4"
+                  placeholder="Chọn loại xét nghiệm"
+                  hide-details=""
+                  :readonly="!is_select_profile"
+                ></v-combobox>
+              </v-card>
               <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
                 <v-icon class="mr-2">mdi-image-outline</v-icon>
                 <v-card min-width="50%" elevation="0">
@@ -406,22 +403,6 @@
               <p class="font-weight-medium text-body-1 ma-0">
                 Chuẩn đoán hình ảnh
               </p>
-              <v-card width="221" outlined v-if="is_select_profile">
-                <v-combobox
-                  spellcheck="false"
-                  v-model="image_select"
-                  :items="image_analyst_type"
-                  item-text="name"
-                  item-value="key"
-                  solo
-                  dense
-                  flat
-                  append-icon="mdi-chevron-down"
-                  item-color="light-blue darken-4"
-                  placeholder="Chọn loại hình ảnh"
-                  hide-details=""
-                ></v-combobox>
-              </v-card>
             </div>
             <!-- add test result  -->
             <v-card
@@ -439,6 +420,8 @@
                 hide-details=""
                 flat
                 v-model="image_file"
+                multiple
+                small-chips
               ></v-file-input>
               <v-btn
                 class="btn white--text font-weight-medium text-body-2"
@@ -455,12 +438,23 @@
               v-for="(image, index) in image_analyst_list"
               :key="index + 3"
             >
-              <p
-                class="font-weight-medium text-body-1 ma-0"
-                style="color: #667085"
-              >
-                {{ image.type_name }}
-              </p>
+              <v-card width="221" outlined class="pa-1">
+                <v-combobox
+                  spellcheck="false"
+                  v-model="image.type"
+                  :items="image_analyst_type"
+                  item-text="name"
+                  item-value="key"
+                  solo
+                  dense
+                  flat
+                  append-icon="mdi-chevron-down"
+                  item-color="light-blue darken-4"
+                  placeholder="Chọn loại hình ảnh"
+                  hide-details=""
+                  :readonly="!is_select_profile"
+                ></v-combobox>
+              </v-card>
               <v-card min-width="50%" outlined class="pa-3 d-flex flex-row">
                 <v-icon class="mr-2">mdi-image-outline</v-icon>
                 <v-card min-width="50%" elevation="0">
@@ -720,14 +714,12 @@ export default {
         { name: "Xét nghiệm nước tiểu", key: "URINE_TEST" },
         { name: "Xét nghiệm khác", key: "DIFFERENT_TEST" }
       ],
-      test_select: "",
-      image_select: "",
       radioGroup: 1,
       payment_selection: null,
       selected_profile: {},
       test_add_list: [],
       loading: false,
-      test_file: {},
+      test_file: [],
       image_analyst_type: [
         { name: "CT", key: "CT_SCAN" },
         { name: "X-quang", key: "X_RAY " },
@@ -738,7 +730,7 @@ export default {
       ],
 
       image_analyst_list: [],
-      image_file: {},
+      image_file: [],
       submit_file_list: []
     };
   },
@@ -766,14 +758,15 @@ export default {
     },
 
     getAddress(profile) {
+      if (profile.address == null) return "";
       return (
-        profile.address.province +
-        ", " +
-        profile.address.district +
+        profile.address.address +
         ", " +
         profile.address.ward +
         ", " +
-        profile.address.address
+        profile.address.district +
+        ", " +
+        profile.address.province
       );
     },
 
@@ -832,20 +825,22 @@ export default {
       window.open(responseData.data.results.payUrl, "_self");
     },
     addTestFile() {
-      this.test_add_list.push({
-        type: this.test_select.key,
-        type_name: this.test_select.name,
-        file_name: this.test_file.name,
-        data: this.test_file
+      this.test_file.forEach(file => {
+        this.test_add_list.push({
+          type: { key: "", name: "" },
+          file_name: file.name,
+          data: file
+        });
       });
     },
 
     addImageAnalystFile() {
-      this.image_analyst_list.push({
-        type: this.image_select.key,
-        type_name: this.image_select.name,
-        file_name: this.image_file.name,
-        data: this.image_file
+      this.image_file.forEach(file => {
+        this.image_analyst_list.push({
+          type: { key: "", name: "" },
+          file_name: file.name,
+          data: file
+        });
       });
     },
 
@@ -957,7 +952,7 @@ export default {
           if (response.data.code === 200) {
             this.submit_file_list.push({
               imageUrl: response.data.results,
-              type: type
+              type: type.key
             });
           }
         });

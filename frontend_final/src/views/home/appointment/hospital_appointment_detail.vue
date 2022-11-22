@@ -273,7 +273,7 @@
 
               <v-card
                 class="mx-4 pa-8"
-                width="1000"
+                width="1200"
                 elevation="0"
                 color="#FCFCFD"
               >
@@ -287,51 +287,89 @@
                   >
                     <v-card
                       class="d-flex flex-column pa-6"
-                      @click="move_to_service_info"
+                      @click="move_to_service_info(service)"
                     >
                       <v-card elevation="0" class="d-flex flex-row">
-                        <div class="d-flex flex-row">
-                          <v-card
-                            width="126"
-                            min-height="84"
-                            class="align-self-start"
-                            elevation="0"
-                          >
-                            <!-- <v-img src="@/assets/img/home/service_avt.png"></v-img> -->
-                            <v-img :src="getImgOfService(service)"></v-img>
-                          </v-card>
-                          <v-card class="d-flex flex-column ml-3" elevation="0">
-                            <!-- service name -->
+                        <v-card
+                          width="126"
+                          min-height="100"
+                          class="align-self-start"
+                          elevation="0"
+                        >
+                          <v-img :src="getImgOfService(service)"></v-img>
+                        </v-card>
+                        <v-card
+                          class="d-flex flex-column ml-3"
+                          elevation="0"
+                          width="100%"
+                        >
+                          <!-- service name -->
+                          <div class="d-flex flex-row justify-space-between">
                             <p class="text-body-2 mb-2 font-weight-bold">
                               {{ service.name }}
                             </p>
-
-                            <div class="d-flex mb-2">
-                              <v-icon small color="#537da5">mdi-domain</v-icon>
-                              <p
-                                class="ma-0  text-body-2 ml-2"
-                                style="color: #667085"
+                            <div class="d-flex flex-row">
+                              <v-card
+                                class="d-flex flex-row"
+                                height="24"
+                                width="50"
+                                color="#EEF2F6"
+                                style="border-radius: 50px"
+                                elevation="0"
                               >
-                                {{ service.hospital.name }}
-                              </p>
+                                <v-icon
+                                  color="#537DA5"
+                                  class="align-self-start mr-1"
+                                  >mdi-calendar-month-outline</v-icon
+                                >
+                                <p style="color: #537da5">
+                                  {{ service.registrationNumber }}
+                                </p>
+                              </v-card>
+                              <v-card
+                                class="d-flex flex-row ml-1"
+                                height="24"
+                                width="50"
+                                color="#EEF2F6"
+                                style="border-radius: 50px"
+                                elevation="0"
+                              >
+                                <v-icon
+                                  color="#FFC107"
+                                  class="align-self-start mr-1 ml-1"
+                                  >mdi-star</v-icon
+                                >
+                                <p style="color: #537da5">
+                                  {{ service.favorite }}
+                                </p>
+                              </v-card>
                             </div>
+                          </div>
 
-                            <div
-                              class="d-flex flex-row align-center justify-space-between"
+                          <div class="d-flex mb-2">
+                            <v-icon small color="#537da5">mdi-domain</v-icon>
+                            <p
+                              class="ma-0  text-body-2 ml-2"
+                              style="color: #667085"
                             >
-                              <p
-                                style="color: #537da5"
-                                class="ma-0 font-weight-bold text-body-2"
-                              >
-                                {{ get_text_price(service.price) }} đ
-                              </p>
-
-                              <v-icon small color="#537da5"
-                                >mdi-arrow-right</v-icon
-                              >
-                            </div>
-                          </v-card>
-                        </div>
+                              {{ service.hospital.name }}
+                            </p>
+                          </div>
+                          <v-spacer></v-spacer>
+                          <div
+                            class="d-flex flex-row align-center justify-space-between"
+                          >
+                            <p
+                              class="font-weight-bold text-body-2"
+                              style="color: #537da5; margin: 0"
+                            >
+                              {{ get_text_price(service.price) }} đ
+                            </p>
+                            <v-icon small color="#537da5"
+                              >mdi-arrow-right</v-icon
+                            >
+                          </div>
+                        </v-card>
                       </v-card>
                     </v-card>
                   </v-col>
@@ -616,7 +654,11 @@ export default {
         ];
       console.log(this.hospital_info);
     },
-    move_to_service_info() {
+    async move_to_service_info(service) {
+      await this.$store.dispatch(
+        "appointment/set_service_select_to_make_appointment",
+        service
+      );
       this.$router.push({ name: "Thông tin đặt lịch dịch vụ" }).catch(error => {
         if (error == null) {
           return;

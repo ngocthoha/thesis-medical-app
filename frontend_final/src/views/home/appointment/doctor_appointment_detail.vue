@@ -301,72 +301,76 @@
                   Không có lịch khám
                 </v-card>
                 <v-card
-                  class="pa-6 d-flex flex-column"
+                  class="pa-6 d-flex flex-column justify-space-between"
                   elevation="0"
                   v-if="online.has_schedule"
                   min-height="450"
                 >
                   <!-- morning -->
-                  <p class="font-weight-medium">Sáng</p>
-                  <div class="d-flex flex-wrap justify-start">
-                    <v-item-group v-model="online_selected">
-                      <v-item
-                        v-for="(item, idx) in online.times"
-                        :key="idx"
-                        v-slot="{ active, toggle }"
-                        :value="item"
-                      >
-                        <v-btn
-                          :outlined="active ? false : true"
-                          color="#537DA5"
-                          @click="toggle"
-                          class="mb-5 mx-3"
-                          active-class="white--text"
-                          elevation="0"
-                          height="41"
-                          width="102"
-                          :style="active ? 'border: 1px #537DA5 solid' : ''"
+                  <div class="d-flex flex-column">
+                    <p class="font-weight-medium">Sáng</p>
+                    <div class="d-flex flex-wrap justify-start">
+                      <v-item-group v-model="online_selected">
+                        <v-item
+                          v-for="(item, idx) in online.morning"
+                          :key="idx"
+                          v-slot="{ active, toggle }"
+                          :value="item"
                         >
-                          <p
-                            class="ma-0 font-weight-medium"
-                            :style="active ? 'color:white' : ''"
+                          <v-btn
+                            :outlined="active ? false : true"
+                            color="#537DA5"
+                            @click="toggle"
+                            class="mb-5 mx-3"
+                            active-class="white--text"
+                            elevation="0"
+                            height="41"
+                            width="102"
+                            :style="active ? 'border: 1px #537DA5 solid' : ''"
                           >
-                            {{ item }}
-                          </p>
-                        </v-btn>
-                      </v-item>
-                    </v-item-group>
+                            <p
+                              class="ma-0 font-weight-medium"
+                              :style="active ? 'color:white' : ''"
+                            >
+                              {{ item }}
+                            </p>
+                          </v-btn>
+                        </v-item>
+                      </v-item-group>
+                    </div>
                   </div>
                   <!-- afternoon -->
-                  <p class="font-weight-medium">Chiều</p>
-                  <div class="d-flex flex-wrap justify-start">
-                    <v-item-group v-model="online_selected">
-                      <v-item
-                        v-for="(item, idx) in online.times"
-                        :key="idx"
-                        v-slot="{ active, toggle }"
-                        :value="item"
-                      >
-                        <v-btn
-                          :outlined="active ? false : true"
-                          color="#537DA5"
-                          @click="toggle"
-                          class="mb-5 mx-3"
-                          active-class="white--text"
-                          elevation="0"
-                          height="41"
-                          width="102"
-                          :style="active ? 'border: 1px #537DA5 solid' : ''"
+                  <div class="d-flex flex-column">
+                    <p class="font-weight-medium">Chiều</p>
+                    <div class="d-flex flex-wrap justify-start">
+                      <v-item-group v-model="online_selected">
+                        <v-item
+                          v-for="(item, idx) in online.afternoon"
+                          :key="idx"
+                          v-slot="{ active, toggle }"
+                          :value="item"
                         >
-                          <p
-                            class="ma-0 font-weight-medium"
-                            :style="active ? 'color:white' : ''"
+                          <v-btn
+                            :outlined="active ? false : true"
+                            color="#537DA5"
+                            @click="toggle"
+                            class="mb-5 mx-3"
+                            active-class="white--text"
+                            elevation="0"
+                            height="41"
+                            width="102"
+                            :style="active ? 'border: 1px #537DA5 solid' : ''"
                           >
-                            {{ item }}
-                          </p>
-                        </v-btn>
-                      </v-item>
-                    </v-item-group>
+                            <p
+                              class="ma-0 font-weight-medium"
+                              :style="active ? 'color:white' : ''"
+                            >
+                              {{ item }}
+                            </p>
+                          </v-btn>
+                        </v-item>
+                      </v-item-group>
+                    </div>
                   </div>
                   <!-- booking -->
                   <v-btn
@@ -528,7 +532,11 @@ export default {
         morning: [],
         afternoon: [],
         has_schedule: false,
-        room_id: ""
+        room: {
+          id: "",
+          name: "",
+          link: null
+        }
       },
 
       offline: {
@@ -619,9 +627,9 @@ export default {
     submit_online_select_time() {
       let is_login = this.$store.getters["auth/isLogin"];
       if (is_login) {
-        if (this.offline_selected != null) {
+        if (this.online_selected != null) {
           this.$store.dispatch(
-            "appointment/set_time_to_make_appointment_doctor",
+            "appointment/set_time_to_make_appointment_service",
             {
               time: this.online_selected,
               type: "ONLINE",
@@ -733,11 +741,11 @@ export default {
             });
           }
           if (schedule.type === "ONLINE") {
+            if (schedule.times != []) {
+              this.online.has_schedule = true;
+              this.online.room = schedule.room;
+            }
             schedule.times.forEach(time_frame => {
-              if (schedule.times != []) {
-                this.online.has_schedule = true;
-                this.offline.room = schedule.room;
-              }
               if (this.check_is_morning(time_frame)) {
                 this.online.morning.push(time_frame);
               } else {
