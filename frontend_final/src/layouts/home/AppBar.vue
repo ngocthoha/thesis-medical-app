@@ -420,30 +420,36 @@
                       </v-badge>
                     </v-btn>
                   </template>
-                  <v-card class="mx-auto" width="240px" tile>
-                    <v-list>
-                      <v-list-item
-                        v-for="(item, i) in messages"
-                        :key="i"
-                        @click="onMenuClick(item)"
-                      >
-                        <div class="d-flex flex-row">
-                          <v-list-item-content>
-                            <p class="d-flex align-end pa-0 ma-0 text-body-2">
-                              {{ _.get(item, "text") }}
-                            </p>
-                            <p
-                              class="d-flex align-end pa-0 ma-0 text-body-2"
-                              style="color: grey; font-size: 75% !important"
-                            >
-                              {{ timeSince(item.time) }}
-                            </p>
-                          </v-list-item-content>
-                          <div class="d-flex align-center" v-if="!item.read">
-                            <v-icon color="blue"> mdi-circle-medium </v-icon>
+                  <v-card class="mx-auto" width="260px" tile>
+                    <v-list v-if="messages.length">
+                      <div v-for="(item, i) in messages" :key="i">
+                        <v-list-item @click="goToNotification(item)">
+                          <div class="d-flex flex-row">
+                            <v-list-item-content>
+                              <h4>{{ _.get(item, "title") }}</h4>
+                              <p class="d-flex align-end pa-0 ma-0 text-body-2">
+                                {{ _.get(item, "text").substring(0, 76) }}...
+                              </p>
+                              <p
+                                class="d-flex align-end pa-0 ma-0 text-body-2"
+                                style="color: grey; font-size: 75% !important"
+                              >
+                                {{ timeSince(item.time) }}
+                              </p>
+                            </v-list-item-content>
+                            <div class="d-flex align-center" v-if="!item.read">
+                              <v-icon color="blue"> mdi-circle-medium </v-icon>
+                            </div>
                           </div>
-                        </div>
-                      </v-list-item>
+                        </v-list-item>
+                      </div>
+                    </v-list>
+                    <v-list v-else>
+                      <v-list-item class="d-flex justify-center"
+                        ><p class="mt-3" style="color: grey">
+                          không có thông báo
+                        </p></v-list-item
+                      >
                     </v-list>
                   </v-card>
                 </v-menu>
@@ -786,6 +792,7 @@
 <script>
 import SockJS from "sockjs-client";
 import Stomp from "webstomp-client";
+const url = process.env.VUE_APP_ROOT_API;
 // Utilities
 const ButtonFunctionType = {
   LOG_OUT: 0,
@@ -827,14 +834,14 @@ export default {
     function_menu: [
       {
         icon: require("@/assets/img/home/appbar/account_icon.svg"),
-        content: "Hồ sơ cá nhân",
+        content: "Hồ sơ bệnh nhân",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION,
         link: "/home/user/profile"
       },
       {
         icon: require("@/assets/img/home/appbar/clock_icon.svg"),
-        content: "Lịch sử Đặt khám",
+        content: "Phiếu khám bệnh",
         color: "#667085",
         type: ButtonFunctionType.FUNCTION,
         link: "/home/user/appointment-history"
@@ -889,20 +896,7 @@ export default {
 
     otp: "",
     connected: null,
-    receivedMessages: [
-      {
-        text: "Thanh toán thành công!",
-        to: "",
-        time: new Date(),
-        read: true
-      },
-      {
-        text: "Thanh toán thành công!",
-        to: "",
-        time: new Date(),
-        read: false
-      }
-    ],
+    receivedMessages: [],
     socket: null,
     username: null
   }),
@@ -914,8 +908,10 @@ export default {
   watch: {
     is_login: {
       handler(value) {
-        if (value) this.connect();
-        else this.disconnect();
+        if (value) {
+          this.connect();
+          this.fetchNotifications();
+        } else this.disconnect();
       },
       immediate: true
     }
@@ -925,10 +921,38 @@ export default {
       return (this.messages || []).filter(m => !m.read).length;
     },
     messages() {
-      return this.receivedMessages.slice(-5).reverse();
+      return (this.receivedMessages || []).slice(-5);
     }
   },
   methods: {
+    goToNotification(item) {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      this.axios.post(`${url}/api/notifications/read/${item.id}`);
+      item.read = true;
+      this.$router.push("/home/user/notify");
+    },
+    async fetchNotifications() {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const params = {
+        size: 5,
+        page: 0
+      };
+      await this.axios
+        .get(`${url}/api/notifications`, {
+          params: params
+        })
+        .then(res => {
+          this.receivedMessages = res.data?.results;
+        });
+    },
     connect() {
       this.socket = new SockJS("http://localhost:8080/ws");
       this.stompClient = Stomp.over(this.socket);
@@ -940,11 +964,7 @@ export default {
             `/user/${this.username}/queue/notification`,
             tick => {
               var res = JSON.parse(tick.body);
-              res = {
-                ...res,
-                read: false
-              };
-              this.receivedMessages.push(res);
+              this.receivedMessages.unshift(res);
             }
           );
         },
@@ -1136,5 +1156,11 @@ export default {
 
 .btn-not-hover:hover::before {
   opacity: 0 !important;
+}
+.text-truncated {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 </style>

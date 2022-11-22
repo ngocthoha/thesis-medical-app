@@ -2,6 +2,7 @@ package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Room;
+import com.thesis.medicalapp.models.Schedule;
 import com.thesis.medicalapp.models.Time;
 import com.thesis.medicalapp.payload.ListSchedule;
 import com.thesis.medicalapp.payload.RoomDate;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -71,7 +73,13 @@ public class ScheduleController {
 
     @GetMapping("/schedules")
     public ResponseEntity<Object> getScheduleByDateAndDoctor(@RequestParam("date") String date, @RequestParam("doctorId") String doctorId) {
-        List<ScheduleDTO> scheduleDTOS = scheduleService.getSchedulesByDateAndDoctor(date, doctorId);
+        List<Schedule> schedules = scheduleService.getSchedulesByDateAndDoctor(date, doctorId)
+                .stream()
+                .collect(Collectors.toList());
+        List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
+            ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
+            return scheduleDTO;
+        }).collect(Collectors.toList());
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(scheduleDTOS)
         );

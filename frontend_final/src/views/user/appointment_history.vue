@@ -21,10 +21,22 @@
 <script>
 import appointmentList from "./component/appointment_history/appointment_list.vue";
 import appointmentDetail from "./component/appointment_history/appointment_detail.vue";
+const url = process.env.VUE_APP_ROOT_API;
+import axios from "axios";
 export default {
   components: {
     appointmentList,
     appointmentDetail
+  },
+  async mounted() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const id = urlParams.get("id");
+    if (id) {
+      const res = await axios.get(`${url}/api/appointments/${id}`);
+      this.appointment_detail = res.data.results;
+      this.visible_appointment_detail = true;
+    }
   },
   data() {
     return {

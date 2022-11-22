@@ -10,7 +10,7 @@
       <div class="d-flex align-center ml-8">
         <div class="d-flex flex-column">
           <p class="font-weight-bold mb-3" style="font-size: 24px">
-            Hồ sơ khám bệnh
+            Hồ sơ bệnh nhân
           </p>
           <p style="color: #667085" class="text-body-1">
             Chọn và cài đặt hồ sơ mà bạn muốn theo dõi sức khoẻ

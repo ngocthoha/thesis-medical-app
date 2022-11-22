@@ -22,4 +22,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, String
 //    @Query(value = "SELECT max(a.stt) FROM Appointment as a WHERE a.date = ?1")
 //    Integer max(Date date);
     List<Appointment> getAllByDateIsBetweenAndDoctor(Date start, Date end, Doctor doctor);
+    List<Appointment> findAllByDateAndDoctor_IdAndTime(Date date, String doctorId, String time);
 }

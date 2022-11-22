@@ -3,7 +3,7 @@
     <!-- header -->
     <v-card height="132" class="px-8" elevation="0">
       <p class="font-weight-bold mb-3 pt-5" style="font-size: 24px">
-        Lịch sử đặt khám
+        Phiếu khám bệnh
       </p>
       <p style="color: #667085" class="text-body-1">
         Danh sách và thông tin các cuộc hẹn gặp khám của bạn

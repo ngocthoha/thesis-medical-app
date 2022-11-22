@@ -19,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +43,9 @@ public class AppointmentController {
     private final AppointmentRepository appointmentRepository;
     private final DoctorRepository doctorRepository;
     private final HospitalRepository hospitalRepository;
+    private final NotificationRepository notificationRepository;
+    @Autowired
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Async
     public void updateRegistrationNumber(Doctor doctor) {
@@ -115,7 +119,39 @@ public class AppointmentController {
                 appointment.setStatus(Status.CANCEL);
             }
         }
+
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
+        Notification notification = new Notification();
+        notification.setTime(new Date());
+        String text = "";
+        notification.setObjectId(appointmentDTO.getId());
+        notification.setToUser(profile.getUser().getUsername());
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateNoti = formatter.format(appointmentDTO.getDate());
+        if (appointmentDTO.getStatus().equals(Status.PENDING) || appointmentDTO.getStatus().equals(Status.PROCESS)) {
+            notification.setType(NotificationType.SUCCESS_APPOINTMENT);
+            notification.setTitle("Đặt lịch khám thành công");
+            if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
+                text = "Lịch khám theo yêu cầu với "
+                        + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
+                        + " ngày " + dateNoti
+                        + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+                notification.setText(text);
+            }
+        }
+        else if (appointmentDTO.getStatus().equals(Status.CANCEL)) {
+            notification.setType(NotificationType.FAIL_APPOINTMENT);
+            notification.setTitle("Đặt lịch khám thất bại");
+            if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
+                text = "Lịch khám theo yêu cầu với "
+                        + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
+                        + " ngày " + dateNoti
+                        + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
+                notification.setText(text);
+            }
+        }
+        Notification notificationRes = notificationRepository.save(notification);
+        simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(appointmentDTO)
         );
@@ -189,6 +225,14 @@ public class AppointmentController {
         int result = appointmentService.removeAppointment(id);
         return ResponseEntity.ok(
                 new ApiResponse(null)
+        );
+    }
+
+    @GetMapping("/appointments/{id}")
+    public ResponseEntity<ApiResponse> getAppointment(@PathVariable String id) {
+        Appointment appointment = appointmentService.findAppointmentById(id);
+        return ResponseEntity.ok(
+                new ApiResponse(AppointmentDTO.from(appointment))
         );
     }
 

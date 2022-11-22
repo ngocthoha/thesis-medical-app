@@ -51,13 +51,13 @@ export default {
       selectedItem: 1,
       items: [
         {
-          text: "Hồ sơ cá nhân",
-          icon: "mdi-account-outline",
+          text: "Hồ sơ bệnh nhân",
+          icon: "far fa-address-book",
           link: "/home/user/profile"
         },
         {
-          text: "Lịch sử đặt khám",
-          icon: "mdi-clock-time-nine-outline",
+          text: "Phiếu khám bệnh",
+          icon: "fa fa-file-medical",
           link: "/home/user/appointment-history"
         },
         {

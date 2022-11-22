@@ -18,9 +18,12 @@ public class Notification extends AuditLog {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
+    private String title;
     private String text;
     private Date time;
     private String fromUser;
     private String toUser;
     private NotificationType type;
+    private String objectId;
+    private boolean read;
 }

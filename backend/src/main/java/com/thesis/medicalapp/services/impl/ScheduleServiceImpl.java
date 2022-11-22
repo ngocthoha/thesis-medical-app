@@ -58,7 +58,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         return scheduleDTOS;
     }
     @Override
-    public List<ScheduleDTO> getSchedulesByDateAndDoctor(String date, String doctorId) {
+    public List<Schedule> getSchedulesByDateAndDoctor(String date, String doctorId) {
         Date dateFormat = new Date();
         try {
             dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(date);
@@ -67,14 +67,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         Doctor doctor = doctorRepository.findDoctorById(doctorId);
         if (doctor == null) throw new ApiRequestException("Could not find doctor!");
-        List<Schedule> schedules = scheduleRepository.findAllByDateAndDoctor(dateFormat, doctor)
-                .stream()
-                .collect(Collectors.toList());
-        List<ScheduleDTO> scheduleDTOS = schedules.stream().map(s -> {
-            ScheduleDTO scheduleDTO = ScheduleDTO.from(s);
-            return scheduleDTO;
-        }).collect(Collectors.toList());
-        return scheduleDTOS;
+        List<Schedule> schedules = scheduleRepository.findAllByDateAndDoctor(dateFormat, doctor);
+        return schedules;
     }
 
     @Override

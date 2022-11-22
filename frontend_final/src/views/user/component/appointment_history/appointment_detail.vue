@@ -508,6 +508,7 @@
           <p
             class="ma-0 font-weight-medium"
             v-if="this.appointment.isPaid == false"
+            style="color: red"
           >
             Chưa thanh toán
           </p>

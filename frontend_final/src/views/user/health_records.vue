@@ -9,7 +9,8 @@
               Hồ sơ sức khỏe
             </p>
             <p style="color: #667085" class="text-body-1">
-              Theo dõi quá trình bạn sử dụng dịch vụ tại Blouse Care
+              Theo dõi sức khỏe trong quá trình bạn sử dụng dịch vụ tại Blouse
+              Care
             </p>
           </div>
           <v-spacer></v-spacer>
