@@ -1031,20 +1031,19 @@ export default {
         username: this.user.username,
         password: this.user.password
       };
-
       await this.$store.dispatch("auth/login", user);
 
       if (this.$store.getters["auth/access_token"] != "") {
         this.login_dialog = false;
         this.is_login = true;
         let type = this.$store.getters["auth/types"];
-        if (type[0].authority === "ROLE_USER") {
+        if ((type || []).some(t => t.authority === "ROLE_USER")) {
           this.$store.dispatch("snackbar/set_snackbar", {
             text: "Đăng nhập thành công",
             type: "success"
           });
         }
-        if (type[0].authority === "ROLE_DOCTOR") {
+        if ((type || []).some(t => t.authority === "ROLE_DOCTOR")) {
           this.$router.push({ name: "Lịch làm việc" });
         }
       }

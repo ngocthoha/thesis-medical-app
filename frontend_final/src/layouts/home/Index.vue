@@ -7,14 +7,13 @@
       {{ snackbar.text }}
 
       <template v-slot:action="{ attrs }">
-        <v-btn
-          color="white"
-          text
+        <v-icon
+          small
+          class="mr-3"
           v-bind="attrs"
           @click="snackbar.showing = false"
+          >mdi-close</v-icon
         >
-          Đóng
-        </v-btn>
       </template>
     </v-snackbar>
   </v-app>
