@@ -557,6 +557,7 @@
         ></v-calendar>
         <v-menu
           v-model="selectedOpen"
+          v-if="selectedOpen"
           :close-on-content-click="false"
           :activator="selectedElement"
           offset-x
@@ -564,17 +565,39 @@
           <v-card min-width="800" flat>
             <v-toolbar :color="selectedEvent.color" dark>
               <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-              <v-spacer></v-spacer>
-              <v-btn icon>
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
             </v-toolbar>
             <v-card-text>
-              <span v-html="selectedEvent.details"></span>
+              <div class="d-flex flex-column">
+                <div class="d-flex flex-row">
+                  <p class="font-weight-bold mr-2">Phòng:</p>
+                  <p>
+                    {{ selectedEvent.details.room.name }}
+                  </p>
+                </div>
+                <div class="d-flex flex-row">
+                  <p class="font-weight-bold mr-2">
+                    Só lượng bệnh nhân hiện tại:
+                  </p>
+                  <p>
+                    {{ selectedEvent.details.current_count }}
+                  </p>
+                </div>
+                <div class="d-flex flex-row">
+                  <p class="font-weight-bold mr-2">
+                    Só lượng bệnh nhân tối đa:
+                  </p>
+                  <p>{{ selectedEvent.details.max_count }}</p>
+                </div>
+              </div>
             </v-card-text>
             <v-card-actions>
-              <v-btn text color="secondary" @click="selectedOpen = false">
-                Cancel
+              <v-btn
+                elevation="0"
+                :color="selectedEvent.color"
+                class="btn white--text"
+                @click="selectedOpen = false"
+              >
+                Hủy xem
               </v-btn>
             </v-card-actions>
           </v-card>
@@ -640,26 +663,46 @@ export default {
       "Party"
     ],
 
+    // doctor_calendar: [
+    //   {
+    //     date: "2022-10-11",
+    //     event_in_day: [
+    //       {
+    //         type: "online",
+    //         name: "Tư vấn online",
+    //         time: "12:00-13:00"
+    //       },
+    //       {
+    //         type: "offline",
+    //         name: "Khám tại viện",
+    //         time: "13:00-14:00"
+    //       },
+    //       {
+    //         type: "online",
+    //         name: "Tư vấn online",
+    //         time: "13:00-14:00"
+    //       }
+    //     ]
+    //   }
+    // ],
     doctor_calendar: [
       {
-        date: "2022-10-11",
-        event_in_day: [
-          {
-            type: "online",
-            name: "Tư vấn online",
-            time: "12:00-13:00"
-          },
-          {
-            type: "offline",
-            name: "Khám tại viện",
-            time: "13:00-14:00"
-          },
-          {
-            type: "online",
-            name: "Tư vấn online",
-            time: "13:00-14:00"
-          }
-        ]
+        id: "db324bda-db7a-45bf-b019-4e09aa80cf2c",
+        type: "OFFLINE",
+        date: "2022-11-06",
+        room: {
+          id: "ef164a63-33ad-4ce3-aa29-a66c658cc39f",
+          name: "H2",
+          link: null
+        },
+        times: [
+          "9:00 - 10:00",
+          "10:00 - 11:00",
+          "11:00 - 12:00",
+          "13:00 - 14:00",
+          "14:00 - 15:00"
+        ],
+        numOfAppointmentPerHour: 2
       }
     ],
     selected_absent_time: [],
@@ -693,6 +736,13 @@ export default {
   },
   mounted() {
     this.$refs.calendar.checkChange();
+  },
+
+  created() {
+    this.updateRange({
+      start: { date: "2022-11-01" },
+      end: { date: "2022-11-30" }
+    });
   },
   methods: {
     cancelLeave() {
@@ -777,57 +827,52 @@ export default {
 
       nativeEvent.stopPropagation();
     },
-    updateRange({ start, end }) {
+    async updateRange({ start, end }) {
       const events = [];
 
-      const min = new Date(`${start.date}T00:00:00`);
-      const max = new Date(`${end.date}T23:59:59`);
-      const days = (max.getTime() - min.getTime()) / 86400000;
-      const eventCount = this.rnd(days, days + 20);
+      let token = this.$store.getters["auth/access_token"];
 
-      //   for (let i = 0; i < eventCount; i++) {
-      //     const allDay = this.rnd(0, 3) === 0;
-      //     const firstTimestamp = this.rnd(min.getTime(), max.getTime());
-      //     const first = new Date(firstTimestamp - (firstTimestamp % 900000));
-      //     const secondTimestamp = this.rnd(2, allDay ? 288 : 8) * 900000;
-      //     const second = new Date(first.getTime() + secondTimestamp);
-      //     console.log(first.toLocaleString());
-      //     console.log(second.toLocaleString());
-      //     events.push({
-      //       name: this.names[this.rnd(0, this.names.length - 1)],
-      //       start: first,
-      //       end: second,
-      //       color: this.colors[this.rnd(0, this.colors.length - 1)],
-      //       timed: true
-      //     });
-      //   }
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      const params = {
+        dateStart: start.date,
+        dateEnd: end.date,
+        doctorId: this.userId
+      };
+      await axios
+        .get(`${url}/api/doctor/schedules/date`, {
+          params: params
+        })
+        .then(res => {
+          this.doctor_calendar = res.data.results;
+        });
       this.doctor_calendar.forEach(calendar => {
-        const day = new Date(calendar.date);
-        if (day >= min && day <= max) {
-          calendar.event_in_day.forEach(event => {
-            const time_frame = event.time.split("-");
-            const start_string = `${calendar.date}T${time_frame[0]}:00`;
-            const end_string = `${calendar.date}T${time_frame[1]}:00`;
-            const color =
-              event.type === "online"
-                ? this.colors.online
-                : this.colors.offline_color;
-            events.push({
-              name: event.name,
-              start: new Date(start_string),
-              end: new Date(end_string),
-              color: color.color,
-              text_color: color.text,
-              timed: true,
-              details: {
-                max_count: 5,
-                current_count: 3
-              }
-            });
+        calendar.times.forEach(time => {
+          const time_frame = time.split(" - ");
+          const start_string = `${calendar.date}T${time_frame[0]}:00`;
+          const end_string = `${calendar.date}T${time_frame[1]}:00`;
+          const color =
+            calendar.type === "ONLINE"
+              ? this.colors.online
+              : this.colors.offline_color;
+          let name =
+            calendar.type === "ONLINE" ? "Khám trực tuyến" : "Khám tại viện";
+          events.push({
+            name: name,
+            start: new Date(start_string),
+            end: new Date(end_string),
+            color: color.color,
+            text_color: color.text,
+            timed: true,
+            details: {
+              max_count: calendar.numOfAppointmentPerHour,
+              current_count: 0,
+              room: calendar.room
+            }
           });
-        }
+        });
       });
-
       this.events = events;
     },
     rnd(a, b) {
