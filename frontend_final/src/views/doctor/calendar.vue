@@ -804,8 +804,16 @@ export default {
       this.doctor_calendar.forEach(calendar => {
         calendar.times.forEach(time => {
           const time_frame = time.split(" - ");
-          const start_string = `${calendar.date}T${time_frame[0]}:00`;
-          const end_string = `${calendar.date}T${time_frame[1]}:00`;
+
+          const start_string =
+            parseInt(time_frame[0]) < 10
+              ? `${calendar.date}T0${time_frame[0]}:00`
+              : `${calendar.date}T${time_frame[0]}:00`;
+          const end_string =
+            parseInt(time_frame[1]) < 10
+              ? `${calendar.date}T0${time_frame[1]}:00`
+              : `${calendar.date}T${time_frame[1]}:00`;
+
           const color =
             calendar.type === "ONLINE"
               ? this.colors.online
