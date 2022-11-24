@@ -658,17 +658,6 @@ export default {
       online: { color: "#98A2B3", text: "white" },
       offline_color: { color: "#6D91B3", text: "white" }
     },
-    names: [
-      "Meeting",
-      "Holiday",
-      "PTO",
-      "Travel",
-      "Event",
-      "Birthday",
-      "Conference",
-      "Party"
-    ],
-
     doctor_calendar: [],
     selected_absent_time: [],
     absentTimes: [],
