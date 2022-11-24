@@ -569,6 +569,12 @@
             <v-card-text>
               <div class="d-flex flex-column">
                 <div class="d-flex flex-row">
+                  <p class="font-weight-bold mr-2">Thời gian:</p>
+                  <p>
+                    {{ selectedEvent.details.time_frame }}
+                  </p>
+                </div>
+                <div class="d-flex flex-row">
                   <p class="font-weight-bold mr-2">Phòng:</p>
                   <p>
                     {{ selectedEvent.details.room.name }}
@@ -663,48 +669,7 @@ export default {
       "Party"
     ],
 
-    // doctor_calendar: [
-    //   {
-    //     date: "2022-10-11",
-    //     event_in_day: [
-    //       {
-    //         type: "online",
-    //         name: "Tư vấn online",
-    //         time: "12:00-13:00"
-    //       },
-    //       {
-    //         type: "offline",
-    //         name: "Khám tại viện",
-    //         time: "13:00-14:00"
-    //       },
-    //       {
-    //         type: "online",
-    //         name: "Tư vấn online",
-    //         time: "13:00-14:00"
-    //       }
-    //     ]
-    //   }
-    // ],
-    doctor_calendar: [
-      {
-        id: "db324bda-db7a-45bf-b019-4e09aa80cf2c",
-        type: "OFFLINE",
-        date: "2022-11-06",
-        room: {
-          id: "ef164a63-33ad-4ce3-aa29-a66c658cc39f",
-          name: "H2",
-          link: null
-        },
-        times: [
-          "9:00 - 10:00",
-          "10:00 - 11:00",
-          "11:00 - 12:00",
-          "13:00 - 14:00",
-          "14:00 - 15:00"
-        ],
-        numOfAppointmentPerHour: 2
-      }
-    ],
+    doctor_calendar: [],
     selected_absent_time: [],
     absentTimes: [],
     absentReason: ""
@@ -866,6 +831,7 @@ export default {
             text_color: color.text,
             timed: true,
             details: {
+              time_frame: time,
               max_count: calendar.numOfAppointmentPerHour,
               current_count: 0,
               room: calendar.room
