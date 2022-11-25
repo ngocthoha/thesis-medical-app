@@ -16,6 +16,7 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, String>, JpaSpecificationExecutor<Appointment> {
     List<Appointment> findAllByProfileId(String profileId);
     Page<Appointment> findAllByProfile_User_Username(String username, Pageable pageable);
+    Page<Appointment> findAllByProfile_User_UsernameOrProfile_ProfileNumber(String username, String profileNumber, Pageable pageable);
     Appointment findAppointmentById(String id);
     Appointment findByOrderId(String orderId);
     List<Appointment> findAllByDateAndDoctor(Date date, Doctor doctor);

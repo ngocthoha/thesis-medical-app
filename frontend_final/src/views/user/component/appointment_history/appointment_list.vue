@@ -125,7 +125,7 @@
                 class="ma-0 font-weight-normal text-body-2"
                 style="color: #667085"
               >
-                {{ appointment.profile.relationship }}
+                {{ appointment.profile.isContactProfile ? "Chủ tài khoản" : appointment.profile.relationship }}
               </p>
               <p
                 class="ma-0 font-weight-normal text-body-2 d-flex"

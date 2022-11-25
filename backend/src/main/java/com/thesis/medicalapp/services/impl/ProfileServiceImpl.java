@@ -60,9 +60,13 @@ public class ProfileServiceImpl implements ProfileService {
         if (!userOp.isPresent()) throw new ApiRequestException("Không tìm thấy user!");
         User user = userOp.get();
         profile.setUser(user);
-        SequenceGenerator sequenceGenerator = new SequenceGenerator();
-        Long profileNumber = sequenceGenerator.nextId();
-        profile.setProfileNumber(profileNumber);
+        String profileNumberRequest = profileDTO.getProfileNumber();
+        if (profileNumberRequest == null) {
+            SequenceGenerator sequenceGenerator = new SequenceGenerator();
+            Long profileNumber = sequenceGenerator.nextId();
+            profileNumberRequest = String.valueOf(profileNumber);
+        }
+        profile.setProfileNumber(profileNumberRequest);
         Profile profileEntity = profileRepository.save(profile);
         ProfileDTO profileDTOResponse = ProfileDTO.from(profileEntity);
         return profileDTOResponse;

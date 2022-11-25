@@ -86,7 +86,7 @@ public class ProfileController {
         notification.setFromUser(Global.user.getUsername());
         notification.setTitle("Liên kết hồ sơ thành công");
         String text = profile.getLastName() + " " + profile.getFirstName()
-                + " đã xác nhận lời mời liên kết hồ sơ của bạn";
+                + " đã xác nhận lời mời liên kết hồ sơ của bạn.";
         notification.setText(text);
         Notification notificationRes = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
@@ -112,7 +112,7 @@ public class ProfileController {
         notification.setTitle("Lời mời liên kết hồ sơ");
         String text = "Bạn nhận được lời mời liên kết hồ sơ từ " + profileUser.getLastName() + " " + profileUser.getFirstName()
                 + ", số điện thoại " + profileUser.getPhone()
-                + ". Vui lòng bấm xác nhận để liên kết hồ sơ";
+                + ". Vui lòng bấm xác nhận để liên kết hồ sơ.";
         notification.setText(text);
         Notification notificationRes = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);

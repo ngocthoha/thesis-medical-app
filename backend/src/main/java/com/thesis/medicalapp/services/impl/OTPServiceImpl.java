@@ -55,7 +55,7 @@ public class OTPServiceImpl implements OTPService {
         Profile profile = new Profile();
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         Long profile_number = sequenceGenerator.nextId();
-        profile.setProfileNumber(profile_number);
+        profile.setProfileNumber(String.valueOf(profile_number));
         profile.setPhone(user_db.getPhone());
         profile.setRelationship("Chủ tài khoản");
         profile.setUser(user_db);

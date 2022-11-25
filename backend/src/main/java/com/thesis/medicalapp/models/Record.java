@@ -26,7 +26,7 @@ public class Record extends AuditLog {
     @OneToOne
     @JoinColumn(name = "appointment_id")
     private Appointment appointment;
-    private Long recordId;
+    private String recordId;
     @Type(type="text")
     private String diagnose;
     @Type(type="text")

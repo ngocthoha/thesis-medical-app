@@ -46,7 +46,7 @@ public class RecordController {
         record.setAppointment(appointment);
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
         Long recordId = sequenceGenerator.nextId();
-        record.setRecordId(recordId);
+        record.setRecordId(String.valueOf(recordId));
         record.setDiagnose(recordRequest.getDiagnose());
         record.setPrescribe(recordRequest.getPrescribe());
         record.setNote(recordRequest.getNote());

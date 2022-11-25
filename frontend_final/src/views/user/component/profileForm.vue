@@ -10,6 +10,12 @@
             diện
           </p>
         </v-card>
+        <div><p class="font-weight-medium">Mã hồ sơ</p></div>
+        <v-card width="278px" flat>
+          <p class="text-body-2 font-weight-medium" style="color: #667085">
+            {{ edit_profile.profileNumber }}
+          </p>
+        </v-card>
       </v-card>
       <v-card
         width="50%"
@@ -712,6 +718,7 @@ export default {
       commune_list: [],
       profile: {
         id: "",
+        profileNumber: "",
         firstName: "",
         lastName: "",
         country: "Việt Nam",

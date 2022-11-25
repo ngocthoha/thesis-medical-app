@@ -36,6 +36,7 @@ import java.util.*;
 public class AppointmentController {
     private final AppointmentService appointmentService;
     private final ProfileService profileService;
+    private final ProfileRepository profileRepository;
     private final DoctorService doctorService;
     private final RoomRepository roomRepository;
     private final MedicalFileRepository medicalFileRepository;
@@ -173,6 +174,21 @@ public class AppointmentController {
         }
         Notification notificationRes = notificationRepository.save(notification);
         simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
+        if (profile.getIsContactProfile()) {
+            Profile profileMakeAppointment = profileRepository.findProfileByRelationshipAndUser_Username("Chủ tài khoản", profile.getUser().getUsername());
+            Profile profileContact = profileRepository.findProfileByPhoneAndRelationship(profile.getPhone(), "Chủ tài khoản").get();
+            Notification notificationContact = new Notification();
+            notificationContact.setTime(new Date());
+            notificationContact.setToUser(profileContact.getUser().getUsername());
+            notificationContact.setTitle("Đặt khám hộ");
+            String textContact = "Bạn được đặt khám hộ từ hồ sơ liên đã liên kết " + profileMakeAppointment.getLastName() + " " + profileMakeAppointment.getFirstName()
+                    + ", số điện thoại " + profileMakeAppointment.getPhone() + ". Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+            notificationContact.setText(textContact);
+            notificationContact.setObjectId(appointmentDTO.getId());
+            notificationContact.setType(NotificationType.SUCCESS_APPOINTMENT);
+            Notification notificationContactRes = notificationRepository.save(notificationContact);
+            simpMessagingTemplate.convertAndSendToUser(notificationContact.getToUser(),"/queue/notification", notificationContactRes);
+        }
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse(appointmentDTO)
         );

@@ -18,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 public class RecordDTO {
     private String id;
-    private Long recordId;
+    private String recordId;
     private AppointmentDTO appointment;
     private String diagnose;
     private String prescribe;

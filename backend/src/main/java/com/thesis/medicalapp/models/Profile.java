@@ -22,7 +22,7 @@ public class Profile extends AuditLog {
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private String id;
-    private Long profileNumber;
+    private String profileNumber;
     private String firstName;
     private String lastName;
     @OneToOne
@@ -42,6 +42,7 @@ public class Profile extends AuditLog {
     private String relationshipWithPatient;
     private String imageUrl;
     private Boolean isContactProfile;
+
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)

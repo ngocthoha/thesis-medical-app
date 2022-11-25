@@ -12,6 +12,7 @@ import com.thesis.medicalapp.payload.ServiceRequest;
 import com.thesis.medicalapp.pojo.HospitalDTO;
 import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.*;
+import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
@@ -160,8 +161,14 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("user1", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
-            profileRepository.save(new Profile(null, 1L, "Thọ", "Hà Ngọc", address1, "+84326185289", "tho@gmail.com", new Date(), "Developer", "038200008299", "0322889971", "Kinh", Gender.MALE, "Trịnh Thị Thanh","0983839989", "038299988877", "Chủ tài khoản", "Mẹ", null, false, userEntity));
-            profileRepository.save(new Profile(null, 1L, "Thanh", "Nguyễn Duy", address1, "+84326185287", "thanh@gmail.com", new Date(), "Developer", "038200008298", "0322889972", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "Ba", null, false, userEntity1));
+            SequenceGenerator sequenceGenerator = new SequenceGenerator();
+            Long profileNumber = sequenceGenerator.nextId();
+            System.out.println(profileNumber);
+            Long profileNumber1 = sequenceGenerator.nextId();
+            System.out.println(profileNumber1);
+            System.out.println(sequenceGenerator.nextId());
+            profileRepository.save(new Profile(null, String.valueOf(profileNumber), "Thọ", "Hà Ngọc", address1, "+84326185289", "tho@gmail.com", new Date(), "Developer", "038200008299", "0322889971", "Kinh", Gender.MALE, "Trịnh Thị Thanh","0983839989", "038299988877", "Chủ tài khoản", "Mẹ", null, false, userEntity));
+            profileRepository.save(new Profile(null, String.valueOf(profileNumber1), "Thanh", "Nguyễn Duy", address1, "+84326185287", "thanh@gmail.com", new Date(), "Developer", "038200008298", "0322889972", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "Ba", null, false, userEntity1));
             // init data json
             ObjectMapper mapper = new ObjectMapper();
             TypeReference<List<HospitalDTO>> typeReference = new TypeReference<>() {};

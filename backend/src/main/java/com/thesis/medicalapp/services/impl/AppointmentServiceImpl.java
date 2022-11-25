@@ -58,7 +58,8 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Page<AppointmentDTO> getAppointmentByUser(Pageable pageable) {
         String username = Global.user.getUsername();
-        Page<Appointment> appointments = appointmentRepository.findAllByProfile_User_Username(username, pageable);
+        Profile profile = profileRepository.findProfileByRelationshipAndUser_Username("Chủ tài khoản", username);
+        Page<Appointment> appointments = appointmentRepository.findAllByProfile_User_UsernameOrProfile_ProfileNumber(username,profile.getProfileNumber(), pageable);
         Page<AppointmentDTO> appointmentDTOS = appointments.map(
                 a -> {
                     AppointmentDTO appointmentDTO = AppointmentDTO.from(a);

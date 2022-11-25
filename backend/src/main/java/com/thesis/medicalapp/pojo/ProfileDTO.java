@@ -20,7 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class ProfileDTO {
     private String id;
-    private Long profileNumber;
+    private String profileNumber;
     @NotEmpty
     @NotBlank
     private String firstName;
