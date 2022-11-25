@@ -38,7 +38,7 @@ public class AppointmentDTO {
     @NotNull
     private ScheduleType type;
     private Boolean isPaid;
-    private String fee;
+    private Integer fee;
     private CategoryType category;
     private String orderId;
     private String qrcode;

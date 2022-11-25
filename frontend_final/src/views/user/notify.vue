@@ -87,7 +87,7 @@
                         <p>{{ notification.text }}</p>
                       </div>
                     </v-col>
-                    <v-col class="shrink" v-if="notification.type">
+                    <v-col class="shrink" v-if="isAppoitmentType(notification)">
                       <v-btn
                         class="btn-not-transform"
                         rounded
@@ -95,6 +95,17 @@
                         outlined
                         @click="goToAppointment(notification)"
                         >Xem lịch khám</v-btn
+                      >
+                    </v-col>
+                    <v-col class="shrink" v-if="isInvitationType(notification)">
+                      <v-btn
+                        class="btn-not-transform"
+                        rounded
+                        color="primary"
+                        outlined
+                        :loading="loadingInvite"
+                        @click="acceptInvitation(notification)"
+                        >Xác nhận</v-btn
                       >
                     </v-col>
                     <v-menu bottom left>
@@ -164,7 +175,8 @@ export default {
       totalPages: 0,
       page: 1,
       notifications: [],
-      componentKey: 0
+      componentKey: 0,
+      loadingInvite: false
     };
   },
   watch: {
@@ -177,7 +189,43 @@ export default {
   async mounted() {
     await this.fetchNotifications();
   },
+  computed: {
+    token() {
+      return this.$store.getters["auth/access_token"];
+    }
+  },
   methods: {
+    async acceptInvitation(notification) {
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${this.token}`
+      };
+      this.loadingInvite = true;
+      const params = {
+        username: notification.fromUser
+      };
+      await this.axios
+        .post(`${url}/api/profiles/invite/accept`, params)
+        .then(res => {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Xác nhận lời mời thành công",
+            type: "success"
+          });
+        })
+        .catch(() => {})
+        .finally(() => {
+          this.loadingInvite = false;
+        });
+    },
+    isAppoitmentType(notification) {
+      return [
+        "CANCEL_APPOINTMENT",
+        "SUCCESS_APPOINTMENT",
+        "FAIL_APPOINTMENT"
+      ].includes(notification.type);
+    },
+    isInvitationType(notification) {
+      return notification.type === "INVITE";
+    },
     goToAppointment(notification) {
       this.$router.push(
         "/home/user/appointment-history/?id=" + notification.objectId
@@ -186,19 +234,15 @@ export default {
     },
     async readNotification(item) {
       if (item.read) return;
-      let token = this.$store.getters["auth/access_token"];
-
       this.axios.defaults.headers.common = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${this.token}`
       };
       await this.axios.post(`${url}/api/notifications/read/${item.id}`);
       await this.fetchNotifications();
     },
     async fetchNotifications() {
-      let token = this.$store.getters["auth/access_token"];
-
       this.axios.defaults.headers.common = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${this.token}`
       };
       let payload = this._.cloneDeep(this.params);
       payload.page = this.page - 1;
@@ -223,6 +267,11 @@ export default {
             } else if (e.type == "FAIL_APPOINTMENT") {
               e["icon"] = "mdi-calendar-remove";
               e["color"] = "error";
+            } else if (e.type == "INVITE") {
+              e["icon"] = "fa fa-envelopes-bulk";
+              e["color"] = "primary";
+            } else {
+              e["color"] = "#537DA5";
             }
           });
           this.totalPages = res.data?.meta?.totalPages;
@@ -241,10 +290,8 @@ export default {
       return `${hour}:${minutes} - ${day}`;
     },
     async deleteNotification(id) {
-      let token = this.$store.getters["auth/access_token"];
-
       this.axios.defaults.headers.common = {
-        Authorization: `Bearer ${token}`
+        Authorization: `Bearer ${this.token}`
       };
       await this.axios.delete(`${url}/api/notifications/${id}`);
       await this.fetchNotifications();

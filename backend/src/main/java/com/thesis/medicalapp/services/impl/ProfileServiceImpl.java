@@ -33,7 +33,7 @@ public class ProfileServiceImpl implements ProfileService {
     private final AddressRepository addressRepository;
 
     @Override
-    public ProfileDTO saveProfile(ProfileDTO profileDTO) {
+    public ProfileDTO saveProfile(ProfileDTO profileDTO, String username) {
         log.info("Saving new profile of {} to the database", profileDTO.getFirstName());
         Profile profile = new Profile();
         profile.setFirstName(profileDTO.getFirstName());
@@ -55,8 +55,9 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setRelationship(profileDTO.getRelationship());
         profile.setRelationshipWithPatient(profileDTO.getRelationshipWithPatient());
         profile.setImageUrl(profileDTO.getImageUrl());
-        Optional<User> userOp = userRepository.findByUsername(Global.user.getUsername());
-        if (!userOp.isPresent()) throw new ApiRequestException("Can not found user!");
+        profile.setIsContactProfile(profileDTO.getIsContactProfile());
+        Optional<User> userOp = userRepository.findByUsername(username);
+        if (!userOp.isPresent()) throw new ApiRequestException("Không tìm thấy user!");
         User user = userOp.get();
         profile.setUser(user);
         SequenceGenerator sequenceGenerator = new SequenceGenerator();
@@ -136,7 +137,7 @@ public class ProfileServiceImpl implements ProfileService {
     @Override
     public ProfileSearch searchProfile(String phone) {
         System.out.println(phone);
-        Optional<Profile> profile = profileRepository.findProfileByPhone(phone);
+        Optional<Profile> profile = profileRepository.findProfileByPhoneAndRelationship(phone, "Chủ tài khoản");
         if (!profile.isPresent()) {
             System.out.println("no result");
             return null;

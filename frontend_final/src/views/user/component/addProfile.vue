@@ -113,11 +113,20 @@
             class="mt-6"
             style="border-color: rgba(16, 24, 40, 0.03) !important"
           ></v-divider>
-          <div class="d-flex flex-column mt-6" v-if="hasLookingResult">
+          <div v-if="loading" class="d-flex justify-center align-center mt-8">
+            <v-progress-circular
+              indeterminate
+              color="#537DA5"
+            ></v-progress-circular>
+          </div>
+          <div
+            class="d-flex flex-column mt-6"
+            v-if="hasLookingResult && !loading"
+          >
             <p class="font-weight-bold ml-8" style="font-size: 20px">
               Kết quả tìm kiếm
             </p>
-            <div class="d-flex flex-column" v-if="notFound">
+            <div class="d-flex flex-column" v-if="!profile">
               <v-card width="100%" class="d-flex justify-center" elevation="0">
                 <v-img
                   class="d-flex"
@@ -137,7 +146,7 @@
                 Vui lòng nhập số điện thoại thân nhân để hiển thị kết quả.
               </p>
             </div>
-            <div v-if="!notFound">
+            <div v-if="profile">
               <v-list>
                 <v-list-item v-for="n in 1" :key="n">
                   <v-card
@@ -152,13 +161,13 @@
                       </v-avatar>
                       <div class="d-flex flex-column ml-3">
                         <p class="ma-0 font-weight-bold text-body-1">
-                          Nguyễn Xuân Hoà
+                          {{ profile.lastName }} {{ profile.firstName }}
                         </p>
                         <p
                           class="ma-0 font-weight-normal text-body-2"
                           style="color: #667085"
                         >
-                          Chủ tài khoản
+                          {{ profile.phone | phone }}
                         </p>
                       </div>
                     </div>
@@ -168,6 +177,8 @@
                         height="36px"
                         color="#537DA5"
                         class="white--text mr-4 btn-not-transform text-body-2"
+                        :loading="loadingInvite"
+                        @click="sendInvitation()"
                         >Gửi yêu cầu</v-btn
                       >
                     </div>
@@ -184,6 +195,7 @@
 
 <script>
 import ProfileForm from "./profileForm.vue";
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   components: {
     ProfileForm
@@ -194,16 +206,67 @@ export default {
       hasLookingResult: false,
       notFound: true,
       phoneInputData: "",
-      loading: false
+      loading: false,
+      profile: null,
+      loading: false,
+      loadingInvite: false
     };
   },
+  computed: {
+    token() {
+      return this.$store.getters["auth/access_token"];
+    }
+  },
   methods: {
-    lookingSubmit() {
-      if (this.phoneInputData != "") {
-        this.notFound = false;
-      } else {
-        this.notFound = true;
+    async sendInvitation() {
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${this.token}`
+      };
+      this.loadingInvite = true;
+      const params = {
+        profileId: this.profile.id
+      };
+      await this.axios
+        .post(`${url}/api/profiles/invite`, params)
+        .then(res => {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Gửi lời mời thành công",
+            type: "success"
+          });
+        })
+        .catch(() => {
+          this.profile = null;
+        })
+        .finally(() => {
+          this.loadingInvite = false;
+        });
+    },
+    async lookingSubmit() {
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${this.token}`
+      };
+      this.loading = true;
+      let phone = this.phoneInputData;
+      if (phone.length > 1) {
+        phone = phone.split("");
+        phone[0] = "+84";
+        phone = phone.join("");
       }
+      await this.axios
+        .get(`${url}/api/profiles/search`, {
+          params: {
+            phone: phone
+          }
+        })
+        .then(res => {
+          this.profile = res.data.results;
+        })
+        .catch(() => {
+          this.profile = null;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
       this.hasLookingResult = true;
     },
     cancleAddProfile() {

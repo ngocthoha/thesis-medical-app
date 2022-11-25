@@ -84,11 +84,7 @@
         tile
         class="pa-3 d-flex flex-row justify-space-between align-center"
         elevation="0"
-        color="#EEF2F6"
-        ><p
-          class="ma-0 font-weight-bold"
-          style="color: #537DA5; font-size:20px"
-        >
+        ><p class="ma-0 ml-2 font-weight-bold" style="font-size:20px">
           Kết quả khám
         </p>
         <v-btn icon @click="medical_record_dialog = false"
@@ -491,7 +487,9 @@
               Tổng tiền
             </p></v-card
           >
-          <p class="ma-0 font-weight-medium">{{ this.appointment.fee }} đ</p>
+          <p class="ma-0 font-weight-medium">
+            {{ get_text_price(appointment.fee) }} đ
+          </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
           <!-- label -->
@@ -504,7 +502,7 @@
             </p></v-card
           >
           <p style="color: red" class="ma-0 font-weight-medium">
-            {{ this.appointment.fee }} đ
+            {{ get_text_price(appointment.fee) }} đ
           </p>
         </v-card>
         <v-card class="d-flex flex-row mb-3" elevation="0">
@@ -618,6 +616,9 @@ export default {
     }
   },
   methods: {
+    get_text_price(price) {
+      return price.toLocaleString().replaceAll(",", ".");
+    },
     async cancelAppointment() {
       this.loadingCancel = true;
       let token = this.$store.getters["auth/access_token"];

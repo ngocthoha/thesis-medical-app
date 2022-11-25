@@ -25,40 +25,48 @@
         <v-divider
           style="border-color: rgba(16, 24, 40, 0.03) !important"
         ></v-divider>
+        <div class="d-flex justify-center mt-8 px-8">
+          <v-progress-circular
+            v-if="_.isEmpty(selectedProfile)"
+            indeterminate
+            color="primary"
+          ></v-progress-circular>
+        </div>
         <!-- profile list dialog-->
         <v-dialog v-model="profile_list_dialog" width="600">
-          <v-card class="pa-5">
+          <v-card class="pa-4">
             <v-card
-              height="50"
-              class="d-flex align-center justify-center"
+              class="d-flex align-center justify-center pb-3"
               elevation="0"
             >
-              <p style="color: #667085" class="text-body-1">
-                Vui lòng chọn hồ sơ
-              </p>
+              <h4>
+                Vui Lòng Chọn Hồ Sơ Bệnh Nhân
+              </h4>
             </v-card>
             <v-divider
               style="border-color: rgba(16, 24, 40, 0.03) !important"
             ></v-divider>
             <v-radio-group v-model="radioGroup" class="ma-0">
               <v-card
-                v-for="n in 5"
-                :key="n"
+                v-for="(profile, i) in profiles"
+                :key="i"
                 class="pa-6 d-flex flex-row"
                 tile
                 elevation="0"
               >
                 <v-avatar size="48" class="mr-5">
-                  <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+                  <v-img :src="getImgOfProfile(profile)"></v-img>
                 </v-avatar>
                 <div class="d-flex flex-column justify-center">
-                  <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
+                  <p class="mb-2 font-weight-bold">
+                    {{ profile.lastName }} {{ profile.firstName }}
+                  </p>
                   <p class="ma-0 text-body-2" style="color: #667085">
-                    Chủ tài khoản
+                    {{ profile.relationship }}
                   </p>
                 </div>
                 <v-spacer></v-spacer>
-                <v-radio :value="n" color="#537DA5"></v-radio>
+                <v-radio :value="profile" color="#537DA5"></v-radio>
               </v-card>
             </v-radio-group>
             <v-btn
@@ -66,7 +74,7 @@
               color="#537DA5"
               elevation="0"
               width="100%"
-              @click="view_health_record"
+              @click="view_health_record()"
               >Xác nhận
             </v-btn>
           </v-card>
@@ -80,7 +88,7 @@
             elevation="0"
             color="#EEF2F6"
             ><p
-              class="ma-0 font-weight-bold"
+              class="ma-0 font-weight-bold white--text"
               style="color: #537DA5; font-size:20px"
             >
               Kết quả khám
@@ -114,14 +122,22 @@
           </v-card>
         </v-dialog>
         <!-- profile -->
-        <v-card class="pa-6 d-flex flex-row" tile elevation="0" width="100%">
+        <v-card
+          v-if="!_.isEmpty(selectedProfile)"
+          class="pa-6 d-flex flex-row"
+          tile
+          elevation="0"
+          width="100%"
+        >
           <v-avatar size="48" class="mr-5">
-            <v-img src="@/assets/img/user/profile/avatar1.svg"></v-img>
+            <v-img :src="getImgOfProfile(selectedProfile)"></v-img>
           </v-avatar>
           <div class="d-flex flex-column justify-center">
-            <p class="mb-2 font-weight-bold">Nguyễn Xuân Ngũ</p>
+            <p class="mb-2 font-weight-bold">
+              {{ selectedProfile.lastName }} {{ selectedProfile.firstName }}
+            </p>
             <p class="ma-0 text-body-2" style="color: #667085">
-              Chủ tài khoản
+              {{ selectedProfile.relationship }}
             </p>
           </div>
         </v-card>
@@ -130,47 +146,52 @@
         ></v-divider>
 
         <!-- body -->
-        <v-card class="pa-8" elevation="0">
+        <v-card v-if="records.length" class="pa-8" elevation="0">
           <v-scroll-y-transition>
-            <v-timeline v-show="years.length != 0">
-              <v-timeline-item
-                v-for="(year, i) in years"
-                :key="i"
-                :color="year.color"
-                small
-              >
+            <v-timeline dense>
+              <v-timeline-item v-for="(record, i) in records" :key="i" small>
                 <template v-slot:opposite>
-                  <span
-                    :class="`headline font-weight-bold ${year.color}--text`"
-                    v-text="year.year"
-                  ></span>
+                  <span class="headline font-weight-bold">{{
+                    getDate(record.appointment.date)
+                  }}</span>
                 </template>
-                <v-card color="#EEF2F6">
-                  <v-card-title style="color: #537DA5">
-                    11:00 - 12:00
+                <v-card color="#537DA5">
+                  <v-card-title class="white--text" style="font-size: 16px">
+                    {{ getServiceName(record.appointment) }}
+                    <v-spacer></v-spacer>
+                    {{ record.appointment.time }},
+                    {{ getDate(record.appointment.date) }}
                   </v-card-title>
                   <v-card-text class="white text--primary pa-3">
                     <div class="d-flex flex-row">
                       <p class="ma-0 mr-3 font-weight-bold">Cơ sở y tế:</p>
-                      <p class="ma-0">Bệnh viện đại học y dược</p>
+                      <p class="ma-0">
+                        {{
+                          record.appointment.category === "DOCTOR"
+                            ? record.appointment.doctor.hospital.name
+                            : record.appointment.service.hospital.name
+                        }}
+                      </p>
                     </div>
                     <div class="d-flex flex-row">
-                      <p class="ma-0 mr-3 font-weight-bold">Dịch vụ:</p>
-                      <p class="ma-0">Khám theo nhu cầu</p>
-                    </div>
-                    <div class="d-flex flex-row">
-                      <p class="ma-0 mr-3 font-weight-bold">Bác sĩ:</p>
-                      <p class="ma-0">Nguyễn Xuân Đức</p>
-                    </div>
-                    <div class="d-flex flex-row mb-8">
                       <p class="ma-0 mr-3 font-weight-bold">
                         Chuẩn đoán:
                       </p>
-                      <p class="ma-0">Bệnh thống phong</p>
+                      <p class="ma-0">{{ record.diagnose | empty }}</p>
                     </div>
-
+                    <div class="d-flex flex-row">
+                      <p class="ma-0 mr-3 font-weight-bold">
+                        Chỉ định:
+                      </p>
+                      <p class="ma-0">{{ record.prescribe | empty }}</p>
+                    </div>
+                    <div class="d-flex flex-row  mb-8">
+                      <p class="ma-0 mr-3 font-weight-bold">
+                        Ghi chú:
+                      </p>
+                      <p class="ma-0">{{ record.note | empty }}</p>
+                    </div>
                     <v-btn
-                      :color="year.color"
                       outlined
                       class="btn-not-transform"
                       @click="medical_record_dialog = true"
@@ -188,8 +209,14 @@
   </div>
 </template>
 <script>
+const url = process.env.VUE_APP_ROOT_API;
 export default {
   data: () => ({
+    profiles: [],
+    selectedProfile: null,
+    records: [],
+    radioGroup: null,
+    loading: false,
     profile_list_dialog: false,
     medical_record_dialog: false,
     list_record_show: false,
@@ -242,17 +269,68 @@ export default {
       }
     ]
   }),
-
+  async mounted() {
+    await this.getProfiles();
+    await this.getRecords();
+  },
   methods: {
+    getDate(date) {
+      let date_array = date.split("-");
+      return `${date_array[2]}/${date_array[1]}/${date_array[0]}`;
+    },
+    getServiceName(appointment) {
+      if (appointment.category == "DOCTOR") {
+        if (appointment.type == "ONLINE") {
+          return `Tư vấn trực tuyến với ${appointment.doctor.level}. ${appointment.doctor.name}`;
+        }
+        return `Khám trực tiếp với ${appointment.doctor.level}. ${appointment.doctor.name}`;
+      } else {
+        if (appointment.type == "ONLINE") {
+          return `Dịch vụ khám tại nhà ${appointment.service.name}`;
+        }
+        return `Dịch vụ khám tại viện ${appointment.service.name}`;
+      }
+    },
+    async getProfiles() {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      await this.axios.get(`${url}/api/profiles`).then(res => {
+        this.profiles = res.data.results;
+        this.selectedProfile = (this.profiles || []).find(
+          p => p.relationship === "Chủ tài khoản"
+        );
+      });
+    },
+    async getRecords() {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      await this.axios
+        .get(`${url}/api/user/records`, {
+          params: {
+            profileId: this.selectedProfile.id
+          }
+        })
+        .then(res => {
+          this.records = res.data.results;
+        });
+    },
+    getImgOfProfile(profile) {
+      if (profile.imageUrl != null) {
+        return profile.imageUrl;
+      } else {
+        return require("@/assets/img/user/profile/avatar1.svg");
+      }
+    },
     view_health_record() {
+      this.selectedProfile = this.radioGroup;
       this.years = [];
       this.profile_list_dialog = false;
-      for (let i = 0; i < 6; i++) {
-        this.years.push({
-          color: "#537DA5",
-          year: "17/12/1960"
-        });
-      }
     }
   }
 };

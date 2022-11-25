@@ -32,9 +32,7 @@ public class AppointmentRequest {
     @NotNull
     private ScheduleType type;
     private List<MedicalFile> files;
-    @NotEmpty
-    @NotBlank
-    private String fee;
+    private Integer fee;
     @NotNull
     private Boolean isPaid;
     @NotNull

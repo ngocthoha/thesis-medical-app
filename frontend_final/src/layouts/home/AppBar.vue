@@ -927,8 +927,8 @@ export default {
   methods: {
     getText(item) {
       let text = this._.get(item, "text") || "";
-      text.length > 76
-        ? `${_.get(item, "text").substring(0, 76)} ...`
+      return text.length > 50
+        ? `${_.get(item, "text").substring(0, 50)} ...`
         : _.get(item, "text");
     },
     goToNotification(item) {

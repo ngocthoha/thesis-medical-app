@@ -46,6 +46,7 @@ import java.util.UUID;
 @EnableJpaRepositories("com.thesis.medicalapp.repository")
 @Slf4j
 public class ThesisMedicalAppApplication {
+    private final ModelMapper modelMapper = new ModelMapper();
     public static void main(String[] args) {
         SpringApplication.run(ThesisMedicalAppApplication.class, args);
     }
@@ -74,7 +75,10 @@ public class ThesisMedicalAppApplication {
             ServiceESService serviceESService,
             com.thesis.medicalapp.services.HospitalService hospitalService,
             DoctorController doctorController,
-            ServiceController serviceController
+            ServiceController serviceController,
+            HospitalESRepository hospitalESRepository,
+            ServiceESRepository serviceESRepository,
+            DoctorESRepository doctorESRepository
     ) {
         return args -> {
             // Remove all data in ES
@@ -106,7 +110,8 @@ public class ThesisMedicalAppApplication {
             hospital.setHospitalHour(hospitalHour1);
             hospital.setImageUrl("https://ump.edu.vn/img/image-default.png");
             Hospital hospital1 = hospitalRepository.save(hospital);
-            hospitalESService.save(hospital1);
+            HospitalES hospitalES = modelMapper.map(hospital1, HospitalES.class);
+            hospitalESRepository.save(hospitalES);
             // init service
             HospitalService service = new HospitalService();
             service.setSpecialty(SpecialtyType.CHUAN_DOAN_HINH_ANH);
@@ -120,13 +125,16 @@ public class ThesisMedicalAppApplication {
             service.setFavorite(0.0);
             service.setInfo("Dịch vụ Khám Tai - Mũi - Họng theo yêu cầu của Bệnh viện Việt Đức chuyên điều trị các bệnh lý và triệu chứng");
             HospitalService service1 = serviceRepository.save(service);
-            serviceESService.save(service1);
+            HospitalServiceES hospitalServiceES = modelMapper.map(service1, HospitalServiceES.class);
+            serviceESRepository.save(hospitalServiceES);
             // init user
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
+            User user1 = new User(null, "user1", "+843261852825", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
             User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, "https://znews-photo.zingcdn.me/w660/Uploaded/ngogtn/2022_03_30/yoo_yeon_seok_3_7704_1629893125.jpeg", new ArrayList<>(), "Đinh Ngọc Sơn", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS.BS", bio, 100000, hospital, 0.0);
             User userEntity = userService.saveUser(user);
+            User userEntity1 = userService.saveUser(user1);
             userService.saveUser(admin);
 
             Date dateFormat = new Date();
@@ -143,13 +151,17 @@ public class ThesisMedicalAppApplication {
             times.add("14:00 - 15:00");
             userService.saveUser(doctor);
             Doctor doctorEntity = doctorRepository.findDoctorByUsername("doctor");
-            doctorESService.save(doctorEntity);
+            DoctorES doctorES = modelMapper.map(doctorEntity, DoctorES.class);
+            doctorES.setSpecialty(doctorEntity.getSpecialty().getName());
+            doctorESRepository.save(doctorES);
             Room room = roomRepository.save(new Room(null,"H2", null));
             scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, 2, doctorEntity));
             userService.addRoleToUser("user", "ROLE_USER");
+            userService.addRoleToUser("user1", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
-            profileRepository.save(new Profile(null, 1L, "Tho", "Ha Ngoc", address1, "0326185289", "email@gmail.com", new Date(), "Developer", "038200008299", "032288997", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "relation ship with patient", null, userEntity));
+            profileRepository.save(new Profile(null, 1L, "Thọ", "Hà Ngọc", address1, "+84326185289", "tho@gmail.com", new Date(), "Developer", "038200008299", "0322889971", "Kinh", Gender.MALE, "Trịnh Thị Thanh","0983839989", "038299988877", "Chủ tài khoản", "Mẹ", null, false, userEntity));
+            profileRepository.save(new Profile(null, 1L, "Thanh", "Nguyễn Duy", address1, "+84326185287", "thanh@gmail.com", new Date(), "Developer", "038200008298", "0322889972", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "Ba", null, false, userEntity1));
             // init data json
             ObjectMapper mapper = new ObjectMapper();
             TypeReference<List<HospitalDTO>> typeReference = new TypeReference<>() {};

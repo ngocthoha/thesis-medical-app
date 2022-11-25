@@ -13,7 +13,7 @@ public interface ProfileRepository extends JpaRepository<Profile, Integer> {
     List<Profile> findAllByUser(User user);
     Profile findById(String id);
     Boolean existsByIdentityCard(String ic);
-    Optional<Profile> findProfileByPhone(String phone);
+    Optional<Profile> findProfileByPhoneAndRelationship(String phone, String relationship);
     boolean existsById(String id);
     Profile findProfileByRelationshipAndUser_Username(String relationship, String username);
 }

@@ -7,7 +7,7 @@ import com.thesis.medicalapp.pojo.ProfileDTO;
 import java.util.List;
 
 public interface ProfileService {
-    ProfileDTO saveProfile(ProfileDTO profileDTO);
+    ProfileDTO saveProfile(ProfileDTO profileDTO, String username);
     List<ProfileDTO> getProfilesByUser();
     ProfileSearch searchProfile(String phone);
     List<ProfileDTO> getProfiles();

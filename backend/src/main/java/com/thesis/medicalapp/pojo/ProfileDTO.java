@@ -48,9 +48,11 @@ public class ProfileDTO {
     private String guardian;
     private String guardianPhone;
     private String guardianIdentityCard;
+    @NotNull
     private String relationship;
     private String relationshipWithPatient;
     private String imageUrl;
+    private Boolean isContactProfile;
 
     public static ProfileDTO from(Profile profile) {
         return ProfileDTO.builder()
@@ -73,6 +75,7 @@ public class ProfileDTO {
                 .relationship(profile.getRelationship())
                 .relationshipWithPatient(profile.getRelationshipWithPatient())
                 .imageUrl(profile.getImageUrl())
+                .isContactProfile(profile.getIsContactProfile())
                 .build();
     }
 }

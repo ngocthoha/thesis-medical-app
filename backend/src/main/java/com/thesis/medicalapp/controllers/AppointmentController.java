@@ -131,7 +131,6 @@ public class AppointmentController {
         String qrcode = QRCode.createQR(dataQrCode, 300, 300);
         appointment.setQrcode(qrcode);
         AppointmentDTO appointmentDTO = appointmentService.saveAppointment(appointment);
-        System.out.println("createaaaa");
         Notification notification = new Notification();
         notification.setTime(new Date());
         String text = "";

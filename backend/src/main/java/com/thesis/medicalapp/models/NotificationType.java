@@ -4,5 +4,6 @@ public enum NotificationType {
     MEDICINE,
     CANCEL_APPOINTMENT,
     SUCCESS_APPOINTMENT,
-    FAIL_APPOINTMENT
+    FAIL_APPOINTMENT,
+    INVITE
 }

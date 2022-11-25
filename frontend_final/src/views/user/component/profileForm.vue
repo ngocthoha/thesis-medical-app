@@ -38,6 +38,7 @@
                   >mdi-cloud-upload-outline
                 </v-icon>
                 <input
+                  :disabled="disableEdit"
                   type="file"
                   ref="file"
                   accept="image/*"
@@ -77,7 +78,7 @@
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
             <p class="mb-2 font-weight-medium text-body-2">
-              Họ và tên lót (có dấu):
+              Họ và tên lót <span style="color: red">*</span>
             </p>
             <v-card
               width="417px"
@@ -88,6 +89,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.lastName"
                 placeholder="VD: Nguyễn Duy"
                 solo
@@ -98,7 +100,9 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Tên (có dấu):</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Tên <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -108,6 +112,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.firstName"
                 placeholder="VD: Thanh"
                 solo
@@ -127,7 +132,9 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại:</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Số điện thoại <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -137,6 +144,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.phone"
                 placeholder="Số điện thoại"
                 solo
@@ -147,7 +155,7 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Email:</p>
+            <p class="mb-2 font-weight-medium text-body-2">Email</p>
             <v-card
               width="417px"
               height="48px"
@@ -158,6 +166,7 @@
             >
               <v-text-field
                 placeholder="VD thanhbkcse@gmail.com"
+                :disabled="disableEdit"
                 v-model="profile.email"
                 solo
                 flat
@@ -175,7 +184,9 @@
       ></v-divider>
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-column">
-          <p class="mb-2 font-weight-medium text-body-2">Ngày sinh:</p>
+          <p class="mb-2 font-weight-medium text-body-2">
+            Ngày sinh <span style="color: red">*</span>
+          </p>
           <div class="d-flex flex-row justify-space-between">
             <v-card
               width="270px"
@@ -186,6 +197,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 v-model="profile.dob.date"
                 :items="days.date"
                 solo
@@ -204,6 +216,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 v-model="profile.dob.month"
                 :items="days.month"
                 solo
@@ -222,6 +235,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 v-model="profile.dob.year"
                 :items="days.year"
                 solo
@@ -242,8 +256,10 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Giới tính</p>
-            <v-radio-group row v-model="profile.gender">
+            <p class="mb-2 font-weight-medium text-body-2">
+              Giới tính <span style="color: red">*</span>
+            </p>
+            <v-radio-group :disabled="disableEdit" row v-model="profile.gender">
               <v-radio
                 label="Nam"
                 value="MALE"
@@ -263,7 +279,7 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Quốc gia:</p>
+            <p class="mb-2 font-weight-medium text-body-2">Quốc gia</p>
             <v-card
               width="417px"
               height="48px"
@@ -284,7 +300,9 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Số CMND/Passport:</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Số CMND/Passport <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -294,6 +312,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.identityCard"
                 placeholder="07720xxxxx"
                 solo
@@ -313,7 +332,9 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Dân tộc:</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Dân tộc <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -323,6 +344,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.folk"
                 placeholder="VD: Kinh"
                 solo
@@ -333,7 +355,7 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Nghề nghiệp:</p>
+            <p class="mb-2 font-weight-medium text-body-2">Nghề nghiệp</p>
             <v-card
               width="417px"
               height="48px"
@@ -343,6 +365,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.job"
                 placeholder="VD: Sinh viên"
                 solo
@@ -362,7 +385,9 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Tỉnh/Thành phố:</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Tỉnh/Thành phố <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -372,6 +397,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 :items="province_list"
                 v-model="profile.province"
                 item-text="text"
@@ -385,7 +411,9 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Quận/Huyện:</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Quận/Huyện <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -395,6 +423,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 :items="town_list"
                 v-model="profile.district"
                 label=""
@@ -418,7 +447,9 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Xã/Phường:</p>
+            <p class="mb-2 font-weight-medium text-body-2">
+              Xã/Phường <span style="color: red">*</span>
+            </p>
             <v-card
               width="417px"
               height="48px"
@@ -428,6 +459,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 :items="commune_list"
                 v-model="profile.ward"
                 solo
@@ -451,6 +483,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.address"
                 placeholder=""
                 solo
@@ -471,7 +504,7 @@
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
             <p class="mb-2 font-weight-medium text-body-2">
-              Quan hệ với tài khoản
+              Quan hệ với tài khoản <span style="color: red">*</span>
             </p>
             <v-card
               width="417px"
@@ -505,6 +538,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.healthInsurance"
                 placeholder=""
                 solo
@@ -533,7 +567,7 @@
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
             <p class="mb-2 font-weight-medium text-body-2">
-              Họ và tên người thân (có dấu):
+              Họ và tên
             </p>
             <v-card
               width="417px"
@@ -544,6 +578,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.guardian"
                 solo
                 flat
@@ -554,7 +589,7 @@
           </div>
           <div class="d-flex flex-column">
             <p class="mb-2 font-weight-medium text-body-2">
-              Quan hệ với bệnh nhân:
+              Quan hệ với bệnh nhân
             </p>
             <v-card
               width="417px"
@@ -565,6 +600,7 @@
               outlined
             >
               <v-select
+                :disabled="disableEdit"
                 v-model="profile.relationshipWithPatient"
                 :items="relationship"
                 solo
@@ -585,7 +621,7 @@
       <v-card height="140px" elevation="0">
         <div class="mt-6 d-flex flex-row justify-space-between">
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại:</p>
+            <p class="mb-2 font-weight-medium text-body-2">Số điện thoại</p>
             <v-card
               width="417px"
               height="48px"
@@ -595,6 +631,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.guardianPhone"
                 placeholder="Số điện thoại"
                 solo
@@ -605,7 +642,7 @@
             </v-card>
           </div>
           <div class="d-flex flex-column">
-            <p class="mb-2 font-weight-medium text-body-2">CMND:</p>
+            <p class="mb-2 font-weight-medium text-body-2">CMND</p>
             <v-card
               width="417px"
               height="48px"
@@ -615,6 +652,7 @@
               outlined
             >
               <v-text-field
+                :disabled="disableEdit"
                 v-model="profile.guardianIdentityCard"
                 placeholder="VD: 07720xxxxxx"
                 solo
@@ -731,6 +769,11 @@ export default {
     // Emits on mount
     this.emitInterface();
   },
+  computed: {
+    disableEdit() {
+      return this.edit_profile.isContactProfile;
+    }
+  },
   methods: {
     async getProvines() {
       const res = await this.axios.get(
@@ -833,8 +876,17 @@ export default {
             : "0" + String(date.getDate());
       }
     },
-
+    formatPhone(phoneInput) {
+      let phone = this._.cloneDeep(phoneInput);
+      if (phone.length > 1) {
+        phone = phone.split("");
+        phone[0] = "+84";
+        phone = phone.join("");
+      }
+      return phone;
+    },
     async addNewProfile() {
+      let phone = this.formatPhone(this.profile.phone);
       let data = {
         firstName: "",
         lastName: "",
@@ -873,7 +925,7 @@ export default {
         this.profile.dob.month +
         "-" +
         this.profile.dob.date;
-      data.phone = this.profile.phone;
+      data.phone = phone;
       data.email = this.profile.email;
       data.job = this.profile.job;
       data.identityCard = this.profile.identityCard;

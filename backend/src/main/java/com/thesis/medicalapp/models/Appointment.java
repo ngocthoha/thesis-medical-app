@@ -47,7 +47,7 @@ public class Appointment extends AuditLog {
     private ScheduleType type;
     @Column(nullable = false)
     private Boolean isPaid = false;
-    private String fee;
+    private Integer fee;
     private CategoryType category;
     private String orderId;
     @Type(type="text")
