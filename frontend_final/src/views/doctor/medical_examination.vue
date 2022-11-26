@@ -40,18 +40,9 @@
             >
             <v-menu :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="#537DA5"
-                  elevation="0"
-                  class="mr-2 white--text btn font-weight-medium text-body-1 ml-2"
-                  v-bind="attrs"
-                  v-on="on"
+                <v-icon v-bind="attrs" v-on="on" medium class="mr-2"
+                  >mdi-filter</v-icon
                 >
-                  <v-icon medium class="mr-2">mdi-filter</v-icon> Lọc
-                  <div v-if="filterNumber != 0" class="ml-2 numberCircle">
-                    {{ filterNumber }}
-                  </div>
-                </v-btn>
               </template>
               <v-card width="300px">
                 <div class="d-flex justify-center" style="color: #537DA5">

@@ -15,34 +15,156 @@
         show-select
         class="elevation-1"
         checkbox-color="#3C5E7E"
+        :search="search"
+        :loading="loading"
       >
         <template v-slot:top>
-          <div class="pa-6 d-flex flex-row">
-            <v-btn
-              elevation="0"
-              color="#537DA5"
-              outlined
-              class="btn font-weight-medium"
-              >Hôm nay</v-btn
-            >
-            <v-btn class="ml-3 btn font-weight-medium" color="#537DA5" outlined
-              >Tất cả</v-btn
-            >
+          <div class="pa-6 d-flex flex-row align-center">
+            <v-text-field
+              v-model="search"
+              append-icon="mdi-magnify"
+              label="Tìm kiếm"
+              single-line
+              hide-details
+            ></v-text-field>
             <v-spacer></v-spacer>
             <v-btn
-              class="mr-3 white--text font-weight-medium btn"
+              class="mr-3 white--text btn font-weight-medium text-body-1"
               elevation="0"
               color="#476D92"
               :disabled="_.isEmpty(selected)"
               @click.stop="examinate()"
-              >Khám</v-btn
             >
+              <v-icon medium class="mr-2">mdi-medication</v-icon>
+              Khám</v-btn
+            >
+            <v-menu :close-on-content-click="false">
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  color="#537DA5"
+                  elevation="0"
+                  class="mr-2 white--text btn font-weight-medium text-body-1 ml-2"
+                  v-bind="attrs"
+                  v-on="on"
+                >
+                  <v-icon medium class="mr-2">mdi-filter</v-icon> Lọc
+                  <div v-if="filterNumber != 0" class="ml-2 numberCircle">
+                    {{ filterNumber }}
+                  </div>
+                </v-btn>
+              </template>
+              <v-card width="300px">
+                <div class="d-flex justify-center" style="color: #537DA5">
+                  <p class="font-weight-bold mt-3">Lọc Kết Quả</p>
+                </div>
+                <v-divider></v-divider>
+                <v-list>
+                  <v-list-item class="mt-3">
+                    <v-autocomplete
+                      v-model="provinceSelect"
+                      :items="provinces"
+                      prepend-inner-icon="mdi-map-marker"
+                      item-text="text"
+                      item-value="text"
+                      label="Địa Điểm"
+                      clearable
+                      dense
+                      outlined
+                      :menu-props="{ offsetY: true }"
+                      placeholder="Tìm địa điểm"
+                    ></v-autocomplete>
+                  </v-list-item>
+                  <div class="d-flex justify-center mt-3">
+                    <v-btn
+                      color="#537DA5"
+                      elevation="0"
+                      class="white--text btn font-weight-medium text-body-1"
+                      width="90%"
+                      style="margin: 0 auto"
+                      @click="clearFilters()"
+                    >
+                      Bỏ lọc
+                    </v-btn>
+                  </div>
+                </v-list>
+              </v-card>
+            </v-menu>
+            <v-icon class="mr-0">mdi-dots-vertical</v-icon>
           </div>
         </template>
         <template v-slot:[`item.profile.fullName`]="{ item }">
           <div class="d-flex flex-row align-center">
             <p class="ma-0">
               {{ item.profile.lastName }} {{ item.profile.firstName }}
+            </p>
+          </div>
+        </template>
+        <template v-slot:[`item.status`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p
+              class="ma-0 font-weight-medium text-body-2"
+              style="color: #667085"
+              v-if="item.status == 'PENDING'"
+            >
+              <v-chip text-color="white" color="orange" small>
+                Chờ duyệt
+              </v-chip>
+            </p>
+            <p
+              v-else-if="item.status == 'CANCEL'"
+              class="ma-0 font-weight-medium text-body-2"
+              style="color: red"
+            >
+              <v-chip small color="red" text-color="white">
+                Đã hủy
+              </v-chip>
+            </p>
+            <p
+              class="ma-0 font-weight-medium text-body-2"
+              style="color: #667085"
+              v-else-if="item.status === 'PROCESS'"
+            >
+              <v-chip color="primary" small>
+                Chưa tiến hành
+              </v-chip>
+            </p>
+
+            <p
+              class="ma-0 font-weight-medium text-body-2"
+              style="color: #12B76A"
+              v-else-if="item.status === 'COMPLETE'"
+            >
+              <v-chip small color="green" text-color="white">
+                Đã hoàn tất
+              </v-chip>
+            </p>
+          </div>
+        </template>
+        <template v-slot:[`item.symptom`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p v-if="!item.symptom.length" class="ma-0">
+              {{ item.symptom | empty }}
+            </p>
+            <p class="d-flex align-center ma-0" v-else>
+              <v-menu :close-on-content-click="false">
+                <template v-slot:activator="{ on, attrs }">
+                  <v-icon
+                    v-bind="attrs"
+                    v-on="on"
+                    class="d-flex align-center"
+                    meidum
+                    color="#537da5"
+                    >mdi-comment-text-outline</v-icon
+                  >
+                </template>
+                <v-card max-width="300px">
+                  <v-list>
+                    <v-list-tile-content>
+                      <p class="pa-3">{{ item.symptom }}</p>
+                    </v-list-tile-content>
+                  </v-list>
+                </v-card>
+              </v-menu>
             </p>
           </div>
         </template>
@@ -815,7 +937,7 @@
                     <v-toolbar color="#537DA5" height="64" class="white--text">
                       Thêm thuốc
                     </v-toolbar>
-                    <v-card class="d-flex flex-column pa-8">
+                    <v-card class="d-flex flex-column pa-8" tile>
                       <v-card elevation="0" class="d-flex flex-column mb-5">
                         <p class="text-body-2 ma-0 font-weight-medium">
                           Tên thuốc:
@@ -933,20 +1055,25 @@ export default {
 
   data() {
     return {
+      search: "",
       selected: [],
       headers_appointment: [
         {
           text: "Họ và tên",
           align: "start",
           sortable: false,
-          value: "profile.fullName"
+          value: "profile.fullName",
+          filterable: true
         },
+        { text: "Tình trạng", value: "status", sortable: false },
+        { text: "Triệu chứng", value: "symptom", sortable: false },
         { text: "Ngày sinh", value: "profile.dob", sortable: false },
         { text: "Số điện thoại", value: "profile.phone", sortable: false },
         { text: "Ngày khám", value: "date", sortable: false },
         { text: "Khung giờ khám", value: "time", sortable: false },
         { text: "Phòng", value: "room", sortable: false }
       ],
+      loading: false,
       list_appointment: [],
       selected_appointment: {
         id: "",
@@ -1257,6 +1384,7 @@ export default {
         token: token,
         data: data
       };
+      this.loading = true;
       await this.$store.dispatch(
         "appointment/get_appointment_by_doctor",
         param
@@ -1264,6 +1392,7 @@ export default {
       this.all_appointment_list = this.$store.getters[
         "appointment/doctor_appointment_list"
       ];
+      this.loading = false;
     },
 
     convert_date(time) {
