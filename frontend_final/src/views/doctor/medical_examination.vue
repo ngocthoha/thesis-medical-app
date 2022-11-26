@@ -6,7 +6,6 @@
           Danh sách khám
         </p>
       </v-footer>
-      <v-card-title> </v-card-title>
       <v-data-table
         v-model="selected"
         :headers="headers_appointment"
