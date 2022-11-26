@@ -169,6 +169,11 @@ const router = new Router({
 
       //admin Pages
       route(
+        "Quản lý bệnh viện",
+        { default: "admin/manage_hospital" },
+        "/admin/manage-hospital"
+      ),
+      route(
         "Tạo tài khoản bác sĩ",
         { default: "admin/DoctorAdmin" },
         "/admin/doctor-admin"
