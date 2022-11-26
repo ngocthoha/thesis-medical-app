@@ -10,6 +10,7 @@ const state = {
   username: null,
   isDoctor: false,
   isUser: false,
+  isAdmin: false,
   userId: null
 };
 
@@ -43,6 +44,10 @@ const mutations = {
     state.isUser = isUser;
   },
 
+  SET_IS_ADMIN: (state, isAdmin) => {
+    state.isAdmin = isAdmin;
+  },
+
   SET_USER_ID: (state, userId) => {
     state.userId = userId;
   }
@@ -56,6 +61,7 @@ const actions = {
         localStorage.setItem("username", decoded.sub);
         let isDoctor = (decoded.roles || []).some(r => r === "ROLE_DOCTOR");
         let isUser = (decoded.roles || []).some(r => r === "ROLE_USER");
+        let isAdmin = (decoded.roles || [].some(r=> r ==="ROLE_ADMIN"));
         let userId = (decoded.roles || []).filter(
           r => !["ROLE_DOCTOR", "ROLE_USER", "ROLE_ADMIN"].includes(r)
         );
@@ -63,6 +69,7 @@ const actions = {
         commit("SET_USER_ID", userId[0]);
         commit("SET_IS_DOCTOR", isDoctor);
         commit("SET_IS_USER", isUser);
+        commit("SET_IS_ADMIN", isAdmin);
         commit("SET_TOKEN", data.access_token);
         commit("SET_TYPE", data.type);
         commit("SET_IS_LOGIN", true);
@@ -114,6 +121,7 @@ const getters = {
   username: state => state.username,
   isDoctor: state => state.isDoctor,
   isUser: state => state.isUser,
+  isAdmin: state => state.isAdmin,
   userId: state => state.userId
 };
 

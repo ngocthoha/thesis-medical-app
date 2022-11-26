@@ -89,105 +89,93 @@ export default {
         }
       ],
 
-      itemDoctor1: [
-        {
-          items: [
-            {
-              title: "Lịch trình",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-schedule"
-            },
-            {
-              title: "Bệnh án",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-record"
-            },
-            {
-              title: "Gửi Thông báo",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-notification"
-            }
-          ],
-          title: "Lịch trình"
-        },
-        {
-          items: [
-            {
-              title: "Lịch trình",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-schedule"
-            },
-            {
-              title: "Bệnh án",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-record"
-            },
-            {
-              title: "Gửi Thông báo",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-notification"
-            }
-          ],
-          title: "Lịch trình"
-        },
-        {
-          items: [
-            {
-              title: "Lịch trình",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-schedule"
-            },
-            {
-              title: "Bệnh án",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-record"
-            },
-            {
-              title: "Gửi Thông báo",
-              icon: "mdi-map-marker",
-              to: "/doctor/doctor-notification"
-            }
-          ],
-          title: "Lịch trình"
-        }
-      ],
+      // itemAdmin: [
+      //   {
+      //     title: "Thống kê",
+      //     icon: "mdi-bell",
+      //     to: "/admin/dashboard-admin"
+      //   },
+      //   {
+      //     title: "Bác sĩ",
+      //     icon: "mdi-bell",
+      //     to: "/admin/doctor-admin"
+      //   },
+      //   {
+      //     title: "Trạng thái cuộc hẹn",
+      //     icon: "mdi-bell",
+      //     to: "/admin/appointment-status-admin"
+      //   },
+      //   {
+      //     title: "Tạo phòng",
+      //     icon: "mdi-bell",
+      //     to: "/admin/room-admin"
+      //   },
+      //   {
+      //     title: "Lịch hẹn",
+      //     icon: "mdi-bell",
+      //     to: "/admin/appointment-admin"
+      //   },
 
+      //   {
+      //     title: "Bệnh án",
+      //     icon: "mdi-bell",
+      //     to: "/admin/record-admin"
+      //   },
+      //   {
+      //     title: "Lịch trình",
+      //     icon: "mdi-bell",
+      //     to: "/admin/schedule-admin"
+      //   }
+      // ],
       itemAdmin: [
         {
-          title: "Thống kê",
-          icon: "mdi-bell",
-          to: "/admin/dashboard-admin"
+          title: "QUẢN LÝ BỆNH VIỆN",
+          icon: "mdi-hospital-building",
+          items: [
+            {
+              title: "Bệnh viện",
+              to: "/admin/manage-hospital"
+            }
+          ]
         },
         {
-          title: "Bác sĩ",
-          icon: "mdi-bell",
-          to: "/admin/doctor-admin"
+          title: "QUẢN LÝ BÁC SĨ",
+          icon: "mdi-doctor",
+          items: [
+            {
+              title: "Bác sĩ"
+            },
+            {
+              title: "Lịch làm việc"
+            }
+          ]
         },
         {
-          title: "Trạng thái cuộc hẹn",
-          icon: "mdi-bell",
-          to: "/admin/appointment-status-admin"
+          title: "QUẢN LÝ DỊCH VỤ",
+          icon: "mdi-calendar-month-outline",
+          items: [
+            {
+              title: "Dịch vụ"
+            }
+          ]
         },
         {
-          title: "Tạo phòng",
-          icon: "mdi-bell",
-          to: "/admin/room-admin"
+          title: "QUẢN LÝ PHÒNG",
+          icon: "mdi-bed-outline",
+          items: [
+            {
+              title: "Phòng"
+            }
+          ]
         },
         {
-          title: "Lịch hẹn",
-          icon: "mdi-bell",
-          to: "/admin/appointment-admin"
-        },
-
-        {
-          title: "Bệnh án",
-          icon: "mdi-bell",
-          to: "/admin/record-admin"
-        },
-        {
-          title: "Lịch trình",
-          icon: "mdi-bell",
-          to: "/admin/schedule-admin"
+          title: "QUẢN LÝ THUỐC",
+          icon: "mdi-pill-multiple",
+          items: [
+            {
+              title: "Thuốc"
+            }
+          ]
         }
       ],
 
@@ -234,15 +222,11 @@ export default {
       //   return;
       // }
 
-      // var type = this.$store.getters["auth/types"];
-      // if (type[0].authority === "ROLE_DOCTOR") {
-      //   return this.itemDoctor;
-      // }
-      // if (type[0].authority === "ROLE_ADMIN") {
-      //   return this.itemAdmin;
-      // }
-      // return [];
-      return this.itemDoctor;
+      if (this.$store.getters["auth/isDoctor"]) {
+        return this.itemDoctor;
+      } else if (this.$store.getters["auth/isAdmin"]) {
+        return this.itemAdmin;
+      }
     },
     // ...get('app', [
     //   'items',
