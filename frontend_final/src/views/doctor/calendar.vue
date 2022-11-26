@@ -20,15 +20,17 @@
         <v-icon>mdi-calendar-edit-outline</v-icon>
         Chỉnh sửa lịch
       </v-btn> -->
-      <v-btn
-        class="mr-4 white--text btn font-weight-medium"
-        color="#537DA5"
-        @click.stop="absent_dialog = true"
-      >
-        <v-icon>mdi-calendar-remove</v-icon>
-        Báo nghỉ
-      </v-btn>
-
+      <div class="d-flex">
+        <v-spacer></v-spacer>
+        <v-btn
+          class="white--text btn font-weight-medium text-body-1"
+          color="#537DA5"
+          @click.stop="absent_dialog = true"
+        >
+          <v-icon class="mr-2">mdi-calendar-remove</v-icon>
+          Báo nghỉ
+        </v-btn>
+      </div>
       <!-- add dialog -->
       <v-dialog v-model="add_dialog" max-width="800">
         <v-toolbar color="#475467" height="64" class="white--text"

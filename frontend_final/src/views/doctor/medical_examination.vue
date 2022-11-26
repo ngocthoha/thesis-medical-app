@@ -41,7 +41,7 @@
             <v-menu :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
                 <v-icon v-bind="attrs" v-on="on" medium class="mr-2"
-                  >mdi-filter</v-icon
+                  >mdi-filter-variant</v-icon
                 >
               </template>
               <v-card width="300px">
