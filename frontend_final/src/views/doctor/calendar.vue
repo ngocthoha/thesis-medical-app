@@ -2,7 +2,7 @@
   <v-card class="fill-height d-flex flex-column pa-8">
     <!-- header -->
     <v-card width="100%" class="mb-5" elevation="0">
-      <v-btn
+      <!-- <v-btn
         class="mr-4 btn font-weight-medium"
         color="#667085"
         outlined
@@ -19,7 +19,7 @@
       >
         <v-icon>mdi-calendar-edit-outline</v-icon>
         Chỉnh sửa lịch
-      </v-btn>
+      </v-btn> -->
       <v-btn
         class="mr-4 white--text btn font-weight-medium"
         color="#537DA5"
@@ -554,7 +554,14 @@
           @change="updateRange"
           event-more-text="Nhiều hơn"
           :event-overlap-threshold="30"
-        ></v-calendar>
+        >
+          <template v-slot:event="{ event }">
+            <div class="v-event-draggable">
+              <strong>{{ formatEventTime(event.details.time_frame) }} </strong>
+              {{ event.name }}
+            </div>
+          </template>
+        </v-calendar>
         <v-menu
           v-model="selectedOpen"
           v-if="selectedOpen"
@@ -596,16 +603,6 @@
                 </div>
               </div>
             </v-card-text>
-            <v-card-actions>
-              <v-btn
-                elevation="0"
-                :color="selectedEvent.color"
-                class="btn white--text"
-                @click="selectedOpen = false"
-              >
-                Hủy xem
-              </v-btn>
-            </v-card-actions>
           </v-card>
         </v-menu>
       </v-sheet>
@@ -699,6 +696,10 @@ export default {
     });
   },
   methods: {
+    formatEventTime(time) {
+      let times = time.split("-");
+      return times[0] || "";
+    },
     cancelLeave() {
       this.edit_date = null;
       this.absentTimes = [];
@@ -819,7 +820,7 @@ export default {
               ? this.colors.online
               : this.colors.offline_color;
           let name =
-            calendar.type === "ONLINE" ? "Khám trực tuyến" : "Khám tại viện";
+            calendar.type === "ONLINE" ? "Tư vấn trực tuyến" : "Khám tại viện";
           events.push({
             name: name,
             start: new Date(start_string),

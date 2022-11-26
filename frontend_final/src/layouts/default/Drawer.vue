@@ -211,7 +211,8 @@ export default {
               to: "/doctor/doctor-medical-examination"
             },
             {
-              title: "Tư vấn Online"
+              title: "Lịch sử khám",
+              to: "/doctor/doctor-hospital-examination"
             }
           ]
         }

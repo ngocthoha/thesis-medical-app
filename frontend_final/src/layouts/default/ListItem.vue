@@ -21,9 +21,7 @@
       <v-img :src="item.avatar" />
     </v-list-item-avatar> -->
 
-    <v-list-item-icon class="my-2 align-self-center">
-      <v-icon v-text="'mdi-hexagram-outline'" small />
-    </v-list-item-icon>
+    <v-list-item-icon class="my-2 align-self-center"> </v-list-item-icon>
 
     <v-list-item-content v-if="item.title" class="font-weight-medium">
       <v-list-item-title v-text="item.title" />

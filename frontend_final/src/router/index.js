@@ -144,6 +144,11 @@ const router = new Router({
         { default: "doctor/medical_examination" },
         "/doctor/doctor-medical-examination"
       ),
+      route(
+        "Lịch sử khám",
+        { default: "doctor/hospital_examination" },
+        "/doctor/doctor-hospital-examination"
+      ),
 
       route(
         "Lịch trình",
@@ -253,8 +258,7 @@ const router = new Router({
                 default: "user/notify"
               },
               "notify"
-            ),
-
+            )
           ],
           "user"
         )
