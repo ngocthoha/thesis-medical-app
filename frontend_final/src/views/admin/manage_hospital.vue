@@ -26,7 +26,10 @@
         <v-btn icon @click="open_edit_dialog()" class="mr-3">
           <v-icon>mdi-pencil-outline</v-icon>
         </v-btn>
-        <v-btn icon @click="add_dialog = true">
+        <v-btn icon class="mr-3">
+          <v-icon>mdi-close-circle-outline</v-icon>
+        </v-btn>
+        <v-btn icon>
           <v-icon>mdi-filter-variant</v-icon>
         </v-btn>
       </v-card>
@@ -46,15 +49,15 @@
     <v-dialog width="800" v-model="submit_dialog">
       <v-card height="600" class="pa-5 d-flex flex-column">
         <!-- header -->
-        <p v-if="is_add_dialog" class="font-weight-bold text-h6">Thêm</p>
-        <p v-else class="font-weight-bold text-h6">Chỉnh sửa</p>
+        <p v-if="is_add_dialog" class="font-weight-bold text-h6 mb-5">Thêm</p>
+        <p v-else class="font-weight-bold text-h6 mb-5">Chỉnh sửa</p>
 
         <!-- list field item -->
         <div class="d-flex flex-wrap justify-space-between">
           <!-- field -->
           <div class="d-flex flex-column mb-5">
             <!-- label -->
-            <p class="mb-2">Tên Bệnh viện</p>
+            <p class="mb-2 font-weight-medium">Tên Bệnh viện</p>
             <v-card outlined width="350">
               <v-text-field flat solo hide-details=""></v-text-field>
             </v-card>
@@ -62,14 +65,15 @@
           <!-- field -->
           <div class="d-flex flex-column mb-3">
             <!-- label -->
-            <p class="mb-2">Tên Bệnh viện</p>
+            <p class="mb-2 font-weight-medium">Tên Bệnh viện</p>
             <v-card outlined width="350">
               <v-text-field flat solo hide-details=""></v-text-field>
             </v-card>
           </div>
+          <!-- field -->
           <div class="d-flex flex-column mb-3">
             <!-- label -->
-            <p class="mb-2">Tên Bệnh viện</p>
+            <p class="mb-2 font-weight-medium">Tên Bệnh viện</p>
             <v-card outlined width="350">
               <v-text-field flat solo hide-details=""></v-text-field>
             </v-card>
@@ -78,7 +82,11 @@
 
         <v-spacer></v-spacer>
         <!-- submit/cancle -->
-        <v-card width="100%" class="d-flex flex-row justify-space-between">
+        <v-card
+          width="100%"
+          class="d-flex flex-row justify-space-between"
+          elevation="0"
+        >
           <v-btn
             elevation="0"
             outlined
