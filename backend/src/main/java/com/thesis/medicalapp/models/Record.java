@@ -33,6 +33,13 @@ public class Record extends AuditLog {
     private String prescribe;
     @Type(type="text")
     private String note;
+    private String bloodVessel;
+    private String temperature;
+    private String bloodPressure;
+    private String heartbeat;
+    private Boolean hospitalize;
+    private String height;
+    private String weight;
     @OneToMany
     private Collection<Medicine> medicines;
     @ElementCollection

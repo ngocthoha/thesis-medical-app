@@ -22,6 +22,13 @@ public class RecordRequest {
     private String diagnose;
     private String prescribe;
     private String note;
+    private String bloodVessel;
+    private String temperature;
+    private String bloodPressure;
+    private String heartbeat;
+    private Boolean hospitalize;
+    private String height;
+    private String weight;
     private Collection<@Valid MedicineRequest> medicines;
     private String reExaminationDate;
     private Collection<MedicalFile> files;

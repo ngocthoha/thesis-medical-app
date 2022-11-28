@@ -48,7 +48,6 @@ class StoreMedicineSelect {
 @RequestMapping("/api/store-medicines")
 @RequiredArgsConstructor
 public class StoreMedicineController {
-    @Autowired
     private static final ModelMapper modelMapper = new ModelMapper();
     private final StoreMedicineService storeMedicineService;
     private final HospitalService hospitalService;

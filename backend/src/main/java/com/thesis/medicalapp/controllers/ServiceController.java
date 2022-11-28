@@ -31,7 +31,6 @@ import java.util.List;
 public class ServiceController {
     private final ServiceService serviceService;
     private final ServiceESService serviceESService;
-    @Autowired
     private static final ModelMapper modelMapper = new ModelMapper();
 
     @PostMapping("")

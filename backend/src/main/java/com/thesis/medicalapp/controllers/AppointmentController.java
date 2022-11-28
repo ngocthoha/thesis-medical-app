@@ -9,6 +9,8 @@ import com.thesis.medicalapp.payload.response.MessageResponse;
 import com.thesis.medicalapp.pojo.AppointmentDTO;
 import com.thesis.medicalapp.pojo.ScheduleDTO;
 import com.thesis.medicalapp.repository.*;
+import com.thesis.medicalapp.search.SearchRequest;
+import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.*;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.RequiredArgsConstructor;
@@ -278,6 +280,18 @@ public class AppointmentController {
         List<AppointmentDTO> list = appointmentService.getAppointmentsByDateAndDoctor(date);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(list)
+        );
+    }
+
+    @PostMapping("/doctor/appointments/search")
+    public ResponseEntity<Object> getAppointmentsByDateAndDoctorAndStatusIn(
+            @RequestBody SearchRequest request
+    ) {
+        SearchSpecification<StoreMedicine> specification = new SearchSpecification<>(request);
+        Pageable pageable = SearchSpecification.getPageable(request.getPage(), request.getSize());
+        Page<Appointment> appointments = appointmentRepository.findAll(specification, pageable);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(appointments.getContent(), appointments)
         );
     }
 

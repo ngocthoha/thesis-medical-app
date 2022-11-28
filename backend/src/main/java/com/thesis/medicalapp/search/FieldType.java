@@ -3,6 +3,7 @@ package com.thesis.medicalapp.search;
 import com.thesis.medicalapp.exception.ApiRequestException;
 import com.thesis.medicalapp.models.Gender;
 import com.thesis.medicalapp.models.SpecialtyType;
+import com.thesis.medicalapp.models.Status;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDateTime;
@@ -63,6 +64,17 @@ public enum FieldType {
             for (SpecialtyType type : SpecialtyType.values()) {
                 if (value.equals(type.toString())) {
                     return type;
+                }
+            }
+            throw new ApiRequestException("Không tìm thấy chuyên khoa!");
+        }
+    },
+
+    STATUS {
+        public Object parse(String value) {
+            for (Status status : Status.values()) {
+                if (value.equals(status.toString())) {
+                    return status;
                 }
             }
             throw new ApiRequestException("Không tìm thấy chuyên khoa!");

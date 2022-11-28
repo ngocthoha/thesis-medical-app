@@ -79,7 +79,7 @@ public class DoctorController {
         @NotEmpty
         private String price;
     }
-    @Autowired
+
     private static final ModelMapper modelMapper = new ModelMapper();
     static {
         Converter<String, Hospital> idToHospital = ctx -> new Hospital(ctx.getSource());

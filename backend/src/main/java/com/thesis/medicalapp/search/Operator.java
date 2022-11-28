@@ -5,7 +5,9 @@ import com.thesis.medicalapp.models.Hospital;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.criteria.*;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -16,6 +18,20 @@ public enum Operator {
             Object value = request.getFieldType().parse(request.getValue().toString());
             Expression<?> key = root.get(request.getKey());
             return cb.and(cb.equal(key, value), predicate);
+        }
+    },
+
+    EQUAL_DATE {
+        public <T> Predicate build(Root<T> root, CriteriaBuilder cb, FilterRequest request, Predicate predicate) {
+            Object value = request.getFieldType().parse(request.getValue().toString());
+            Date dateFormat = new Date();
+            try {
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(String.valueOf(value));
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+            Expression<?> key = root.get(request.getKey());
+            return cb.and(cb.equal(key, dateFormat), predicate);
         }
     },
 

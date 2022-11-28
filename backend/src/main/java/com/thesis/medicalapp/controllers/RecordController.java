@@ -50,6 +50,13 @@ public class RecordController {
         record.setDiagnose(recordRequest.getDiagnose());
         record.setPrescribe(recordRequest.getPrescribe());
         record.setNote(recordRequest.getNote());
+        record.setBloodVessel(recordRequest.getBloodVessel());
+        record.setBloodPressure(recordRequest.getBloodPressure());
+        record.setHeartbeat(recordRequest.getHeartbeat());
+        record.setTemperature(recordRequest.getTemperature());
+        record.setHeight(recordRequest.getHeight());
+        record.setWeight(recordRequest.getWeight());
+        record.setHospitalize(recordRequest.getHospitalize());
         record.setMedicines(new ArrayList<>());
         if (null != recordRequest.getMedicines()) {
             System.out.println("save medicine!");
@@ -123,4 +130,6 @@ public class RecordController {
                 new ApiResponse<>(recordDTO)
         );
     }
+
+
 }

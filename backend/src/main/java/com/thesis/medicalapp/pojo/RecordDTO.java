@@ -23,6 +23,13 @@ public class RecordDTO {
     private String diagnose;
     private String prescribe;
     private String note;
+    private String bloodVessel;
+    private String temperature;
+    private String bloodPressure;
+    private String heartbeat;
+    private Boolean hospitalize;
+    private String height;
+    private String weight;
     private Collection<Medicine> medicines;
     private List<Date> reExaminationDate;
     private Collection<MedicalFile> files;
@@ -35,6 +42,13 @@ public class RecordDTO {
                 .diagnose(record.getDiagnose())
                 .prescribe(record.getPrescribe())
                 .note(record.getNote())
+                .bloodVessel(record.getBloodVessel())
+                .temperature(record.getTemperature())
+                .bloodPressure(record.getBloodPressure())
+                .heartbeat(record.getHeartbeat())
+                .hospitalize(record.getHospitalize())
+                .height(record.getHeight())
+                .weight(record.getWeight())
                 .medicines(record.getMedicines())
                 .reExaminationDate(record.getReExaminationDate())
                 .files(record.getFiles())
