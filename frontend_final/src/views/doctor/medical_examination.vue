@@ -1654,7 +1654,6 @@ export default {
         values: ["PENDING", "PROCESS"]
       });
       this.loading = true;
-      params.page = this.page - 1;
       await axios
         .post(`${url}/api/doctor/appointments/search`, params, {
           cancelToken
