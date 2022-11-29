@@ -8,8 +8,8 @@
       </v-footer>
       <v-data-table
         v-model="selected"
-        :headers="headers_appointment"
-        :items="list_appointment"
+        :headers="recordHeaders"
+        :items="records"
         :single-select="true"
         item-key="id"
         show-select
@@ -17,16 +17,26 @@
         checkbox-color="#3C5E7E"
         :search="search"
         :loading="loading"
+        :no-data-text="'Không có danh sách khám'"
+        :items-per-page="1"
+        :footer-props="{
+          'items-per-page-options': [1, 20, 50]
+        }"
+        @pagination="pagination = $event"
+        :server-items-length="totalPages"
       >
         <template v-slot:top>
           <div class="pa-6 d-flex flex-row align-center">
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Tìm kiếm"
-              single-line
-              hide-details
-            ></v-text-field>
+            <v-card outlined width="50%">
+              <v-text-field
+                v-model="search"
+                label="Tìm kiếm"
+                prepend-inner-icon="mdi-magnify"
+                solo
+                flat
+                hide-details=""
+              ></v-text-field>
+            </v-card>
             <v-spacer></v-spacer>
             <v-btn
               class="mr-3 white--text btn font-weight-medium text-body-1"
@@ -40,18 +50,9 @@
             >
             <v-menu :close-on-content-click="false">
               <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  color="#537DA5"
-                  elevation="0"
-                  class="mr-2 white--text btn font-weight-medium text-body-1 ml-2"
-                  v-bind="attrs"
-                  v-on="on"
+                <v-icon v-bind="attrs" v-on="on" medium class="mr-2"
+                  >mdi-filter-variant</v-icon
                 >
-                  <v-icon medium class="mr-2">mdi-filter</v-icon> Lọc
-                  <div v-if="filterNumber != 0" class="ml-2 numberCircle">
-                    {{ filterNumber }}
-                  </div>
-                </v-btn>
               </template>
               <v-card width="300px">
                 <div class="d-flex justify-center" style="color: #537DA5">
@@ -61,8 +62,6 @@
                 <v-list>
                   <v-list-item class="mt-3">
                     <v-autocomplete
-                      v-model="provinceSelect"
-                      :items="provinces"
                       prepend-inner-icon="mdi-map-marker"
                       item-text="text"
                       item-value="text"
@@ -89,7 +88,6 @@
                 </v-list>
               </v-card>
             </v-menu>
-            <v-icon class="mr-0">mdi-dots-vertical</v-icon>
           </div>
         </template>
         <template v-slot:[`item.profile.fullName`]="{ item }">
@@ -192,30 +190,34 @@
           </div>
         </template>
       </v-data-table>
-      <v-dialog v-model="exam_confirm_dialog" width="400">
-        <v-card height="150px" class="d-flex flex-column">
+      <v-dialog v-model="exam_confirm_dialog" width="408px">
+        <v-card height="192px" class="d-flex flex-column">
           <div class="d-flex flex-column mt-8 ml-8">
             <p style="font-size: 24px" class="font-weight-bold">
               Xác nhận hoàn tất khám
             </p>
+            <p style="color: #667085">
+              Bạn có muốn hoàn tất khám hồ sơ này không?
+            </p>
           </div>
           <div class="d-flex flex-row justify-space-between ml-8 mr-8">
             <v-btn
-              class="btn-not-transform font-weight-medium"
+              class="btn font-weight-medium"
               width="160px"
               outlined
-              color="#667085"
-              text
+              color="primary"
               @click="exam_confirm_dialog = false"
+              :disabled="loadingConfirm"
               >Huỷ bỏ</v-btn
             >
             <v-btn
-              class="btn-not-transform white--text font-weight-medium"
+              class="btn white--text font-weight-medium"
               width="160px"
               color="#537DA5"
               elevation="0"
               @click="create_record"
-              >Hoàn tất</v-btn
+              :loading="loadingConfirm"
+              >Xác nhận</v-btn
             >
           </div>
         </v-card>
@@ -228,7 +230,7 @@
             height="50px"
             tile
           >
-            <p class="ma-0">Giao diện khám bệnh</p>
+            <p class="ma-0">Tiến Hành Khám Bệnh</p>
             <v-spacer></v-spacer>
             <v-btn
               color="white"
@@ -250,13 +252,16 @@
           </v-footer>
           <v-card elevation="0">
             <v-tabs color="#314E6A">
-              <v-tab style="text-transform: none;"> Thông tin khám </v-tab>
-              <v-tab style="text-transform: none;"> Lịch sử khám </v-tab>
-              <v-tab style="text-transform: none;"> Khám bệnh</v-tab>
-              <v-tab style="text-transform: none;">Kê đơn</v-tab>
+              <v-tab style="text-transform: none;"> Thông Tin Khám </v-tab>
+              <v-tab style="text-transform: none;"> Lịch Sử Khám </v-tab>
+              <v-tab style="text-transform: none;"> Khám Bệnh</v-tab>
+              <v-tab style="text-transform: none;">Kê Đơn</v-tab>
               <!-- profile -->
               <v-tab-item>
                 <v-card flat class="d-flex flex-column pa-6">
+                  <p class="font-weight-bold text-body-1">
+                    Thông tin bệnh nhân
+                  </p>
                   <!-- last name, first name, dob -->
                   <div class="d-flex flex-row justify-space-between">
                     <v-card
@@ -264,15 +269,15 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Họ và tên lót:
-                      </p>
+                      </p> -->
                       <v-text-field
+                        label="Họ và tên lót"
                         class="text-body-2"
                         v-model="selected_appointment.profile.lastName"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -281,13 +286,13 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">Tên:</p>
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">Tên:</p> -->
                       <v-text-field
+                        label="Tên"
                         class="text-body-2"
                         v-model="selected_appointment.profile.firstName"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -296,15 +301,15 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Ngày sinh
-                      </p>
+                      </p> -->
                       <v-text-field
+                        label="Ngày sinh"
                         class="text-body-2"
                         v-model="selected_appointment.profile.dob"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -317,15 +322,15 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Nghề nghiệp:
-                      </p>
+                      </p> -->
                       <v-text-field
+                        label="Nghề nghiệp"
                         class="text-body-2"
                         v-model="selected_appointment.profile.job"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -334,15 +339,15 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Giới tính:
-                      </p>
+                      </p> -->
                       <v-text-field
+                        label="Giới tính"
                         class="text-body-2"
                         v-model="selected_appointment.profile.gender"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -351,15 +356,15 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Số điện thoại
-                      </p>
+                      </p> -->
                       <v-text-field
+                        label="Số điện thoại"
                         class="text-body-2"
                         v-model="selected_appointment.profile.phone"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -372,13 +377,13 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">Email:</p>
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">Email:</p> -->
                       <v-text-field
+                        label="Email"
                         class="text-body-2"
                         v-model="selected_appointment.profile.email"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -387,22 +392,24 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Địa chỉ:
-                      </p>
+                      </p> -->
                       <v-text-field
+                        label="Địa chỉ"
                         class="text-body-2"
                         v-model="selected_appointment.profile.address"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
                   </div>
 
                   <!-- appointment profile -->
-                  <p class="font-weight-bold text-body-1">Thông tin đặt khám</p>
+                  <p class="font-weight-bold text-body-1">
+                    Thông tin triệu chứng
+                  </p>
                   <!--  -->
                   <div class="d-flex flex-row justify-space-between">
                     <v-card
@@ -410,21 +417,21 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Triệu chứng:
-                      </p>
+                      </p> -->
                       <v-textarea
+                        label="Triệu chứng"
                         class="text-body-2"
                         v-model="selected_appointment.symptom"
                         readonly
-                        solo
-                        flat
+                        outlined
                         background-color="#EEF2F6"
                       ></v-textarea>
                     </v-card>
                   </div>
-                  <p class="text-body-2 font-weight-medium">
-                    Hình ảnh đính kèm:
+                  <p class="font-weight-bold text-body-1 ma-0">
+                    Kết quả xét nghiệm
                   </p>
                   <div class="d-flex flex-wrap">
                     <v-card
@@ -501,23 +508,130 @@
               <!-- examination -->
               <v-tab-item>
                 <v-card flat class="pa-6 d-flex flex-column">
-                  <p class="d-flex justify-center font-weight-bold">
+                  <!-- <p class="d-flex justify-center font-weight-bold">
                     KHÁM BỆNH
-                  </p>
+                  </p> -->
+                  <!-- <p class="d-flex justify-center font-weight-bold">
+                    THÊM KẾT QUẢ CẬN LÂM SÀNG
+                  </p> -->
+                  <div>
+                    <h4>Khám sơ bộ</h4>
+                  </div>
+                  <div class="d-flex flex-row mt-5 justify-space-between">
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
+                        Chiều cao(cm):
+                      </p> -->
+                      <v-text-field
+                        v-model="record.height"
+                        label="Chiều cao (cm)"
+                        placeholder="Vui lòng nhập chiều cao"
+                        background-color="#EEF2F6"
+                        outlined
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
+                        Cân nặng(kg):
+                      </p> -->
+                      <v-text-field
+                        label="Cân nặng (kg)"
+                        v-model="record.weight"
+                        placeholder="Vui lòng nhập cân nặng"
+                        background-color="#EEF2F6"
+                        outlined
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
+                        Mạch (lần/phút):
+                      </p> -->
+                      <v-text-field
+                        label="Mạch (lần/phút)"
+                        v-model="record.bloodVessel"
+                        placeholder="Vui lòng nhập mạch"
+                        background-color="#EEF2F6"
+                        outlined
+                      ></v-text-field>
+                    </v-card>
+                  </div>
+                  <div class="d-flex flex-row mt-5 justify-space-between">
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <v-text-field
+                        label="Nhiệt độ (độ C)"
+                        v-model="record.temperature"
+                        placeholder="Vui lòng nhập nhiệt độ"
+                        background-color="#EEF2F6"
+                        outlined
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
+                        Huyết áp (mmHg):
+                      </p> -->
+                      <v-text-field
+                        label="Huyết áp (mmHg)"
+                        v-model="record.bloodPressure"
+                        placeholder="Vui lòng nhập huyết áp"
+                        background-color="#EEF2F6"
+                        outlined
+                      ></v-text-field>
+                    </v-card>
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
+                        Nhịp tim (lần/phút):
+                      </p> -->
+                      <v-text-field
+                        label="Nhịp tim (lần/phút)"
+                        v-model="record.heartbeat"
+                        placeholder="Vui lòng nhập nhịp tim"
+                        background-color="#EEF2F6"
+                        outlined
+                      ></v-text-field>
+                    </v-card>
+                  </div>
+                  <div class="mb-5">
+                    <h4>Tóm tắt kết quả lâm sàng</h4>
+                  </div>
                   <div class="d-flex flex-row justify-space-between">
                     <v-card
                       width="30%"
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Chuẩn đoán:
-                      </p>
+                      </p> -->
                       <v-textarea
+                        label="Chuẩn đoán"
                         v-model="record.diagnose"
-                        solo
-                        flat
                         background-color="#EEF2F6"
+                        outlined
+                        placeholder="Vui lòng nhập chuẩn đoán"
                       ></v-textarea>
                     </v-card>
                     <v-card
@@ -525,36 +639,82 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Chỉ định:
-                      </p>
+                      </p> -->
                       <v-textarea
-                        v-model="record.prescribe"
-                        solo
-                        flat
+                        label="Chỉ định"
                         background-color="#EEF2F6"
+                        outlined
+                        placeholder="Vui lòng nhập chỉ định"
+                        v-model="record.prescribe"
                       ></v-textarea>
                     </v-card>
                     <v-card
                       width="30%"
                       elevation="0"
+                      flat
                       class="d-flex flex-column"
                     >
-                      <p class="text-body-2 ma-0 font-weight-medium">
+                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
                         Ghi chú:
-                      </p>
+                      </p> -->
                       <v-textarea
-                        v-model="record.note"
-                        solo
-                        flat
+                        label="Ghi chú"
+                        placeholder="Vui lòng nhập ghi chú"
                         background-color="#EEF2F6"
+                        outlined
+                        v-model="record.note"
                       ></v-textarea>
                     </v-card>
                   </div>
-                  <p class="d-flex justify-center font-weight-bold">
-                    THÊM KẾT QUẢ CẬN LÂM SÀNG
-                  </p>
-                  <div class="d-flex flex-row justify-space-between mt-5">
+                  <div class="d-flex flex-row mt-2">
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <v-checkbox
+                        class="mb-0"
+                        v-model="record.hospitalize"
+                        :label="'Yêu cầu nhập viện'"
+                      ></v-checkbox>
+                    </v-card>
+                  </div>
+                  <v-card
+                    width="30%"
+                    elevation="0"
+                    class="d-flex flex-column mt-3"
+                  >
+                    <v-menu
+                      v-model="menu2"
+                      :close-on-content-click="false"
+                      :nudge-right="40"
+                      transition="scale-transition"
+                      offset-y
+                      min-width="auto"
+                    >
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-text-field
+                          v-model="record.reExaminationDate"
+                          label="Ngày tái khám"
+                          append-icon="mdi-calendar"
+                          v-bind="attrs"
+                          v-on="on"
+                          outlined
+                          background-color="#EEF2F6"
+                          clearable
+                        ></v-text-field>
+                      </template>
+                      <v-date-picker
+                        v-model="record.reExaminationDate"
+                        @input="menu2 = false"
+                        locale="vi"
+                        no-title
+                      ></v-date-picker>
+                    </v-menu>
+                  </v-card>
+                  <div class="d-flex flex-row mt-5 justify-space-between">
                     <v-card
                       width="45%"
                       class="d-flex flex-column"
@@ -564,16 +724,50 @@
                       <div
                         class="d-flex flex-row justify-space-between align-center"
                       >
-                        <p class="font-weight-medium text-body-2 ma-0">
+                        <p class="font-weight-bold text-body-1 ma-0">
                           Kết quả xét nghiệm
                         </p>
-                        <v-card width="221" elevation="0">
+                      </div>
+                      <!-- add test result  -->
+                      <v-card
+                        color="#EEF2F6"
+                        outlined
+                        class="my-5 pa-2 d-flex flex-row"
+                        style="border: 0.5px solid #757575"
+                      >
+                        <v-file-input
+                          v-model="test_file"
+                          placeholder="Vui lòng chọn hình ảnh"
+                          solo
+                          dense
+                          prepend-inner-icon="mdi-link-variant"
+                          prepend-icon=""
+                          hide-details=""
+                          flat
+                          multiple
+                          small-chips
+                          background-color="#EEF2F6"
+                        ></v-file-input>
+                        <v-btn
+                          class="btn white--text font-weight-medium text-body-2"
+                          color="#537DA5"
+                          elevation="0"
+                          @click="addTestFile"
+                          >Tải lên</v-btn
+                        >
+                      </v-card>
+                      <!-- add test result  -->
+                      <div
+                        class="d-flex flex-wrap justify-space-between align-center mb-5"
+                        v-for="(image, index) in test_add_list"
+                        :key="index"
+                      >
+                        <v-card width="221" outlined class="pa-1">
                           <v-combobox
                             spellcheck="false"
-                            v-model="test_select"
+                            v-model="image.type"
                             :items="test_type"
                             item-text="name"
-                            item-value="key"
                             solo
                             dense
                             flat
@@ -581,49 +775,8 @@
                             item-color="light-blue darken-4"
                             placeholder="Chọn loại xét nghiệm"
                             hide-details=""
-                            background-color="#EEF2F6"
                           ></v-combobox>
                         </v-card>
-                      </div>
-                      <!-- add test result  -->
-                      <v-card
-                        class="my-5 pa-2 d-flex flex-row"
-                        color="#EEF2F6"
-                        elevation="0"
-                      >
-                        <v-file-input
-                          placeholder="Vui lòng chọn hình ảnh"
-                          solo
-                          dense
-                          prepend-inner-icon="mdi-link-variant"
-                          clear-icon=""
-                          prepend-icon=""
-                          hide-details=""
-                          flat
-                          background-color="#EEF2F6"
-                          v-model="test_file"
-                        ></v-file-input>
-                        <v-btn
-                          class="btn white--text text-body-2"
-                          color="#537DA5"
-                          elevation="0"
-                          @click="addTestFile"
-                          >Tải lên</v-btn
-                        >
-                      </v-card>
-
-                      <!-- list add test result -->
-                      <div
-                        class="d-flex flex-wrap justify-space-between align-center mb-5"
-                        v-for="(image, index) in test_add_list"
-                        :key="index"
-                      >
-                        <p
-                          class="font-weight-medium text-body-2 ma-0"
-                          style="color: #667085"
-                        >
-                          {{ image.type_name }}
-                        </p>
                         <v-card
                           min-width="50%"
                           outlined
@@ -631,7 +784,7 @@
                         >
                           <v-icon class="mr-2">mdi-image-outline</v-icon>
                           <v-card min-width="50%" elevation="0">
-                            <p class="ma-0 text-body-2" style="">
+                            <p class="ma-0" style="">
                               {{ image.file_name }}
                             </p>
                           </v-card>
@@ -643,6 +796,8 @@
                         </v-card>
                       </div>
                     </v-card>
+                  </div>
+                  <div class="d-flex flex-row mt-5 justify-space-between">
                     <v-card
                       width="45%"
                       class="d-flex flex-column"
@@ -652,13 +807,50 @@
                       <div
                         class="d-flex flex-row justify-space-between align-center"
                       >
-                        <p class="font-weight-medium text-body-2 ma-0">
+                        <p class="font-weight-bold text-body-1 ma-0">
                           Chuẩn đoán hình ảnh
                         </p>
-                        <v-card width="221" elevation="0">
+                      </div>
+                      <!-- add test result  -->
+                      <v-card
+                        color="#EEF2F6"
+                        outlined
+                        style="border: 0.5px solid #757575"
+                        class="my-5 pa-2 d-flex flex-row"
+                      >
+                        <v-file-input
+                          placeholder="Vui lòng chọn hình ảnh"
+                          solo
+                          dense
+                          prepend-inner-icon="mdi-link-variant"
+                          prepend-icon=""
+                          hide-details=""
+                          flat
+                          v-model="image_file"
+                          multiple
+                          small-chips
+                          background-color="#EEF2F6"
+                        ></v-file-input>
+                        <v-btn
+                          class="btn white--text font-weight-medium text-body-2"
+                          color="#537DA5"
+                          elevation="0"
+                          @click="addImageAnalystFile"
+                          >Tải lên</v-btn
+                        >
+                      </v-card>
+                      <!-- add image analyst  -->
+
+                      <!-- list add image analyst-->
+                      <div
+                        class="d-flex flex-wrap justify-space-between align-center mb-5"
+                        v-for="(image, index) in image_analyst_list"
+                        :key="index + 3"
+                      >
+                        <v-card width="221" outlined class="pa-1">
                           <v-combobox
                             spellcheck="false"
-                            v-model="image_select"
+                            v-model="image.type"
                             :items="image_analyst_type"
                             item-text="name"
                             item-value="key"
@@ -669,49 +861,8 @@
                             item-color="light-blue darken-4"
                             placeholder="Chọn loại hình ảnh"
                             hide-details=""
-                            background-color="#EEF2F6"
                           ></v-combobox>
                         </v-card>
-                      </div>
-                      <!-- add image analyst  -->
-                      <v-card
-                        color="#EEF2F6"
-                        class="my-5 pa-2 d-flex flex-row"
-                        elevation="0"
-                      >
-                        <v-file-input
-                          placeholder="Vui lòng chọn hình ảnh"
-                          solo
-                          dense
-                          prepend-inner-icon="mdi-link-variant"
-                          clear-icon=""
-                          prepend-icon=""
-                          hide-details=""
-                          flat
-                          background-color="#EEF2F6"
-                          v-model="image_file"
-                        ></v-file-input>
-                        <v-btn
-                          class="btn white--text text-body-2"
-                          color="#537DA5"
-                          elevation="0"
-                          @click="addImageAnalystFile"
-                          >Tải lên</v-btn
-                        >
-                      </v-card>
-
-                      <!-- list add image analyst-->
-                      <div
-                        class="d-flex flex-wrap justify-space-between align-center mb-5"
-                        v-for="(image, index) in image_analyst_list"
-                        :key="index + 3"
-                      >
-                        <p
-                          class="font-weight-medium text-body-2 ma-0"
-                          style="color: #667085"
-                        >
-                          {{ image.type_name }}
-                        </p>
                         <v-card
                           min-width="50%"
                           outlined
@@ -719,7 +870,7 @@
                         >
                           <v-icon class="mr-2">mdi-image-outline</v-icon>
                           <v-card min-width="50%" elevation="0">
-                            <p class="ma-0 text-body-2" style="">
+                            <p class="ma-0" style="">
                               {{ image.file_name }}
                             </p>
                           </v-card>
@@ -732,6 +883,32 @@
                       </div>
                     </v-card>
                   </div>
+                  <!-- <div class="mb-5">
+                    <h4>Yêu cầu nhập viện</h4>
+                  </div>
+                  <div class="d-flex flex-row ma-0">
+                    <v-checkbox
+                      v-model="record.hospitalize"
+                      :label="'Yêu cầu nhập viện'"
+                      class="ma-0"
+                    ></v-checkbox>
+                  </div>
+                  <div class="mb-3">
+                    <h4>Hẹn ngày tái khám</h4>
+                  </div>
+                  <div class="d-flex flex-row ma-0">
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column"
+                    >
+                      <v-text-field
+                        v-model="record.reExaminationDate"
+                        :label="'Hẹn ngày tái khám'"
+                        class="ma-0"
+                      ></v-text-field>
+                    </v-card>
+                  </div> -->
                 </v-card>
               </v-tab-item>
               <!-- međicine -->
@@ -882,24 +1059,27 @@
                       <div class="d-flex flex-row pb-6">
                         <v-spacer></v-spacer>
                         <v-btn
-                          class="btn mr-3 white--text"
+                          class="btn mr-3 white--text text-body-1"
                           color="#537DA5"
                           elevation="0"
                           @click.stop="open_add_medicine_dialog"
+                          ><v-icon medium class="mr-1">mdi-plus</v-icon
                           >Thêm</v-btn
                         >
                         <v-btn
-                          class="btn mr-3 white--text"
+                          class="btn mr-3 white--text text-body-1"
                           color="#667085"
                           elevation="0"
                           @click.stop="open_edit_medicine_dialog"
-                          >Chỉnh sửa</v-btn
+                          ><v-icon medium class="mr-1">mdi-pencil</v-icon>Chỉnh
+                          sửa</v-btn
                         >
                         <v-btn
-                          class="btn white--text"
+                          class="btn white--text text-body-1"
                           color="#F04438"
                           elevation="0"
                           @click="remove_medicine_to_prescriptions"
+                          ><v-icon medium class="mr-1">mdi-delete</v-icon
                           >Xóa</v-btn
                         >
                       </div>
@@ -1048,16 +1228,15 @@
 import axios from "axios";
 const url = process.env.VUE_APP_ROOT_API;
 export default {
-  async created() {
-    await this.get_appointment();
-    this.list_appointment = this.all_appointment_list;
+  async mounted() {
+    await this.fetchRecords();
   },
 
   data() {
     return {
       search: "",
       selected: [],
-      headers_appointment: [
+      recordHeaders: [
         {
           text: "Họ và tên",
           align: "start",
@@ -1074,7 +1253,8 @@ export default {
         { text: "Phòng", value: "room", sortable: false }
       ],
       loading: false,
-      list_appointment: [],
+      loadingConfirm: false,
+      records: [],
       selected_appointment: {
         id: "",
         code: 0,
@@ -1207,7 +1387,7 @@ export default {
         { name: "Xét nghiệm khác", key: "DIFFERENT_TEST" }
       ],
       test_select: "",
-      test_file: {},
+      test_file: [],
       test_add_list: [],
       image_select: "",
       image_analyst_type: [
@@ -1219,13 +1399,21 @@ export default {
         { name: "Hình ảnh khác", key: "DIFFERENT_IMAGE" }
       ],
       image_analyst_list: [],
-      image_file: {},
+      image_file: [],
       submit_file_list: [],
+      menu2: false,
       record: {
         diagnose: "",
         prescribe: "",
         note: "",
-        reExaminationDate: ""
+        reExaminationDate: "",
+        height: "",
+        weight: "",
+        bloodVessel: "",
+        temperature: "",
+        bloodPressure: "",
+        heartbeat: "",
+        hospitalize: false
       },
       exam_confirm_dialog: false,
       image_file_accept: [
@@ -1246,8 +1434,38 @@ export default {
         "svg",
         "png",
         "psd"
-      ]
+      ],
+      params: {
+        filters: [],
+        sorts: [],
+        page: 0,
+        size: 1
+      },
+      totalPages: 0,
+      pagination: {
+        itemsPerPage: 1,
+        page: 1
+      }
     };
+  },
+  computed: {
+    doctorId() {
+      return this.$store.getters["auth/userId"];
+    }
+  },
+  watch: {
+    "pagination.page": {
+      handler(val, newVal) {
+        if (val != newVal) this.get_appointment();
+      },
+      deep: true
+    },
+    "pagination.itemsPerPage": {
+      handler(val, newVal) {
+        if (val != newVal) this.get_appointment();
+      },
+      deep: true
+    }
   },
   methods: {
     async examinate() {
@@ -1358,41 +1576,52 @@ export default {
     },
 
     addTestFile() {
-      this.test_add_list.push({
-        type: this.test_select.key,
-        type_name: this.test_select.name,
-        file_name: this.test_file.name,
-        data: this.test_file
+      this.test_file.forEach(file => {
+        this.test_add_list.push({
+          type: { key: "", name: "" },
+          file_name: file.name,
+          data: file
+        });
       });
     },
 
     addImageAnalystFile() {
-      this.image_analyst_list.push({
-        type: this.image_select.key,
-        type_name: this.image_select.name,
-        file_name: this.image_file.name,
-        data: this.image_file
+      this.image_file.forEach(file => {
+        this.image_analyst_list.push({
+          type: { key: "", name: "" },
+          file_name: file.name,
+          data: file
+        });
       });
     },
 
-    async get_appointment() {
+    async fetchRecords() {
       let token = this.$store.getters["auth/access_token"];
-      let data = {
-        date: "2022-11-06"
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
       };
-      const param = {
-        token: token,
-        data: data
-      };
+      const cancelToken = axios.CancelToken.source().token;
+      let params = this._.cloneDeep(this.params);
+      params.page = this.pagination.page - 1;
+      params.size = this.pagination.itemsPerPage;
+      params.filters.push({
+        key: "appointment.doctor.id",
+        operator: "EQUAL_NESTED",
+        field_type: "STRING",
+        value: this.doctorId
+      });
       this.loading = true;
-      await this.$store.dispatch(
-        "appointment/get_appointment_by_doctor",
-        param
-      );
-      this.all_appointment_list = this.$store.getters[
-        "appointment/doctor_appointment_list"
-      ];
-      this.loading = false;
+      await axios
+        .post(`${url}/api/doctor/records/search`, params, {
+          cancelToken
+        })
+        .then(res => {
+          this.records = res.data.results;
+          this.totalPages = res.data?.meta?.totalPages;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
 
     convert_date(time) {
@@ -1422,6 +1651,7 @@ export default {
     },
 
     async create_record() {
+      this.loadingConfirm = true;
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
       await Promise.all(
         post_file_list.map(async file => {
@@ -1448,12 +1678,21 @@ export default {
           appointmentId: this.selected_appointment.id,
           diagnose: this.record.diagnose,
           prescribe: this.record.prescribe,
+          note: this.record.note,
           reExaminationDate: this.record.reExaminationDate,
+          height: this.record.height,
+          weight: this.record.weight,
+          bloodVessel: this.record.bloodVessel,
+          temperature: this.record.temperature,
+          bloodPressure: this.record.bloodPressure,
+          heartbeat: this.record.heartbeat,
+          hospitalize: this.record.hospitalize,
           medicines: medicine_list_submit,
           files: this.submit_file_list
         }
       };
       this.$store.dispatch("record/create_record", params);
+      this.loadingConfirm = false;
       this.refresh_exam_data();
       this.exam_confirm_dialog = false;
       this.exam_dialog = false;
@@ -1477,7 +1716,7 @@ export default {
           if (response.data.code === 200) {
             this.submit_file_list.push({
               imageUrl: response.data.results,
-              type: type
+              type: type.key
             });
           }
         });
@@ -1489,7 +1728,14 @@ export default {
       this.record.diagnose = "";
       this.record.prescribe = "";
       this.record.note = "";
+      this.record.bloodVessel = "";
+      this.record.bloodPressure = "";
+      this.record.height = "";
+      this.record.weight = "";
+      this.record.temperature = "";
+      this.record.hospitalize = false;
       this.record.reExaminationDate = "";
+      this.record.heartbeat = "";
       this.prescriptions = [];
     },
 

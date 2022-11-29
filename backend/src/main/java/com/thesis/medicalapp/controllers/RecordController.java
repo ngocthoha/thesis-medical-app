@@ -12,6 +12,7 @@ import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.MedicalFileRepository;
 import com.thesis.medicalapp.repository.MedicineRepository;
 import com.thesis.medicalapp.search.SearchRequest;
+import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.MedicineService;
 import com.thesis.medicalapp.services.RecordService;
 import com.thesis.medicalapp.utils.SequenceGenerator;
@@ -103,6 +104,22 @@ public class RecordController {
         request.setSorts(new ArrayList<>());
         request.setPage(page);
         request.setSize(size);
+        Page<Record> records = recordService.findAll(request);
+        Page<RecordDTO> recordDTOS = records.map(
+                record -> {
+                    RecordDTO recordDTO = RecordDTO.from(record);
+                    return recordDTO;
+                }
+        );
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(recordDTOS.getContent(), recordDTOS)
+        );
+    }
+
+    @PostMapping("/doctor/records/search")
+    public ResponseEntity<Object> getAllRecordsByDoctor(
+            @RequestBody SearchRequest request
+    ) {
         Page<Record> records = recordService.findAll(request);
         Page<RecordDTO> recordDTOS = records.map(
                 record -> {

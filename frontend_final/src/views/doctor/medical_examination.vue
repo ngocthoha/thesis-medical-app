@@ -24,16 +24,20 @@
         }"
         @pagination="pagination = $event"
         :server-items-length="totalPages"
+        @update:page="updatePage()"
       >
         <template v-slot:top>
           <div class="pa-6 d-flex flex-row align-center">
-            <v-text-field
-              v-model="search"
-              append-icon="mdi-magnify"
-              label="Tìm kiếm"
-              single-line
-              hide-details
-            ></v-text-field>
+            <v-card outlined width="50%">
+              <v-text-field
+                v-model="search"
+                label="Tìm kiếm"
+                prepend-inner-icon="mdi-magnify"
+                solo
+                flat
+                hide-details=""
+              ></v-text-field>
+            </v-card>
             <v-spacer></v-spacer>
             <v-btn
               class="mr-3 white--text btn font-weight-medium text-body-1"
@@ -49,46 +53,6 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-icon v-bind="attrs" v-on="on" medium class="mr-2"
                   >mdi-filter-variant</v-icon
-                >
-              </template>
-              <v-card width="300px">
-                <div class="d-flex justify-center" style="color: #537DA5">
-                  <p class="font-weight-bold mt-3">Lọc Kết Quả</p>
-                </div>
-                <v-divider></v-divider>
-                <v-list>
-                  <v-list-item class="mt-3">
-                    <v-autocomplete
-                      prepend-inner-icon="mdi-map-marker"
-                      item-text="text"
-                      item-value="text"
-                      label="Địa Điểm"
-                      clearable
-                      dense
-                      outlined
-                      :menu-props="{ offsetY: true }"
-                      placeholder="Tìm địa điểm"
-                    ></v-autocomplete>
-                  </v-list-item>
-                  <div class="d-flex justify-center mt-3">
-                    <v-btn
-                      color="#537DA5"
-                      elevation="0"
-                      class="white--text btn font-weight-medium text-body-1"
-                      width="90%"
-                      style="margin: 0 auto"
-                      @click="clearFilters()"
-                    >
-                      Bỏ lọc
-                    </v-btn>
-                  </div>
-                </v-list>
-              </v-card>
-            </v-menu>
-            <v-menu :close-on-content-click="false">
-              <template v-slot:activator="{ on, attrs }">
-                <v-icon v-bind="attrs" v-on="on" medium
-                  >mdi-dots-vertical</v-icon
                 >
               </template>
               <v-card width="300px">
@@ -1491,9 +1455,15 @@ export default {
     }
   },
   watch: {
-    pagination: {
-      handler() {
-        this.get_appointment();
+    "pagination.page": {
+      handler(val, newVal) {
+        if (val != newVal) this.get_appointment();
+      },
+      deep: true
+    },
+    "pagination.itemsPerPage": {
+      handler(val, newVal) {
+        if (val != newVal) this.get_appointment();
       },
       deep: true
     }
