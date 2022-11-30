@@ -90,1136 +90,89 @@
             </v-menu>
           </div>
         </template>
-        <template v-slot:[`item.profile.fullName`]="{ item }">
+        <template v-slot:[`item.appointment.profile.fullName`]="{ item }">
           <div class="d-flex flex-row align-center">
             <p class="ma-0">
-              {{ item.profile.lastName }} {{ item.profile.firstName }}
+              {{ item.appointment.profile.lastName }}
+              {{ item.appointment.profile.firstName }}
             </p>
           </div>
         </template>
-        <template v-slot:[`item.status`]="{ item }">
+        <template v-slot:[`item.appointment.profile.phone`]="{ item }">
           <div class="d-flex flex-row align-center">
-            <p
-              class="ma-0 font-weight-medium text-body-2"
-              style="color: #667085"
-              v-if="item.status == 'PENDING'"
-            >
-              <v-chip text-color="white" color="orange" small>
-                Chờ duyệt
-              </v-chip>
+            <p class="ma-0">
+              {{ item.appointment.profile.phone | phone }}
             </p>
-            <p
-              v-else-if="item.status == 'CANCEL'"
-              class="ma-0 font-weight-medium text-body-2"
-              style="color: red"
-            >
-              <v-chip small color="red" text-color="white">
-                Đã hủy
-              </v-chip>
+          </div>
+        </template>
+        <template v-slot:[`item.diagnose`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{ item.diagnose | empty }}
             </p>
-            <p
-              class="ma-0 font-weight-medium text-body-2"
-              style="color: #667085"
-              v-else-if="item.status === 'PROCESS'"
-            >
-              <v-chip color="primary" small>
-                Chưa tiến hành
-              </v-chip>
+          </div>
+        </template>
+        <template v-slot:[`item.prescribe`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{ item.prescribe | empty }}
             </p>
+          </div>
+        </template>
+        <template v-slot:[`item.note`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{ item.note | empty }}
+            </p>
+          </div>
+        </template>
+        <template v-slot:[`item.bloodVessel`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{ item.bloodVessel | empty }}
+            </p>
+          </div>
+        </template>
+        <template v-slot:[`item.temperature`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{ item.temperature | empty }}
+            </p>
+          </div>
+        </template>
 
-            <p
-              class="ma-0 font-weight-medium text-body-2"
-              style="color: #12B76A"
-              v-else-if="item.status === 'COMPLETE'"
-            >
-              <v-chip small color="green" text-color="white">
-                Đã hoàn tất
-              </v-chip>
+        <template v-slot:[`item.bloodPressure`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{ item.bloodPressure | empty }}
             </p>
           </div>
         </template>
-        <template v-slot:[`item.symptom`]="{ item }">
+
+        <template v-slot:[`item.heartbeat`]="{ item }">
           <div class="d-flex flex-row align-center">
-            <p v-if="!item.symptom.length" class="ma-0">
-              {{ item.symptom | empty }}
-            </p>
-            <p class="d-flex align-center ma-0" v-else>
-              <v-menu :close-on-content-click="false">
-                <template v-slot:activator="{ on, attrs }">
-                  <v-icon
-                    v-bind="attrs"
-                    v-on="on"
-                    class="d-flex align-center"
-                    meidum
-                    color="#537da5"
-                    >mdi-comment-text-outline</v-icon
-                  >
-                </template>
-                <v-card max-width="300px">
-                  <v-list>
-                    <v-list-tile-content>
-                      <p class="pa-3">{{ item.symptom }}</p>
-                    </v-list-tile-content>
-                  </v-list>
-                </v-card>
-              </v-menu>
+            <p class="ma-0">
+              {{ item.heartbeat | empty }}
             </p>
           </div>
         </template>
-        <template v-slot:[`item.profile.dob`]="{ item }">
+
+        <template v-slot:[`item.height`]="{ item }">
           <div class="d-flex flex-row align-center">
-            <p class="ma-0">{{ convert_date(item.profile.dob) }}</p>
+            <p class="ma-0">
+              {{ item.height | empty }}
+            </p>
           </div>
         </template>
-        <template v-slot:[`item.profile.phone`]="{ item }">
+
+        <template v-slot:[`item.weight`]="{ item }">
           <div class="d-flex flex-row align-center">
-            <p class="ma-0">{{ item.profile.phone | phone }}</p>
-          </div>
-        </template>
-        <template v-slot:[`item.date`]="{ item }">
-          <div class="d-flex flex-row align-center">
-            <p class="ma-0">{{ convert_date(item.date) }}</p>
-          </div>
-        </template>
-        <template v-slot:[`item.room`]="{ item }">
-          <div class="d-flex flex-row align-center">
-            <p class="ma-0">{{ item.room.name }}</p>
-            <v-icon v-if="item.type === 'ONLINE'" class="ml-2"
-              >mdi-video-outline</v-icon
-            >
+            <p class="ma-0">
+              {{ item.weight | empty }}
+            </p>
           </div>
         </template>
       </v-data-table>
-      <v-dialog v-model="exam_confirm_dialog" width="408px">
-        <v-card height="192px" class="d-flex flex-column">
-          <div class="d-flex flex-column mt-8 ml-8">
-            <p style="font-size: 24px" class="font-weight-bold">
-              Xác nhận hoàn tất khám
-            </p>
-            <p style="color: #667085">
-              Bạn có muốn hoàn tất khám hồ sơ này không?
-            </p>
-          </div>
-          <div class="d-flex flex-row justify-space-between ml-8 mr-8">
-            <v-btn
-              class="btn font-weight-medium"
-              width="160px"
-              outlined
-              color="primary"
-              @click="exam_confirm_dialog = false"
-              :disabled="loadingConfirm"
-              >Huỷ bỏ</v-btn
-            >
-            <v-btn
-              class="btn white--text font-weight-medium"
-              width="160px"
-              color="#537DA5"
-              elevation="0"
-              @click="create_record"
-              :loading="loadingConfirm"
-              >Xác nhận</v-btn
-            >
-          </div>
-        </v-card>
-      </v-dialog>
-      <v-dialog v-model="exam_dialog" fullscreen v-if="exam_dialog">
-        <v-card>
-          <v-footer
-            color="#314E6A"
-            class="white--text d-flex flex-row"
-            height="50px"
-            tile
-          >
-            <p class="ma-0">Tiến Hành Khám Bệnh</p>
-            <v-spacer></v-spacer>
-            <v-btn
-              color="white"
-              class="mr-5"
-              elevation="0"
-              outlined
-              @click.stop="stop_examination()"
-            >
-              Hủy
-            </v-btn>
-            <v-btn
-              color="white"
-              elevation="0"
-              outlined
-              @click.stop="exam_confirm_dialog = true"
-            >
-              Lưu
-            </v-btn>
-          </v-footer>
-          <v-card elevation="0">
-            <v-tabs color="#314E6A">
-              <v-tab style="text-transform: none;"> Thông Tin Khám </v-tab>
-              <v-tab style="text-transform: none;"> Lịch Sử Khám </v-tab>
-              <v-tab style="text-transform: none;"> Khám Bệnh</v-tab>
-              <v-tab style="text-transform: none;">Kê Đơn</v-tab>
-              <!-- profile -->
-              <v-tab-item>
-                <v-card flat class="d-flex flex-column pa-6">
-                  <p class="font-weight-bold text-body-1">
-                    Thông tin bệnh nhân
-                  </p>
-                  <!-- last name, first name, dob -->
-                  <div class="d-flex flex-row justify-space-between">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Họ và tên lót:
-                      </p> -->
-                      <v-text-field
-                        label="Họ và tên lót"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.lastName"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">Tên:</p> -->
-                      <v-text-field
-                        label="Tên"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.firstName"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Ngày sinh
-                      </p> -->
-                      <v-text-field
-                        label="Ngày sinh"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.dob"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                  </div>
-
-                  <!-- job, gender, phone -->
-                  <div class="d-flex flex-row justify-space-between">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Nghề nghiệp:
-                      </p> -->
-                      <v-text-field
-                        label="Nghề nghiệp"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.job"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Giới tính:
-                      </p> -->
-                      <v-text-field
-                        label="Giới tính"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.gender"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Số điện thoại
-                      </p> -->
-                      <v-text-field
-                        label="Số điện thoại"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.phone"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                  </div>
-
-                  <!-- email, address -->
-                  <div class="d-flex flex-row justify-space-between">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">Email:</p> -->
-                      <v-text-field
-                        label="Email"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.email"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="65%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Địa chỉ:
-                      </p> -->
-                      <v-text-field
-                        label="Địa chỉ"
-                        class="text-body-2"
-                        v-model="selected_appointment.profile.address"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-text-field>
-                    </v-card>
-                  </div>
-
-                  <!-- appointment profile -->
-                  <p class="font-weight-bold text-body-1">
-                    Thông tin triệu chứng
-                  </p>
-                  <!--  -->
-                  <div class="d-flex flex-row justify-space-between">
-                    <v-card
-                      width="65%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Triệu chứng:
-                      </p> -->
-                      <v-textarea
-                        label="Triệu chứng"
-                        class="text-body-2"
-                        v-model="selected_appointment.symptom"
-                        readonly
-                        outlined
-                        background-color="#EEF2F6"
-                      ></v-textarea>
-                    </v-card>
-                  </div>
-                  <p class="font-weight-bold text-body-1 ma-0">
-                    Kết quả xét nghiệm
-                  </p>
-                  <div class="d-flex flex-wrap">
-                    <v-card
-                      elevation="0"
-                      class="d-flex flex-row pa-2 mr-2"
-                      color="#EEF2F6"
-                      v-for="file in selected_appointment.files"
-                      :key="file.id"
-                    >
-                      <div class="mr-5">
-                        <p class="ma-0 text-body-2 font-weight-medium">
-                          {{ get_text_of_type_file(file) }}
-                        </p>
-                        <p class="ma-0 text-body-2">
-                          {{ get_name_of_file(file) }}
-                        </p>
-                      </div>
-                      <v-icon
-                        class="mr-2"
-                        @click="view_file(file)"
-                        v-if="is_img_file(file)"
-                        >mdi-eye-outline</v-icon
-                      >
-                      <v-icon>mdi-download-outline</v-icon>
-                    </v-card>
-                  </div>
-                </v-card>
-              </v-tab-item>
-              <!-- history -->
-              <v-tab-item>
-                <v-card flat>
-                  <v-card-text>
-                    <p>
-                      Morbi nec metus. Suspendisse faucibus, nunc et
-                      pellentesque egestas, lacus ante convallis tellus, vitae
-                      iaculis lacus elit id tortor. Sed mollis, eros et ultrices
-                      tempus, mauris ipsum aliquam libero, non adipiscing dolor
-                      urna a orci. Curabitur ligula sapien, tincidunt non,
-                      euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
-                    </p>
-
-                    <p>
-                      Suspendisse feugiat. Suspendisse faucibus, nunc et
-                      pellentesque egestas, lacus ante convallis tellus, vitae
-                      iaculis lacus elit id tortor. Proin viverra, ligula sit
-                      amet ultrices semper, ligula arcu tristique sapien, a
-                      accumsan nisi mauris ac eros. In hac habitasse platea
-                      dictumst. Fusce ac felis sit amet ligula pharetra
-                      condimentum.
-                    </p>
-
-                    <p>
-                      Sed consequat, leo eget bibendum sodales, augue velit
-                      cursus nunc, quis gravida magna mi a libero. Nam commodo
-                      suscipit quam. In consectetuer turpis ut velit. Sed cursus
-                      turpis vitae tortor. Aliquam eu nunc.
-                    </p>
-
-                    <p>
-                      Etiam ut purus mattis mauris sodales aliquam. Ut varius
-                      tincidunt libero. Aenean viverra rhoncus pede. Duis leo.
-                      Fusce fermentum odio nec arcu.
-                    </p>
-
-                    <p class="mb-0">
-                      Donec venenatis vulputate lorem. Aenean viverra rhoncus
-                      pede. In dui magna, posuere eget, vestibulum et, tempor
-                      auctor, justo. Fusce commodo aliquam arcu. Suspendisse
-                      enim turpis, dictum sed, iaculis a, condimentum nec, nisi.
-                    </p>
-                  </v-card-text>
-                </v-card>
-              </v-tab-item>
-              <!-- examination -->
-              <v-tab-item>
-                <v-card flat class="pa-6 d-flex flex-column">
-                  <!-- <p class="d-flex justify-center font-weight-bold">
-                    KHÁM BỆNH
-                  </p> -->
-                  <!-- <p class="d-flex justify-center font-weight-bold">
-                    THÊM KẾT QUẢ CẬN LÂM SÀNG
-                  </p> -->
-                  <div>
-                    <h4>Khám sơ bộ</h4>
-                  </div>
-                  <div class="d-flex flex-row mt-5 justify-space-between">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chiều cao(cm):
-                      </p> -->
-                      <v-text-field
-                        v-model="record.height"
-                        label="Chiều cao (cm)"
-                        placeholder="Vui lòng nhập chiều cao"
-                        background-color="#EEF2F6"
-                        outlined
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Cân nặng(kg):
-                      </p> -->
-                      <v-text-field
-                        label="Cân nặng (kg)"
-                        v-model="record.weight"
-                        placeholder="Vui lòng nhập cân nặng"
-                        background-color="#EEF2F6"
-                        outlined
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Mạch (lần/phút):
-                      </p> -->
-                      <v-text-field
-                        label="Mạch (lần/phút)"
-                        v-model="record.bloodVessel"
-                        placeholder="Vui lòng nhập mạch"
-                        background-color="#EEF2F6"
-                        outlined
-                      ></v-text-field>
-                    </v-card>
-                  </div>
-                  <div class="d-flex flex-row mt-5 justify-space-between">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <v-text-field
-                        label="Nhiệt độ (độ C)"
-                        v-model="record.temperature"
-                        placeholder="Vui lòng nhập nhiệt độ"
-                        background-color="#EEF2F6"
-                        outlined
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Huyết áp (mmHg):
-                      </p> -->
-                      <v-text-field
-                        label="Huyết áp (mmHg)"
-                        v-model="record.bloodPressure"
-                        placeholder="Vui lòng nhập huyết áp"
-                        background-color="#EEF2F6"
-                        outlined
-                      ></v-text-field>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Nhịp tim (lần/phút):
-                      </p> -->
-                      <v-text-field
-                        label="Nhịp tim (lần/phút)"
-                        v-model="record.heartbeat"
-                        placeholder="Vui lòng nhập nhịp tim"
-                        background-color="#EEF2F6"
-                        outlined
-                      ></v-text-field>
-                    </v-card>
-                  </div>
-                  <div class="mb-5">
-                    <h4>Tóm tắt kết quả lâm sàng</h4>
-                  </div>
-                  <div class="d-flex flex-row justify-space-between">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chuẩn đoán:
-                      </p> -->
-                      <v-textarea
-                        label="Chuẩn đoán"
-                        v-model="record.diagnose"
-                        background-color="#EEF2F6"
-                        outlined
-                        placeholder="Vui lòng nhập chuẩn đoán"
-                      ></v-textarea>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chỉ định:
-                      </p> -->
-                      <v-textarea
-                        label="Chỉ định"
-                        background-color="#EEF2F6"
-                        outlined
-                        placeholder="Vui lòng nhập chỉ định"
-                        v-model="record.prescribe"
-                      ></v-textarea>
-                    </v-card>
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      flat
-                      class="d-flex flex-column"
-                    >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Ghi chú:
-                      </p> -->
-                      <v-textarea
-                        label="Ghi chú"
-                        placeholder="Vui lòng nhập ghi chú"
-                        background-color="#EEF2F6"
-                        outlined
-                        v-model="record.note"
-                      ></v-textarea>
-                    </v-card>
-                  </div>
-                  <div class="d-flex flex-row mt-2">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <v-checkbox
-                        class="mb-0"
-                        v-model="record.hospitalize"
-                        :label="'Yêu cầu nhập viện'"
-                      ></v-checkbox>
-                    </v-card>
-                  </div>
-                  <v-card
-                    width="30%"
-                    elevation="0"
-                    class="d-flex flex-column mt-3"
-                  >
-                    <v-menu
-                      v-model="menu2"
-                      :close-on-content-click="false"
-                      :nudge-right="40"
-                      transition="scale-transition"
-                      offset-y
-                      min-width="auto"
-                    >
-                      <template v-slot:activator="{ on, attrs }">
-                        <v-text-field
-                          v-model="record.reExaminationDate"
-                          label="Ngày tái khám"
-                          append-icon="mdi-calendar"
-                          v-bind="attrs"
-                          v-on="on"
-                          outlined
-                          background-color="#EEF2F6"
-                          clearable
-                        ></v-text-field>
-                      </template>
-                      <v-date-picker
-                        v-model="record.reExaminationDate"
-                        @input="menu2 = false"
-                        locale="vi"
-                        no-title
-                      ></v-date-picker>
-                    </v-menu>
-                  </v-card>
-                  <div class="d-flex flex-row mt-5 justify-space-between">
-                    <v-card
-                      width="45%"
-                      class="d-flex flex-column"
-                      elevation="0"
-                    >
-                      <!-- test results type -->
-                      <div
-                        class="d-flex flex-row justify-space-between align-center"
-                      >
-                        <p class="font-weight-bold text-body-1 ma-0">
-                          Kết quả xét nghiệm
-                        </p>
-                      </div>
-                      <!-- add test result  -->
-                      <v-card
-                        color="#EEF2F6"
-                        outlined
-                        class="my-5 pa-2 d-flex flex-row"
-                        style="border: 0.5px solid #757575"
-                      >
-                        <v-file-input
-                          v-model="test_file"
-                          placeholder="Vui lòng chọn hình ảnh"
-                          solo
-                          dense
-                          prepend-inner-icon="mdi-link-variant"
-                          prepend-icon=""
-                          hide-details=""
-                          flat
-                          multiple
-                          small-chips
-                          background-color="#EEF2F6"
-                        ></v-file-input>
-                        <v-btn
-                          class="btn white--text font-weight-medium text-body-2"
-                          color="#537DA5"
-                          elevation="0"
-                          @click="addTestFile"
-                          >Tải lên</v-btn
-                        >
-                      </v-card>
-                      <!-- add test result  -->
-                      <div
-                        class="d-flex flex-wrap justify-space-between align-center mb-5"
-                        v-for="(image, index) in test_add_list"
-                        :key="index"
-                      >
-                        <v-card width="221" outlined class="pa-1">
-                          <v-combobox
-                            spellcheck="false"
-                            v-model="image.type"
-                            :items="test_type"
-                            item-text="name"
-                            solo
-                            dense
-                            flat
-                            append-icon="mdi-chevron-down"
-                            item-color="light-blue darken-4"
-                            placeholder="Chọn loại xét nghiệm"
-                            hide-details=""
-                          ></v-combobox>
-                        </v-card>
-                        <v-card
-                          min-width="50%"
-                          outlined
-                          class="pa-3 d-flex flex-row"
-                        >
-                          <v-icon class="mr-2">mdi-image-outline</v-icon>
-                          <v-card min-width="50%" elevation="0">
-                            <p class="ma-0" style="">
-                              {{ image.file_name }}
-                            </p>
-                          </v-card>
-
-                          <v-spacer></v-spacer>
-                          <v-icon @click="removeTestFile(index)"
-                            >mdi-close</v-icon
-                          >
-                        </v-card>
-                      </div>
-                    </v-card>
-                  </div>
-                  <div class="d-flex flex-row mt-5 justify-space-between">
-                    <v-card
-                      width="45%"
-                      class="d-flex flex-column"
-                      elevation="0"
-                    >
-                      <!-- Image analysation type -->
-                      <div
-                        class="d-flex flex-row justify-space-between align-center"
-                      >
-                        <p class="font-weight-bold text-body-1 ma-0">
-                          Chuẩn đoán hình ảnh
-                        </p>
-                      </div>
-                      <!-- add test result  -->
-                      <v-card
-                        color="#EEF2F6"
-                        outlined
-                        style="border: 0.5px solid #757575"
-                        class="my-5 pa-2 d-flex flex-row"
-                      >
-                        <v-file-input
-                          placeholder="Vui lòng chọn hình ảnh"
-                          solo
-                          dense
-                          prepend-inner-icon="mdi-link-variant"
-                          prepend-icon=""
-                          hide-details=""
-                          flat
-                          v-model="image_file"
-                          multiple
-                          small-chips
-                          background-color="#EEF2F6"
-                        ></v-file-input>
-                        <v-btn
-                          class="btn white--text font-weight-medium text-body-2"
-                          color="#537DA5"
-                          elevation="0"
-                          @click="addImageAnalystFile"
-                          >Tải lên</v-btn
-                        >
-                      </v-card>
-                      <!-- add image analyst  -->
-
-                      <!-- list add image analyst-->
-                      <div
-                        class="d-flex flex-wrap justify-space-between align-center mb-5"
-                        v-for="(image, index) in image_analyst_list"
-                        :key="index + 3"
-                      >
-                        <v-card width="221" outlined class="pa-1">
-                          <v-combobox
-                            spellcheck="false"
-                            v-model="image.type"
-                            :items="image_analyst_type"
-                            item-text="name"
-                            item-value="key"
-                            solo
-                            dense
-                            flat
-                            append-icon="mdi-chevron-down"
-                            item-color="light-blue darken-4"
-                            placeholder="Chọn loại hình ảnh"
-                            hide-details=""
-                          ></v-combobox>
-                        </v-card>
-                        <v-card
-                          min-width="50%"
-                          outlined
-                          class="pa-3 d-flex flex-row"
-                        >
-                          <v-icon class="mr-2">mdi-image-outline</v-icon>
-                          <v-card min-width="50%" elevation="0">
-                            <p class="ma-0" style="">
-                              {{ image.file_name }}
-                            </p>
-                          </v-card>
-
-                          <v-spacer></v-spacer>
-                          <v-icon @click="removeImageFile(index)"
-                            >mdi-close</v-icon
-                          >
-                        </v-card>
-                      </div>
-                    </v-card>
-                  </div>
-                  <!-- <div class="mb-5">
-                    <h4>Yêu cầu nhập viện</h4>
-                  </div>
-                  <div class="d-flex flex-row ma-0">
-                    <v-checkbox
-                      v-model="record.hospitalize"
-                      :label="'Yêu cầu nhập viện'"
-                      class="ma-0"
-                    ></v-checkbox>
-                  </div>
-                  <div class="mb-3">
-                    <h4>Hẹn ngày tái khám</h4>
-                  </div>
-                  <div class="d-flex flex-row ma-0">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <v-text-field
-                        v-model="record.reExaminationDate"
-                        :label="'Hẹn ngày tái khám'"
-                        class="ma-0"
-                      ></v-text-field>
-                    </v-card>
-                  </div> -->
-                </v-card>
-              </v-tab-item>
-              <!-- međicine -->
-              <v-tab-item>
-                <v-card flat class="pa-6 d-flex flex-column">
-                  <p class="d-flex mt-6 justify-center font-weight-bold">
-                    KÊ ĐƠN
-                  </p>
-                  <div class="d-flex flex-row justify-space-around">
-                    <!-- from date -->
-                    <v-card
-                      class="d-flex flex-column"
-                      width="30%"
-                      elevation="0"
-                    >
-                      <p class="mb-2 font-weight-medium text-body-2">
-                        Từ ngày:
-                      </p>
-                      <v-card
-                        class="d-flex flex-row align-center"
-                        elevation="0"
-                      >
-                        <v-menu
-                          ref="from_date_menu"
-                          v-model="from_date_menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="from_date"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-combobox
-                              flat
-                              v-model="from_date"
-                              hide-details=""
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              solo
-                              background-color="#EEF2F6"
-                              full-width
-                              append-icon="mdi-calendar-outline"
-                            ></v-combobox>
-                          </template>
-                          <v-date-picker
-                            v-model="from_date"
-                            no-title
-                            scrollable
-                            locale="vi"
-                            color="#537DA5"
-                          >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="from_date_menu = false"
-                            >
-                              Cancel
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.from_date_menu.save(from_date)"
-                            >
-                              OK
-                            </v-btn>
-                          </v-date-picker>
-                        </v-menu>
-                      </v-card>
-                    </v-card>
-                    <!-- to date -->
-                    <v-card
-                      class="d-flex flex-column"
-                      width="30%"
-                      elevation="0"
-                    >
-                      <p class="mb-2 font-weight-medium text-body-2">
-                        Đến ngày:
-                      </p>
-                      <v-card
-                        class="d-flex flex-row align-center"
-                        elevation="0"
-                      >
-                        <v-menu
-                          ref="to_date_menu"
-                          v-model="to_date_menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="to_date"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-combobox
-                              flat
-                              v-model="to_date"
-                              hide-details=""
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              solo
-                              background-color="#EEF2F6"
-                              full-width
-                              append-icon="mdi-calendar-outline"
-                            ></v-combobox>
-                          </template>
-                          <v-date-picker
-                            v-model="to_date"
-                            no-title
-                            scrollable
-                            locale="vi"
-                            color="#537DA5"
-                          >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="to_date_menu = false"
-                            >
-                              Cancel
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.to_date_menu.save(to_date)"
-                            >
-                              OK
-                            </v-btn>
-                          </v-date-picker>
-                        </v-menu>
-                      </v-card>
-                    </v-card>
-                  </div>
-                  <div class="d-flex flex-column align-center">
-                    <v-card width="80%" elevation="0">
-                      <p class="mb-2 mt-5 font-weight-medium text-body-2">
-                        Danh sách thuốc:
-                      </p>
-                    </v-card>
-
-                    <v-card
-                      class="pa-6"
-                      color="#EEF2F6"
-                      width="80%"
-                      elevation="0"
-                    >
-                      <div class="d-flex flex-row pb-6">
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          class="btn mr-3 white--text text-body-1"
-                          color="#537DA5"
-                          elevation="0"
-                          @click.stop="open_add_medicine_dialog"
-                          ><v-icon medium class="mr-1">mdi-plus</v-icon
-                          >Thêm</v-btn
-                        >
-                        <v-btn
-                          class="btn mr-3 white--text text-body-1"
-                          color="#667085"
-                          elevation="0"
-                          @click.stop="open_edit_medicine_dialog"
-                          ><v-icon medium class="mr-1">mdi-pencil</v-icon>Chỉnh
-                          sửa</v-btn
-                        >
-                        <v-btn
-                          class="btn white--text text-body-1"
-                          color="#F04438"
-                          elevation="0"
-                          @click="remove_medicine_to_prescriptions"
-                          ><v-icon medium class="mr-1">mdi-delete</v-icon
-                          >Xóa</v-btn
-                        >
-                      </div>
-                      <v-data-table
-                        :headers="prescriptions_header"
-                        :items="prescriptions"
-                        class="elevation-1"
-                        single-select
-                        show-select
-                        v-model="medicine_select"
-                        item-key="data.name"
-                        checkbox-color="#3C5E7E"
-                        hide-default-footer
-                        no-data-text="Đơn thuốc trống"
-                      >
-                        <template v-slot:[`item.use`]="{ item }">
-                          <div class="d-flex flex-row align-center">
-                            <p class="ma-0">
-                              {{ convert_to_use(item) }}
-                            </p>
-                          </div>
-                        </template>
-                        <template v-slot:[`item.name`]="{ item }">
-                          <div class="d-flex flex-row align-center">
-                            <p class="ma-0">
-                              {{ item.data.name }}
-                            </p>
-                          </div>
-                        </template>
-                      </v-data-table>
-                    </v-card>
-                  </div>
-
-                  <v-dialog v-model="medicine_dialog" width="500">
-                    <v-toolbar color="#537DA5" height="64" class="white--text">
-                      Thêm thuốc
-                    </v-toolbar>
-                    <v-card class="d-flex flex-column pa-8" tile>
-                      <v-card elevation="0" class="d-flex flex-column mb-5">
-                        <p class="text-body-2 ma-0 font-weight-medium">
-                          Tên thuốc:
-                        </p>
-
-                        <v-combobox
-                          spellcheck="false"
-                          v-model="medicine.data"
-                          :items="store_medicine_list"
-                          item-text="name"
-                          solo
-                          flat
-                          append-icon="mdi-chevron-down"
-                          item-color="light-blue darken-4"
-                          placeholder="Chọn thuốc"
-                          hide-details=""
-                          background-color="#EEF2F6"
-                        ></v-combobox>
-                      </v-card>
-                      <v-card elevation="0" class="d-flex flex-column">
-                        <p class="text-body-2 ma-0 font-weight-medium">
-                          Đơn vị uống:
-                        </p>
-                        <v-text-field
-                          solo
-                          flat
-                          background-color="#EEF2F6"
-                          v-model="medicine.unit"
-                        ></v-text-field>
-                      </v-card>
-                      <v-card elevation="0" class="d-flex flex-column">
-                        <p class="text-body-2 ma-0 font-weight-medium">
-                          Sáng uống:
-                        </p>
-                        <v-text-field
-                          type="number"
-                          solo
-                          flat
-                          background-color="#EEF2F6"
-                          v-model="medicine.morning"
-                        ></v-text-field>
-                      </v-card>
-                      <v-card elevation="0" class="d-flex flex-column">
-                        <p class="text-body-2 ma-0 font-weight-medium">
-                          Chiều uống:
-                        </p>
-                        <v-text-field
-                          type="number"
-                          solo
-                          flat
-                          v-model="medicine.afternoon"
-                          background-color="#EEF2F6"
-                        ></v-text-field>
-                      </v-card>
-                      <v-card elevation="0" class="d-flex flex-column">
-                        <p class="text-body-2 ma-0 font-weight-medium">
-                          Tối uống:
-                        </p>
-                        <v-text-field
-                          type="number"
-                          solo
-                          flat
-                          background-color="#EEF2F6"
-                          v-model="medicine.evening"
-                        ></v-text-field>
-                      </v-card>
-                      <v-card class="d-flex" elevation="0">
-                        <v-spacer></v-spacer>
-                        <v-btn
-                          class="btn mr-5 white--text"
-                          color="primary"
-                          outlined
-                          elevation="0"
-                          @click.stop="medicine_dialog = false"
-                          >Hủy</v-btn
-                        >
-
-                        <v-btn
-                          v-if="medicine_dialog_type == 1"
-                          color="#537DA5"
-                          class="white--text btn font-weight-medium"
-                          elevation="0"
-                          @click="add_medicine_to_prescriptions"
-                          >Thêm</v-btn
-                        >
-                        <v-btn
-                          v-if="medicine_dialog_type == 2"
-                          color="#6D91B3"
-                          class="white--text btn font-weight-medium"
-                          elevation="0"
-                          @click="medicine_dialog = false"
-                          >Chỉnh sửa</v-btn
-                        >
-                      </v-card>
-                    </v-card>
-                  </v-dialog>
-                </v-card>
-              </v-tab-item>
-            </v-tabs>
-          </v-card>
-        </v-card>
-      </v-dialog>
     </v-card>
   </div>
 </template>
@@ -1241,16 +194,97 @@ export default {
           text: "Họ và tên",
           align: "start",
           sortable: false,
-          value: "profile.fullName",
+          value: "appointment.profile.fullName",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Số điện thoại",
+          align: "start",
+          sortable: false,
+          value: "appointment.profile.phone",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Mã bệnh án",
+          align: "start",
+          sortable: false,
+          value: "recordId",
           filterable: true
         },
-        { text: "Tình trạng", value: "status", sortable: false },
-        { text: "Triệu chứng", value: "symptom", sortable: false },
-        { text: "Ngày sinh", value: "profile.dob", sortable: false },
-        { text: "Số điện thoại", value: "profile.phone", sortable: false },
-        { text: "Ngày khám", value: "date", sortable: false },
-        { text: "Khung giờ khám", value: "time", sortable: false },
-        { text: "Phòng", value: "room", sortable: false }
+        {
+          text: "Chuẩn đoán",
+          align: "start",
+          sortable: false,
+          value: "diagnose",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Chỉ định",
+          align: "start",
+          sortable: false,
+          value: "prescribe",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Ghi chú",
+          align: "start",
+          sortable: false,
+          value: "note",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Mạch (lần/phút)",
+          align: "start",
+          sortable: false,
+          value: "bloodVessel",
+          filterable: true,
+          width: "170px"
+        },
+        {
+          text: "Nhiệt độ (độ C)",
+          align: "start",
+          sortable: false,
+          value: "temperature",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Huyết áp (mmHg)",
+          align: "start",
+          sortable: false,
+          value: "bloodPressure",
+          filterable: true,
+          width: "170px"
+        },
+        {
+          text: "Nhịp tim (lần/phút)",
+          align: "start",
+          sortable: false,
+          value: "heartbeat",
+          filterable: true,
+          width: "180px"
+        },
+        {
+          text: "Chiều cao (cm)",
+          align: "start",
+          sortable: false,
+          value: "height",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Cân nặng (kg)",
+          align: "start",
+          sortable: false,
+          value: "weight",
+          filterable: true,
+          width: "150px"
+        }
       ],
       loading: false,
       loadingConfirm: false,
@@ -1504,68 +538,6 @@ export default {
       ];
       this.exam_dialog = true;
     },
-    open_add_medicine_dialog() {
-      this.medicine_dialog_type = 1;
-      this.medicine = {
-        data: "",
-        unit: "",
-        count: 0,
-        morning: 0,
-        afternoon: 0,
-        evening: 0
-      };
-      this.medicine_dialog = true;
-    },
-    open_edit_medicine_dialog() {
-      this.medicine_dialog_type = 2;
-      this.medicine = this.medicine_select[0];
-      this.medicine_dialog = this.medicine_dialog = true;
-    },
-
-    convert_to_use(item) {
-      let use = "";
-
-      if (item.morning != 0) {
-        if (use.length == 0) {
-          use = use + "Sáng: " + item.morning;
-        } else {
-          use = use + ", Sáng: " + item.morning;
-        }
-      }
-
-      if (item.afternoon != 0) {
-        if (use.length == 0) {
-          use = use + "Chiều: " + item.afternoon;
-        } else {
-          use = use + ", Chiều: " + item.afternoon;
-        }
-      }
-      if (item.evening != 0) {
-        if (use.length == 0) {
-          use = use + "Tối: " + item.evening;
-        } else {
-          use = use + ", Tối: " + item.evening;
-        }
-      }
-      return use;
-    },
-    add_medicine_to_prescriptions() {
-      this.prescriptions.push({
-        data: this.medicine.data,
-        unit: this.medicine.unit,
-        morning: this.medicine.morning,
-        afternoon: this.medicine.afternoon,
-        evening: this.medicine.evening
-      });
-      this.medicine_dialog = false;
-    },
-
-    remove_medicine_to_prescriptions() {
-      let index = this.prescriptions.indexOf(this.medicine_select[0]);
-
-      this.prescriptions.splice(index, 1);
-      this.medicine_dialog = false;
-    },
 
     removeTestFile(index) {
       this.test_add_list.splice(index, 1);
@@ -1783,5 +755,8 @@ export default {
 .v-data-table > .v-data-table__wrapper > table > thead > tr > th,
 .v-data-table > .v-data-table__wrapper > table > tfoot > tr > th {
   font-size: 20px !important;
+}
+.v-data-table {
+  overflow-x: auto;
 }
 </style>
