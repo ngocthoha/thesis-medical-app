@@ -199,7 +199,7 @@ export default {
               to: "/doctor/doctor-medical-examination"
             },
             {
-              title: "Lịch sử khám",
+              title: "Bệnh án",
               to: "/doctor/doctor-hospital-examination"
             }
           ]

@@ -223,7 +223,7 @@
           </div>
         </v-card>
       </v-dialog>
-      <v-dialog v-model="exam_dialog" fullscreen v-if="exam_dialog">
+      <v-dialog fullscreen v-model="exam_dialog" v-if="exam_dialog">
         <v-card>
           <v-footer
             color="#314E6A"
@@ -884,178 +884,93 @@
                       </div>
                     </v-card>
                   </div>
-                  <!-- <div class="mb-5">
-                    <h4>Yêu cầu nhập viện</h4>
-                  </div>
-                  <div class="d-flex flex-row ma-0">
-                    <v-checkbox
-                      v-model="record.hospitalize"
-                      :label="'Yêu cầu nhập viện'"
-                      class="ma-0"
-                    ></v-checkbox>
-                  </div>
-                  <div class="mb-3">
-                    <h4>Hẹn ngày tái khám</h4>
-                  </div>
-                  <div class="d-flex flex-row ma-0">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <v-text-field
-                        v-model="record.reExaminationDate"
-                        :label="'Hẹn ngày tái khám'"
-                        class="ma-0"
-                      ></v-text-field>
-                    </v-card>
-                  </div> -->
                 </v-card>
               </v-tab-item>
               <!-- međicine -->
               <v-tab-item>
                 <v-card flat class="pa-6 d-flex flex-column">
-                  <p class="d-flex mt-6 justify-center font-weight-bold">
-                    KÊ ĐƠN
+                  <p class="font-weight-bold">
+                    Kê đơn
                   </p>
-                  <div class="d-flex flex-row justify-space-around">
+                  <div class="d-flex flex-row">
                     <!-- from date -->
                     <v-card
-                      class="d-flex flex-column"
                       width="30%"
                       elevation="0"
+                      class="d-flex flex-column mt-3 mr-12"
                     >
-                      <p class="mb-2 font-weight-medium text-body-2">
-                        Từ ngày:
-                      </p>
-                      <v-card
-                        class="d-flex flex-row align-center"
-                        elevation="0"
+                      <v-menu
+                        v-model="from_date_menu"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
                       >
-                        <v-menu
-                          ref="from_date_menu"
-                          v-model="from_date_menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="from_date"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-combobox
-                              flat
-                              v-model="from_date"
-                              hide-details=""
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              solo
-                              background-color="#EEF2F6"
-                              full-width
-                              append-icon="mdi-calendar-outline"
-                            ></v-combobox>
-                          </template>
-                          <v-date-picker
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
                             v-model="from_date"
-                            no-title
-                            scrollable
-                            locale="vi"
-                            color="#537DA5"
-                          >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="from_date_menu = false"
-                            >
-                              Cancel
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.from_date_menu.save(from_date)"
-                            >
-                              OK
-                            </v-btn>
-                          </v-date-picker>
-                        </v-menu>
-                      </v-card>
-                    </v-card>
-                    <!-- to date -->
-                    <v-card
-                      class="d-flex flex-column"
-                      width="30%"
-                      elevation="0"
-                    >
-                      <p class="mb-2 font-weight-medium text-body-2">
-                        Đến ngày:
-                      </p>
-                      <v-card
-                        class="d-flex flex-row align-center"
-                        elevation="0"
-                      >
-                        <v-menu
-                          ref="to_date_menu"
-                          v-model="to_date_menu"
-                          :close-on-content-click="false"
-                          :return-value.sync="to_date"
-                          transition="scale-transition"
-                          offset-y
-                          min-width="auto"
-                        >
-                          <template v-slot:activator="{ on, attrs }">
-                            <v-combobox
-                              flat
-                              v-model="to_date"
-                              hide-details=""
-                              readonly
-                              v-bind="attrs"
-                              v-on="on"
-                              solo
-                              background-color="#EEF2F6"
-                              full-width
-                              append-icon="mdi-calendar-outline"
-                            ></v-combobox>
-                          </template>
-                          <v-date-picker
-                            v-model="to_date"
-                            no-title
-                            scrollable
-                            locale="vi"
-                            color="#537DA5"
-                          >
-                            <v-spacer></v-spacer>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="to_date_menu = false"
-                            >
-                              Cancel
-                            </v-btn>
-                            <v-btn
-                              text
-                              color="primary"
-                              @click="$refs.to_date_menu.save(to_date)"
-                            >
-                              OK
-                            </v-btn>
-                          </v-date-picker>
-                        </v-menu>
-                      </v-card>
-                    </v-card>
-                  </div>
-                  <div class="d-flex flex-column align-center">
-                    <v-card width="80%" elevation="0">
-                      <p class="mb-2 mt-5 font-weight-medium text-body-2">
-                        Danh sách thuốc:
-                      </p>
+                            label="Ngày bắt đầu"
+                            append-icon="mdi-calendar"
+                            v-bind="attrs"
+                            v-on="on"
+                            outlined
+                            background-color="#EEF2F6"
+                            clearable
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="from_date"
+                          @input="from_date_menu = false"
+                          locale="vi"
+                          no-title
+                        ></v-date-picker>
+                      </v-menu>
                     </v-card>
 
+                    <!-- to date -->
+                    <v-card
+                      width="30%"
+                      elevation="0"
+                      class="d-flex flex-column mt-3"
+                    >
+                      <v-menu
+                        v-model="to_date_menu"
+                        :close-on-content-click="false"
+                        :nudge-right="40"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="to_date"
+                            label="Ngày kết thúc"
+                            append-icon="mdi-calendar"
+                            v-bind="attrs"
+                            v-on="on"
+                            outlined
+                            background-color="#EEF2F6"
+                            clearable
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="to_date"
+                          @input="to_date_menu = false"
+                          locale="vi"
+                          no-title
+                        ></v-date-picker>
+                      </v-menu>
+                    </v-card>
+                  </div>
+                  <div class="d-flex flex-column">
                     <v-card
                       class="pa-6"
                       color="#EEF2F6"
                       width="80%"
                       elevation="0"
+                      style="border: 0.5px solid #757575"
+                      outlined
                     >
                       <div class="d-flex flex-row pb-6">
                         <v-spacer></v-spacer>

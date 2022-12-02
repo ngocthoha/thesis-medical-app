@@ -33,6 +33,7 @@ public class RecordDTO {
     private Collection<Medicine> medicines;
     private List<Date> reExaminationDate;
     private Collection<MedicalFile> files;
+    private Date createdAt;
 
     public static RecordDTO from(Record record) {
         return RecordDTO.builder()
@@ -52,6 +53,7 @@ public class RecordDTO {
                 .medicines(record.getMedicines())
                 .reExaminationDate(record.getReExaminationDate())
                 .files(record.getFiles())
+                .createdAt(record.getCreatedAt())
                 .build();
     }
 }
