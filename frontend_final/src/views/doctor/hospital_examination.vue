@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :key="tableKey">
     <v-card class="fill-height d-flex flex-column pa-8">
       <v-footer color="#3C5E7E" padless class="d-flex justify-center pa-5">
         <p class="ma-0 white--text" style="font-size: 20px">
@@ -24,6 +24,7 @@
         }"
         @pagination="pagination = $event"
         :server-items-length="totalPages"
+        :key="tableKey"
       >
         <template v-slot:top>
           <div class="pa-6 d-flex flex-row align-center">
@@ -603,6 +604,44 @@
                     ></v-date-picker>
                   </v-menu>
                 </v-card>
+                <div>
+                  <div
+                    class="d-flex flex-row justify-space-between align-center"
+                  >
+                    <p class="font-weight-bold text-body-1 ma-0">
+                      Hình ảnh đính kèm
+                    </p>
+                  </div>
+                  <div class="d-flex flex-wrap">
+                    <v-card
+                      elevation="0"
+                      class="d-flex flex-row pa-2 mr-2 mt-3"
+                      color="#EEF2F6"
+                      v-for="(file, index) in selectedRecord.files"
+                      :key="index"
+                      outlined
+                      style="border: 0.5px solid #757575"
+                    >
+                      <v-icon medium class="mr-2">mdi-image-outline</v-icon>
+                      <div class="mr-10">
+                        <p class="ma-0 text-body-2 font-weight-medium">
+                          {{ get_text_of_type_file(file) }}
+                        </p>
+                        <p class="ma-0 text-body-2">
+                          {{ get_name_of_file(file) }}
+                        </p>
+                      </div>
+                      <v-icon
+                        class="mr-2"
+                        @click="view_file(file)"
+                        v-if="is_img_file(file)"
+                        >mdi-eye</v-icon
+                      >
+                      <!-- <v-icon class="mr-2">mdi-download</v-icon> -->
+                      <v-icon @click="removeFile(index)">mdi-close</v-icon>
+                    </v-card>
+                  </div>
+                </div>
                 <div class="d-flex flex-row mt-5 justify-space-between">
                   <v-card width="45%" class="d-flex flex-column" elevation="0">
                     <!-- test results type -->
@@ -678,35 +717,6 @@
                         <v-icon @click="removeTestFile(index)"
                           >mdi-close</v-icon
                         >
-                      </v-card>
-                    </div>
-
-                    <div class="d-flex flex-wrap">
-                      <v-card
-                        elevation="0"
-                        class="d-flex flex-row pa-2 mr-2"
-                        color="#EEF2F6"
-                        v-for="(file, index) in selectedRecord.files"
-                        :key="index"
-                        outlined
-                        style="border: 0.5px solid #757575"
-                      >
-                        <div class="mr-10">
-                          <p class="ma-0 text-body-2 font-weight-medium">
-                            {{ get_text_of_type_file(file) }}
-                          </p>
-                          <p class="ma-0 text-body-2">
-                            {{ get_name_of_file(file) }}
-                          </p>
-                        </div>
-                        <v-icon
-                          class="mr-2"
-                          @click="view_file(file)"
-                          v-if="is_img_file(file)"
-                          >mdi-eye-outline</v-icon
-                        >
-                        <v-icon>mdi-download</v-icon>
-                        <v-icon @click="removeFile(index)">mdi-close</v-icon>
                       </v-card>
                     </div>
                   </v-card>
@@ -1292,7 +1302,8 @@ export default {
       pagination: {
         itemsPerPage: 1,
         page: 1
-      }
+      },
+      tableKey: 0
     };
   },
   computed: {
@@ -1450,6 +1461,9 @@ export default {
         })
       );
       let token = this.$store.getters["auth/access_token"];
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
 
       let medicine_list_submit = [];
       this.prescriptions.forEach(medicine => {
@@ -1463,30 +1477,45 @@ export default {
           dateEnd: this.to_date
         });
       });
-      const params = {
-        token: token,
-        data: {
-          recordId: this.selectedRecord.id,
-          diagnose: this.selectedRecord.diagnose,
-          prescribe: this.selectedRecord.prescribe,
-          note: this.selectedRecord.note,
-          reExaminationDate: this.selectedRecord.reExaminationDate,
-          height: this.selectedRecord.height,
-          weight: this.selectedRecord.weight,
-          bloodVessel: this.selectedRecord.bloodVessel,
-          temperature: this.selectedRecord.temperature,
-          bloodPressure: this.selectedRecord.bloodPressure,
-          heartbeat: this.selectedRecord.heartbeat,
-          hospitalize: this.selectedRecord.hospitalize,
-          medicines: medicine_list_submit,
-          files: this.selectedRecord.files
-        }
+      const payload = {
+        id: this.selectedRecord.id,
+        diagnose: this.selectedRecord.diagnose,
+        prescribe: this.selectedRecord.prescribe,
+        note: this.selectedRecord.note,
+        reExaminationDate: this.selectedRecord.reExaminationDate,
+        height: this.selectedRecord.height,
+        weight: this.selectedRecord.weight,
+        bloodVessel: this.selectedRecord.bloodVessel,
+        temperature: this.selectedRecord.temperature,
+        bloodPressure: this.selectedRecord.bloodPressure,
+        heartbeat: this.selectedRecord.heartbeat,
+        hospitalize: this.selectedRecord.hospitalize,
+        medicines: medicine_list_submit,
+        files: this.selectedRecord.files
       };
-      this.$store.dispatch("record/create_record", params);
-      this.loadingConfirm = false;
-      this.refresh_exam_data();
-      this.exam_confirm_dialog = false;
-      this.exam_dialog = false;
+      await axios
+        .patch(`${url}/api/records`, payload)
+        .then(res => {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Chỉnh sửa bệnh án thành công",
+            type: "success"
+          });
+          this.exam_confirm_dialog = false;
+          this.exam_dialog = false;
+          this.tableKey++;
+          this.fetchRecords();
+          this.selected = [];
+          this.selectedRecord = {};
+        })
+        .catch(() => {
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Chỉnh sửa bệnh án thất bại",
+            type: "error"
+          });
+        })
+        .finally(() => {
+          this.loadingConfirm = false;
+        });
     },
 
     async post_file(file, type) {
@@ -1513,25 +1542,7 @@ export default {
         });
     },
 
-    refresh_exam_data() {
-      this.from_date = "";
-      this.to_date = "";
-      this.record.diagnose = "";
-      this.record.prescribe = "";
-      this.record.note = "";
-      this.record.bloodVessel = "";
-      this.record.bloodPressure = "";
-      this.record.height = "";
-      this.record.weight = "";
-      this.record.temperature = "";
-      this.record.hospitalize = false;
-      this.record.reExaminationDate = "";
-      this.record.heartbeat = "";
-      this.prescriptions = [];
-    },
-
     stop_examination() {
-      this.refresh_exam_data();
       this.exam_dialog = false;
     },
 

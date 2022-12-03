@@ -31,7 +31,7 @@ public class RecordDTO {
     private String height;
     private String weight;
     private Collection<Medicine> medicines;
-    private List<Date> reExaminationDate;
+    private Date reExaminationDate;
     private Collection<MedicalFile> files;
     private Date createdAt;
 

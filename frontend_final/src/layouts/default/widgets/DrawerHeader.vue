@@ -9,7 +9,7 @@
         <!-- <strong class="mr-1 font-weight-black">VMD</strong>
 
         <span class="primary--text">FREE</span> -->
-        <p class="text-body-1 font-weight-bold ma-0">BLOUSE CARE</p>
+        <p class="text-body-1 font-weight-bold ma-0">Blouse Care</p>
       </v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -22,6 +22,6 @@ import { get } from "vuex-pathify";
 export default {
   name: "DefaultDrawerHeader",
 
-  computed: { version: get("app/version") },
+  computed: { version: get("app/version") }
 };
 </script>

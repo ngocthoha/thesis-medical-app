@@ -8,8 +8,17 @@
     transition="scale-transition"
   >
     <template v-slot:activator="{ attrs, on }">
-      <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
-        <v-icon color="#667085">mdi-account-outline</v-icon>
+      <v-btn
+        class="mr-10 btn-not-hover"
+        min-width="0"
+        icon
+        :ripple="false"
+        v-bind="attrs"
+        v-on="on"
+      >
+        <v-avatar size="40">
+          <img src="@/assets/img/home/appbar/avatar.png" />
+        </v-avatar>
       </v-btn>
     </template>
 
@@ -52,3 +61,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.btn-not-hover:hover::before {
+  opacity: 0 !important;
+}
+</style>

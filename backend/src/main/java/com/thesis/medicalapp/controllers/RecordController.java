@@ -11,6 +11,7 @@ import com.thesis.medicalapp.pojo.UserDoctorDTO;
 import com.thesis.medicalapp.repository.AppointmentRepository;
 import com.thesis.medicalapp.repository.MedicalFileRepository;
 import com.thesis.medicalapp.repository.MedicineRepository;
+import com.thesis.medicalapp.repository.RecordRepository;
 import com.thesis.medicalapp.search.SearchRequest;
 import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.MedicineService;
@@ -38,6 +39,7 @@ public class RecordController {
     private final AppointmentRepository appointmentRepository;
     private final MedicalFileRepository medicalFileRepository;
     private final MedicineService medicineService;
+    private final RecordRepository recordRepository;
 
     @PostMapping(value = "/records")
     public ResponseEntity<ApiResponse> saveRecord(@RequestBody @Valid RecordRequest recordRequest) {
@@ -74,20 +76,18 @@ public class RecordController {
             }
         }
 
-        record.setReExaminationDate(new ArrayList<>());
+        appointment.setStatus(Status.COMPLETE);
         if (null != recordRequest.getReExaminationDate()) {
             Date dateFormat = new Date();
             try {
                 dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse(recordRequest.getReExaminationDate());
-                record.getReExaminationDate().add(dateFormat);
-                appointment.setDate(dateFormat);
+                record.setReExaminationDate(dateFormat);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
 
         RecordDTO recordDTO = recordService.saveRecord(record);
-        appointment.setStatus(Status.COMPLETE);
         appointmentRepository.save(appointment);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(recordDTO)
@@ -148,5 +148,34 @@ public class RecordController {
         );
     }
 
-
+    @PatchMapping("/records")
+    public ResponseEntity<Object> updateRecord(@RequestBody RecordDTO recordDTO) {
+        Record record = recordRepository.findById(recordDTO.getId()).get();
+        if (recordDTO.getDiagnose() != null) record.setDiagnose(recordDTO.getDiagnose());
+        if (recordDTO.getPrescribe() != null) record.setPrescribe(recordDTO.getPrescribe());
+        if (recordDTO.getNote() != null) record.setNote(recordDTO.getNote());
+        if (recordDTO.getBloodPressure() != null) record.setBloodPressure(recordDTO.getBloodPressure());
+        if (recordDTO.getBloodVessel() != null) record.setBloodVessel(recordDTO.getBloodVessel());
+        if (recordDTO.getHeartbeat() != null) record.setHeartbeat(recordDTO.getHeartbeat());
+        if (recordDTO.getTemperature() != null) record.setTemperature(recordDTO.getTemperature());
+        if (recordDTO.getHeight() != null) record.setHeight(recordDTO.getHeight());
+        if (recordDTO.getWeight() != null) record.setWeight(recordDTO.getWeight());
+        if (recordDTO.getHospitalize() != null) record.setHospitalize(recordDTO.getHospitalize());
+        if (recordDTO.getReExaminationDate() != null) record.setReExaminationDate(recordDTO.getReExaminationDate());
+        if (!recordDTO.getFiles().isEmpty()) {
+            record.setFiles(new ArrayList<>());
+            for (MedicalFile file : recordDTO.getFiles()) {
+                if (file.getId() != null) {
+                    MedicalFile File = medicalFileRepository.save(file);
+                    record.getFiles().add(File);
+                } else {
+                    record.getFiles().add(file);
+                }
+            }
+        }
+        recordRepository.save(record);
+        return ResponseEntity.status(HttpStatus.OK).body(
+                new ApiResponse<>(null)
+        );
+    }
 }

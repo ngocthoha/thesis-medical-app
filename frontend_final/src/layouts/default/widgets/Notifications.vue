@@ -1,7 +1,15 @@
 <template>
   <v-menu bottom left offset-y origin="top right" transition="scale-transition">
     <template v-slot:activator="{ attrs, on }">
-      <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+      <v-btn
+        :ripple="false"
+        icon
+        class="mr-4 btn-not-hover"
+        min-width="0"
+        text
+        v-bind="attrs"
+        v-on="on"
+      >
         <v-badge bordered color="red" overlap>
           <template v-slot:badge>
             <span>5</span>
@@ -37,3 +45,8 @@ export default {
   })
 };
 </script>
+<style scoped>
+.btn-not-hover:hover::before {
+  opacity: 0 !important;
+}
+</style>

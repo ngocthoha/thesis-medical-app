@@ -42,8 +42,7 @@ public class Record extends AuditLog {
     private String weight;
     @OneToMany
     private Collection<Medicine> medicines;
-    @ElementCollection
-    private List<Date> reExaminationDate;
+    private Date reExaminationDate;
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Fetch(value= FetchMode.SELECT)
     private Collection<MedicalFile> files;

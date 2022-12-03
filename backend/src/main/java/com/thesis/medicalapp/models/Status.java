@@ -6,5 +6,6 @@ public enum Status {
     PENDING,
     COMPLETE,
     CANCEL,
-    PROCESS
+    PROCESS,
+    RE_EXAMINATION
 }
