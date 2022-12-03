@@ -603,7 +603,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <v-text-field
-                        v-model="record.reExaminationDate"
+                        v-model="selectedRecord.reExaminationDate"
                         label="Ngày tái khám"
                         append-icon="mdi-calendar"
                         v-bind="attrs"
@@ -915,6 +915,7 @@
                         color="#537DA5"
                         elevation="0"
                         @click.stop="open_add_medicine_dialog"
+                        :disabled="!from_date || !to_date"
                         ><v-icon medium class="mr-1">mdi-plus</v-icon
                         >Thêm</v-btn
                       >
@@ -923,6 +924,7 @@
                         color="#667085"
                         elevation="0"
                         @click.stop="open_edit_medicine_dialog"
+                        :disabled="!from_date || !to_date"
                         ><v-icon medium class="mr-1">mdi-pencil</v-icon>Chỉnh
                         sửa</v-btn
                       >
@@ -931,21 +933,23 @@
                         color="#F04438"
                         elevation="0"
                         @click="remove_medicine_to_prescriptions"
+                        :disabled="!from_date || !to_date"
                         ><v-icon medium class="mr-1">mdi-delete</v-icon
                         >Xóa</v-btn
                       >
                     </div>
                     <v-data-table
-                      :headers="prescriptions_header"
-                      :items="prescriptions"
+                      :headers="medicineHeaders"
+                      :items="indexMedicines"
                       class="elevation-1"
                       single-select
                       show-select
-                      v-model="medicine_select"
-                      item-key="data.name"
+                      v-model="selectedMedicine"
+                      item-key="id"
                       checkbox-color="#3C5E7E"
                       hide-default-footer
                       no-data-text="Đơn thuốc trống"
+                      :key="tableMedicineKey"
                     >
                       <template v-slot:[`item.use`]="{ item }">
                         <div class="d-flex flex-row align-center">
@@ -954,10 +958,17 @@
                           </p>
                         </div>
                       </template>
+                      <template v-slot:[`item.mount`]="{ item }">
+                        <div class="d-flex flex-row align-center">
+                          <p class="ma-0">
+                            {{ countMedicine(item) }}
+                          </p>
+                        </div>
+                      </template>
                       <template v-slot:[`item.name`]="{ item }">
                         <div class="d-flex flex-row align-center">
                           <p class="ma-0">
-                            {{ item.data.name }}
+                            {{ item.storeMedicine.name }}
                           </p>
                         </div>
                       </template>
@@ -977,7 +988,7 @@
 
                       <v-combobox
                         spellcheck="false"
-                        v-model="medicine.data"
+                        v-model="medicine.storeMedicine"
                         :items="store_medicine_list"
                         item-text="name"
                         solo
@@ -1009,7 +1020,7 @@
                         solo
                         flat
                         background-color="#EEF2F6"
-                        v-model="medicine.morning"
+                        v-model="medicine.numMedicineInMorning"
                       ></v-text-field>
                     </v-card>
                     <v-card elevation="0" class="d-flex flex-column">
@@ -1020,7 +1031,7 @@
                         type="number"
                         solo
                         flat
-                        v-model="medicine.afternoon"
+                        v-model="medicine.numMedicineInAfternoon"
                         background-color="#EEF2F6"
                       ></v-text-field>
                     </v-card>
@@ -1033,7 +1044,7 @@
                         solo
                         flat
                         background-color="#EEF2F6"
-                        v-model="medicine.evening"
+                        v-model="medicine.numMedicineInEvening"
                       ></v-text-field>
                     </v-card>
                     <v-card class="d-flex" elevation="0">
@@ -1053,6 +1064,11 @@
                         class="white--text btn font-weight-medium"
                         elevation="0"
                         @click="add_medicine_to_prescriptions"
+                        :disabled="
+                          medicine.numMedicineInEvening == 0 &&
+                            medicine.numMedicineInMorning == 0 &&
+                            medicine.numMedicineInAfternoon == 0
+                        "
                         >Thêm</v-btn
                       >
                       <v-btn
@@ -1060,8 +1076,9 @@
                         color="#6D91B3"
                         class="white--text btn font-weight-medium"
                         elevation="0"
-                        @click="medicine_dialog = false"
-                        >Chỉnh sửa</v-btn
+                        :disabled="_.isEmpty(selectedMedicine)"
+                        @click="closeEditMedicine()"
+                        >Lưu</v-btn
                       >
                     </v-card>
                   </v-card>
@@ -1081,6 +1098,7 @@ const url = process.env.VUE_APP_ROOT_API;
 export default {
   async mounted() {
     await this.fetchRecords();
+    this.fetchMedicines();
   },
 
   data() {
@@ -1204,16 +1222,16 @@ export default {
       to_date_menu: false,
       to_date: "",
       selectedRecord: {},
-      prescriptions_header: [
+      medicineHeaders: [
         {
           text: "Tên",
           align: "start",
           sortable: false,
           value: "name"
         },
-        { text: "Số lượng", value: "mount", sortable: false },
         { text: "Liều", value: "use", sortable: false },
-        { text: "Đơn vị uống", value: "unit", sortable: false }
+        { text: "Đơn vị uống", value: "unit", sortable: false },
+        { text: "Số lượng", value: "mount", sortable: false }
       ],
       prescriptions: [],
       medicine_dialog: false,
@@ -1229,7 +1247,7 @@ export default {
         afternoon: 0,
         evening: 0
       },
-      medicine_select: [],
+      selectedMedicine: [],
       test_type: [
         { name: "Xét nghiệm máu", key: "BLOOD_TEST" },
         { name: "Xét nghiệm nước tiểu", key: "URINE_TEST" },
@@ -1292,10 +1310,12 @@ export default {
       },
       totalPages: 0,
       pagination: {
-        itemsPerPage: 1,
+        itemsPerPage: 10,
         page: 1
       },
-      tableKey: 0
+      tableKey: 0,
+      medicines: [],
+      tableMedicineKey: 0
     };
   },
   computed: {
@@ -1321,6 +1341,12 @@ export default {
           gender = "Khác";
       }
       return gender;
+    },
+    indexMedicines() {
+      return (this.selectedRecord?.medicines || []).map((item, index) => ({
+        ...item,
+        id: index
+      }));
     }
   },
   watch: {
@@ -1340,23 +1366,93 @@ export default {
   methods: {
     editRecord() {
       this.selectedRecord = this._.cloneDeep(this.selected[0]);
+      this.from_date = this.selectedRecord.medicines[0]?.dateStart
+        ? new Date(this.selectedRecord.medicines[0]?.dateStart)
+            .toISOString()
+            .substring(0, 10)
+        : null;
+      this.to_date = this.selectedRecord.medicines[0]?.dateEnd
+        ? new Date(this.selectedRecord.medicines[0]?.dateEnd)
+            .toISOString()
+            .substring(0, 10)
+        : null;
       this.exam_dialog = true;
+    },
+    closeEditMedicine() {
+      let index = this.indexMedicines.indexOf(this.selectedMedicine[0]);
+      this.indexMedicines[index] = this._.cloneDeep(this.medicine);
+      this.tableMedicineKey++;
+      this.medicine_dialog = false;
     },
     open_add_medicine_dialog() {
       this.medicine_dialog_type = 1;
       this.medicine = {
-        data: "",
-        unit: "",
-        count: 0,
-        morning: 0,
-        afternoon: 0,
-        evening: 0
+        storeMedicine: "",
+        unit: "Viên",
+        numMedicineInMorning: 0,
+        numMedicineInAfternoon: 0,
+        numMedicineInEvening: 0
       };
       this.medicine_dialog = true;
     },
+    add_medicine_to_prescriptions() {
+      this.selectedRecord.medicines.push({
+        storeMedicine: this.medicine.storeMedicine,
+        unit: this.medicine.unit,
+        numMedicineInMorning: this.medicine.numMedicineInMorning,
+        numMedicineInAfternoon: this.medicine.numMedicineInAfternoon,
+        numMedicineInEvening: this.medicine.numMedicineInEvening
+      });
+      this.medicine_dialog = false;
+    },
+    countMedicine(item) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      const fromDate = new Date(this.from_date);
+      const toDate = new Date(this.to_date);
+      const diffDays = Math.round(Math.abs((fromDate - toDate) / oneDay));
+      return (
+        (Number(item.numMedicineInMorning) +
+          Number(item.numMedicineInAfternoon) +
+          Number(item.numMedicineInEvening)) *
+        diffDays
+      );
+    },
+    convert_to_use(item) {
+      let use = "";
+
+      if (item.numMedicineInMorning != 0) {
+        if (use.length == 0) {
+          use = use + "Sáng: " + item.numMedicineInMorning;
+        } else {
+          use = use + ", Sáng: " + item.numMedicineInMorning;
+        }
+      }
+
+      if (item.numMedicineInAfternoon != 0) {
+        if (use.length == 0) {
+          use = use + "Chiều: " + item.numMedicineInAfternoon;
+        } else {
+          use = use + ", Chiều: " + item.numMedicineInAfternoon;
+        }
+      }
+      if (item.numMedicineInEvening != 0) {
+        if (use.length == 0) {
+          use = use + "Tối: " + item.numMedicineInEvening;
+        } else {
+          use = use + ", Tối: " + item.numMedicineInEvening;
+        }
+      }
+      return use;
+    },
+    remove_medicine_to_prescriptions() {
+      let index = this.prescriptions.indexOf(this.selectedMedicine[0]);
+
+      this.prescriptions.splice(index, 1);
+      this.medicine_dialog = false;
+    },
     open_edit_medicine_dialog() {
       this.medicine_dialog_type = 2;
-      this.medicine = this.medicine_select[0];
+      this.medicine = this.selectedMedicine[0];
       this.medicine_dialog = this.medicine_dialog = true;
     },
     removeTestFile(index) {
@@ -1443,7 +1539,23 @@ export default {
         profile.address.province
       );
     },
+    async fetchMedicines() {
+      let token = this.$store.getters["auth/access_token"];
 
+      const params = {
+        token: token,
+        data: {
+          hospitalId: this.records[0].appointment.doctor.hospital.id
+        }
+      };
+      await this.$store.dispatch(
+        "medicine/get_store_medicine_by_hospital",
+        params
+      );
+      this.store_medicine_list = this.$store.getters[
+        "medicine/store_medicine_by_hospital"
+      ];
+    },
     async confirmEditRecord() {
       this.loadingConfirm = true;
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
@@ -1458,13 +1570,13 @@ export default {
       };
 
       let medicine_list_submit = [];
-      this.prescriptions.forEach(medicine => {
+      this.indexMedicines.forEach(medicine => {
         medicine_list_submit.push({
-          storeMedicineId: medicine.data.id,
+          storeMedicineId: medicine.storeMedicine.id,
           unit: medicine.unit,
-          numMedicineInMorning: medicine.morning,
-          numMedicineInAfternoon: medicine.afternoon,
-          numMedicineInEvening: medicine.evening,
+          numMedicineInMorning: medicine.numMedicineInMorning,
+          numMedicineInAfternoon: medicine.numMedicineInAfternoon,
+          numMedicineInEvening: medicine.numMedicineInEvening,
           dateStart: this.from_date,
           dateEnd: this.to_date
         });
@@ -1482,7 +1594,7 @@ export default {
         bloodPressure: this.selectedRecord.bloodPressure,
         heartbeat: this.selectedRecord.heartbeat,
         hospitalize: this.selectedRecord.hospitalize,
-        medicines: medicine_list_submit,
+        updateMedicines: medicine_list_submit,
         files: this.selectedRecord.files
       };
       await axios

@@ -41,7 +41,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public List<RecordDTO> getRecordsByProfile(String profileId) {
-        List<Record> records = recordRepository.findByAppointment_Profile_Id(profileId)
+        List<Record> records = recordRepository.findByAppointment_Profile_IdOrderByCreatedAtDesc(profileId)
                 .stream()
                 .collect(Collectors.toList());
         List<RecordDTO> recordDTOS = records.stream().map(p -> {

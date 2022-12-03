@@ -2,6 +2,7 @@ package com.thesis.medicalapp.pojo;
 
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.models.Record;
+import com.thesis.medicalapp.payload.MedicineRequest;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class RecordDTO {
     private String height;
     private String weight;
     private Collection<Medicine> medicines;
+    private Collection<MedicineRequest> updateMedicines;
     private Date reExaminationDate;
     private Collection<MedicalFile> files;
     private Date createdAt;

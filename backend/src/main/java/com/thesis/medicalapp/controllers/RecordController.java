@@ -17,7 +17,9 @@ import com.thesis.medicalapp.search.SearchSpecification;
 import com.thesis.medicalapp.services.MedicineService;
 import com.thesis.medicalapp.services.RecordService;
 import com.thesis.medicalapp.utils.SequenceGenerator;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,6 +28,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +44,7 @@ public class RecordController {
     private final MedicalFileRepository medicalFileRepository;
     private final MedicineService medicineService;
     private final RecordRepository recordRepository;
+    private static final ModelMapper modelMapper = new ModelMapper();
 
     @PostMapping(value = "/records")
     public ResponseEntity<ApiResponse> saveRecord(@RequestBody @Valid RecordRequest recordRequest) {
@@ -77,6 +82,7 @@ public class RecordController {
         }
 
         appointment.setStatus(Status.COMPLETE);
+        appointment.setIsPaid(Boolean.TRUE);
         if (null != recordRequest.getReExaminationDate()) {
             Date dateFormat = new Date();
             try {
@@ -166,11 +172,18 @@ public class RecordController {
             record.setFiles(new ArrayList<>());
             for (MedicalFile file : recordDTO.getFiles()) {
                 if (file.getId() != null) {
+                    record.getFiles().add(file);
+                } else {
                     MedicalFile File = medicalFileRepository.save(file);
                     record.getFiles().add(File);
-                } else {
-                    record.getFiles().add(file);
                 }
+            }
+        }
+        if (recordDTO.getUpdateMedicines() != null) {
+            record.setMedicines(new ArrayList<>());
+            for (MedicineRequest medicineRequest : recordDTO.getUpdateMedicines()) {
+                Medicine m = medicineService.save(medicineRequest);
+                record.getMedicines().add(m);
             }
         }
         recordRepository.save(record);
