@@ -1093,7 +1093,6 @@ export default {
           align: "start",
           sortable: false,
           value: "appointment.profile.fullName",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1101,7 +1100,6 @@ export default {
           align: "start",
           sortable: false,
           value: "appointment.profile.phone",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1109,7 +1107,6 @@ export default {
           align: "start",
           sortable: false,
           value: "recordId",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1117,7 +1114,6 @@ export default {
           align: "start",
           sortable: false,
           value: "createdAt",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1125,7 +1121,6 @@ export default {
           align: "start",
           sortable: false,
           value: "hospitalize",
-          filterable: true,
           width: "120px"
         },
         {
@@ -1133,7 +1128,6 @@ export default {
           align: "start",
           sortable: false,
           value: "diagnose",
-          filterable: true,
           width: "200px"
         },
         {
@@ -1141,7 +1135,6 @@ export default {
           align: "start",
           sortable: false,
           value: "prescribe",
-          filterable: true,
           width: "200px"
         },
         {
@@ -1149,7 +1142,6 @@ export default {
           align: "start",
           sortable: false,
           value: "note",
-          filterable: true,
           width: "200px"
         },
         {
@@ -1157,7 +1149,6 @@ export default {
           align: "start",
           sortable: false,
           value: "bloodVessel",
-          filterable: true,
           width: "170px"
         },
         {
@@ -1165,7 +1156,6 @@ export default {
           align: "start",
           sortable: false,
           value: "temperature",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1173,7 +1163,6 @@ export default {
           align: "start",
           sortable: false,
           value: "bloodPressure",
-          filterable: true,
           width: "170px"
         },
         {
@@ -1181,7 +1170,6 @@ export default {
           align: "start",
           sortable: false,
           value: "heartbeat",
-          filterable: true,
           width: "180px"
         },
         {
@@ -1189,7 +1177,6 @@ export default {
           align: "start",
           sortable: false,
           value: "height",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1197,7 +1184,6 @@ export default {
           align: "start",
           sortable: false,
           value: "weight",
-          filterable: true,
           width: "150px"
         },
         {
@@ -1205,7 +1191,6 @@ export default {
           align: "start",
           sortable: false,
           value: "reExaminationDate",
-          filterable: true,
           width: "150px"
         }
       ],
