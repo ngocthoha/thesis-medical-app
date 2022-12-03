@@ -18,7 +18,6 @@
         :search="search"
         :loading="loading"
         :no-data-text="'Không có danh sách bệnh án'"
-        :items-per-page="1"
         :footer-props="{
           'items-per-page-options': [10, 20, 50]
         }"
@@ -103,6 +102,27 @@
           <div class="d-flex flex-row align-center">
             <p class="ma-0">
               {{ convert_date(item.createdAt) }}
+            </p>
+          </div>
+        </template>
+        <template v-slot:[`item.reExaminationDate`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              {{
+                item.reExaminationDate
+                  ? convert_date(item.reExaminationDate)
+                  : "" | empty
+              }}
+            </p>
+          </div>
+        </template>
+        <template v-slot:[`item.hospitalize`]="{ item }">
+          <div class="d-flex flex-row align-center">
+            <p class="ma-0">
+              <v-simple-checkbox
+                v-model="item.hospitalize"
+                disabled
+              ></v-simple-checkbox>
             </p>
           </div>
         </template>
@@ -457,9 +477,6 @@
                     ></v-text-field>
                   </v-card>
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Cân nặng(kg):
-                      </p> -->
                     <v-text-field
                       label="Cân nặng (kg)"
                       v-model="selectedRecord.weight"
@@ -803,32 +820,6 @@
                     </div>
                   </v-card>
                 </div>
-                <!-- <div class="mb-5">
-                    <h4>Yêu cầu nhập viện</h4>
-                  </div>
-                  <div class="d-flex flex-row ma-0">
-                    <v-checkbox
-                      v-model="record.hospitalize"
-                      :label="'Yêu cầu nhập viện'"
-                      class="ma-0"
-                    ></v-checkbox>
-                  </div>
-                  <div class="mb-3">
-                    <h4>Hẹn ngày tái khám</h4>
-                  </div>
-                  <div class="d-flex flex-row ma-0">
-                    <v-card
-                      width="30%"
-                      elevation="0"
-                      class="d-flex flex-column"
-                    >
-                      <v-text-field
-                        v-model="record.reExaminationDate"
-                        :label="'Hẹn ngày tái khám'"
-                        class="ma-0"
-                      ></v-text-field>
-                    </v-card>
-                  </div> -->
               </v-card>
             </v-tab-item>
             <!-- međicine -->
@@ -1130,6 +1121,14 @@ export default {
           width: "150px"
         },
         {
+          text: "Nhập viện",
+          align: "start",
+          sortable: false,
+          value: "hospitalize",
+          filterable: true,
+          width: "120px"
+        },
+        {
           text: "Chuẩn đoán",
           align: "start",
           sortable: false,
@@ -1198,6 +1197,14 @@ export default {
           align: "start",
           sortable: false,
           value: "weight",
+          filterable: true,
+          width: "150px"
+        },
+        {
+          text: "Ngày tái khám",
+          align: "start",
+          sortable: false,
+          value: "reExaminationDate",
           filterable: true,
           width: "150px"
         }
@@ -1504,8 +1511,7 @@ export default {
           this.exam_dialog = false;
           this.tableKey++;
           this.fetchRecords();
-          this.selected = [];
-          this.selectedRecord = {};
+          this.reset();
         })
         .catch(() => {
           this.$store.dispatch("snackbar/set_snackbar", {
@@ -1517,7 +1523,14 @@ export default {
           this.loadingConfirm = false;
         });
     },
-
+    reset() {
+      this.selected = [];
+      this.selectedRecord = {};
+      this.test_file = [];
+      this.test_add_list = [];
+      this.image_file = [];
+      this.image_analyst_list = [];
+    },
     async post_file(file, type) {
       let form_data = new FormData();
       form_data.append("file", file);
@@ -1544,6 +1557,7 @@ export default {
 
     stop_examination() {
       this.exam_dialog = false;
+      this.reset();
     },
 
     get_text_of_type_file(file) {
