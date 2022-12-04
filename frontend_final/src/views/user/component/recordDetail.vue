@@ -165,7 +165,7 @@
         <p class="ma-0 font-weight-medium">
           {{
             record.reExaminationDate
-              ? formatDate(record.reExaminationDate)
+              ? convert_date(record.reExaminationDate)
               : "" | empty
           }}
         </p>
@@ -261,6 +261,18 @@ export default {
       let month = date.getMonth();
       let year = date.getFullYear();
       return `${day} tháng ${month}, ${year}`;
+    },
+    convert_date(time) {
+      let date = new Date(time);
+      return (
+        (date.getDate() > 9 ? date.getDate() : "0" + date.getDate()) +
+        "/" +
+        (date.getMonth() > 8
+          ? date.getMonth() + 1
+          : "0" + (date.getMonth() + 1)) +
+        "/" +
+        date.getFullYear()
+      );
     },
     convert_to_use(item) {
       let use = "";

@@ -1,9 +1,14 @@
 <template>
   <div>
-    <v-card width="922px" elevation="1" class="pb-8">
+    <v-card width="922px" :elevation="isHistory ? '0' : '1'" class="pb-8">
       <div class="d-flex flex-column">
         <!-- header -->
-        <v-card height="132" class="px-8 d-flex flex-row pt-5" elevation="0">
+        <v-card
+          v-if="!isHistory"
+          height="132"
+          class="px-8 d-flex flex-row pt-5"
+          elevation="0"
+        >
           <div>
             <p class="font-weight-bold mb-3" style="font-size: 24px">
               Hồ sơ sức khỏe
@@ -23,9 +28,10 @@
           >
         </v-card>
         <v-divider
+          v-if="!isHistory"
           style="border-color: rgba(16, 24, 40, 0.03) !important"
         ></v-divider>
-        <div class="d-flex justify-center mt-8 px-8">
+        <div v-if="!isHistory" class="d-flex justify-center mt-8 px-8">
           <v-progress-circular
             v-if="_.isEmpty(selectedProfile)"
             indeterminate
@@ -33,7 +39,7 @@
           ></v-progress-circular>
         </div>
         <!-- profile list dialog-->
-        <v-dialog v-model="profile_list_dialog" width="600">
+        <v-dialog v-if="!isHistory" v-model="profile_list_dialog" width="600">
           <v-card class="pa-4">
             <v-card
               class="d-flex align-center justify-center pb-3"
@@ -214,6 +220,16 @@ export default {
   components: {
     RecordDetail
   },
+  props: {
+    isHistory: {
+      type: Boolean,
+      default: false
+    },
+    profileHistory: {
+      type: Object,
+      default: () => {}
+    }
+  },
   data: () => ({
     profiles: [],
     selectedProfile: null,
@@ -274,7 +290,9 @@ export default {
       await this.axios
         .get(`${url}/api/user/records`, {
           params: {
-            profileId: this.selectedProfile.id
+            profileId: this.isHistory
+              ? this.profileHistory.id
+              : this.selectedProfile.id
           }
         })
         .then(res => {

@@ -462,58 +462,14 @@
               </v-tab-item>
               <!-- history -->
               <v-tab-item>
-                <v-card flat>
-                  <v-card-text>
-                    <p>
-                      Morbi nec metus. Suspendisse faucibus, nunc et
-                      pellentesque egestas, lacus ante convallis tellus, vitae
-                      iaculis lacus elit id tortor. Sed mollis, eros et ultrices
-                      tempus, mauris ipsum aliquam libero, non adipiscing dolor
-                      urna a orci. Curabitur ligula sapien, tincidunt non,
-                      euismod vitae, posuere imperdiet, leo. Nunc sed turpis.
-                    </p>
-
-                    <p>
-                      Suspendisse feugiat. Suspendisse faucibus, nunc et
-                      pellentesque egestas, lacus ante convallis tellus, vitae
-                      iaculis lacus elit id tortor. Proin viverra, ligula sit
-                      amet ultrices semper, ligula arcu tristique sapien, a
-                      accumsan nisi mauris ac eros. In hac habitasse platea
-                      dictumst. Fusce ac felis sit amet ligula pharetra
-                      condimentum.
-                    </p>
-
-                    <p>
-                      Sed consequat, leo eget bibendum sodales, augue velit
-                      cursus nunc, quis gravida magna mi a libero. Nam commodo
-                      suscipit quam. In consectetuer turpis ut velit. Sed cursus
-                      turpis vitae tortor. Aliquam eu nunc.
-                    </p>
-
-                    <p>
-                      Etiam ut purus mattis mauris sodales aliquam. Ut varius
-                      tincidunt libero. Aenean viverra rhoncus pede. Duis leo.
-                      Fusce fermentum odio nec arcu.
-                    </p>
-
-                    <p class="mb-0">
-                      Donec venenatis vulputate lorem. Aenean viverra rhoncus
-                      pede. In dui magna, posuere eget, vestibulum et, tempor
-                      auctor, justo. Fusce commodo aliquam arcu. Suspendisse
-                      enim turpis, dictum sed, iaculis a, condimentum nec, nisi.
-                    </p>
-                  </v-card-text>
-                </v-card>
+                <health-records
+                  isHistory
+                  :profileHistory="selected_appointment.profile"
+                />
               </v-tab-item>
               <!-- examination -->
               <v-tab-item>
                 <v-card flat class="pa-6 d-flex flex-column">
-                  <!-- <p class="d-flex justify-center font-weight-bold">
-                    KHÁM BỆNH
-                  </p> -->
-                  <!-- <p class="d-flex justify-center font-weight-bold">
-                    THÊM KẾT QUẢ CẬN LÂM SÀNG
-                  </p> -->
                   <div>
                     <h4>Khám sơ bộ</h4>
                   </div>
@@ -523,9 +479,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chiều cao(cm):
-                      </p> -->
                       <v-text-field
                         v-model="record.height"
                         label="Chiều cao (cm)"
@@ -539,9 +492,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Cân nặng(kg):
-                      </p> -->
                       <v-text-field
                         label="Cân nặng (kg)"
                         v-model="record.weight"
@@ -555,9 +505,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Mạch (lần/phút):
-                      </p> -->
                       <v-text-field
                         label="Mạch (lần/phút)"
                         v-model="record.bloodVessel"
@@ -586,9 +533,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Huyết áp (mmHg):
-                      </p> -->
                       <v-text-field
                         label="Huyết áp (mmHg)"
                         v-model="record.bloodPressure"
@@ -602,9 +546,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Nhịp tim (lần/phút):
-                      </p> -->
                       <v-text-field
                         label="Nhịp tim (lần/phút)"
                         v-model="record.heartbeat"
@@ -623,9 +564,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chuẩn đoán:
-                      </p> -->
                       <v-textarea
                         label="Chuẩn đoán"
                         v-model="record.diagnose"
@@ -639,9 +577,6 @@
                       elevation="0"
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chỉ định:
-                      </p> -->
                       <v-textarea
                         label="Chỉ định"
                         background-color="#EEF2F6"
@@ -656,9 +591,6 @@
                       flat
                       class="d-flex flex-column"
                     >
-                      <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Ghi chú:
-                      </p> -->
                       <v-textarea
                         label="Ghi chú"
                         placeholder="Vui lòng nhập ghi chú"
@@ -1167,7 +1099,12 @@
 <script>
 import axios from "axios";
 const url = process.env.VUE_APP_ROOT_API;
+import HealthRecords from "../user/health_records.vue";
+
 export default {
+  components: {
+    HealthRecords
+  },
   async mounted() {
     await this.get_appointment();
     this.fetchMedicines();
