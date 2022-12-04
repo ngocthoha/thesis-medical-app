@@ -486,9 +486,6 @@
                     ></v-text-field>
                   </v-card>
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Mạch (lần/phút):
-                      </p> -->
                     <v-text-field
                       label="Mạch (lần/phút)"
                       v-model="selectedRecord.bloodVessel"
@@ -509,9 +506,6 @@
                     ></v-text-field>
                   </v-card>
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Huyết áp (mmHg):
-                      </p> -->
                     <v-text-field
                       label="Huyết áp (mmHg)"
                       v-model="selectedRecord.bloodPressure"
@@ -538,9 +532,6 @@
                 </div>
                 <div class="d-flex flex-row justify-space-between">
                   <v-card width="30%" elevation="0" class="d-flex flex-column">
-                    <!-- <p class="text-body-2 ma-0 font-weight-medium">
-                        Chuẩn đoán:
-                      </p> -->
                     <v-textarea
                       label="Chuẩn đoán"
                       v-model="selectedRecord.diagnose"

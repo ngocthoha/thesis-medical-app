@@ -81,44 +81,14 @@
         </v-dialog>
         <!--  -->
         <!-- medical record dialog -->
-        <v-dialog v-model="medical_record_dialog" width="800">
-          <v-card
-            tile
-            class="pa-3 d-flex flex-row justify-space-between align-center"
-            elevation="0"
-            color="#EEF2F6"
-            ><p
-              class="ma-0 font-weight-bold white--text"
-              style="color: #537DA5; font-size:20px"
-            >
-              Kết quả khám
-            </p>
-            <v-btn icon @click="medical_record_dialog = false"
-              ><v-icon color="#537DA5"> mdi-close</v-icon>
-            </v-btn>
-          </v-card>
-          <v-card class="d-flex flex-column pa-5" tile>
-            <p class="font-weight-bold">Chuẩn đoán</p>
-            <v-card outlined class="mb-6 pa-3">
-              <p style="color: #667085" class="ma-0">Bệnh thống phong</p>
-            </v-card>
-            <p class="font-weight-bold">Ghi chú</p>
-            <v-card outlined class="mb-6 pa-3">
-              <p style="color: #667085" class="ma-0">Tránh ăn thức ăn đạm</p>
-            </v-card>
-            <p class="font-weight-bold">Đơn thuốc</p>
-            <v-card class="d-flex flex-column mb-6" outlined>
-              <!-- medicine list -->
-              <v-data-table
-                :headers="prescriptions_header"
-                :items="prescriptions"
-                checkbox-color="#3C5E7E"
-                hide-default-footer
-                no-data-text="Đơn thuốc trống"
-              >
-              </v-data-table>
-            </v-card>
-            <p class="font-weight-bold">Kết quả cận lâm sàn</p>
+        <v-dialog
+          v-model="medical_record_dialog"
+          width="800"
+          v-if="selectedRecord"
+          v-click-outside
+        >
+          <v-card class="pa-5">
+            <record-detail :record="selectedRecord" />
           </v-card>
         </v-dialog>
         <!-- profile -->
@@ -162,39 +132,67 @@
                     {{ record.appointment.time }},
                     {{ getDate(record.appointment.date) }}
                   </v-card-title>
-                  <v-card-text class="white text--primary pa-3">
-                    <div class="d-flex flex-row">
-                      <p class="ma-0 mr-3 font-weight-bold">Cơ sở y tế:</p>
-                      <p class="ma-0">
-                        {{
-                          record.appointment.category === "DOCTOR"
-                            ? record.appointment.doctor.hospital.name
-                            : record.appointment.service.hospital.name
-                        }}
-                      </p>
-                    </div>
-                    <div class="d-flex flex-row">
-                      <p class="ma-0 mr-3 font-weight-bold">
-                        Chuẩn đoán:
-                      </p>
-                      <p class="ma-0">{{ record.diagnose | empty }}</p>
-                    </div>
-                    <div class="d-flex flex-row">
-                      <p class="ma-0 mr-3 font-weight-bold">
-                        Chỉ định:
-                      </p>
-                      <p class="ma-0">{{ record.prescribe | empty }}</p>
-                    </div>
-                    <div class="d-flex flex-row  mb-8">
-                      <p class="ma-0 mr-3 font-weight-bold">
-                        Ghi chú:
-                      </p>
-                      <p class="ma-0">{{ record.note | empty }}</p>
+                  <v-card-text class="white text--primary pa-3 d-flex">
+                    <div style="margin-right: auto">
+                      <div class="d-flex flex-row">
+                        <p
+                          class="ma-0 mr-3 font-weight-regular"
+                          style="color: #667085"
+                        >
+                          Cơ sở y tế:
+                        </p>
+                        <p class="ma-0 font-weight-medium">
+                          {{
+                            record.appointment.category === "DOCTOR"
+                              ? record.appointment.doctor.hospital.name
+                              : record.appointment.service.hospital.name
+                          }}
+                        </p>
+                      </div>
+                      <div class="d-flex flex-row">
+                        <p
+                          class="ma-0 mr-3 font-weight-regular"
+                          style="color: #667085"
+                        >
+                          Triệu chứng:
+                        </p>
+                        <p class="ma-0">
+                          {{ record.appointment.symptom | empty }}
+                        </p>
+                      </div>
+                      <div class="d-flex flex-row">
+                        <p
+                          class="ma-0 mr-3 font-weight-regular"
+                          style="color: #667085"
+                        >
+                          Chuẩn đoán:
+                        </p>
+                        <p class="ma-0">{{ record.diagnose | empty }}</p>
+                      </div>
+                      <div class="d-flex flex-row">
+                        <p
+                          class="ma-0 mr-3 font-weight-regular"
+                          style="color: #667085"
+                        >
+                          Chỉ định:
+                        </p>
+                        <p class="ma-0">{{ record.prescribe | empty }}</p>
+                      </div>
+                      <div class="d-flex flex-row  mb-3">
+                        <p
+                          class="ma-0 mr-3 font-weight-regular"
+                          style="color: #667085"
+                        >
+                          Ghi chú:
+                        </p>
+                        <p class="ma-0">{{ record.note | empty }}</p>
+                      </div>
                     </div>
                     <v-btn
                       outlined
                       class="btn-not-transform"
-                      @click="medical_record_dialog = true"
+                      color="#537DA5"
+                      @click="openDetail(record)"
                     >
                       Xem chi tiết
                     </v-btn>
@@ -210,70 +208,33 @@
 </template>
 <script>
 const url = process.env.VUE_APP_ROOT_API;
+import RecordDetail from "./component/recordDetail.vue";
+
 export default {
+  components: {
+    RecordDetail
+  },
   data: () => ({
     profiles: [],
     selectedProfile: null,
     records: [],
+    selectedRecord: {},
     radioGroup: null,
     loading: false,
     profile_list_dialog: false,
     medical_record_dialog: false,
     list_record_show: false,
-    years: [],
-    prescriptions_header: [
-      {
-        text: "Tên",
-        align: "start",
-        sortable: false,
-        value: "name",
-        class: "text-body-2 font-weight-medium"
-      },
-      {
-        text: "Số lượng",
-        value: "mount",
-        sortable: false,
-        class: "text-body-2 font-weight-medium"
-      },
-      {
-        text: "Liều",
-        value: "use",
-        sortable: false,
-        class: "text-body-2 font-weight-medium"
-      },
-      {
-        text: "Đơn vị uống",
-        value: "unit",
-        sortable: false,
-        class: "text-body-2 font-weight-medium"
-      }
-    ],
-    prescriptions: [
-      {
-        name: "abc",
-        mount: 120,
-        use: "Sáng: 1, Chiều: 1, Tối: 1",
-        unit: "Viên"
-      },
-      {
-        name: "abc",
-        mount: 120,
-        use: "Sáng: 1, Chiều: 1, Tối: 1",
-        unit: "Viên"
-      },
-      {
-        name: "abc",
-        mount: 120,
-        use: "Sáng: 1, Chiều: 1, Tối: 1",
-        unit: "Viên"
-      }
-    ]
+    years: []
   }),
   async mounted() {
     await this.getProfiles();
     await this.getRecords();
   },
   methods: {
+    openDetail(record) {
+      this.selectedRecord = record;
+      this.medical_record_dialog = true;
+    },
     getDate(date) {
       let date_array = date.split("-");
       return `${date_array[2]}/${date_array[1]}/${date_array[0]}`;

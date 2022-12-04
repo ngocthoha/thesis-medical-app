@@ -79,40 +79,9 @@
       style="border-color: rgba(16, 24, 40, 0.03) !important"
     ></v-divider>
     <!-- medical record dialog -->
-    <v-dialog v-model="medical_record_dialog" width="800">
-      <v-card
-        tile
-        class="pa-3 d-flex flex-row justify-space-between align-center"
-        elevation="0"
-        ><p class="ma-0 ml-2 font-weight-bold" style="font-size:20px">
-          Kết quả khám
-        </p>
-        <v-btn icon @click="medical_record_dialog = false"
-          ><v-icon color="#537DA5"> mdi-close</v-icon>
-        </v-btn>
-      </v-card>
-      <v-card class="d-flex flex-column pa-5" tile>
-        <p class="font-weight-bold">Chuẩn đoán</p>
-        <v-card outlined class="mb-6 pa-3">
-          <p style="color: #667085" class="ma-0">Bệnh thống phong</p>
-        </v-card>
-        <p class="font-weight-bold">Ghi chú</p>
-        <v-card outlined class="mb-6 pa-3">
-          <p style="color: #667085" class="ma-0">Tránh ăn thức ăn đạm</p>
-        </v-card>
-        <p class="font-weight-bold">Đơn thuốc</p>
-        <v-card class="d-flex flex-column mb-6" outlined>
-          <!-- medicine list -->
-          <v-data-table
-            :headers="prescriptions_header"
-            :items="prescriptions"
-            checkbox-color="#3C5E7E"
-            hide-default-footer
-            no-data-text="Đơn thuốc trống"
-          >
-          </v-data-table>
-        </v-card>
-        <p class="font-weight-bold">Kết quả cận lâm sàn</p>
+    <v-dialog v-model="medical_record_dialog" width="800" v-if="record">
+      <v-card class="pa-5">
+        <record-detail :record="record" />
       </v-card>
     </v-dialog>
     <!-- body -->
@@ -136,8 +105,8 @@
                 </p></v-card
               >
               <p class="ma-0 font-weight-medium">
-                {{ this.appointment.profile.lastName }}
-                {{ this.appointment.profile.firstName }}
+                {{ appointment.profile.lastName }}
+                {{ appointment.profile.firstName }}
               </p>
             </v-card>
 
@@ -198,7 +167,7 @@
                       dark
                       v-bind="attrs"
                       v-on="on"
-                      @click="medical_record_dialog = true"
+                      @click="openRecord()"
                     >
                       mdi-account-eye
                     </v-icon>
@@ -550,9 +519,17 @@
 
 <script>
 const url = process.env.VUE_APP_ROOT_API;
+import RecordDetail from "../recordDetail.vue";
+
 export default {
+  components: {
+    RecordDetail
+  },
   props: {
     appointment: Object
+  },
+  async mounted() {
+    await this.getRecord();
   },
   data() {
     return {
@@ -605,7 +582,8 @@ export default {
           unit: "Viên"
         }
       ],
-      loadingCancel: false
+      loadingCancel: false,
+      record: {}
     };
   },
   computed: {
@@ -616,8 +594,28 @@ export default {
     }
   },
   methods: {
+    openRecord() {
+      this.medical_record_dialog = true;
+    },
     get_text_price(price) {
       return price.toLocaleString().replaceAll(",", ".");
+    },
+    async getRecord() {
+      let token = this.$store.getters["auth/access_token"];
+
+      this.axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+
+      await this.axios
+        .get(`${url}/api/appointments/record`, {
+          params: {
+            appointmentId: this.appointment.id
+          }
+        })
+        .then(res => {
+          this.record = res.data.results;
+        });
     },
     async cancelAppointment() {
       this.loadingCancel = true;
