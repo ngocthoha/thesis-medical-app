@@ -143,10 +143,12 @@ export default {
           icon: "mdi-doctor",
           items: [
             {
-              title: "Bác sĩ"
+              title: "Bác sĩ",
+              to: "/admin/manage-doctor"
             },
             {
-              title: "Lịch làm việc"
+              title: "Lịch làm việc",
+              to: "/admin/manage-schedule-doctor"
             }
           ]
         },
@@ -155,7 +157,8 @@ export default {
           icon: "mdi-calendar-month-outline",
           items: [
             {
-              title: "Dịch vụ"
+              title: "Dịch vụ",
+              to: "/admin/manage-service"
             }
           ]
         },
@@ -164,7 +167,8 @@ export default {
           icon: "mdi-bed-outline",
           items: [
             {
-              title: "Phòng"
+              title: "Phòng",
+              to: "/admin/manage-room"
             }
           ]
         },
@@ -173,7 +177,8 @@ export default {
           icon: "mdi-pill-multiple",
           items: [
             {
-              title: "Thuốc"
+              title: "Thuốc",
+              to: "/admin/manage-medicine"
             }
           ]
         }
