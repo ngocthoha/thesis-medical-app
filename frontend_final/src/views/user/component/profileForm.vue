@@ -13,7 +13,7 @@
         <div><p class="font-weight-medium">Mã hồ sơ</p></div>
         <v-card width="278px" flat>
           <p class="text-body-2 font-weight-medium" style="color: #667085">
-            {{ edit_profile.profileNumber }}
+            {{ profile.profileNumber }}
           </p>
         </v-card>
       </v-card>
@@ -742,7 +742,8 @@ export default {
         guardianPhone: "",
         guardianIdentityCard: "",
         relationship: "",
-        relationshipWithPatient: ""
+        relationshipWithPatient: "",
+        isContactProfile: false
       }
     };
   },
@@ -778,7 +779,7 @@ export default {
   },
   computed: {
     disableEdit() {
-      return this.edit_profile.isContactProfile;
+      return this.profile.isContactProfile;
     }
   },
   methods: {
@@ -848,6 +849,7 @@ export default {
     setDataForm() {
       if (this.type != 0 && this.edit_profile != null) {
         this.profile.id = this.edit_profile.id;
+        this.profile.profileNumber = this.edit_profile.profileNumber;
         this.profile.lastName = this.edit_profile.lastName;
         this.profile.firstName = this.edit_profile.firstName;
 
@@ -871,6 +873,7 @@ export default {
         this.profile.guardianPhone = this.edit_profile.guardianPhone;
         this.profile.relationship = this.edit_profile.relationship;
         this.profile.relationshipWithPatient = this.edit_profile.relationshipWithPatient;
+        this.profile.isContactProfile = this.editProfile.isContactProfile;
         let date = new Date(this.edit_profile.dob);
         this.profile.dob.year = String(date.getFullYear());
         this.profile.dob.month =
