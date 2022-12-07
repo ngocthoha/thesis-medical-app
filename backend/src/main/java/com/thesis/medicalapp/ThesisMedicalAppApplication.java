@@ -15,6 +15,7 @@ import com.thesis.medicalapp.services.*;
 import com.thesis.medicalapp.utils.SequenceGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -155,7 +156,7 @@ public class ThesisMedicalAppApplication {
             DoctorES doctorES = modelMapper.map(doctorEntity, DoctorES.class);
             doctorES.setSpecialty(doctorEntity.getSpecialty().getName());
             doctorESRepository.save(doctorES);
-            Room room = roomRepository.save(new Room(null,"H2", null));
+            Room room = roomRepository.save(new Room(null,"H2", null, hospital));
             scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, 2, doctorEntity));
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("user1", "ROLE_USER");
@@ -163,10 +164,7 @@ public class ThesisMedicalAppApplication {
             userService.addRoleToUser("admin", "ROLE_ADMIN");
             SequenceGenerator sequenceGenerator = new SequenceGenerator();
             Long profileNumber = sequenceGenerator.nextId();
-            System.out.println(profileNumber);
             Long profileNumber1 = sequenceGenerator.nextId();
-            System.out.println(profileNumber1);
-            System.out.println(sequenceGenerator.nextId());
             profileRepository.save(new Profile(null, String.valueOf(profileNumber), "Thọ", "Hà Ngọc", address1, "+84326185289", "tho@gmail.com", new Date(), "Developer", "038200008299", "0322889971", "Kinh", Gender.MALE, "Trịnh Thị Thanh","0983839989", "038299988877", "Chủ tài khoản", "Mẹ", null, false, userEntity));
             profileRepository.save(new Profile(null, String.valueOf(profileNumber1), "Thanh", "Nguyễn Duy", address1, "+84326185287", "thanh@gmail.com", new Date(), "Developer", "038200008298", "0322889972", "Kinh", Gender.MALE, "guardian","0983839989", "038299988877", "Chủ tài khoản", "Ba", null, false, userEntity1));
             // init data json
