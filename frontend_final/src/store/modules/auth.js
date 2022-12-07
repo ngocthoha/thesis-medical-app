@@ -91,7 +91,7 @@ const actions = {
 
   signup({ commit }, params) {
     return service.signup(params).then(({ data }) => {
-      if (data.code == 201) {
+      if (data.code == 200) {
         commit("SET_SIGNUP_SUBMIT", true);
         console.log("signup success, verify otp");
       } else {

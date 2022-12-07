@@ -174,42 +174,31 @@ const router = new Router({
         "/admin/manage-hospital"
       ),
       route(
-        "Tạo tài khoản bác sĩ",
-        { default: "admin/DoctorAdmin" },
-        "/admin/doctor-admin"
+        "Quản lý bác sĩ",
+        { default: "admin/manage_doctor" },
+        "/admin/manage-doctor"
       ),
       route(
-        "Trạng thái cuộc hẹn trong ngày",
-        { default: "admin/AppointmentStatus" },
-        "/admin/appointment-status-admin"
+        "Quản lý lịch làm việc bác sĩ",
+        { default: "admin/manage_schedule_doctor" },
+        "/admin/manage-schedule-doctor"
       ),
       route(
-        "Lịch hẹn",
-        { default: "admin/AppointmentAdmin" },
-        "/admin/appointment-admin"
+        "Quản lý dịch vụ",
+        { default: "admin/manage_service" },
+        "/admin/manage-service"
       ),
       route(
-        "Dashboard Admin",
-        { default: "admin/DashboardAdmin" },
-        "/admin/dashboard-admin"
+        "Quản lý phòng",
+        { default: "admin/manage_room" },
+        "/admin/manage-room"
       ),
       route(
-        "Bệnh nhân",
-        { default: "admin/PatientAdmin" },
-        "/admin/patient-admin"
+        "Quản lý thuốc",
+        { default: "admin/manage_medicine" },
+        "/admin/manage-medicine"
       ),
-      route("Bệnh án", { default: "admin/RecordAdmin" }, "/admin/record-admin"),
-      route(
-        "Lịch trình BS",
-        { default: "admin/ScheduleAdmin" },
-        "/admin/schedule-admin"
-      ),
-      route(
-        "Tài khoản",
-        { default: "admin/AccountAdmin" },
-        "/admin/account-admin"
-      ),
-      route("Tạo phòng", { default: "admin/RoomAdmin" }, "/admin/room-admin")
+      
     ]),
 
     //Auth Pages
