@@ -3,6 +3,7 @@ package com.thesis.medicalapp.controllers;
 import com.thesis.medicalapp.models.Room;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.services.RoomService;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +21,14 @@ public class RoomController {
     public ResponseEntity<Object> getRooms() {
         List<Room> rooms = roomService.getRooms();
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", rooms)
+                new ApiResponse<>(rooms)
         );
     }
     @PostMapping("/rooms")
     public ResponseEntity<Object> saveRoom(@RequestBody Room room) {
         Room roomEntity = roomService.saveRoom(room);
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(HttpStatus.OK.value(), "Success", roomEntity)
+                new ApiResponse<>(roomEntity)
         );
     }
 }
