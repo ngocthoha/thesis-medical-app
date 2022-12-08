@@ -709,6 +709,7 @@ export default {
         "Con",
         "Vợ",
         "Chồng",
+        "Chủ tài khoản",
         "Khác"
       ],
 
@@ -725,6 +726,7 @@ export default {
         province: "",
         district: "",
         ward: "",
+        addressId: "",
         address: "",
         phone: "",
         email: "",
@@ -854,6 +856,7 @@ export default {
         this.profile.firstName = this.edit_profile.firstName;
 
         if (this.edit_profile.address != null) {
+          this.profile.addressId = this.edit_profile.address.id;
           this.profile.country = this.edit_profile.address.country;
           this.profile.province = this.edit_profile.address.province;
           this.profile.district = this.edit_profile.address.district;
@@ -963,6 +966,7 @@ export default {
         firstName: "",
         lastName: "",
         address: {
+          id: "",
           country: "",
           province: "",
           district: "",
@@ -988,6 +992,7 @@ export default {
       console.log(data.id);
       data.lastName = this.profile.lastName;
       data.firstName = this.profile.firstName;
+      data.address.id = this.profile.addressId;
       data.address.country = this.profile.country;
       data.address.province = this.profile.province;
       data.address.district = this.profile.district;

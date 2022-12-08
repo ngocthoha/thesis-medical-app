@@ -306,8 +306,9 @@ export default {
         return require("@/assets/img/user/profile/avatar1.svg");
       }
     },
-    view_health_record() {
+    async view_health_record() {
       this.selectedProfile = this.radioGroup;
+      await this.getRecords();
       this.years = [];
       this.profile_list_dialog = false;
     }
