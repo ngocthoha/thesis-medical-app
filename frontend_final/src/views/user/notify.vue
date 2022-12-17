@@ -65,9 +65,6 @@
                 >
                   <v-row align="center">
                     <v-col class="d-flex grow">
-                      <!-- <v-icon :color="notification.color">{{
-                        notification.icon
-                      }}</v-icon> -->
                       <div>
                         <div class="d-flex">
                           <h4>{{ notification.title }}</h4>
@@ -85,6 +82,33 @@
                           </div>
                         </div>
                         <p>{{ notification.text }}</p>
+                        <div v-if="notification.type == 'CANCEL_APPOINTMENT'">
+                          Bạn có thể đặt khám với
+                          <strong
+                            >{{ notification.extraData.doctorLevel }}.
+                            {{ notification.extraData.doctorName }}</strong
+                          >
+                          <v-tooltip bottom>
+                            <template v-slot:activator="{ on, attrs }">
+                              <a
+                                class="ml-1"
+                                v-bind="attrs"
+                                v-on="on"
+                                target="_blank"
+                                style="text-decoration: none;"
+                                :href="
+                                  '/doctor-appointment-detail/?id=' +
+                                    notification.extraData.doctorId
+                                "
+                                ><v-icon small color="primary"
+                                  >mdi-open-in-new</v-icon
+                                ></a
+                              >
+                            </template>
+                            <span>Xem bác sĩ</span>
+                          </v-tooltip>
+                          với cùng chuyên khoa và khung giờ khám.
+                        </div>
                       </div>
                     </v-col>
                     <v-col class="shrink" v-if="isAppoitmentType(notification)">

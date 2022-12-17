@@ -22,6 +22,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -89,6 +90,20 @@ public class LeaveRequestController {
                     Notification notification = new Notification();
                     notification.setTime(new Date());
                     notification.setTitle("Thông báo hủy lịch hẹn");
+                    List<String> times = new ArrayList<>();
+                    times.add(appointment.getTime());
+                    List<Schedule> schedules = scheduleRepository.findAllByDateAndDoctor_SpecialtyAndDoctor_Hospital_Id(
+                            appointment.getDate(), appointment.getDoctor().getSpecialty(), appointment.getDoctor().getHospital().getId()
+                    ).stream().collect(Collectors.toList());
+                    for (Schedule schedule : schedules) {
+                        if (schedule.getTimes().contains(appointment.getTime())) {
+                            notification.setExtraData(new ExtraData(
+                                    schedule.getDoctor().getId(),
+                                    schedule.getDoctor().getName(),
+                                    schedule.getDoctor().getLevel()
+                            ));
+                        }
+                    }
                     String text = "";
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     String dateNoti = formatter.format(dateFormat);
@@ -96,7 +111,7 @@ public class LeaveRequestController {
                         text = "Lịch khám theo yêu cầu với "
                                 + appointment.getDoctor().getLevel() + ". " + appointment.getDoctor().getName()
                                 + " ngày " + dateNoti
-                                + " đã bị hủy do bác sĩ thông báo nghỉ. Bạn vui lòng đặt lại lịch hẹn.";
+                                + " đã bị hủy do bác sĩ thông báo nghỉ. Bạn vui lòng bấm xem lịch khám để đặt lại lịch hẹn.";
                     }
                     notification.setText(text);
                     notification.setObjectId(appointment.getId());

@@ -80,7 +80,7 @@
             <v-expansion-panel-header>
               <v-card class="d-flex flex-row align-center" elevation="0">
                 <v-avatar size="40">
-                  <img src="@/assets/img/home/appbar/avatar.png" />
+                  <img :src="getImgOfProfile(profile)" />
                 </v-avatar>
                 <div class="d-flex flex-column ml-3">
                   <p class="ma-0 font-weight-bold text-body-1">
@@ -310,7 +310,13 @@ export default {
         profile.address.province
       );
     },
-
+    getImgOfProfile(profile) {
+      if (profile.imageUrl != null) {
+        return profile.imageUrl;
+      } else {
+        return require("@/assets/img/home/appbar/avatar.png");
+      }
+    },
     getDate(date_string) {
       let date = new Date(date_string);
       return date.toLocaleDateString();

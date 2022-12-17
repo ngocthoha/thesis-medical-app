@@ -59,6 +59,7 @@ public class OTPServiceImpl implements OTPService {
         profile.setPhone(user_db.getPhone());
         profile.setRelationship("Chủ tài khoản");
         profile.setUser(user_db);
+        profile.setIsContactProfile(Boolean.FALSE);
         profileRepository.save(profile);
     }
 }

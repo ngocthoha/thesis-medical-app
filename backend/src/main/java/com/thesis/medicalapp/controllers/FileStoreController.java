@@ -1,9 +1,7 @@
 package com.thesis.medicalapp.controllers;
 
-import com.thesis.medicalapp.bucket.BucketName;
 import com.thesis.medicalapp.filestore.FileStore;
 import com.thesis.medicalapp.payload.response.ApiResponse;
-import com.thesis.medicalapp.payload.response.MessageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;

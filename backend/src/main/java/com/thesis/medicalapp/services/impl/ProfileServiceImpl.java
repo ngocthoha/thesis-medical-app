@@ -55,7 +55,7 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setRelationship(profileDTO.getRelationship());
         profile.setRelationshipWithPatient(profileDTO.getRelationshipWithPatient());
         profile.setImageUrl(profileDTO.getImageUrl());
-        profile.setIsContactProfile(profileDTO.getIsContactProfile());
+        profile.setIsContactProfile(Boolean.FALSE);
         Optional<User> userOp = userRepository.findByUsername(username);
         if (!userOp.isPresent()) throw new ApiRequestException("Không tìm thấy user!");
         User user = userOp.get();

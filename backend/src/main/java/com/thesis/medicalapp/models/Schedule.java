@@ -3,12 +3,12 @@ package com.thesis.medicalapp.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,9 +28,10 @@ public class Schedule extends AuditLog {
     @OneToOne
     private Room room;
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "schedule_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private List<String> times;
+    private List<String> times = new ArrayList<>();
     private Integer numOfAppointmentPerHour = 2;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)

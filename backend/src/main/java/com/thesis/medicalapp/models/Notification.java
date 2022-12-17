@@ -26,4 +26,10 @@ public class Notification extends AuditLog {
     private NotificationType type;
     private String objectId;
     private boolean read;
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride( name = "id", column = @Column(name = "extra_data_id")),
+            @AttributeOverride( name = "name", column = @Column(name = "extra_data_name")),
+    })
+    private ExtraData extraData;
 }

@@ -39,6 +39,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @EnableAsync
 @SpringBootApplication
@@ -132,16 +133,17 @@ public class ThesisMedicalAppApplication {
             // init user
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
             User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
-            User user1 = new User(null, "user1", "+843261852825", "1234", true, null, new ArrayList<>());
+            User user1 = new User(null, "user1", "+84326185285", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
             User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, "https://znews-photo.zingcdn.me/w660/Uploaded/ngogtn/2022_03_30/yoo_yeon_seok_3_7704_1629893125.jpeg", new ArrayList<>(), "Đinh Ngọc Sơn", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS.BS", bio, 100000, hospital, 0.0);
+            User doctor1 = new Doctor(null, "doctor1", "+84326185286","1234", true, "https://myduchospital.vn/vnt_upload/doctors/03_2022/BS_Nguyen_Thanh_Nam.jpg", new ArrayList<>(), "Nguyễn Thành Nam", Gender.MALE, new Date(), "doctor1@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS.BS", bio, 100000, hospital, 0.0);
             User userEntity = userService.saveUser(user);
             User userEntity1 = userService.saveUser(user1);
             userService.saveUser(admin);
 
             Date dateFormat = new Date();
             try {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse("2022-11-06");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse("2022-12-19");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -152,15 +154,22 @@ public class ThesisMedicalAppApplication {
             times.add("13:00 - 14:00");
             times.add("14:00 - 15:00");
             userService.saveUser(doctor);
+            userService.saveUser(doctor1);
             Doctor doctorEntity = doctorRepository.findDoctorByUsername("doctor");
             DoctorES doctorES = modelMapper.map(doctorEntity, DoctorES.class);
             doctorES.setSpecialty(doctorEntity.getSpecialty().getName());
             doctorESRepository.save(doctorES);
+            Doctor doctorEntity1 = doctorRepository.findDoctorByUsername("doctor1");
+            DoctorES doctorES1 = modelMapper.map(doctorEntity1, DoctorES.class);
+            doctorES1.setSpecialty(doctorEntity1.getSpecialty().getName());
+            doctorESRepository.save(doctorES1);
             Room room = roomRepository.save(new Room(null,"H2", null, hospital));
             scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, 2, doctorEntity));
+            scheduleRepository.save(new Schedule(null, ScheduleType.OFFLINE, dateFormat, room, times, 2, doctorEntity1));
             userService.addRoleToUser("user", "ROLE_USER");
             userService.addRoleToUser("user1", "ROLE_USER");
             userService.addRoleToUser("doctor", "ROLE_DOCTOR");
+            userService.addRoleToUser("doctor1", "ROLE_DOCTOR");
             userService.addRoleToUser("admin", "ROLE_ADMIN");
             SequenceGenerator sequenceGenerator = new SequenceGenerator();
             Long profileNumber = sequenceGenerator.nextId();
