@@ -34,6 +34,96 @@
         </v-btn>
       </v-card>
     </v-card>
+
     <!-- table data -->
+    <v-card outlined>
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="listMedicine"
+        :items-per-page="5"
+        class="elevation-0"
+        show-select
+        :footer-props="{ itemsPerPageText: 'Số hàng' }"
+      >
+      </v-data-table>
+    </v-card>
   </v-card>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      headers: [
+        {
+          text: "Tên thuốc",
+          align: "start",
+          sortable: false,
+          value: "name"
+        },
+
+        {
+          text: "Thông tin",
+          value: "info",
+          sortable: false
+        },
+
+        {
+          text: "Giá",
+          value: "price",
+          sortable: false
+        },
+        {
+          text: "Bệnh viện",
+          value: "hospital.name",
+          sortable: false
+        }
+      ],
+      listMedicine: [
+        {
+          name: "Paracetamol",
+          info: " Hạ sốt và kháng viêm",
+          price: "3.000",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        },
+        {
+          name: "Oresol",
+          info: "Bù nước trong trường hợp tiêu chảy",
+          price: "8.000",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        },
+        {
+          name: "Loratadine ",
+          info: "Thuốc chống dị ứng ",
+          price: "12.000",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        },
+        {
+          name: "Betadine",
+          info:
+            "ùng để sát trùng ngoài da đối với tổn thương trên da như xây xước nhẹ hoặc có chảy máu",
+          price: "8.000",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        },
+        {
+          name: "Becberin  ",
+          info: "Dùng khi tiêu chảy ",
+          price: "12.000",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        }
+      ]
+    };
+  }
+};
+</script>
