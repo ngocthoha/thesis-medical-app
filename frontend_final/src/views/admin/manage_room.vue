@@ -35,5 +35,88 @@
       </v-card>
     </v-card>
     <!-- table data -->
+    <v-card outlined>
+      <v-data-table
+        v-model="selected"
+        :headers="headers"
+        :items="listRoom"
+        :items-per-page="5"
+        class="elevation-0"
+        show-select
+        :footer-props="{ itemsPerPageText: 'Số hàng' }"
+      >
+      </v-data-table>
+    </v-card>
   </v-card>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      headers: [
+        {
+          text: "Tên Phòng",
+          align: "start",
+          sortable: false,
+          value: "name"
+        },
+
+        {
+          text: "Bệnh viện",
+          value: "hospital.name",
+          sortable: false
+        },
+
+        {
+          text: "Link trực tuyến",
+          value: "link",
+          sortable: false
+        }
+      ],
+      listRoom: [
+        {
+          name: "H1",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          },
+          link: "https://meet.google.com/eoq-kwje-jsu"
+        },
+        {
+          name: "H2",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        },
+        {
+          name: "H3",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          },
+          link: "https://meet.google.com/eoq-hdsd-dqa"
+        },
+        {
+          name: "H4",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          },
+          link: "https://meet.google.com/eoq-dda1-had"
+        },
+        {
+          name: "H5",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          }
+        },
+        {
+          name: "H6",
+          hospital: {
+            name: "Bệnh Viện Đại Học Y Dược HCM"
+          },
+          link: "https://meet.google.com/eoq-ddaa-jsu"
+        }
+      ]
+    };
+  }
+};
+</script>
