@@ -2,14 +2,13 @@ package com.thesis.medicalapp.controllers;
 
 import com.thesis.medicalapp.models.*;
 import com.thesis.medicalapp.payload.response.ApiResponse;
+import com.thesis.medicalapp.pojo.AppointmentDTO;
 import com.thesis.medicalapp.pojo.HospitalDTO;
-import com.thesis.medicalapp.repository.AppointmentRepository;
-import com.thesis.medicalapp.repository.LeaveRequestRepository;
-import com.thesis.medicalapp.repository.NotificationRepository;
-import com.thesis.medicalapp.repository.ScheduleRepository;
+import com.thesis.medicalapp.repository.*;
 import com.thesis.medicalapp.services.ScheduleService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -37,6 +36,7 @@ public class LeaveRequestController {
     private final ScheduleRepository scheduleRepository;
     private final AppointmentRepository appointmentRepository;
     private final NotificationRepository notificationRepository;
+    private final DoctorRepository doctorRepository;
     @Autowired
     private SimpMessagingTemplate simpMessagingTemplate;
 
@@ -128,6 +128,16 @@ public class LeaveRequestController {
         );
     }
 
+    @Data
+    public static class LeaveResponse {
+        private String id;
+        public String date;
+        private List<String> times;
+        private Doctor doctor;
+        private Boolean isApproved;
+        private String reason;
+    }
+
     @GetMapping("")
     public ResponseEntity<Object> getLeaves(
             @RequestParam Integer size,
@@ -135,8 +145,21 @@ public class LeaveRequestController {
     ) {
         Pageable pageable = PageRequest.of(page, size);
         Page<LeaveRequest> leaveRequests =  leaveRequestRepository.findAll(pageable);
+        Page<LeaveResponse> leaveResponses = leaveRequests.map(
+            a -> {
+                LeaveResponse leaveResponse = new LeaveResponse();
+                leaveResponse.setId(a.getId());
+                leaveResponse.setDate(a.getDate());
+                leaveResponse.setTimes(a.getTimes());
+                leaveResponse.setIsApproved(a.getIsApproved());
+                leaveResponse.setReason(a.getReason());
+                Doctor doctor = doctorRepository.findDoctorById(a.getDoctorId());
+                leaveResponse.setDoctor(doctor);
+                return leaveResponse;
+            }
+        );
         return ResponseEntity.status(HttpStatus.OK).body(
-                new ApiResponse<>(leaveRequests.getContent(), leaveRequests)
+                new ApiResponse<>(leaveResponses.getContent(), leaveResponses)
         );
     }
 }
