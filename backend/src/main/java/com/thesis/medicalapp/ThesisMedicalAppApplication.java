@@ -132,7 +132,7 @@ public class ThesisMedicalAppApplication {
             serviceESRepository.save(hospitalServiceES);
             // init user
             String bio = "Là giảng viên của trường Đại học Y dược Thái Nguyên nhiều năm kinh nghiệm, tận tình, nhiệt huyết. Đi đầu trong lĩnh vực dịch vụ y tế tại nhà trong khu vực.";
-            User user = new User(null, "user", "+84326185282", "1234", true, null, new ArrayList<>());
+            User user = new User(null, "user", "+84326185287", "1234", true, null, new ArrayList<>());
             User user1 = new User(null, "user1", "+84326185285", "1234", true, null, new ArrayList<>());
             User admin = new User(null, "admin", "+84326185283","1234", true, null, new ArrayList<>());
             User doctor = new Doctor(null, "doctor", "+84326185284","1234", true, "https://znews-photo.zingcdn.me/w660/Uploaded/ngogtn/2022_03_30/yoo_yeon_seok_3_7704_1629893125.jpeg", new ArrayList<>(), "Đinh Ngọc Sơn", Gender.MALE, new Date(), "doctor@gmail.com", SpecialtyType.CHUAN_DOAN_HINH_ANH, "PGS.TS.BS", bio, 100000, hospital, 0.0);
