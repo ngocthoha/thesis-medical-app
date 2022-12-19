@@ -143,7 +143,7 @@ public class ThesisMedicalAppApplication {
 
             Date dateFormat = new Date();
             try {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse("2022-12-19");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd").parse("2022-12-21");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
