@@ -184,6 +184,11 @@ const router = new Router({
         "/admin/manage-schedule-doctor"
       ),
       route(
+        "Quản lý lịch đơn nghỉ bác sĩ",
+        { default: "admin/manage_leave_doctor" },
+        "/admin/manage-leave-doctor"
+      ),
+      route(
         "Quản lý dịch vụ",
         { default: "admin/manage_service" },
         "/admin/manage-service"

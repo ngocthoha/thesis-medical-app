@@ -149,6 +149,10 @@ export default {
             {
               title: "Lịch làm việc",
               to: "/admin/manage-schedule-doctor"
+            },
+            {
+              title: "Đơn nghỉ",
+              to: "/admin/manage-leave-doctor"
             }
           ]
         },
