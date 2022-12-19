@@ -5,6 +5,7 @@ import com.thesis.medicalapp.models.Global;
 import com.thesis.medicalapp.models.Notification;
 import com.thesis.medicalapp.models.NotificationType;
 import com.thesis.medicalapp.models.Profile;
+import com.thesis.medicalapp.payload.ProfileUpdate;
 import com.thesis.medicalapp.payload.response.ApiResponse;
 import com.thesis.medicalapp.payload.response.ProfileSearch;
 import com.thesis.medicalapp.pojo.ProfileDTO;
@@ -122,7 +123,7 @@ public class ProfileController {
     }
 
     @PatchMapping("/profiles")
-    public ResponseEntity<ApiResponse> updateProfile(@RequestBody ProfileDTO profileDTO) {
+    public ResponseEntity<ApiResponse> updateProfile(@RequestBody ProfileUpdate profileDTO) {
         profileService.updateProfile(profileDTO);
         return ResponseEntity.status(HttpStatus.OK).body(
                 new ApiResponse<>(HttpStatus.OK.value(), "Success")

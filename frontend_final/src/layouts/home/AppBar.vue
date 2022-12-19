@@ -960,7 +960,7 @@ export default {
         });
     },
     connect() {
-      this.socket = new SockJS("http://localhost:8080/ws");
+      this.socket = new SockJS("http://localhost:8000/ws");
       this.stompClient = Stomp.over(this.socket);
       this.stompClient.connect(
         {},

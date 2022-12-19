@@ -862,7 +862,7 @@ export default {
         data: {
           requestId: new Date().getTime() + "id",
           orderId: orderId,
-          ipnUrl: "http://localhost:8080/api/payment/momo/verify",
+          ipnUrl: "http://localhost:8000/api/payment/momo/verify",
           redirectUrl:
             "http://localhost:8081/doctor-appointment-booking-success/",
           amount: "100000",

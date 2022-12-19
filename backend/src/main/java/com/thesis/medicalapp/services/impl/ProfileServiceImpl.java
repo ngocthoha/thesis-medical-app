@@ -6,6 +6,7 @@ import com.thesis.medicalapp.models.Address;
 import com.thesis.medicalapp.models.Global;
 import com.thesis.medicalapp.models.Profile;
 import com.thesis.medicalapp.models.User;
+import com.thesis.medicalapp.payload.ProfileUpdate;
 import com.thesis.medicalapp.payload.response.ProfileSearch;
 import com.thesis.medicalapp.pojo.ProfileDTO;
 import com.thesis.medicalapp.repository.AddressRepository;
@@ -98,7 +99,7 @@ public class ProfileServiceImpl implements ProfileService {
         return profileDTOS;
     };
     @Override
-    public void updateProfile(ProfileDTO profileDTO) {
+    public void updateProfile(ProfileUpdate profileDTO) {
         Profile profile = profileRepository.findById(profileDTO.getId());
         if (profile == null) throw new ApiRequestException("Can not found profile!");
         profile.setFirstName(profileDTO.getFirstName());
@@ -109,14 +110,22 @@ public class ProfileServiceImpl implements ProfileService {
         profile.setIdentityCard(profileDTO.getIdentityCard());
         profile.setHealthInsurance(profileDTO.getHealthInsurance());
         profile.setGender(profileDTO.getGender());
-        Address address = addressRepository.findById(profile.getAddress().getId()).get();
-        if (address == null) throw new ApiRequestException("Can not found address!");
+        Address address = new Address();
+        if (profileDTO.getAddress().getId() != null && profileDTO.getAddress().getId() != "") {
+            address = addressRepository.findById(profileDTO.getAddress().getId()).get();
+        }
         address.setCountry(profileDTO.getAddress().getCountry());
         address.setProvince(profileDTO.getAddress().getProvince());
         address.setDistrict(profileDTO.getAddress().getDistrict());
         address.setWard(profileDTO.getAddress().getWard());
         address.setAddress(profileDTO.getAddress().getAddress());
-        addressRepository.save(address);
+        Address address1 = addressRepository.save(address);
+        System.out.println(address1);
+        if (profile.getAddress() == null) {
+            System.out.println("dddddd");
+            profile.setAddress(address1);
+        }
+        System.out.println(profile.getAddress());
         profile.setDob(profileDTO.getDob());
         profile.setFolk(profileDTO.getFolk());
         profile.setGuardian(profileDTO.getGuardian());

@@ -468,6 +468,8 @@
                 :disabled="disableEdit"
                 :items="commune_list"
                 v-model="profile.ward"
+                item-text="text"
+                item-value="text"
                 solo
                 flat
                 dense
@@ -750,7 +752,7 @@ export default {
     };
   },
 
-  created() {
+  async created() {
     //create day
     this.days.month = Array.from({ length: 12 }, (_, i) =>
       i + 1 > 9 ? String(i + 1) : "0" + String(i + 1)
@@ -761,7 +763,9 @@ export default {
     let year = Array.from({ length: 100 }, (_, i) => String(i + 1923));
     this.days.year = year.reverse();
     this.setDataForm();
-    this.getProvines();
+    await this.getProvines();
+    await this.getDistricts();
+    await this.getWards();
   },
   watch: {
     "profile.province": {
@@ -790,6 +794,7 @@ export default {
         `https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1`
       );
       let provinces = res.data?.data?.data;
+      this.province_list = [];
       for (let p of provinces) {
         this.province_list.push({ text: p.name, value: p.code });
       }
@@ -800,14 +805,14 @@ export default {
       );
       const params = {
         limit: -1,
-        provinceCode: province.value
+        provinceCode: province?.value
       };
       const res = await this.axios.get(
         `https://vn-public-apis.fpo.vn/districts/getByProvince`,
         { params: params }
       );
-      console.log(res);
       let districts = res.data.data.data || [];
+      this.town_list = [];
       for (let p of districts) {
         this.town_list.push({ text: p.name, value: p.code });
       }
@@ -818,14 +823,14 @@ export default {
       );
       const params = {
         limit: -1,
-        districtCode: district.value
+        districtCode: district?.value
       };
       const res = await this.axios.get(
         `https://vn-public-apis.fpo.vn/wards/getByDistrict`,
         { params: params }
       );
-      console.log(res);
       let wards = res.data.data.data || [];
+      this.commune_list = [];
       for (let p of wards) {
         this.commune_list.push({ text: p.name, value: p.code });
       }
@@ -957,7 +962,6 @@ export default {
         data: data
       };
       await this.$store.dispatch("profile/add_new_profile", param);
-      console.log("add profile successfully");
     },
 
     async editProfile() {
@@ -989,7 +993,6 @@ export default {
       };
       //process data
       data.id = this.profile.id;
-      console.log(data.id);
       data.lastName = this.profile.lastName;
       data.firstName = this.profile.firstName;
       data.address.id = this.profile.addressId;
