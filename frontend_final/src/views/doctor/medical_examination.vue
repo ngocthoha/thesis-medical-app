@@ -1506,12 +1506,12 @@ export default {
       params.page = this.pagination.page - 1;
       params.size = this.pagination.itemsPerPage;
 
-      params.filters.push({
-        key: "date",
-        operator: "EQUAL_DATE",
-        field_type: "STRING",
-        value: "2022-12-19"
-      });
+      // params.filters.push({
+      //   key: "date",
+      //   operator: "EQUAL_DATE",
+      //   field_type: "STRING",
+      //   value: "2022-12-19"
+      // });
       params.filters.push({
         key: "doctor.id",
         operator: "EQUAL_NESTED",

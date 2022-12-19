@@ -167,6 +167,16 @@ export default {
           ]
         },
         {
+          title: "QUẢN LÝ LỊCH HẸN",
+          icon: "mdi-text-box-check-outline",
+          items: [
+            {
+              title: "Duyệt đơn tại viện",
+              to: "/admin/approve-appointment"
+            }
+          ]
+        },
+        {
           title: "QUẢN LÝ PHÒNG",
           icon: "mdi-bed-outline",
           items: [

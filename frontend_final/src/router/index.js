@@ -203,6 +203,11 @@ const router = new Router({
         { default: "admin/manage_medicine" },
         "/admin/manage-medicine"
       ),
+      route(
+        "Duyệt đơn khám tại viện",
+        { default: "admin/approve_appointment" },
+        "/admin/approve-appointment"
+      ),
       
     ]),
 

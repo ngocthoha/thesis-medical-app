@@ -178,7 +178,10 @@ export default {
       await axios
         .post(`${url}/api/leave-requests/approve?leaveId=${leaveId}`)
         .then(res => {
-          console.log("Duyệt đơn thành công");
+          this.$store.dispatch("snackbar/set_snackbar", {
+            text: "Duyệt đơn thành công",
+            type: "success"
+          });
         });
       await this.getAllLeave();
     }
