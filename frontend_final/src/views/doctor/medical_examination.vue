@@ -184,7 +184,10 @@
         <template v-slot:[`item.room`]="{ item }">
           <div class="d-flex flex-row align-center">
             <p class="ma-0">{{ item.room.name }}</p>
-            <v-icon v-if="item.type === 'ONLINE'" class="ml-2"
+            <v-icon
+              v-if="item.type === 'ONLINE'"
+              class="ml-2"
+              @click="go_to_room(item.room.link)"
               >mdi-video-outline</v-icon
             >
           </div>
@@ -1686,7 +1689,11 @@ export default {
       if (this.image_file_accept.includes(temp_array_1[1])) result = true;
       return result;
     },
-    down_load_file() {}
+    down_load_file() {},
+
+    go_to_room(link) {
+      window.open(link);
+    }
   }
 };
 </script>

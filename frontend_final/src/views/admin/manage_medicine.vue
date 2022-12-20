@@ -156,49 +156,7 @@ export default {
           sortable: false
         }
       ],
-      listMedicine: [
-        {
-          name: "Paracetamol",
-          info: " Hạ sốt và kháng viêm",
-          price: "3.000",
-          hospital: {
-            name: "Bệnh Viện Đại Học Y Dược HCM"
-          }
-        },
-        {
-          name: "Oresol",
-          info: "Bù nước trong trường hợp tiêu chảy",
-          price: "8.000",
-          hospital: {
-            name: "Bệnh Viện Đại Học Y Dược HCM"
-          }
-        },
-        {
-          name: "Loratadine ",
-          info: "Thuốc chống dị ứng ",
-          price: "12.000",
-          hospital: {
-            name: "Bệnh Viện Đại Học Y Dược HCM"
-          }
-        },
-        {
-          name: "Betadine",
-          info:
-            "ùng để sát trùng ngoài da đối với tổn thương trên da như xây xước nhẹ hoặc có chảy máu",
-          price: "8.000",
-          hospital: {
-            name: "Bệnh Viện Đại Học Y Dược HCM"
-          }
-        },
-        {
-          name: "Becberin  ",
-          info: "Dùng khi tiêu chảy ",
-          price: "12.000",
-          hospital: {
-            name: "Bệnh Viện Đại Học Y Dược HCM"
-          }
-        }
-      ],
+      listMedicine: [],
       hospital_list: [],
       hospital_select: "",
       medicine_name: "",
@@ -207,9 +165,19 @@ export default {
     };
   },
   created() {
+    this.getMedicineList();
     this.get_hospital_list();
   },
   methods: {
+    async getMedicineList() {
+      let token = this.$store.getters["auth/access_token"];
+      axios.defaults.headers.common = {
+        Authorization: `Bearer ${token}`
+      };
+      await axios.get(`${url}/api/store-medicines`).then(res => {
+        this.listMedicine = res.data.results;
+      });
+    },
     async get_hospital_list() {
       await axios.get(`${url}/api/hospitals`).then(res => {
         this.hospital_list = res.data.results;
@@ -221,9 +189,7 @@ export default {
         price: this.price,
         info: this.info,
         imageUrl: null,
-        hospital: {
-          id: this.hospital_select.id
-        }
+        hospitalId: this.hospital_select.id
       };
       await axios.post(`${url}/api/store-medicines`, param).then(res => {
         this.$store.dispatch("snackbar/set_snackbar", {
@@ -231,9 +197,14 @@ export default {
           type: "success"
         });
       });
-
+      await this.getMedicineList();
       this.create_dialog = false;
     }
   }
 };
 </script>
+<style scoped>
+.btn {
+  text-transform: none;
+}
+</style>
