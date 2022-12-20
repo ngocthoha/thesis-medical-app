@@ -40,15 +40,15 @@ export default {
 
   data: () => ({
     profile: [
-      { title: "Profile" },
-      { title: "Settings" },
+      { title: "Hồ sơ" },
+      { title: "Cài đặt" },
       { divider: true },
       { title: "Đăng xuất" }
     ]
   }),
   methods: {
-    logout() {
-      this.$store.dispatch("auth/logout", {});
+    async logout() {
+      await this.$store.dispatch("auth/logout", {});
       this.$router.push({ name: "Trang chủ" }).catch(error => {
         if (error == null) {
           return;

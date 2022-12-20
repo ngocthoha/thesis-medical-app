@@ -184,6 +184,7 @@ export default {
           });
         });
       await this.getAllLeave();
+      this.confirm_approve_dialog = false;
     }
   }
 };
