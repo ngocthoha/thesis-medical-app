@@ -13,7 +13,11 @@
           elevation="0"
           outlined
           color="#667085"
-          >Xem lịch khám<v-icon class="ml-2" small color="#537da5"
+          >Xem lịch khám<v-icon
+            class="ml-2"
+            small
+            color="#537da5"
+            @click="go_to_appointment_history"
             >mdi-arrow-right</v-icon
           ></v-btn
         >
@@ -516,7 +520,10 @@ export default {
       this.is_payment = true;
     },
 
-    make_pay_ment() {}
+    make_pay_ment() {},
+    go_to_appointment_history() {
+      this.$router.push({ name: "Lịch sử Đặt khám" });
+    }
   }
 };
 </script>
