@@ -864,7 +864,7 @@ export default {
           orderId: orderId,
           ipnUrl: `${url}/api/payment/momo/verify`,
           redirectUrl:
-            "https://localhost:8080/doctor-appointment-booking-success/",
+            "http://localhost:8080/doctor-appointment-booking-success/",
           amount: "100000",
           orderInfo: "Khám theo yêu cầu tại đại học y dược",
           extraData: "",
