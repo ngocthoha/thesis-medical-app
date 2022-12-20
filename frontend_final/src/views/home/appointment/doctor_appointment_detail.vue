@@ -629,7 +629,7 @@ export default {
       if (is_login) {
         if (this.online_selected != null) {
           this.$store.dispatch(
-            "appointment/set_time_to_make_appointment_service",
+            "appointment/set_time_to_make_appointment_doctor",
             {
               time: this.online_selected,
               type: "ONLINE",
@@ -637,6 +637,7 @@ export default {
               room: this.online.room
             }
           );
+
           this.$router
             .push({ name: "Điền thông tin đặt lịch bác sĩ" })
             .catch(error => {
