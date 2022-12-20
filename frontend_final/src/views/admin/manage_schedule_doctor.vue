@@ -417,13 +417,13 @@ export default {
         Authorization: `Bearer ${token}`
       };
 
-      console.log(param);
       await axios.post(`${url}/api/schedules`, param).then(res => {
         this.$store.dispatch("snackbar/set_snackbar", {
           text: "Tạo lịch thành công",
           type: "success"
         });
       });
+      this.add_dialog = false;
     },
     async getAllDoctor() {
       let token = this.$store.getters["auth/access_token"];

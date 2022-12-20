@@ -364,6 +364,7 @@
                   color="#537DA5"
                   dark
                   v-bind="attrs"
+                  @click="go_to_room(appointment.room.link)"
                   v-on="on"
                 >
                   mdi-video
@@ -681,6 +682,9 @@ export default {
       } else {
         return appointment.service.name;
       }
+    },
+    go_to_room(link) {
+      window.open(link);
     }
   }
 };
