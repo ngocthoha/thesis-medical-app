@@ -50,6 +50,7 @@ public class Appointment extends AuditLog {
     private Integer fee;
     private CategoryType category;
     private String orderId;
+    private String requestId;
     @Type(type="text")
     private String qrcode;
     private PaymentType paymentType;

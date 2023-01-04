@@ -472,12 +472,17 @@ export default {
     const paymentType = urlParams.get("paymentType");
     this.message = "Đang xử lý thanh toán...";
     if (resultCode === "0") {
-      if (paymentType != "DIRECT") await this.updateAppointment(orderId);
+      if (paymentType != "DIRECT")
+        await this.updateAppointment(orderId, "PROCESS");
       this.message = "Đặt Khám Thành Công";
-    } else this.message = "Đặt Khám Thất Bại";
+    } else {
+      if (paymentType != "DIRECT")
+        await this.updateAppointment(orderId, "CANCEL");
+      this.message = "Đặt Khám Thất Bại";
+    }
   },
   methods: {
-    async updateAppointment(orderId) {
+    async updateAppointment(orderId, status) {
       let token = this.$store.getters["auth/access_token"];
 
       this.axios.defaults.headers.common = {
@@ -485,8 +490,8 @@ export default {
       };
       const params = {
         orderId: orderId,
-        isPaid: true,
-        status: "PROCESS"
+        isPaid: status === "PROCESS",
+        status: status
       };
       await this.axios.patch(`${url}/api/appointments`, params);
     },

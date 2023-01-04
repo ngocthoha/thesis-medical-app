@@ -7,6 +7,7 @@ import com.mservice.allinone.models.CaptureMoMoResponse;
 import com.mservice.shared.exception.MoMoException;
 import com.mservice.shared.sharedmodels.AbstractProcess;
 import com.thesis.medicalapp.exception.ApiRequestException;
+import com.thesis.medicalapp.models.Appointment;
 import org.springframework.core.env.Environment;
 import com.mservice.shared.sharedmodels.HttpResponse;
 import com.mservice.shared.utils.Encoder;
@@ -91,6 +92,38 @@ public class PaymentController {
 
             return ResponseEntity.status(HttpStatus.OK).body(
                     new ApiResponse<>(momoResponse)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    new ApiResponse<>(HttpStatus.BAD_REQUEST, e.getMessage())
+            );
+        }
+    }
+
+    @PostMapping("/momo/refund")
+    public ResponseEntity<Object> refund(@RequestBody Appointment appointment) {
+        try {
+            String accessKey = "klm05TvNBzhg7h7j";
+            String secretKey = "at67qH6mk8w5Y1nAyMoYKMWACiEi2bsa";
+            String partnerCode = "MOMOBKUN20180529";
+            String lang = "vi";
+            String url = "https://test-payment.momo.vn/v2/gateway/api/query";
+            String requestId = appointment.getRequestId();
+            String orderId = appointment.getOrderId();
+            String signature = "accessKey="+ accessKey +"&orderId=" + orderId+"&partnerCode=" + partnerCode+"&requestId=" + requestId;
+            System.out.println(signature);
+            String hash = Encoder.signHmacSHA256(signature, secretKey);
+            JSONObject request = new JSONObject();
+            request.put("partnerCode", partnerCode);
+            request.put("requestId", requestId);
+            request.put("orderId", orderId);
+            request.put("lang", lang);
+            request.put("signature", hash);
+            HttpResponse response = this.execute.sendToMoMo(url, request.toString());
+            JSONObject myObject = new JSONObject(response.getData());
+//            System.out.println(myObject.transId);
+            return ResponseEntity.status(HttpStatus.OK).body(
+                    new ApiResponse<>()
             );
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(

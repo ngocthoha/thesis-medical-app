@@ -1,8 +1,10 @@
 package com.thesis.medicalapp.services.impl;
 
+import com.thesis.medicalapp.models.Hospital;
 import com.thesis.medicalapp.models.Role;
 import com.thesis.medicalapp.models.User;
 import com.thesis.medicalapp.pojo.UserDTO;
+import com.thesis.medicalapp.repository.HospitalRepository;
 import com.thesis.medicalapp.repository.RoleRepository;
 import com.thesis.medicalapp.repository.UserRepository;
 import com.thesis.medicalapp.services.UserService;
@@ -27,6 +29,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final HospitalRepository hospitalRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -41,6 +44,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userOp.get();
         user.getRoles().forEach(role -> {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
+            if (role.getName().equals("ROLE_HOSPITAL_ADMIN")) {
+                Hospital hospital = hospitalRepository.findByName("Bệnh Viện Đại Học Y Dược HCM");
+                authorities.add(new SimpleGrantedAuthority(hospital.getId()));
+            }
         });
         authorities.add(new SimpleGrantedAuthority(user.getId()));
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);

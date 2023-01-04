@@ -863,8 +863,10 @@ export default {
           requestId: new Date().getTime() + "id",
           orderId: orderId,
           ipnUrl: `${url}/api/payment/momo/verify`,
+          // redirectUrl:
+          //   "http://blousecare.online/doctor-appointment-booking-success/",
           redirectUrl:
-            "http://blousecare.online/doctor-appointment-booking-success/",
+            "http://localhost:8080/doctor-appointment-booking-success/",
           amount: "100000",
           orderInfo: "Khám theo yêu cầu tại đại học y dược",
           extraData: "",

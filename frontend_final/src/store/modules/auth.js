@@ -11,7 +11,9 @@ const state = {
   isDoctor: false,
   isUser: false,
   isAdmin: false,
-  userId: null
+  isHospitalAdmin: false,
+  userId: null,
+  hospitalId: null
 };
 
 const mutations = {
@@ -48,8 +50,16 @@ const mutations = {
     state.isAdmin = isAdmin;
   },
 
+  SET_IS_HOSPITAL_ADMIN: (state, isHospitalAdmin) => {
+    state.isHospitalAdmin = isHospitalAdmin;
+  },
+
   SET_USER_ID: (state, userId) => {
     state.userId = userId;
+  },
+
+  SET_HOSPITAL_ID: (state, hospitalId) => {
+    state.hospitalId = hospitalId;
   }
 };
 
@@ -61,15 +71,26 @@ const actions = {
         localStorage.setItem("username", decoded.sub);
         let isDoctor = (decoded.roles || []).some(r => r === "ROLE_DOCTOR");
         let isUser = (decoded.roles || []).some(r => r === "ROLE_USER");
-        let isAdmin = (decoded.roles || [].some(r=> r ==="ROLE_ADMIN"));
+        let isAdmin = (decoded.roles || []).some(r => r === "ROLE_ADMIN");
+        let isHospitalAdmin = (decoded.roles || []).some(
+          r => r === "ROLE_HOSPITAL_ADMIN"
+        );
         let userId = (decoded.roles || []).filter(
-          r => !["ROLE_DOCTOR", "ROLE_USER", "ROLE_ADMIN"].includes(r)
+          r =>
+            ![
+              "ROLE_DOCTOR",
+              "ROLE_USER",
+              "ROLE_ADMIN",
+              "ROLE_HOSPITAL_ADMIN"
+            ].includes(r)
         );
         commit("SET_USERNAME", decoded.sub);
         commit("SET_USER_ID", userId[0]);
+        commit("SET_HOSPITAL_ID", userId[1]);
         commit("SET_IS_DOCTOR", isDoctor);
         commit("SET_IS_USER", isUser);
         commit("SET_IS_ADMIN", isAdmin);
+        commit("SET_IS_HOSPITAL_ADMIN", isHospitalAdmin);
         commit("SET_TOKEN", data.access_token);
         commit("SET_TYPE", data.type);
         commit("SET_IS_LOGIN", true);
@@ -122,7 +143,9 @@ const getters = {
   isDoctor: state => state.isDoctor,
   isUser: state => state.isUser,
   isAdmin: state => state.isAdmin,
-  userId: state => state.userId
+  isHospitalAdmin: state => state.isHospitalAdmin,
+  userId: state => state.userId,
+  hospitalId: state => state.hospitalId
 };
 
 export default {

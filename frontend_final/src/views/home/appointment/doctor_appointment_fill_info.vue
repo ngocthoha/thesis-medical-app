@@ -786,10 +786,12 @@ export default {
 
     async make_payment() {
       let orderId = new Date().getTime();
-      if (this.payment_selection != "DIRECT") await this.paymentOnline(orderId);
-      this.createAppointment(orderId);
+      let requestId = new Date().getTime() + "id";
+      if (this.payment_selection != "DIRECT")
+        await this.paymentOnline(orderId, requestId);
+      this.createAppointment(orderId, requestId);
     },
-    async paymentOnline(orderId) {
+    async paymentOnline(orderId, requestId) {
       let token = this.$store.getters["auth/access_token"];
       const mapPaymentType = {
         ATM: "payWithATM",
@@ -799,11 +801,13 @@ export default {
       const params = {
         token: token,
         data: {
-          requestId: new Date().getTime() + "id",
+          requestId: requestId,
           orderId: orderId,
           ipnUrl: `${url}/api/payment/momo/verify`,
+          // redirectUrl:
+          //   "http://blousecare.online/doctor-appointment-booking-success/",
           redirectUrl:
-            "http://blousecare.online/doctor-appointment-booking-success/",
+            "http://localhost:8080/doctor-appointment-booking-success/",
           amount: "100000",
           orderInfo: "Khám theo yêu cầu tại đại học y dược",
           extraData: "",
@@ -894,7 +898,7 @@ export default {
       this.profile_list = this.$store.getters["profile/profile_list"];
     },
 
-    async createAppointment(orderId) {
+    async createAppointment(orderId, requestId) {
       this.loading = true;
       let post_file_list = this.test_add_list.concat(this.image_analyst_list);
 
@@ -921,6 +925,7 @@ export default {
           isPaid: false,
           category: "DOCTOR",
           orderId: orderId,
+          requestId: requestId,
           paymentType: this.payment_selection
         }
       };

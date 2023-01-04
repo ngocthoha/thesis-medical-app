@@ -38,6 +38,7 @@ public class AppointmentRequest {
     @NotNull
     private CategoryType category;
     private String orderId;
+    private String requestId;
     private PaymentType paymentType;
     private Status status;
 }

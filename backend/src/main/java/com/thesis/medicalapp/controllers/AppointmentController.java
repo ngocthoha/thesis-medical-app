@@ -106,17 +106,12 @@ public class AppointmentController {
         appointment.setFee(appointmentRequest.getFee());
         appointment.setIsPaid(appointmentRequest.getIsPaid());
         appointment.setOrderId(appointmentRequest.getOrderId());
+        appointment.setRequestId(appointmentRequest.getRequestId());
 
         appointment.setPaymentType(appointmentRequest.getPaymentType());
         if (appointment.getPaymentType().equals(PaymentType.DIRECT) && !appointment.getIsPaid())
             appointment.setStatus(Status.PENDING);
-        else {
-            if (appointment.getIsPaid()) {
-                appointment.setStatus(Status.PROCESS);
-            } else {
-                appointment.setStatus(Status.CANCEL);
-            }
-        }
+
         String objectName = "";
         if (appointmentRequest.getCategory().equals(CategoryType.DOCTOR)) {
             objectName = appointment.getDoctor().getName();
@@ -141,7 +136,7 @@ public class AppointmentController {
         notification.setToUser(profile.getUser().getUsername());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dateNoti = formatter.format(appointmentDTO.getDate());
-        if (appointmentDTO.getStatus().equals(Status.PENDING) || appointmentDTO.getStatus().equals(Status.PROCESS)) {
+        if (appointmentDTO.getStatus().equals(Status.PENDING)) {
             notification.setType(NotificationType.SUCCESS_APPOINTMENT);
             notification.setTitle("Đặt lịch khám thành công");
             if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
@@ -156,6 +151,8 @@ public class AppointmentController {
                         + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
             }
             notification.setText(text);
+            Notification notificationRes = notificationRepository.save(notification);
+            simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
         }
         else if (appointmentDTO.getStatus().equals(Status.CANCEL)) {
             notification.setType(NotificationType.FAIL_APPOINTMENT);
@@ -173,9 +170,10 @@ public class AppointmentController {
                         + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
             }
             notification.setText(text);
+            Notification notificationRes = notificationRepository.save(notification);
+            simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
         }
-        Notification notificationRes = notificationRepository.save(notification);
-        simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
+
         if (profile.getIsContactProfile()) {
             Profile profileMakeAppointment = profileRepository.findProfileByRelationshipAndUser_Username("Chủ tài khoản", profile.getUser().getUsername());
             Profile profileContact = profileRepository.findProfileByPhoneAndRelationship(profile.getPhone(), "Chủ tài khoản").get();
@@ -251,8 +249,57 @@ public class AppointmentController {
         if (appointmentRequest.getTime() != null)  appointment.setTime(appointmentRequest.getTime());
         if (appointmentRequest.getSymptom() != null)  appointment.setSymptom(appointmentRequest.getSymptom());
         if (appointmentRequest.getFee() != null)  appointment.setFee(appointmentRequest.getFee());
-        if (appointmentRequest.getIsPaid() != null)  appointment.setIsPaid(appointmentRequest.getIsPaid());
-        if (appointmentRequest.getStatus() != null)  appointment.setStatus(appointmentRequest.getStatus());
+        if (appointmentRequest.getStatus() != null)  {
+            appointment.setStatus(appointmentRequest.getStatus());
+        }
+        if (appointmentRequest.getIsPaid() != null)  {
+            appointment.setIsPaid(appointmentRequest.getIsPaid());
+            Notification notification = new Notification();
+            notification.setTime(new Date());
+            String text = "";
+            notification.setObjectId(appointment.getId());
+            notification.setToUser(appointment.getProfile().getUser().getUsername());
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String dateNoti = formatter.format(appointment.getDate());
+            if (appointment.getStatus().equals(Status.PROCESS)) {
+                notification.setType(NotificationType.SUCCESS_APPOINTMENT);
+                notification.setTitle("Đặt lịch khám thành công");
+                if (appointment.getCategory().equals(CategoryType.DOCTOR)) {
+                    text = "Lịch khám theo yêu cầu với "
+                            + appointment.getDoctor().getLevel() + ". " + appointment.getDoctor().getName()
+                            + " ngày " + dateNoti
+                            + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+                } else {
+                    text = "Lịch khám theo dịch vụ "
+                            + appointment.getService().getName()
+                            + " ngày " + dateNoti
+                            + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+                }
+                notification.setText(text);
+                Notification notificationRes = notificationRepository.save(notification);
+                simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
+            }
+            else if (appointment.getStatus().equals(Status.CANCEL)) {
+                notification.setType(NotificationType.FAIL_APPOINTMENT);
+                notification.setTitle("Đặt lịch khám thất bại");
+                if (appointment.getCategory().equals(CategoryType.DOCTOR)) {
+                    text = "Lịch khám theo yêu cầu với "
+                            + appointment.getDoctor().getLevel() + ". " + appointment.getDoctor().getName()
+                            + " ngày " + dateNoti
+                            + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
+
+                } else {
+                    text = "Lịch khám theo dịch vụ "
+                            + appointment.getService().getName()
+                            + " ngày " + dateNoti
+                            + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
+                }
+                notification.setText(text);
+                Notification notificationRes = notificationRepository.save(notification);
+                simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
+            }
+        }
+
         appointmentService.updateAppointment(appointment);
         return ResponseEntity.ok(
                 new ApiResponse(null)
