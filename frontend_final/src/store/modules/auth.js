@@ -86,7 +86,8 @@ const actions = {
         );
         commit("SET_USERNAME", decoded.sub);
         commit("SET_USER_ID", userId[0]);
-        commit("SET_HOSPITAL_ID", userId[1]);
+        let hospitalId = userId[1] || null;
+        commit("SET_HOSPITAL_ID", hospitalId);
         commit("SET_IS_DOCTOR", isDoctor);
         commit("SET_IS_USER", isUser);
         commit("SET_IS_ADMIN", isAdmin);
