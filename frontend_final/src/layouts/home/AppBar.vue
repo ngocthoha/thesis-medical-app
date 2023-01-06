@@ -1049,6 +1049,9 @@ export default {
         if ((type || []).some(t => t.authority === "ROLE_ADMIN")) {
           this.$router.push({ name: "Quản lý bệnh viện" });
         }
+        if ((type || []).some(t => t.authority === "ROLE_HOSPITAL_ADMIN")) {
+          this.$router.push({ name: "Quản lý bệnh viện" });
+        }
       }
     },
 

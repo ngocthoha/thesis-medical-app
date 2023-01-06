@@ -223,6 +223,77 @@ export default {
             }
           ]
         }
+      ],
+
+      itemHospitalAdmin: [
+        {
+          title: "QUẢN LÝ BỆNH VIỆN",
+          icon: "mdi-hospital-building",
+          items: [
+            {
+              title: "Bệnh viện",
+              to: "/admin/manage-hospital"
+            }
+          ]
+        },
+        {
+          title: "QUẢN LÝ BÁC SĨ",
+          icon: "mdi-doctor",
+          items: [
+            {
+              title: "Bác sĩ",
+              to: "/admin/manage-doctor"
+            },
+            {
+              title: "Lịch làm việc",
+              to: "/admin/manage-schedule-doctor"
+            },
+            {
+              title: "Đơn nghỉ",
+              to: "/admin/manage-leave-doctor"
+            }
+          ]
+        },
+        {
+          title: "QUẢN LÝ DỊCH VỤ",
+          icon: "mdi-calendar-month-outline",
+          items: [
+            {
+              title: "Dịch vụ",
+              to: "/admin/manage-service"
+            }
+          ]
+        },
+        {
+          title: "QUẢN LÝ LỊCH HẸN",
+          icon: "mdi-text-box-check-outline",
+          items: [
+            {
+              title: "Duyệt đơn tại viện",
+              to: "/admin/approve-appointment"
+            }
+          ]
+        },
+        {
+          title: "QUẢN LÝ PHÒNG",
+          icon: "mdi-bed-outline",
+          items: [
+            {
+              title: "Phòng",
+              to: "/admin/manage-room"
+            }
+          ]
+        },
+        {
+          title: "QUẢN LÝ THUỐC",
+          icon: "mdi-pill-multiple",
+          items: [
+            {
+              title: "Thuốc",
+              to: "/admin/manage-medicine"
+            }
+          ]
+        }
       ]
     };
   },
@@ -246,6 +317,8 @@ export default {
         return this.itemDoctor;
       } else if (this.$store.getters["auth/isAdmin"]) {
         return this.itemAdmin;
+      } else if (this.$store.getters["auth/isHospitalAdmin"]) {
+        return this.itemHospitalAdmin;
       }
     },
     // ...get('app', [

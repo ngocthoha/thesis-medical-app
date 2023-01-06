@@ -300,7 +300,11 @@ export default {
     };
   },
   created() {
-    this.get_doctor_list();
+    if (this.$store.getters["auth/isAdmin"]) {
+      this.get_doctor_list();
+    } else if (this.$store.getters["auth/isHospitalAdmin"]) {
+      this.get_doctor_list_by_hospital();
+    }
     this.get_hospital_list();
   },
   methods: {
@@ -348,6 +352,17 @@ export default {
       await axios.get(`${url}/api/hospitals`).then(res => {
         this.hospital_list = res.data.results;
       });
+    },
+
+    async get_doctor_list_by_hospital() {
+      const param = {
+        hospitalId: this.$store.getters["auth/hospitalId"],
+        page: 0,
+        size: 8
+      };
+      await this.$store.dispatch("hospital/get_doctor_by_hospital", param);
+      //this.totalPages = res.meta?.totalPages;
+      this.doctor_list = this.$store.getters["hospital/doctor_by_hospital"];
     }
   }
 };

@@ -107,7 +107,11 @@ export default {
     };
   },
   async created() {
-    await this.getListService();
+    if (this.$store.getters["auth/isAdmin"]) {
+      await this.getListService();
+    } else if (this.$store.getters["auth/isHospitalAdmin"]) {
+      await this.getServiceByHospital();
+    }
   },
 
   methods: {
@@ -158,6 +162,20 @@ export default {
       } else {
         return require("@/assets/img/home/appbar/avatar.png");
       }
+    },
+
+    async getServiceByHospital() {
+      const url = process.env.VUE_APP_ROOT_API;
+      const params = {
+        hospitalId: this.$store.getters["auth/hospitalId"],
+        page: 0,
+        size: 8
+      };
+      const res = await axios.get(`${url}/api/services/hospital`, {
+        params: params
+      });
+      this.listService = res.data.results;
+      this.totalPages = res.data?.meta?.totalPages;
     }
   }
 };

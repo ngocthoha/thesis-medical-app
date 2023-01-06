@@ -363,7 +363,11 @@ export default {
   },
 
   created() {
-    this.getAllDoctor();
+    if (this.$store.getters["auth/isAdmin"]) {
+      this.getAllDoctor();
+    } else if (this.$store.getters["auth/isHospitalAdmin"]) {
+      this.get_doctor_list_by_hospital();
+    }
     this.getRoomList();
   },
   methods: {
@@ -451,6 +455,16 @@ export default {
       await axios.get(`${url}/api/rooms`).then(res => {
         this.roomList = res.data.results;
       });
+    },
+    async get_doctor_list_by_hospital() {
+      const param = {
+        hospitalId: this.$store.getters["auth/hospitalId"],
+        page: 0,
+        size: 8
+      };
+      await this.$store.dispatch("hospital/get_doctor_by_hospital", param);
+      //this.totalPages = res.meta?.totalPages;
+      this.doctorList = this.$store.getters["hospital/doctor_by_hospital"];
     }
   }
 };
