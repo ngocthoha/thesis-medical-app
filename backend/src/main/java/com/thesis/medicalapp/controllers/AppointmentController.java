@@ -136,42 +136,44 @@ public class AppointmentController {
         notification.setToUser(profile.getUser().getUsername());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dateNoti = formatter.format(appointmentDTO.getDate());
-        if (appointmentDTO.getStatus().equals(Status.PENDING)) {
-            notification.setType(NotificationType.SUCCESS_APPOINTMENT);
-            notification.setTitle("Đặt lịch khám thành công");
-            if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
-                text = "Lịch khám theo yêu cầu với "
-                        + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
-                        + " ngày " + dateNoti
-                        + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
-            } else {
-                text = "Lịch khám theo dịch vụ "
-                        + appointmentDTO.getService().getName()
-                        + " ngày " + dateNoti
-                        + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+        if (appointmentDTO.getStatus() != null) {
+            if (appointmentDTO.getStatus().equals(Status.PENDING)) {
+                notification.setType(NotificationType.SUCCESS_APPOINTMENT);
+                notification.setTitle("Đặt lịch khám thành công");
+                if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
+                    text = "Lịch khám theo yêu cầu với "
+                            + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
+                            + " ngày " + dateNoti
+                            + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+                } else {
+                    text = "Lịch khám theo dịch vụ "
+                            + appointmentDTO.getService().getName()
+                            + " ngày " + dateNoti
+                            + " đã được đăng ký thành công. Vui lòng bấm xem lịch khám để xem thêm chi tiết.";
+                }
+                notification.setText(text);
+                Notification notificationRes = notificationRepository.save(notification);
+                simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
             }
-            notification.setText(text);
-            Notification notificationRes = notificationRepository.save(notification);
-            simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
-        }
-        else if (appointmentDTO.getStatus().equals(Status.CANCEL)) {
-            notification.setType(NotificationType.FAIL_APPOINTMENT);
-            notification.setTitle("Đặt lịch khám thất bại");
-            if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
-                text = "Lịch khám theo yêu cầu với "
-                        + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
-                        + " ngày " + dateNoti
-                        + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
+            else if (appointmentDTO.getStatus().equals(Status.CANCEL)) {
+                notification.setType(NotificationType.FAIL_APPOINTMENT);
+                notification.setTitle("Đặt lịch khám thất bại");
+                if (appointmentDTO.getCategory().equals(CategoryType.DOCTOR)) {
+                    text = "Lịch khám theo yêu cầu với "
+                            + appointmentDTO.getDoctor().getLevel() + ". " + appointmentDTO.getDoctor().getName()
+                            + " ngày " + dateNoti
+                            + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
 
-            } else {
-                text = "Lịch khám theo dịch vụ "
-                        + appointmentDTO.getService().getName()
-                        + " ngày " + dateNoti
-                        + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
+                } else {
+                    text = "Lịch khám theo dịch vụ "
+                            + appointmentDTO.getService().getName()
+                            + " ngày " + dateNoti
+                            + " đã đăng ký thất bại do chưa thanh toán thành công. Vui lòng bấm xem lịch khám để đặt khám lại.";
+                }
+                notification.setText(text);
+                Notification notificationRes = notificationRepository.save(notification);
+                simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
             }
-            notification.setText(text);
-            Notification notificationRes = notificationRepository.save(notification);
-            simpMessagingTemplate.convertAndSendToUser(notification.getToUser(),"/queue/notification", notificationRes);
         }
 
         if (profile.getIsContactProfile()) {
