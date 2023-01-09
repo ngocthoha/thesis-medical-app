@@ -227,16 +227,6 @@ export default {
 
       itemHospitalAdmin: [
         {
-          title: "QUẢN LÝ BỆNH VIỆN",
-          icon: "mdi-hospital-building",
-          items: [
-            {
-              title: "Bệnh viện",
-              to: "/admin/manage-hospital"
-            }
-          ]
-        },
-        {
           title: "QUẢN LÝ BÁC SĨ",
           icon: "mdi-doctor",
           items: [
