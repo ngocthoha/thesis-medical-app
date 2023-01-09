@@ -65,13 +65,75 @@
               </v-list-item>
             </v-list>
           </v-menu>
-          <v-btn
-            color="#667085"
-            elevation="0"
-            class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
-            text
-            >Chuyên khoa</v-btn
+          <v-menu
+            nudge-left="220"
+            offset-y
+            open-on-hover
+            content-class="elevation-1 overflow-hidden"
+            style="overflow: hidden !important"
           >
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                color="#667085"
+                elevation="0"
+                class="font-weight-medium text-body-1 btn-not-hover btn-not-transform"
+                text
+                v-bind="attrs"
+                v-on="on"
+              >
+                Chuyên khoa <v-icon right>mdi-chevron-down</v-icon>
+              </v-btn>
+            </template>
+            <div class="d-flex flex-row">
+              <v-list>
+                <v-list-item v-for="(item, i) in specialists_1" :key="i" link>
+                  <v-list-item-content
+                    style="height: 92px; width: 296px"
+                    @click="onAppointmentServiceClick(item)"
+                  >
+                    <v-col cols="12" class="pa-0">
+                      <v-row class="ma-0"
+                        ><v-col cols="2" class="pb-0"
+                          ><v-img :src="item.icon"></v-img></v-col
+                        ><v-col cols="10" class="pl-0"
+                          ><p class="font-weight-medium text-body-1 ma-0">
+                            {{ item.title }}
+                          </p>
+                          <p class="text-body-2" style="color: #667085">
+                            {{ item.content }}
+                          </p></v-col
+                        ></v-row
+                      ></v-col
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+              <v-list>
+                <v-list-item v-for="(item, i) in specialists_2" :key="i" link>
+                  <v-list-item-content
+                    style="height: 92px; width: 296px"
+                    @click="onAppointmentServiceClick(item)"
+                  >
+                    <v-col cols="12" class="pa-0">
+                      <v-row class="ma-0"
+                        ><v-col cols="2" class="pb-0"
+                          ><v-img :src="item.icon"></v-img></v-col
+                        ><v-col cols="10" class="pl-0"
+                          ><p class="font-weight-medium text-body-1 ma-0">
+                            {{ item.title }}
+                          </p>
+                          <p class="text-body-2" style="color: #667085">
+                            {{ item.content }}
+                          </p></v-col
+                        ></v-row
+                      ></v-col
+                    >
+                  </v-list-item-content>
+                </v-list-item>
+              </v-list>
+            </div>
+          </v-menu>
+
           <v-btn
             color="#667085"
             elevation="0"
@@ -826,6 +888,88 @@ export default {
       {
         icon: require("@/assets/img/home/appbar/service.svg"),
         title: "Dịch vụ",
+        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
+        link_name: "Đặt lịch dịch vụ"
+      }
+    ],
+
+    specialists_1: [
+      {
+        icon: require("@/assets/img/home/appbar/ChuanDoanHinhAnh.svg"),
+        title: "Chuẩn đoán hình ảnh",
+        content:
+          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
+        link_name: "Đặt lịch bác sĩ"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/CoXuongKhop.svg"),
+        title: "Cơ Xương Khớp",
+        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
+        link_name: "Đặt lịch bệnh viện"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/Nhi.svg"),
+        title: "Nhi Khoa",
+        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
+        link_name: "Đặt lịch dịch vụ"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/San.svg"),
+        title: "Sản - Phụ Khoa",
+        content:
+          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
+        link_name: "Đặt lịch bác sĩ"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/TaiMuiHong.svg"),
+        title: "Tai - Mũi - Họng",
+        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
+        link_name: "Đặt lịch bệnh viện"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/Tim.svg"),
+        title: "Tim mạch",
+        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
+        link_name: "Đặt lịch dịch vụ"
+      }
+    ],
+
+    specialists_2: [
+      {
+        icon: require("@/assets/img/home/appbar/Phoi.svg"),
+        title: "Hô hấp và miễn dịch dị ứng",
+        content:
+          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
+        link_name: "Đặt lịch bác sĩ"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/NoiSoi.svg"),
+        title: "Nội soi",
+        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
+        link_name: "Đặt lịch bệnh viện"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/Gan.svg"),
+        title: "Tiêu hóa gan mật",
+        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
+        link_name: "Đặt lịch dịch vụ"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/XetNghiem.svg"),
+        title: "Xét Nghiệm",
+        content:
+          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
+        link_name: "Đặt lịch bác sĩ"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/KhoaNgoai.svg"),
+        title: "Khoa Ngoại",
+        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
+        link_name: "Đặt lịch bệnh viện"
+      },
+      {
+        icon: require("@/assets/img/home/appbar/ThanKinh.svg"),
+        title: "Tâm thần kinh",
         content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
         link_name: "Đặt lịch dịch vụ"
       }
