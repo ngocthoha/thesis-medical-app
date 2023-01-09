@@ -897,40 +897,39 @@ export default {
       {
         icon: require("@/assets/img/home/appbar/ChuanDoanHinhAnh.svg"),
         title: "Chuẩn đoán hình ảnh",
-        content:
-          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
-        link_name: "Đặt lịch bác sĩ"
+        content: "Khoa cận lâm sàng, thực hiện các kỹ thuật tạo ảnh y học ",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/CoXuongKhop.svg"),
         title: "Cơ Xương Khớp",
-        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
-        link_name: "Đặt lịch bệnh viện"
+        content: "Khám chữa và khắc phục những tổn thương hệ vận động cơ",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/Nhi.svg"),
         title: "Nhi Khoa",
-        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
-        link_name: "Đặt lịch dịch vụ"
+        content: "Khám chữa bệnh nội khoa của trẻ em",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/San.svg"),
         title: "Sản - Phụ Khoa",
         content:
-          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
-        link_name: "Đặt lịch bác sĩ"
+          "Tập trung vào kiểm tra và chăm sóc sức khỏe tình dục và sinh sản",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/TaiMuiHong.svg"),
         title: "Tai - Mũi - Họng",
-        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
-        link_name: "Đặt lịch bệnh viện"
+        content: "Khám, chữa bệnh chuyên sâu về tai, tai thần kinh, nền sọ",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/Tim.svg"),
         title: "Tim mạch",
-        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
-        link_name: "Đặt lịch dịch vụ"
+        content: "Giúp chẩn đoán và điều trị những bệnh lý tim mạch",
+        link_name: "Sản - Phụ khoa"
       }
     ],
 
@@ -938,40 +937,39 @@ export default {
       {
         icon: require("@/assets/img/home/appbar/Phoi.svg"),
         title: "Hô hấp và miễn dịch dị ứng",
-        content:
-          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
-        link_name: "Đặt lịch bác sĩ"
+        content: "Khám và điều trị các bệnh về dị ứng, miễn dịch",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/NoiSoi.svg"),
         title: "Nội soi",
-        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
-        link_name: "Đặt lịch bệnh viện"
+        content: "Nội soi cấp cứu bệnh nhân dị vật đường thở, đường ăn",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/Gan.svg"),
         title: "Tiêu hóa gan mật",
-        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
-        link_name: "Đặt lịch dịch vụ"
+        content: "Khám và điều trị bệnh chuyên khoa Tiêu hóa – Gan mật",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/XetNghiem.svg"),
         title: "Xét Nghiệm",
         content:
-          "Đặt lịch khám với bác sĩ chuyên khoa tại bệnh viện hoặc online",
-        link_name: "Đặt lịch bác sĩ"
+          "Chức năng tiếp nhận nghiệm mẫu, thực hiện các kỹ thuật xét nghiệm",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/KhoaNgoai.svg"),
         title: "Khoa Ngoại",
-        content: "Đặt lịch khám chuyên khoa tại các bệnh viện",
-        link_name: "Đặt lịch bệnh viện"
+        content: "Điều trị những bệnh ngoại khoa bằng phương pháp phẫu thuật",
+        link_name: "Sản - Phụ khoa"
       },
       {
         icon: require("@/assets/img/home/appbar/ThanKinh.svg"),
         title: "Tâm thần kinh",
-        content: "Các dịch vụ và gói khám tùy chọn theo nhu cầu",
-        link_name: "Đặt lịch dịch vụ"
+        content: "Chẩn đoán, điều trị và phòng ngừa các rối loạn tâm thần",
+        link_name: "Sản - Phụ khoa"
       }
     ],
 
